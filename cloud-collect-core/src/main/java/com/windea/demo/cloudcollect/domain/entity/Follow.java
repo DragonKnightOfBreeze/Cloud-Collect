@@ -1,5 +1,7 @@
 package com.windea.demo.cloudcollect.domain.entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -12,6 +14,8 @@ import java.util.List;
 /**
  * 关注信息。
  */
+@Data
+@NoArgsConstructor
 @Entity
 public class Follow implements Serializable {
 	private static final long serialVersionUID = -8343689798932868256L;
@@ -39,6 +43,4 @@ public class Follow implements Serializable {
 	@LastModifiedDate
 	@Column
 	private LocalDateTime lastModifiedTime;
-
-
 }
