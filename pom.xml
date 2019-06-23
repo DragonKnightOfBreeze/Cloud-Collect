@@ -15,7 +15,7 @@
   <version>0.0.1</version>
 
   <name>Cloud Collect</name>
-  <description>毕业设计项目：云收藏的设计与实现。</description>
+  <description>毕业设计项目：云收藏的设计与实现。此为后台模块。</description>
   <url>https://github.com/DragonKnightOfBreeze/Cloud-Collect</url>
 
   <modules>
