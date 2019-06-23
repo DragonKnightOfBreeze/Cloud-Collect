@@ -4,6 +4,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.lang.Nullable;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -12,24 +13,36 @@ import java.time.LocalDateTime;
  * <p>
  * 一个收藏可以带有多条评论。
  */
+@Entity
 public class CollectComment implements Serializable {
 	private static final long serialVersionUID = -5681480852773287799L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(nullable = false)
 	private User sponsorUser;
 
 	@Nullable
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn
 	private User replyUser;
 
+	@Column(nullable = false, length = 65535, columnDefinition = "text")
 	private String content;
 
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(nullable = false)
 	private User user;
 
 	@CreatedDate
+	@Column
 	private LocalDateTime createdTime;
 
 	@LastModifiedDate
+	@Column
 	private LocalDateTime lastModifiedTime;
 
 
@@ -54,7 +67,7 @@ public class CollectComment implements Serializable {
 		return replyUser;
 	}
 
-	public void setReplyUser(@Nullable User replyUser) {
+	public void setReplyUser(User replyUser) {
 		this.replyUser = replyUser;
 	}
 

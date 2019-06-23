@@ -4,7 +4,9 @@ import com.windea.demo.cloudcollect.domain.enums.CollectMark;
 import com.windea.demo.cloudcollect.domain.enums.CollectPrivacy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.lang.Nullable;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -12,38 +14,61 @@ import java.util.*;
 /**
  * 收藏。
  */
+@Entity
 public class Collect implements Serializable {
 	private static final long serialVersionUID = -6764369348818887548L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@Column(nullable = false, length = 64)
 	private String title;
 
+	@Column(nullable = false, length = 512)
 	private String url;
 
+	@Nullable
+	@Column(length = 512)
 	private String logoUrl;
 
+	@Column(nullable = false, length = 65535, columnDefinition = "text")
 	private String summary;
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private CollectCategory category;
 
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn
 	private Set<CollectTag> tags = new LinkedHashSet<>();
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private CollectMark mark;
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private CollectPrivacy privacy;
 
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn
 	private List<CollectComment> commentList = new LinkedList<>();
 
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(nullable = false)
 	private User user;
 
 	@CreatedDate
+	@Column
 	private LocalDateTime createdTime;
 
 	@LastModifiedDate
+	@Column
 	private LocalDateTime lastModifiedTime;
 
-	private Boolean deleted;
+	@Column(nullable = false)
+	private Boolean deleted = false;
 
 
 	public Integer getId() {
@@ -70,6 +95,7 @@ public class Collect implements Serializable {
 		this.url = url;
 	}
 
+	@Nullable
 	public String getLogoUrl() {
 		return logoUrl;
 	}
