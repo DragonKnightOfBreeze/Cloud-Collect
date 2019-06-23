@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.domain.view;
+package com.windea.demo.cloudcollect.core.domain.view;
 
 import lombok.Data;
 

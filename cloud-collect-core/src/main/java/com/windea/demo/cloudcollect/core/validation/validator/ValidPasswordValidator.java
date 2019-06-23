@@ -1,6 +1,6 @@
-package com.windea.demo.cloudcollect.validation.validator;
+package com.windea.demo.cloudcollect.core.validation.validator;
 
-import com.windea.demo.cloudcollect.validation.annotation.ValidPassword;
+import com.windea.demo.cloudcollect.core.validation.annotation.ValidPassword;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

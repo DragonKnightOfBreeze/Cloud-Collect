@@ -1,9 +1,10 @@
-package com.windea.demo.cloudcollect.domain.entity;
+package com.windea.demo.cloudcollect.core.domain.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -12,29 +13,33 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 收藏的标签。
+ * 收藏的评论。
  * <p>
- * 一个收藏可以带有多个标签。
+ * 一个收藏可以带有多条评论。
  */
 @Data
 @NoArgsConstructor
 @Entity
-public class CollectTag implements Serializable {
-	private static final long serialVersionUID = 4229783797803970576L;
+public class CollectComment implements Serializable {
+	private static final long serialVersionUID = -5681480852773287799L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotEmpty(message = "validation.CollectTag.name.NotEmpty")
-	@Size(min = 1, max = 32, message = "validation.CollectTag.name.Size")
-	@Column(nullable = false, length = 32)
-	private String name;
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(nullable = false)
+	private User sponsorUser;
 
-	@NotEmpty(message = "validation.CollectTag.summary.NotEmpty")
-	@Size(min = 1, max = 255, message = "validation.CollectTag.summary.Size")
+	@Nullable
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn
+	private User replyUser;
+
+	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
 	@Column(nullable = false, columnDefinition = "text")
-	private String summary;
+	private String content;
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false)

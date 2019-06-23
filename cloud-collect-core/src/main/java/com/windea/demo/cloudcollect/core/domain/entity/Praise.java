@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.domain.entity;
+package com.windea.demo.cloudcollect.core.domain.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,29 +12,25 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 关注信息。
+ * 点赞信息。
  */
 @Data
 @NoArgsConstructor
 @Entity
-public class Follow implements Serializable {
-	private static final long serialVersionUID = -8343689798932868256L;
+public class Praise implements Serializable {
+	private static final long serialVersionUID = -3754697767735093276L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false)
-	private User user;
+	private Collect collect;
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn
-	private List<User> followUserList = new LinkedList<>();
-
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn
-	private List<User> followedUserList = new LinkedList<>();
+	private List<User> praisedUserList = new LinkedList<>();
 
 	@CreatedDate
 	@Column

@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.validation.annotation;
+package com.windea.demo.cloudcollect.core.validation.annotation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

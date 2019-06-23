@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.exception;
+package com.windea.demo.cloudcollect.core.exception;
 
 /**
  * 功能未实现的异常。

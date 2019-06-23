@@ -1,10 +1,9 @@
-package com.windea.demo.cloudcollect.domain.entity;
+package com.windea.demo.cloudcollect.core.domain.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -13,33 +12,29 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 收藏的评论。
+ * 收藏的标签。
  * <p>
- * 一个收藏可以带有多条评论。
+ * 一个收藏可以带有多个标签。
  */
 @Data
 @NoArgsConstructor
 @Entity
-public class CollectComment implements Serializable {
-	private static final long serialVersionUID = -5681480852773287799L;
+public class CollectTag implements Serializable {
+	private static final long serialVersionUID = 4229783797803970576L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn(nullable = false)
-	private User sponsorUser;
+	@NotEmpty(message = "validation.CollectTag.name.NotEmpty")
+	@Size(min = 1, max = 32, message = "validation.CollectTag.name.Size")
+	@Column(nullable = false, length = 32)
+	private String name;
 
-	@Nullable
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn
-	private User replyUser;
-
-	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
-	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
+	@NotEmpty(message = "validation.CollectTag.summary.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.CollectTag.summary.Size")
 	@Column(nullable = false, columnDefinition = "text")
-	private String content;
+	private String summary;
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false)

@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.domain.enums;
+package com.windea.demo.cloudcollect.core.domain.enums;
 
 /**
  * 用户身份。

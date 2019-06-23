@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.domain.entity;
+package com.windea.demo.cloudcollect.core.domain.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

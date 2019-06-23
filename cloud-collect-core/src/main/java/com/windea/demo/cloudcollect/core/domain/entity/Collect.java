@@ -1,7 +1,7 @@
-package com.windea.demo.cloudcollect.domain.entity;
+package com.windea.demo.cloudcollect.core.domain.entity;
 
-import com.windea.demo.cloudcollect.domain.enums.CollectMark;
-import com.windea.demo.cloudcollect.domain.enums.CollectPrivacy;
+import com.windea.demo.cloudcollect.core.domain.enums.CollectMark;
+import com.windea.demo.cloudcollect.core.domain.enums.CollectPrivacy;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;

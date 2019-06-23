@@ -1,6 +1,6 @@
-package com.windea.demo.cloudcollect.validation.validator;
+package com.windea.demo.cloudcollect.core.validation.validator;
 
-import com.windea.demo.cloudcollect.validation.annotation.ValidUsername;
+import com.windea.demo.cloudcollect.core.validation.annotation.ValidUsername;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

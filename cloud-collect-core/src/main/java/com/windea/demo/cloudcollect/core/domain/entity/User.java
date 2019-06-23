@@ -1,8 +1,8 @@
-package com.windea.demo.cloudcollect.domain.entity;
+package com.windea.demo.cloudcollect.core.domain.entity;
 
-import com.windea.demo.cloudcollect.domain.enums.Role;
-import com.windea.demo.cloudcollect.validation.annotation.ValidPassword;
-import com.windea.demo.cloudcollect.validation.annotation.ValidUsername;
+import com.windea.demo.cloudcollect.core.domain.enums.Role;
+import com.windea.demo.cloudcollect.core.validation.annotation.ValidPassword;
+import com.windea.demo.cloudcollect.core.validation.annotation.ValidUsername;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;

@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect;
+package com.windea.demo.cloudcollect.core;
 
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.context.MessageSource;
