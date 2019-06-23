@@ -26,7 +26,7 @@ public class Collect implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@NotEmpty(message = "validation.Collect.title.NotEmpty")
 	@Size(min = 1, max = 64, message = "validation.Collect.title.Size")

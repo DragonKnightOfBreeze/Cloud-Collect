@@ -22,7 +22,7 @@ public class Follow implements Serializable {
 
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 
 	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false)

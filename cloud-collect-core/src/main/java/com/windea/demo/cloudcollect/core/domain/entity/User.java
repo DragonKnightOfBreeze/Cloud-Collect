@@ -25,7 +25,7 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@NotEmpty(message = "validation.User.username.NotEmpty")
 	@ValidUsername(message = "validation.User.username.ValidUsername")

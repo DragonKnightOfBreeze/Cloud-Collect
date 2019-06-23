@@ -24,7 +24,7 @@ public class CollectCategory implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@NotEmpty(message = "validation.CollectCategory.name.NotEmpty")
 	@Size(min = 1, max = 32, message = "validation.CollectCategory.name.Size")

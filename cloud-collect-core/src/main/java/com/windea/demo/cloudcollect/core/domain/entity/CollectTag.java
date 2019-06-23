@@ -24,7 +24,7 @@ public class CollectTag implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@NotEmpty(message = "validation.CollectTag.name.NotEmpty")
 	@Size(min = 1, max = 32, message = "validation.CollectTag.name.Size")
