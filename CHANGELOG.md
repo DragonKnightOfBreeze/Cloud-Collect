@@ -6,3 +6,4 @@
 * 0.0.2 为实体类添加jpa注解，为其属性设置必要的默认值。
 * 0.0.3 整合lombok，为实体类和视图对象添加必要的lombok注解。
 * 0.0.4 为实体类和视图对象添加必要的validation注解，暂时搁置自定义注解、message属性以及messages.properties。
+* 0.0.5 编写包含验证信息的messages.properties，并设置validation注解的message属性为`validation.xxx`，以后再添加`{}`。

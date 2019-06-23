@@ -1,5 +1,7 @@
 package com.windea.demo.cloudcollect.domain.entity;
 
+import com.windea.demo.cloudcollect.annotation.ValidPassword;
+import com.windea.demo.cloudcollect.annotation.ValidUsername;
 import com.windea.demo.cloudcollect.domain.enums.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -26,21 +27,24 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotEmpty
+	@NotEmpty(message = "validation.User.username.NotEmpty")
+	@ValidUsername(message = "validation.User.username.ValidUsername")
 	@Column(unique = true, nullable = false, length = 16)
 	private String username;
 
-	@NotEmpty
+	@NotEmpty(message = "validation.User.email.NotEmpty")
+	@Email(message = "validation.User.email.Email")
 	@Column(unique = true, nullable = false, length = 64)
 	private String email;
 
-	@NotEmpty
 	//这里存储的是加密后的密码，可以进行参数验证，不能限制长度
+	@NotEmpty(message = "validation.User.password.NotEmpty")
+	@ValidPassword(message = "validation.User.password.ValidPassword")
 	@Column(nullable = false)
 	private String password;
 
-	@NotEmpty
-	@Size(min = 1, max = 64)
+	@NotEmpty(message = "validation.User.nickname.NotEmpty")
+	@Size(min = 1, max = 64, message = "validation.User.nickname.Size")
 	@Column(nullable = false, length = 64)
 	private String nickname;
 
@@ -52,8 +56,8 @@ public class User implements Serializable {
 	@Column(length = 512)
 	private String backgroundUrl;
 
-	@NotEmpty
-	@Size(min = 1, max = 255)
+	@NotEmpty(message = "validation.User.introduce.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.User.introduce.Size")
 	@Column(nullable = false, columnDefinition = "text")
 	private String introduce;
 

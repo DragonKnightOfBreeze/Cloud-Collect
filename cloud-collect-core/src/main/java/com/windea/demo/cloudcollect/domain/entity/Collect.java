@@ -28,8 +28,8 @@ public class Collect implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotEmpty
-	@Size(min = 1, max = 64)
+	@NotEmpty(message = "validation.Collect.title.NotEmpty")
+	@Size(min = 1, max = 64, message = "validation.Collect.title.Size")
 	@Column(nullable = false, length = 64)
 	private String title;
 
@@ -40,8 +40,8 @@ public class Collect implements Serializable {
 	@Column(length = 512)
 	private String logoUrl;
 
-	@NotEmpty
-	@Size(min = 1, max = 255)
+	@NotEmpty(message = "validation.Collect.summary.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.Collect.summary.Size")
 	@Column(nullable = false, columnDefinition = "text")
 	private String summary;
 

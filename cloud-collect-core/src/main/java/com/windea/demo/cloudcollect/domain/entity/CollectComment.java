@@ -36,8 +36,8 @@ public class CollectComment implements Serializable {
 	@JoinColumn
 	private User replyUser;
 
-	@NotEmpty
-	@Size(min = 1, max = 255)
+	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
 	@Column(nullable = false, columnDefinition = "text")
 	private String content;
 

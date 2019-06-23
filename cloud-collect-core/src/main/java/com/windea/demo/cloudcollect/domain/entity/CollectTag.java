@@ -26,11 +26,13 @@ public class CollectTag implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotEmpty
-	@Size(min = 1, max = 32)
+	@NotEmpty(message = "validation.CollectTag.name.NotEmpty")
+	@Size(min = 1, max = 32, message = "validation.CollectTag.name.Size")
 	@Column(nullable = false, length = 32)
 	private String name;
 
+	@NotEmpty(message = "validation.CollectTag.summary.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.CollectTag.summary.Size")
 	@Column(nullable = false, columnDefinition = "text")
 	private String summary;
 

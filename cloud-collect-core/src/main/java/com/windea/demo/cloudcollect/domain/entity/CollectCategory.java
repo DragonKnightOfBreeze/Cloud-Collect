@@ -26,11 +26,13 @@ public class CollectCategory implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotEmpty
-	@Size(min = 1, max = 32)
+	@NotEmpty(message = "validation.CollectCategory.name.NotEmpty")
+	@Size(min = 1, max = 32, message = "validation.CollectCategory.name.Size")
 	@Column(nullable = false, length = 32)
 	private String name;
 
+	@NotEmpty(message = "validation.CollectCategory.summary.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.CollectCategory.summary.Size")
 	@Column(nullable = false, columnDefinition = "text")
 	private String summary;
 
