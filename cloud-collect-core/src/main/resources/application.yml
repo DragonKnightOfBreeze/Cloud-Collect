@@ -1,0 +1,51 @@
+server:
+  tomcat:
+    # 配置Tomcat的访问日志
+    accesslog:
+      enabled: true
+    # 指定Tomcat的发布目录
+    basedir: target/tomcat
+  servlet:
+    # 指定服务器的内容根路径
+    context-path: /cloud-collect/api
+
+spring:
+  jpa:
+    # 用于Jpa控制台调试
+    database-platform: org.hibernate.dialect.MySQLDialect
+    # 表不存在时自动创建，之后更新
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  datasource:
+    username: Windea
+    password: BreezesLanding
+    url: jdbc:mysql://localhost:3306/CloudCollect
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      data-source-properties:
+        # 不使用SSL，否则结束应用时会报错SSLException
+        useSSL: false
+        # 配置数据库的时区，否则会报错
+        serverTimezone: GMT+8
+        # 允许使用服务器提供的公钥
+        allowPublicKeyRetrieval: true
+    tomcat:
+      db-properties:
+        close-method: close
+  jackson:
+    serialization:
+      # 防止json序列化时出错，非常重要！
+      fail-on-empty-beans: false
+
+### 以下是自定义配置
+
+com:
+  windea:
+    # Spring Security的相关配置，整合Jwt
+    security:
+      jwtSecret: com.windea
+      jwtExpiration: 86400
