@@ -1,6 +1,5 @@
 package com.windea.demo.cloudcollect.validation.validator;
 
-import com.windea.demo.cloudcollect.exception.NotImplementedException;
 import com.windea.demo.cloudcollect.validation.annotation.ValidUsername;
 
 import javax.validation.ConstraintValidator;
@@ -16,6 +15,7 @@ public class ValidUsernameValidator implements ConstraintValidator<ValidUsername
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		throw new NotImplementedException();
+		//6~16位的字母、数字和下划线。
+		return value.matches("\\w{6,16}");
 	}
 }

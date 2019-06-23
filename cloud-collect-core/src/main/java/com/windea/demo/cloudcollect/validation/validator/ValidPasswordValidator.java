@@ -1,6 +1,5 @@
 package com.windea.demo.cloudcollect.validation.validator;
 
-import com.windea.demo.cloudcollect.exception.NotImplementedException;
 import com.windea.demo.cloudcollect.validation.annotation.ValidPassword;
 
 import javax.validation.ConstraintValidator;
@@ -16,6 +15,7 @@ public class ValidPasswordValidator implements ConstraintValidator<ValidPassword
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		throw new NotImplementedException();
+		//6~16位的字母、数字和下划线，以字母开头。
+		return value.matches("[a-zA-Z]\\w{5,15}");
 	}
 }

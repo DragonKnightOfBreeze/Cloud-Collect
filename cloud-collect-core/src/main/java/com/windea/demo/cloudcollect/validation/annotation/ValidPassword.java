@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
 public @interface ValidPassword {
-	String message() default "validation.User.password.ValidPassword";
+	String message() default "{javax.validation.constraints.Pattern.message}";
 
 	Class<?>[] groups() default {};
 

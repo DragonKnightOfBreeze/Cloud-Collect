@@ -8,3 +8,4 @@
 * 0.0.4 为实体类和视图对象添加必要的validation注解，暂时搁置自定义注解、message属性以及messages.properties。
 * 0.0.5 编写包含验证信息的messages.properties，并设置validation注解的message属性为`validation.xxx`，以后再添加`{}`。
 * 0.0.6 添加自定义校验注解和自定义校验器，具体功能暂未实现。
+* 0.0.7 实现自定义校验器。
