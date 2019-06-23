@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.domain.entity;
 
-import com.windea.demo.cloudcollect.core.domain.enums.CollectMark;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectPrivacy;
+import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -55,7 +55,7 @@ public class Collect implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private CollectMark mark;
+	private CollectType type;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
@@ -63,7 +63,7 @@ public class Collect implements Serializable {
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn
-	private List<CollectComment> commentList = new LinkedList<>();
+	private List<Comment> commentList = new LinkedList<>();
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false)

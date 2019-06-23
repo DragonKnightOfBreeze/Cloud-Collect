@@ -15,3 +15,4 @@
 * 0.1.0 迁移包`com.windea.demo.cloudcollect`到`com.windea.demo.cloudcollect.core`。
 * 0.1.1 编写自定义异常以及全局异常处理器。
 * 0.1.2 将id的类型改为Long。
+* 0.1.3 创建repository、service、api层的类和接口，注入依赖。

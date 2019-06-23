@@ -10,6 +10,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.validation.Validator;
 
+/**
+ * Web模块的配置类。
+ */
 public class WebConfiguration implements WebMvcConfigurer {
 	@Bean
 	public MessageSource messageSource() {

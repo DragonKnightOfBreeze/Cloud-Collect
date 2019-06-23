@@ -13,14 +13,14 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 收藏的评论。
+ * 评论。
  * <p>
  * 一个收藏可以带有多条评论。
  */
 @Data
 @NoArgsConstructor
 @Entity
-public class CollectComment implements Serializable {
+public class Comment implements Serializable {
 	private static final long serialVersionUID = -5681480852773287799L;
 
 	@Id
