@@ -49,6 +49,7 @@
     * Redis 用于缓存
     * Swagger 用于编写api文档
     * Docker 用于项目部署
+    * Lombok 便于实体类编写
     * Maven 用于后台依赖和目录管理
     * MySql 后台数据库
     * 七牛api
