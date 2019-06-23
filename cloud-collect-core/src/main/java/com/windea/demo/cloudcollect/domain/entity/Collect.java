@@ -9,6 +9,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -26,6 +28,8 @@ public class Collect implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@NotEmpty
+	@Size(min = 1, max = 64)
 	@Column(nullable = false, length = 64)
 	private String title;
 
@@ -36,7 +40,9 @@ public class Collect implements Serializable {
 	@Column(length = 512)
 	private String logoUrl;
 
-	@Column(nullable = false, length = 65535, columnDefinition = "text")
+	@NotEmpty
+	@Size(min = 1, max = 255)
+	@Column(nullable = false, columnDefinition = "text")
 	private String summary;
 
 	@Enumerated(EnumType.STRING)

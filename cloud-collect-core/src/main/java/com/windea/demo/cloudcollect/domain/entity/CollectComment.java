@@ -7,6 +7,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -34,7 +36,9 @@ public class CollectComment implements Serializable {
 	@JoinColumn
 	private User replyUser;
 
-	@Column(nullable = false, length = 65535, columnDefinition = "text")
+	@NotEmpty
+	@Size(min = 1, max = 255)
+	@Column(nullable = false, columnDefinition = "text")
 	private String content;
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

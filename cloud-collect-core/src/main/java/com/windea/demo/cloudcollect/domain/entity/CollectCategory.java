@@ -6,6 +6,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -24,10 +26,12 @@ public class CollectCategory implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@NotEmpty
+	@Size(min = 1, max = 32)
 	@Column(nullable = false, length = 32)
 	private String name;
 
-	@Column(nullable = false, length = 65535, columnDefinition = "text")
+	@Column(nullable = false, columnDefinition = "text")
 	private String summary;
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
