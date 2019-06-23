@@ -30,7 +30,13 @@
         * [X] `EmailPasswordLoginView` 邮箱地址、密码
         * [ ] ［搁置］`UserResponseView` 
     * ［全局］整合jpa、lombok、bean validation、jackson。 
-        
 * repository
 * service
 * api
+* exception
+    * [X] NotFoundException
+    * [X] NotImplementedException
+    * [X] ValidationException
+    * [X] GlobalExceptionHandler
+* validation
+    * （略）

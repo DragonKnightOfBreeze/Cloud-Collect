@@ -45,7 +45,9 @@ spring:
 
 com:
   windea:
-    # Spring Security的相关配置，整合Jwt
     security:
       jwtSecret: com.windea
       jwtExpiration: 86400
+    validation:
+      validUsername: "\\w{6,16}"
+      validPassword: "[a-zA-Z]\\w{5,15}"
