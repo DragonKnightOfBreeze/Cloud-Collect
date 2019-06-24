@@ -9,3 +9,10 @@
 * 0.0.5 编写包含验证信息的messages.properties，并设置validation注解的message属性为`validation.xxx`，以后再添加`{}`。
 * 0.0.6 添加自定义校验注解和自定义校验器，具体功能暂未实现。
 * 0.0.7 实现自定义校验器。
+
+## 0.1.x
+
+* 0.1.0 迁移包`com.windea.demo.cloudcollect`到`com.windea.demo.cloudcollect.core`。
+* 0.1.1 编写自定义异常以及全局异常处理器。
+* 0.1.2 将id的类型改为Long。
+* 0.1.3 创建repository、service、api层的类和接口，注入依赖。
