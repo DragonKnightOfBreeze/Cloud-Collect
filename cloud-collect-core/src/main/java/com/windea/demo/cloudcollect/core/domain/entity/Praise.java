@@ -24,13 +24,17 @@ public class Praise implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	/**
+	 * 所属收藏。
+	 */
 	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn(nullable = false)
 	private Collect collect;
 
+	/**
+	 * 点赞该收藏的用户列表。
+	 */
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn
-	private List<User> praisedUserList = new LinkedList<>();
+	private List<User> praiseByUserList = new LinkedList<>();
 
 	@CreatedDate
 	@Column

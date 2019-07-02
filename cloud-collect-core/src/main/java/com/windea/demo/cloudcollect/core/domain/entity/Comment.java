@@ -27,23 +27,32 @@ public class Comment implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	/**
+	 * 所属收藏。
+	 */
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn(nullable = false)
-	private User sponsorUser;
+	private Collect collect;
 
+	/**
+	 * 发起该评论的用户。
+	 */
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private User sponsorByUser;
+
+	/**
+	 * 该评论回复的用户。
+	 */
 	@Nullable
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn
-	private User replyUser;
+	private User replyToUser;
 
+	/**
+	 * 内容。
+	 */
 	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
 	@Column(nullable = false, columnDefinition = "text")
 	private String content;
-
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn(nullable = false)
-	private User user;
 
 	@CreatedDate
 	@Column

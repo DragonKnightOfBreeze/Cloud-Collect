@@ -24,17 +24,23 @@ public class Follow implements Serializable {
 	@GeneratedValue
 	private Long id;
 
+	/**
+	 * 所属用户。
+	 */
 	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn(nullable = false)
 	private User user;
 
+	/**
+	 * 该用户关注的用户列表。
+	 */
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn
-	private List<User> followUserList = new LinkedList<>();
+	private List<User> followToUserList = new LinkedList<>();
 
+	/**
+	 * 关注该用户的用户列表。
+	 */
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn
-	private List<User> followedUserList = new LinkedList<>();
+	private List<User> followByUserList = new LinkedList<>();
 
 	@CreatedDate
 	@Column

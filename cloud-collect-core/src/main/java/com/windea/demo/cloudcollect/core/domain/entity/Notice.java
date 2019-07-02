@@ -21,23 +21,32 @@ public class Notice implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	/**
+	 * 所属用户。
+	 */
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private User user;
+
+	/**
+	 * 通知的类型。
+	 */
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private NoticeType type;
 
+	/**
+	 * 相关收藏。
+	 */
 	@Nullable
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn
 	private Collect relatedCollect;
 
+	/**
+	 * 相关评论。
+	 */
 	@Nullable
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn
 	private Comment relatedComment;
-
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn(nullable = false)
-	private User user;
 
 	@Column(nullable = false)
 	private Boolean read = false;

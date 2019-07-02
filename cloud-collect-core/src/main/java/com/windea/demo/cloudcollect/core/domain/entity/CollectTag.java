@@ -26,19 +26,27 @@ public class CollectTag implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	/**
+	 * 所属用户。
+	 */
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private User user;
+
+	/**
+	 * 名字。
+	 */
 	@NotEmpty(message = "validation.CollectTag.name.NotEmpty")
 	@Size(min = 1, max = 32, message = "validation.CollectTag.name.Size")
 	@Column(nullable = false, length = 32)
 	private String name;
 
+	/**
+	 * 概述。
+	 */
 	@NotEmpty(message = "validation.CollectTag.summary.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.CollectTag.summary.Size")
 	@Column(nullable = false, columnDefinition = "text")
 	private String summary;
-
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn(nullable = false)
-	private User user;
 
 	@CreatedDate
 	@Column

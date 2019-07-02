@@ -23,21 +23,21 @@
 ### entity
 
 * [X] `Collect` 
-    * 属性：id、标题、地址、logo地址、概述、分类、标签集合?、类型?、隐私权限、评论列表、用户、创建时间、修改时间、删除状态
+    * 属性：id、用户、标题、地址、logo地址、概述、分类、标签集合?、类型?、隐私权限、评论列表、点赞、创建时间、修改时间、删除状态
 * [X] `CollectCategory` 
-    * 属性：id、名字、概述、用户、创建时间、修改时间
+    * 属性：id、用户、名字、概述、创建时间、修改时间
 * [X] `CollectTag`
-    * 属性：id、名字、概述、用户、创建时间、修改时间
+    * 属性：id、用户、名字、概述、创建时间、修改时间
 * [X] `Comment`
-    * 属性：id、发起用户、回复用户?、内容、用户、创建时间
+    * 属性：id、用户、发起用户、回复用户?、内容、创建时间
 * [X] `Notice`
-    * 属性：id、类型、关联收藏?、关联回复?、用户、创建时间、是否已读
+    * 属性：id、用户、类型、关联收藏?、关联回复?、创建时间、是否已读
 * [X] `Follow`
     * 属性：id、用户、关注用户列表、被关注用户列表、创建时间、修改时间
 * [X] `Praise`
     * 属性：id、收藏、点赞用户列表、创建时间、修改时间
 * [X] `User`
-    * 属性：id、用户名、邮箱地址、密码、昵称、头像地址、背景地址、个人简介、角色、注册时间、更新时间，激活状态
+    * 属性：id、用户名、邮箱地址、密码、昵称、头像地址、背景地址、个人简介、角色、关注、注册时间、更新时间，激活状态
 * [ ] ［搁置］`UserDetails`
     * 用于安全验证，与用户实体类相分离。
 
@@ -69,15 +69,15 @@
 
 * [ ] `CollectRepository`
     * 方法：(xxxAndDeletedFalse) save, getOne, getAll
-    * 方法：queryByTitleContains, queryByCategory, queryByTagsIn, queryByType, queryByPrivacy, queryByUser, queryAll
+    * 方法：queryByUser, queryByTitleContains, queryByCategory, queryByTagsIn, queryByType, queryByPrivacy, queryAll
 * [ ] `CollectCategoryRepository`
-    * 方法：save, delete, getOne, getAll, queryByNameContains, queryByUser
+    * 方法：save, delete, getOne, getAll, queryByUser, queryByNameContains
 * [ ] `CollectTagRepository`
-    * 方法：save, delete, getOne, getAll, queryByNameContains, queryByUser
+    * 方法：save, delete, getOne, getAll, queryByUser, queryByNameContains
 * [ ] `CommentRepository`
-    * 方法：save, delete, getOne, getAll, queryBySponsorUser, queryByRepliedUser, queryByUser
+    * 方法：save, delete, getOne, getAll, queryByCollect, queryBySponsorUser, queryByRepliedUser
 * [ ] `NoticeRepository`
-    * 方法：save, delete, getOne, getAll, queryByType, queryByUser
+    * 方法：save, delete, getOne, getAll, queryByType, queryByUser, queryByRead
 * [ ] `FollowRepository` (user.follow, cascade:all)
     * 方法：getOne, getAll
 * [ ] `PraiseRepository` (user.follow, cascade:all)
