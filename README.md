@@ -17,13 +17,36 @@
 * Weex
     * [WEEX](https://weex.apache.org/zh/)
 
+# 技术要求
+
+* 通用：
+    * Markdown 用于编写项目文档，不直接编写doc
+    * Yaml 用于编写配置文件
+    * Git 用于版本管理
+	* nginx 负载均衡
+	* ［可能］Docker 应用容器
+* 后台：
+    * SpringBoot 核心框架
+    * Spring+Spring Mvc+Spring Data Jpa 核心框架
+    * Redis 用于缓存
+    * Swagger 用于编写api文档
+    * Lombok 便于实体类编写
+    * Maven 用于后台依赖和目录管理
+    * MySql 后台数据库
+	* Spring Security 认证和授权框架
+	* ［可能］Elastic Search 搜索引擎
+* 前端：
+    * Vue 前端核心框架
+    * Vue-router, Vuex, ... 扩展Vue的功能
+    * Weex 用于网页端页面和移动端页面
+    * Npm 用于前端依赖和目录管理
+
 # 主要功能
 
 * 收藏网络上的各类链接，对其进行归类整理。
 * 仅有一个（或者很少的）页面，但是功能较多，非常灵活。增强了一般浏览器的书签管理系统。
 
 * 可以创建新的收藏。
-* 可以为每个收藏设置简单的隐私权限。
 * 可以为每个收藏进行分类。一个收藏只能有一个分类，由用户自定义。
 * 可以为每个收藏添加标签。一个收藏可以有多个标签，由用户自定义。
 * 可以为每个收藏添加特殊标记。如：待办，喜欢。由系统定义。
@@ -55,27 +78,3 @@
 * 用户可以关注其他用户。可以查看关注被被关注人数和用户信息。
 
 * （其他尚未想到的，专注于收藏管理的功能）
-
-# 技术要求
-
-* 通用：
-    * Markdown 用于编写项目文档，不直接编写doc
-    * Yaml 用于编写配置文件
-    * Git 用于版本管理
-	* nginx 负载均衡
-	* ［可能］Docker 应用容器
-* 后台：
-    * SpringBoot 核心框架
-    * Spring+Spring Mvc+Spring Data Jpa 核心框架
-    * Redis 用于缓存
-    * Swagger 用于编写api文档
-    * Lombok 便于实体类编写
-    * Maven 用于后台依赖和目录管理
-    * MySql 后台数据库
-	* Spring Security 认证和授权框架
-	* ［可能］Elastic Search 搜索引擎
-* 前端：
-    * Vue 前端核心框架
-    * Vue-router, Vuex, ... 扩展Vue的功能
-    * Weex 用于网页端页面和移动端页面
-    * Npm 用于前端依赖和目录管理

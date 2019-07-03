@@ -2,8 +2,6 @@ package com.windea.demo.cloudcollect.core.repository;
 
 import com.windea.demo.cloudcollect.core.domain.entity.User;
 import com.windea.demo.cloudcollect.core.domain.enums.Role;
-import com.windea.demo.cloudcollect.core.domain.response.UserFollowView;
-import com.windea.demo.cloudcollect.core.domain.response.UserPraiseView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,11 +16,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Page<User> queryByRole(Role role, Pageable pageable);
 
+	@Query("from User u, in (u.followToUserList) fu where fu.id = :followToUserId")
+	Page<User> queryByFollowToUser_Id(Long followToUserId, Pageable pageable);
+
+	@Query("from User u, in (u.followByUserList) fu where fu.id = :followByUserId")
+	Page<User> queryByFollowByUser_Id(Long followByUserId, Pageable pageable);
+
+	@Query("from User u, in(u.praiseToCollectList) c where c.id = :praiseToCollectId")
+	Page<User> queryByPraiseToCollect_Id(Long praiseToCollectId, Pageable pageable);
+
 	boolean existsByUsernameOrEmail(String username, String email);
-
-	@Query("select u.id, u.nickname, u.followToUserList, u.followByUserList from User u where u.id = :id")
-	UserFollowView getFollowView(Long id);
-
-	@Query("select u.id, u.nickname, u.praiseToCollectList from User u where u.id = :id")
-	UserPraiseView getPraiseView(Long id);
 }

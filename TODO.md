@@ -22,8 +22,8 @@
 
 ### entity
 
-* [X] `Collect` 
-    * 属性：id、用户、名字、地址、logo地址、概述、分类、标签集合?、类型?、隐私权限、评论列表、点赞、创建时间、修改时间、删除状态
+* [X] `Collect`
+    * 属性：id、用户、名字、地址、logo地址、概述、分类、标签集合?、类型?、评论列表、点赞、创建时间、修改时间、删除状态
 * [X] `CollectCategory` 
     * 属性：id、用户、名字、概述、创建时间、修改时间
 * [X] `CollectTag`
@@ -41,14 +41,11 @@
 
 ### enums
 
-* [X] `CollectMark`
-    * 成员：重要、喜欢、待办、搁置
-* [X] `CollectPrivacy`
-    * 成员：私有、公开
+* [X] `CollectType`
+    * 成员：无、重要、喜欢、待办、搁置
+* [X] `NoticeType`
 * [X] `Role`
-    * 成员：管理员、普通用户
-* [X] `ResponseMessage`
-    * 成员：成功/各种失败操作，带有状态码和消息文本属性
+    * 成员：普通用户、管理员
 
 ### request
 
@@ -62,28 +59,72 @@
 
 ### response    
 
-* [ ] `CollectPraiseView`
-* [ ] `UserFollowView`
-* [ ] `UserPraiseView`
+* [X] `CollectPraiseView`
+* [X] `UserFollowView`
+* [X] `UserPraiseView`
 * [ ] ［搁置］`UserResponseView`
 
 ## repository
 
-* [ ] `CollectRepository`
-* [ ] `CollectCategoryRepository`
-* [ ] `CollectTagRepository`
-* [ ] `CommentRepository`
-* [ ] `NoticeRepository`
-* [ ] `UserRepository`
+* [X] `CollectRepository`
+* [X] `CollectCategoryRepository`
+* [X] `CollectTagRepository`
+* [X] `CommentRepository`
+* [X] `NoticeRepository`
+* [X] `UserRepository`
     
 ## service
 
 * [ ] `CollectService`
+    * 创建自己的收藏。（如果是别人的收藏，默认点赞）
+    * 删除自己的收藏。（修改`collect.deleted=false`，仍然保留在数据库中）
+    * 修改自己的收藏的名字、概述和地址。
+    * 修改自己的收藏的分类。
+    * 修改自己的收藏的标签。
+    * 修改自己的收藏的类型。
+    * 展示某一用户的收藏。
+    * 展示某一用户已删除的收藏。
+    * 通过关键字查询某一用户的收藏。
+    * 通过分类查询某一用户的收藏。
+    * 通过标签查询某一用户的收藏。
+    * 通过特殊标记查询某一用户的收藏。
+    * 通过关键字查询所有收藏。
+    * 查询某一用户点赞的所有收藏。
+    * 点赞当前收藏。
+    * ［扩展］创建或点赞收藏时通知好友。
 * [ ] `CollectCategoryService`
+    * 创建自己的分类。
+    * 删除自己的分类。（不删除对应的收藏）
+    * 修改自己的分类的名字和概述。
+    * 展示某一用户的所有分类。
 * [ ] `CollectTagService`
+    * 创建自己的标签。（标签可在添加时自动创建）
+    * 删除自己的标签。（不删除对应的收藏）
+    * 修改自己的标签的名字和概述。
+    * 展示某一用户的所有标签。
 * [ ] `CommentService`
+    * 创建自己的评论。
+    * 删除自己的评论。
+    * 展示某一收藏下的所有评论。
+    * 展示某一用户的所有评论。
+    * 展示回复某一用户的所有评论。
+    * ［扩展］创建评论时通知好友。
 * [ ] `NoticeService`
+    * 阅读通知。
+    * 展示自己的所有通知。
+    * 展示自己的所有指定类型的通知。
+    * 展示自己的所有已读通知。
 * [ ] `UserService`
+    * 注册用户。
+    * 激活用户。
+    * 登录用户。
+    * 注销用户。
+    * 得到用户信息。
+    * 更新用户信息。
+    * 通过昵称查找用户。
+    * 通过身份查找用户。
+    * 得到该用户关注的用户。
+    * 得到关注该用户的用户。
 * [ ] `QiniuService`
     * 方法：upload, download
 * [ ] `EmailService`

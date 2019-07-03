@@ -1,6 +1,5 @@
 package com.windea.demo.cloudcollect.core.exception;
 
-import com.windea.demo.cloudcollect.core.domain.enums.ResponseResult;
 import org.springframework.validation.ObjectError;
 
 import java.util.List;
@@ -11,15 +10,17 @@ import java.util.List;
 public class ValidationException extends RuntimeException {
 	private static final long serialVersionUID = 7783299109810934473L;
 
+	private static final String message = "200 参数错误！";
+
 	private List<ObjectError> validationErrors;
 
 	public ValidationException(List<ObjectError> validationErrors) {
-		super(ResponseResult.VALIDATION_ERROR.toString());
+		super(message);
 		this.validationErrors = validationErrors;
 	}
 
 	public ValidationException(List<ObjectError> validationErrors, Throwable throwable) {
-		super(ResponseResult.VALIDATION_ERROR.toString(), throwable);
+		super(message, throwable);
 		this.validationErrors = validationErrors;
 	}
 

@@ -10,6 +10,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 收藏的分类。
@@ -61,4 +63,18 @@ public class CollectCategory implements Serializable {
 	@LastModifiedDate
 	@Column
 	private LocalDateTime lastModifiedTime;
+
+	/**
+	 * 收藏列表。懒加载。
+	 */
+	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "category")
+	private List<Collect> collectList = new LinkedList<>();
+
+	/**
+	 * 收藏数量。
+	 */
+	@Transient
+	public Integer getCollectCount() {
+		return collectList.size();
+	}
 }

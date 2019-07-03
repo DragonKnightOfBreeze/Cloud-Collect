@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
  * 用户邮箱&密码登录视图。
  */
 @Data
-public class EmailPasswordLoginView implements UserLoginView {
+public class EmailPasswordLoginView implements LoginView {
 	private static final long serialVersionUID = 227387088818335601L;
 
 	@NotEmpty(message = "validation.User.email.NotEmpty")

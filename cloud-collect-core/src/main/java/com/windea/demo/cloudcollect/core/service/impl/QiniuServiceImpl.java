@@ -5,4 +5,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class QiniuServiceImpl implements QiniuService {
+	@Override
+	public void upload() {
+
+	}
+
+	@Override
+	public void download() {
+
+	}
 }

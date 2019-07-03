@@ -1,22 +1,28 @@
 package com.windea.demo.cloudcollect.core.domain.response;
 
 import com.windea.demo.cloudcollect.core.domain.entity.User;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-//TODO
+import java.io.Serializable;
 
 /**
  * 收藏家视图。
  */
-public interface CollectorView {
-	User getMostCollectUser();
+@Data
+@NoArgsConstructor
+public class CollectorView implements Serializable {
+	private static final long serialVersionUID = 9035220751877722972L;
 
-	User getMostFollowedUser();
+	private User mostCollectUser;
 
-	User getMostPraisedUser();
+	private User mostFollowedUser;
 
-	User getMostCommentedUser();
+	private User mostPraisedUser;
 
-	User getMostPopularUser();
+	private User mostCommentedUser;
 
-	User getMostActiveUser();
+	private User mostPopularUser;
+
+	private User mostActiveUser;
 }

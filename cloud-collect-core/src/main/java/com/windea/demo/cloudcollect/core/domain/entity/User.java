@@ -113,25 +113,39 @@ public class User implements Serializable {
 	private LocalDateTime updateTime;
 
 	/**
-	 * 该用户关注的用户列表。
+	 * 该用户关注的用户列表。懒加载。
 	 */
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "followByUserList")
 	private List<User> followToUserList;
 
 	/**
-	 * 关注该用户的用户列表。
+	 * 关注该用户的用户列表。懒加载。
 	 */
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "followToUserList")
 	private List<User> followByUserList;
 
 	/**
-	 * 该用户点赞的收藏列表。
+	 * 该用户点赞的收藏列表。懒加载。
 	 */
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "praiseByUserList")
 	private List<Collect> praiseToCollectList = new LinkedList<>();
+
+	/**
+	 * 收藏列表。懒加载。
+	 */
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private List<Collect> collectList = new LinkedList<>();
+
+	/**
+	 * 通知列表。懒加载。
+	 */
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private List<Notice> noticeList = new LinkedList<>();
 
 
 	/**
@@ -156,5 +170,21 @@ public class User implements Serializable {
 	@Transient
 	public Integer getPraiseToCollectCount() {
 		return praiseToCollectList.size();
+	}
+
+	/**
+	 * 收藏数量。
+	 */
+	@Transient
+	public Integer getCollectCount() {
+		return collectList.size();
+	}
+
+	/**
+	 * 评论数量。
+	 */
+	@Transient
+	public Integer getNoticeCount() {
+		return noticeList.size();
 	}
 }

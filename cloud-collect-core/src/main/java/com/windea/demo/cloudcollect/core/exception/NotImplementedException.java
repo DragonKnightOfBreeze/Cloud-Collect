@@ -1,18 +1,18 @@
 package com.windea.demo.cloudcollect.core.exception;
 
-import com.windea.demo.cloudcollect.core.domain.enums.ResponseResult;
-
 /**
  * 功能未实现的异常。
  */
 public class NotImplementedException extends RuntimeException {
 	private static final long serialVersionUID = 3747208892156399108L;
 
+	private static final String message = "501 功能未完成！";
+
 	public NotImplementedException() {
-		super(ResponseResult.NOT_IMPLEMENTED.toString());
+		super(message);
 	}
 
 	public NotImplementedException(Throwable throwable) {
-		super(ResponseResult.NOT_IMPLEMENTED.toString(), throwable);
+		super(message, throwable);
 	}
 }

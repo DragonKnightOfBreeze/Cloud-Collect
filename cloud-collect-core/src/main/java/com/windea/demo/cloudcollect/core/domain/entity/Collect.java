@@ -1,7 +1,6 @@
 package com.windea.demo.cloudcollect.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.windea.demo.cloudcollect.core.domain.enums.CollectPrivacy;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -85,13 +84,6 @@ public class Collect implements Serializable {
 	private CollectType type = CollectType.NONE;
 
 	/**
-	 * 收藏的隐私权限。
-	 */
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private CollectPrivacy privacy = CollectPrivacy.PUBLIC;
-
-	/**
 	 * 是否已经删除。
 	 */
 	@Column(nullable = false)
@@ -112,11 +104,17 @@ public class Collect implements Serializable {
 	private LocalDateTime lastModifiedTime;
 
 	/**
-	 * 点赞该收藏的用户列表。
+	 * 点赞该收藏的用户列表。懒加载。
 	 */
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "collect")
+	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "praiseToCollectList")
 	private List<User> praiseByUserList = new LinkedList<>();
+
+	/**
+	 * 评论列表。懒加载。
+	 */
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "collect")
+	private List<Comment> commentList = new LinkedList<>();
 
 
 	/**
@@ -125,5 +123,13 @@ public class Collect implements Serializable {
 	@Transient
 	public Integer getPraiseByUserCount() {
 		return praiseByUserList.size();
+	}
+
+	/**
+	 * 评论数量。
+	 */
+	@Transient
+	public Integer getCommentCount() {
+		return commentList.size();
 	}
 }
