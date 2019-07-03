@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.core.api;
+package com.windea.demo.cloudcollect.core.controller;
 
 import com.windea.demo.cloudcollect.core.service.UserService;
 import org.springframework.web.bind.annotation.*;

@@ -62,6 +62,9 @@
 
 ### response    
 
+* [ ] `CollectPraiseView`
+* [ ] `UserFollowView`
+* [ ] `UserPraiseView`
 * [ ] ［搁置］`UserResponseView`
 
 ## repository

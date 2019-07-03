@@ -9,7 +9,7 @@ import java.util.List;
  * 参数校验的异常。
  */
 public class ValidationException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7783299109810934473L;
 
 	private List<ObjectError> validationErrors;
 

@@ -30,6 +30,12 @@ public class Collect implements Serializable {
 	private Long id;
 
 	/**
+	 * 所属用户。
+	 */
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private User user;
+
+	/**
 	 * 名字。
 	 */
 	@NotEmpty(message = "validation.Collect.name.NotEmpty")
@@ -57,12 +63,6 @@ public class Collect implements Serializable {
 	@Size(min = 1, max = 255, message = "validation.Collect.summary.Size")
 	@Column(nullable = false, columnDefinition = "text")
 	private String summary;
-
-	/**
-	 * 所属用户。
-	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private User user;
 
 	/**
 	 * 收藏的分类。
@@ -118,13 +118,6 @@ public class Collect implements Serializable {
 	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "collect")
 	private List<User> praiseByUserList = new LinkedList<>();
 
-	/**
-	 * 评论列表。
-	 */
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "collect")
-	private List<Comment> commentList = new LinkedList<>();
-
 
 	/**
 	 * 点赞该收藏的用户数量。
@@ -132,13 +125,5 @@ public class Collect implements Serializable {
 	@Transient
 	public Integer getPraiseByUserCount() {
 		return praiseByUserList.size();
-	}
-
-	/**
-	 * 评论数量。
-	 */
-	@Transient
-	public Integer getCommentCount() {
-		return commentList.size();
 	}
 }

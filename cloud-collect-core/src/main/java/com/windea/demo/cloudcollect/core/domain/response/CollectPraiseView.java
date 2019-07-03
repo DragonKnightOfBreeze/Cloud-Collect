@@ -13,8 +13,4 @@ public interface CollectPraiseView {
 	String getName();
 
 	List<User> getPraiseByUserList();
-
-	default Integer getPraiseByUserCount() {
-		return getPraiseByUserList().size();
-	}
 }

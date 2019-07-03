@@ -28,18 +28,18 @@ public class Comment implements Serializable {
 	private Long id;
 
 	/**
+	 * 所属收藏。
+	 */
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private Collect collect;
+
+	/**
 	 * 内容。
 	 */
 	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
 	@Column(nullable = false, columnDefinition = "text")
 	private String content;
-
-	/**
-	 * 所属收藏。
-	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private Collect collect;
 
 	/**
 	 * 发起该评论的用户。

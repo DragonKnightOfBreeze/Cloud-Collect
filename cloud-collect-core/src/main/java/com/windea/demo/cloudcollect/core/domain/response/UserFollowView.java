@@ -10,17 +10,9 @@ import java.util.List;
 public interface UserFollowView {
 	Long getId();
 
-	String getName();
+	String getNickname();
 
 	List<User> getFollowToUserList();
 
 	List<User> getFollowByUserList();
-
-	default Integer getFollowToUserCount() {
-		return getFollowToUserList().size();
-	}
-
-	default Integer getFollowByUserCount() {
-		return getFollowByUserList().size();
-	}
 }

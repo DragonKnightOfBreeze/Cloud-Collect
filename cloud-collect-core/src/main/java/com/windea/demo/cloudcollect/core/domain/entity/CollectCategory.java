@@ -27,6 +27,12 @@ public class CollectCategory implements Serializable {
 	private Long id;
 
 	/**
+	 * 所属用户。
+	 */
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private User user;
+
+	/**
 	 * 名字。
 	 */
 	@NotEmpty(message = "validation.CollectCategory.name.NotEmpty")
@@ -41,12 +47,6 @@ public class CollectCategory implements Serializable {
 	@Size(min = 1, max = 255, message = "validation.CollectCategory.summary.Size")
 	@Column(nullable = false, columnDefinition = "text")
 	private String summary;
-
-	/**
-	 * 所属用户。
-	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private User user;
 
 	/**
 	 * 创建时间。

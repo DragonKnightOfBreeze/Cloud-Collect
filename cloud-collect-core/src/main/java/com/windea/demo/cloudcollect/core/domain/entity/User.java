@@ -133,20 +133,6 @@ public class User implements Serializable {
 	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "praiseByUserList")
 	private List<Collect> praiseToCollectList = new LinkedList<>();
 
-	/**
-	 * 收藏列表。
-	 */
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private List<Collect> collectList = new LinkedList<>();
-
-	/**
-	 * 通知列表。
-	 */
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private List<Notice> noticeList = new LinkedList<>();
-
 
 	/**
 	 * 该用户关注的用户数量。
@@ -170,21 +156,5 @@ public class User implements Serializable {
 	@Transient
 	public Integer getPraiseToCollectCount() {
 		return praiseToCollectList.size();
-	}
-
-	/**
-	 * 收藏数量。
-	 */
-	@Transient
-	public Integer getCollectCount() {
-		return collectList.size();
-	}
-
-	/**
-	 * 评论数量。
-	 */
-	@Transient
-	public Integer getNoticeCount() {
-		return noticeList.size();
 	}
 }

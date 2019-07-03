@@ -10,11 +10,7 @@ import java.util.List;
 public interface UserPraiseView {
 	Long getId();
 
-	String getName();
+	String getNickname();
 
 	List<Collect> getPraiseToCollectList();
-
-	default Integer getPraiseToCollectCount() {
-		return getPraiseToCollectList().size();
-	}
 }
