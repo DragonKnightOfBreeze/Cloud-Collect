@@ -2,8 +2,8 @@ package com.windea.demo.cloudcollect.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.windea.demo.cloudcollect.core.domain.enums.Role;
-import com.windea.demo.cloudcollect.core.validation.annotation.ValidPassword;
-import com.windea.demo.cloudcollect.core.validation.annotation.ValidUsername;
+import com.windea.demo.cloudcollect.core.validation.annotation.Password;
+import com.windea.demo.cloudcollect.core.validation.annotation.Username;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -34,7 +34,7 @@ public class User implements Serializable {
 	 * 用户名。
 	 */
 	@NotEmpty(message = "validation.User.username.NotEmpty")
-	@ValidUsername(message = "validation.User.username.ValidUsername")
+	@Username(message = "validation.User.username.ValidUsername")
 	@Column(unique = true, nullable = false, length = 16)
 	private String username;
 
@@ -51,7 +51,7 @@ public class User implements Serializable {
 	 * 这里存储的是加密后的密码，可以进行参数验证，不能限制长度。
 	 */
 	@NotEmpty(message = "validation.User.password.NotEmpty")
-	@ValidPassword(message = "validation.User.password.ValidPassword")
+	@Password(message = "validation.User.password.ValidPassword")
 	@Column(nullable = false)
 	private String password;
 
@@ -93,37 +93,98 @@ public class User implements Serializable {
 	private Role role = Role.NORMAL;
 
 	/**
-	 * 关注信息。
+	 * 是否已经激活。
+	 */
+	@Column(nullable = false)
+	private Boolean activated = false;
+
+	/**
+	 * 注册时间。
+	 */
+	@CreatedDate
+	@Column
+	private LocalDateTime registerTime;
+
+	/**
+	 * 资料更新时间。
+	 */
+	@LastModifiedDate
+	@Column
+	private LocalDateTime updateTime;
+
+	/**
+	 * 该用户关注的用户列表。
 	 */
 	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
-	private Follow follow = new Follow();
+	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "followByUserList")
+	private List<User> followToUserList;
+
+	/**
+	 * 关注该用户的用户列表。
+	 */
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "followToUserList")
+	private List<User> followByUserList;
+
+	/**
+	 * 该用户点赞的收藏列表。
+	 */
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "praiseByUserList")
+	private List<Collect> praiseToCollectList = new LinkedList<>();
 
 	/**
 	 * 收藏列表。
 	 */
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Collect> collectList = new LinkedList<>();
 
 	/**
 	 * 通知列表。
 	 */
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
-	private List<Collect> noticeList = new LinkedList<>();
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private List<Notice> noticeList = new LinkedList<>();
+
 
 	/**
-	 * 是否已经激活。
+	 * 该用户关注的用户数量。
 	 */
-	@Column(nullable = false)
-	private Boolean activated = false;
+	@Transient
+	public Integer getFollowToUserCount() {
+		return followToUserList.size();
+	}
 
-	@CreatedDate
-	@Column
-	private LocalDateTime registerTime;
+	/**
+	 * 关注该用户的用户数量。
+	 */
+	@Transient
+	public Integer getFollowByUserCount() {
+		return followByUserList.size();
+	}
 
-	@LastModifiedDate
-	@Column
-	private LocalDateTime updateTime;
+	/**
+	 * 该用户点赞的收藏数量。
+	 */
+	@Transient
+	public Integer getPraiseToCollectCount() {
+		return praiseToCollectList.size();
+	}
+
+	/**
+	 * 收藏数量。
+	 */
+	@Transient
+	public Integer getCollectCount() {
+		return collectList.size();
+	}
+
+	/**
+	 * 评论数量。
+	 */
+	@Transient
+	public Integer getNoticeCount() {
+		return noticeList.size();
+	}
 }

@@ -28,6 +28,14 @@ public class Comment implements Serializable {
 	private Long id;
 
 	/**
+	 * 内容。
+	 */
+	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
+	@Column(nullable = false, columnDefinition = "text")
+	private String content;
+
+	/**
 	 * 所属收藏。
 	 */
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
@@ -47,17 +55,15 @@ public class Comment implements Serializable {
 	private User replyToUser;
 
 	/**
-	 * 内容。
+	 * 创建时间。
 	 */
-	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
-	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
-	@Column(nullable = false, columnDefinition = "text")
-	private String content;
-
 	@CreatedDate
 	@Column
 	private LocalDateTime createdTime;
 
+	/**
+	 * 最后更新时间。
+	 */
 	@LastModifiedDate
 	@Column
 	private LocalDateTime lastModifiedTime;

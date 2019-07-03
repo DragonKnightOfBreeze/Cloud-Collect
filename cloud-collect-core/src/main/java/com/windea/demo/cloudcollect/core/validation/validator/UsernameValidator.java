@@ -1,21 +1,21 @@
 package com.windea.demo.cloudcollect.core.validation.validator;
 
-import com.windea.demo.cloudcollect.core.validation.annotation.ValidUsername;
+import com.windea.demo.cloudcollect.core.validation.annotation.Username;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * 用户名格式的校验器。
+ * 用户名的校验器。
  */
-public class ValidUsernameValidator implements ConstraintValidator<ValidUsername, String> {
+public class UsernameValidator implements ConstraintValidator<Username, String> {
 	@Value("${com.windea.validation.validUsername}")
 	private String validUsername;
 
 
 	@Override
-	public void initialize(ValidUsername constraintAnnotation) {
+	public void initialize(Username constraintAnnotation) {
 	}
 
 	@Override

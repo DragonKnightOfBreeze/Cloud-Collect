@@ -1,21 +1,21 @@
 package com.windea.demo.cloudcollect.core.validation.validator;
 
-import com.windea.demo.cloudcollect.core.validation.annotation.ValidPassword;
+import com.windea.demo.cloudcollect.core.validation.annotation.Password;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * 密码格式的校验器。
+ * 密码的校验器。
  */
-public class ValidPasswordValidator implements ConstraintValidator<ValidPassword, String> {
+public class PasswordValidator implements ConstraintValidator<Password, String> {
 	@Value("${com.windea.validation.validPassword}")
 	private String validPassword;
 
 
 	@Override
-	public void initialize(ValidPassword constraintAnnotation) {
+	public void initialize(Password constraintAnnotation) {
 	}
 
 	@Override

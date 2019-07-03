@@ -30,18 +30,12 @@ public class Collect implements Serializable {
 	private Long id;
 
 	/**
-	 * 所属用户。
+	 * 名字。
 	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private User user;
-
-	/**
-	 * 标题。
-	 */
-	@NotEmpty(message = "validation.Collect.title.NotEmpty")
-	@Size(min = 1, max = 64, message = "validation.Collect.title.Size")
+	@NotEmpty(message = "validation.Collect.name.NotEmpty")
+	@Size(min = 1, max = 64, message = "validation.Collect.name.Size")
 	@Column(nullable = false, length = 64)
-	private String title;
+	private String name;
 
 	/**
 	 * 链接地址。
@@ -63,6 +57,12 @@ public class Collect implements Serializable {
 	@Size(min = 1, max = 255, message = "validation.Collect.summary.Size")
 	@Column(nullable = false, columnDefinition = "text")
 	private String summary;
+
+	/**
+	 * 所属用户。
+	 */
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private User user;
 
 	/**
 	 * 收藏的分类。
@@ -92,30 +92,53 @@ public class Collect implements Serializable {
 	private CollectPrivacy privacy = CollectPrivacy.PUBLIC;
 
 	/**
-	 * 点赞信息。
-	 */
-	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "collect")
-	private Praise praise = new Praise();
-
-	/**
-	 * 评论列表。
-	 */
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "collect")
-	private List<Comment> commentList = new LinkedList<>();
-
-	/**
 	 * 是否已经删除。
 	 */
 	@Column(nullable = false)
 	private Boolean deleted = false;
 
+	/**
+	 * 创建时间。
+	 */
 	@CreatedDate
 	@Column
 	private LocalDateTime createdTime;
 
+	/**
+	 * 最后修改时间。
+	 */
 	@LastModifiedDate
 	@Column
 	private LocalDateTime lastModifiedTime;
+
+	/**
+	 * 点赞该收藏的用户列表。
+	 */
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "collect")
+	private List<User> praiseByUserList = new LinkedList<>();
+
+	/**
+	 * 评论列表。
+	 */
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "collect")
+	private List<Comment> commentList = new LinkedList<>();
+
+
+	/**
+	 * 点赞该收藏的用户数量。
+	 */
+	@Transient
+	public Integer getPraiseByUserCount() {
+		return praiseByUserList.size();
+	}
+
+	/**
+	 * 评论数量。
+	 */
+	@Transient
+	public Integer getCommentCount() {
+		return commentList.size();
+	}
 }

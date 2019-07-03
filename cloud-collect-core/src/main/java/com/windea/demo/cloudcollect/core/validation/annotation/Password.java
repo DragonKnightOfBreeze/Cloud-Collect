@@ -1,6 +1,6 @@
 package com.windea.demo.cloudcollect.core.validation.annotation;
 
-import com.windea.demo.cloudcollect.core.validation.validator.ValidUsernameValidator;
+import com.windea.demo.cloudcollect.core.validation.validator.PasswordValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -10,13 +10,13 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * 用户名格式的校验注解。
+ * 密码的校验注解。
  */
 @Documented
-@Constraint(validatedBy = {ValidUsernameValidator.class})
+@Constraint(validatedBy = {PasswordValidator.class})
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
-public @interface ValidUsername {
+public @interface Password {
 	String message() default "{javax.validation.constraints.Pattern.message}";
 
 	Class<?>[] groups() default {};

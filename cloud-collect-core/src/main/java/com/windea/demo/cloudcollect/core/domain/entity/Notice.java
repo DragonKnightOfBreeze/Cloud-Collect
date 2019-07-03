@@ -3,10 +3,13 @@ package com.windea.demo.cloudcollect.core.domain.entity;
 import com.windea.demo.cloudcollect.core.domain.enums.NoticeType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 通知。
@@ -48,6 +51,23 @@ public class Notice implements Serializable {
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Comment relatedComment;
 
+	/**
+	 * 是否已读。
+	 */
 	@Column(nullable = false)
 	private Boolean read = false;
+
+	/**
+	 * 创建时间。
+	 */
+	@CreatedDate
+	@Column
+	private LocalDateTime createdTime;
+
+	/**
+	 * 最后更新时间。
+	 */
+	@LastModifiedDate
+	@Column
+	private LocalDateTime lastModifiedTime;
 }
