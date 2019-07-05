@@ -1,7 +1,6 @@
 package com.windea.demo.cloudcollect.core.repository;
 
 import com.windea.demo.cloudcollect.core.domain.entity.Collect;
-import com.windea.demo.cloudcollect.core.domain.entity.User;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,5 +26,5 @@ public interface CollectRepository extends JpaRepository<Collect, Long> {
 	@Query("from Collect c, in(c.praiseByUserList) u where u.id = :praiseByUserId and c.deleted = false")
 	Page<Collect> queryByPraiseByUser_IdAndDeletedFalse(Long praiseByUserId, Pageable pageable);
 
-	boolean existsByUserAndName(User user, String name);
+	boolean existsByUser_IdAndName(Long userId, String name);
 }

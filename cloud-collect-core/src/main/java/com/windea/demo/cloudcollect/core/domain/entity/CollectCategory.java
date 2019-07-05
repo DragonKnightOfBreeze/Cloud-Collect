@@ -1,5 +1,7 @@
 package com.windea.demo.cloudcollect.core.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -67,12 +69,14 @@ public class CollectCategory implements Serializable {
 	/**
 	 * 收藏列表。懒加载。
 	 */
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "category")
 	private List<Collect> collectList = new LinkedList<>();
 
 	/**
 	 * 收藏数量。
 	 */
+	@JsonGetter
 	@Transient
 	public Integer getCollectCount() {
 		return collectList.size();

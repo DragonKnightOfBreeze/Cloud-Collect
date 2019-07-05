@@ -24,17 +24,18 @@ public class ImportExportServiceImpl implements ImportExportService {
 	}
 
 	@Override
-	public String toXml() {
-		return null;
+	public void toXml() {
+
 	}
 
 	@Override
-	public String toJson() {
-		return null;
+	public void toJson() {
+
 	}
 
 	@Override
-	public String toYaml() {
-		return null;
+	public void toYaml() {
+
 	}
+
 }

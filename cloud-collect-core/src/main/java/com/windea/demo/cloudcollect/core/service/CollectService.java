@@ -7,42 +7,112 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Set;
 
+/**
+ * 收藏的服务。
+ */
 public interface CollectService {
-	void create(Collect collect, Long userId);
+	/**
+	 * 创建自己的收藏。
+	 */
+	void create(Collect collect, User user);
 
-	void createFrom(Collect collect, Long userId, Long fromUserId);
+	/**
+	 * 从别人的收藏创建自己的收藏（默认点赞原始收藏）。
+	 */
+	void createFrom(Collect collect, User user);
 
+	/**
+	 * 删除自己的收藏（不删除数据库中的数据，而是将deleted设为true）。
+	 */
 	void delete(Long id);
 
+	/**
+	 * 修改自己的收藏（名字，概述，分类，标签，类型）。
+	 */
 	void modify(Long id, Collect collect);
 
+	/**
+	 * 修改自己的收藏的分类。
+	 */
 	void modifyCategory(Long id, CollectCategory category);
 
+	/**
+	 * 修改自己的收藏的标签。
+	 */
 	void modifyTags(Long id, Set<CollectTag> tags);
 
+	/**
+	 * 修改自己的收藏的类型。
+	 */
 	void modifyType(Long id, CollectType type);
 
-	void praise(Long id, Long userId);
+	/**
+	 * 点赞某一收藏。
+	 */
+	void praise(Long id, User user);
 
+	/**
+	 * 得到某一收藏。
+	 */
 	Collect get(Long id);
 
+	/**
+	 * 分页得到某一收藏的所有点赞用户。
+	 */
+	Page<User> getPraiseByUserPage(Long id, Pageable pageable);
+
+	/**
+	 * 分页得到某一收藏的所有评论。
+	 */
+	Page<Comment> getCommentPage(Long id, Pageable pageable);
+
+	/**
+	 * 分页查询某一用户的所有收藏。
+	 */
 	Page<Collect> queryByUser(Long userId, Pageable pageable);
 
+	/**
+	 * 分页查询某一用户的所有已删除收藏。
+	 */
 	Page<Collect> queryByUserDeleted(Long userId, Pageable pageable);
 
+	/**
+	 * 根据名字分页模糊查询某一用户的所有收藏。
+	 */
 	Page<Collect> queryByUserAndName(Long userId, String name, Pageable pageable);
 
-	Page<Collect> queryByUserAndCategory(Long userId, Long categoryId, Pageable pageable);
+	/**
+	 * 根据分类分页查询某一用户的所有收藏（分类属于唯一用户）。
+	 */
+	Page<Collect> queryByUserAndCategory(Long categoryId, Pageable pageable);
 
-	Page<Collect> queryByUserAndTag(Long userId, Long categoryId, Pageable pageable);
+	/**
+	 * 根据标签分页查询某一用户的所有收藏（标签属于唯一用户）。
+	 */
+	Page<Collect> queryByUserAndTag(Long tagId, Pageable pageable);
 
+	/**
+	 * 根据类型分页查询某一用户的所有收藏。
+	 */
 	Page<Collect> queryByUserAndType(Long userId, CollectType type, Pageable pageable);
 
+	/**
+	 * 根据名字分页全局查询所有收藏。
+	 */
 	Page<Collect> queryByName(String name, Pageable pageable);
 
-	Page<Collect> queryByPraiseByUser(Long praiseByUserId, Pageable pageable);
+	/**
+	 * 根据点赞用户全局查询所有收藏。
+	 */
+	Page<Collect> queryByPraiseByUser(Long praiseUserId, Pageable pageable);
 
-	boolean exists(Long userId, String name);
+	/**
+	 * 检查某一收藏是否已存在。
+	 */
+	boolean exists(Collect collect);
 
-	void noticeFollowByUser();
+	/**
+	 * TODO 创建或点赞收藏时通知好友。
+	 */
+	void noticeFriends();
 }

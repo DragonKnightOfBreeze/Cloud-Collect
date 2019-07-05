@@ -1,5 +1,6 @@
 package com.windea.demo.cloudcollect.core.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
 import lombok.Data;
@@ -43,6 +44,14 @@ public class Collect implements Serializable {
 	private String name;
 
 	/**
+	 * 概述。
+	 */
+	@NotEmpty(message = "validation.Collect.summary.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.Collect.summary.Size")
+	@Column(nullable = false, columnDefinition = "text")
+	private String summary;
+
+	/**
 	 * 链接地址。
 	 */
 	@Column(nullable = false, length = 512)
@@ -56,24 +65,16 @@ public class Collect implements Serializable {
 	private String logoUrl;
 
 	/**
-	 * 概述。
-	 */
-	@NotEmpty(message = "validation.Collect.summary.NotEmpty")
-	@Size(min = 1, max = 255, message = "validation.Collect.summary.Size")
-	@Column(nullable = false, columnDefinition = "text")
-	private String summary;
-
-	/**
 	 * 收藏的分类。
 	 */
 	@Nullable
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	private CollectCategory category;
 
 	/**
 	 * 收藏的标签。
 	 */
-	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	private Set<CollectTag> tags = new LinkedHashSet<>();
 
 	/**
@@ -120,6 +121,7 @@ public class Collect implements Serializable {
 	/**
 	 * 点赞该收藏的用户数量。
 	 */
+	@JsonGetter
 	@Transient
 	public Integer getPraiseByUserCount() {
 		return praiseByUserList.size();
@@ -128,6 +130,7 @@ public class Collect implements Serializable {
 	/**
 	 * 评论数量。
 	 */
+	@JsonGetter
 	@Transient
 	public Integer getCommentCount() {
 		return commentList.size();

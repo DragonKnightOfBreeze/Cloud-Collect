@@ -1,23 +1,40 @@
 package com.windea.demo.cloudcollect.core.service;
 
 import com.windea.demo.cloudcollect.core.domain.entity.Notice;
-import com.windea.demo.cloudcollect.core.domain.enums.NoticeType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+/**
+ * 通知的服务类。
+ */
 public interface NoticeService {
+	/**
+	 * 创建通知（具体逻辑另外处理）。
+	 */
 	void create(Notice notice);
 
+	/**
+	 * 删除通知。
+	 */
 	void delete(Long id);
 
+	/**
+	 * 阅读通知（将read设为true）。
+	 */
 	void read(Long id);
 
+	/**
+	 * 得到某一通知。
+	 */
 	Notice get(Long id);
 
-	Page<Notice> queryByUserAndType(Long userId, NoticeType type,
-		org.springframework.data.domain.Pageable pageable);
+	/**
+	 * 分页查询某一用户的所有通知。
+	 */
+	Page<Notice> queryByUser(Long userId, Pageable pageable);
 
-	Page<Notice> queryByUserAndRead(Long userId, Boolean read, org.springframework.data.domain.Pageable pageable);
-
-	Page<Notice> queryByUserAndTypeAndRead(Long userId, NoticeType type, Boolean read, Pageable pageable);
+	/**
+	 * 分页查询某一用户的所有已读/未读通知。
+	 */
+	Page<Notice> queryByUserAndRead(Long userId, Boolean read, Pageable pageable);
 }

@@ -34,12 +34,11 @@ public class Comment implements Serializable {
 	private Collect collect;
 
 	/**
-	 * 内容。
+	 * 该评论回复的评论。
 	 */
-	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
-	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
-	@Column(nullable = false, columnDefinition = "text")
-	private String content;
+	@Nullable
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private Comment replyToComment;
 
 	/**
 	 * 发起该评论的用户。
@@ -48,11 +47,12 @@ public class Comment implements Serializable {
 	private User sponsorByUser;
 
 	/**
-	 * 该评论回复的用户。
+	 * 内容。
 	 */
-	@Nullable
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private User replyToUser;
+	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
+	@Column(nullable = false, columnDefinition = "text")
+	private String content;
 
 	/**
 	 * 创建时间。

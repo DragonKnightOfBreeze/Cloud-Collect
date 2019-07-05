@@ -1,5 +1,6 @@
 package com.windea.demo.cloudcollect.core.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.windea.demo.cloudcollect.core.domain.enums.Role;
 import com.windea.demo.cloudcollect.core.validation.annotation.Password;
@@ -64,6 +65,14 @@ public class User implements Serializable {
 	private String nickname;
 
 	/**
+	 * 简介。
+	 */
+	@NotEmpty(message = "validation.User.introduce.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.User.introduce.Size")
+	@Column(nullable = false, columnDefinition = "text")
+	private String introduce;
+
+	/**
 	 * 头像地址。
 	 */
 	@Nullable
@@ -76,14 +85,6 @@ public class User implements Serializable {
 	@Nullable
 	@Column(length = 512)
 	private String backgroundUrl;
-
-	/**
-	 * 简介。
-	 */
-	@NotEmpty(message = "validation.User.introduce.NotEmpty")
-	@Size(min = 1, max = 255, message = "validation.User.introduce.Size")
-	@Column(nullable = false, columnDefinition = "text")
-	private String introduce;
 
 	/**
 	 * 身份。
@@ -151,6 +152,7 @@ public class User implements Serializable {
 	/**
 	 * 该用户关注的用户数量。
 	 */
+	@JsonGetter
 	@Transient
 	public Integer getFollowToUserCount() {
 		return followToUserList.size();
@@ -159,6 +161,7 @@ public class User implements Serializable {
 	/**
 	 * 关注该用户的用户数量。
 	 */
+	@JsonGetter
 	@Transient
 	public Integer getFollowByUserCount() {
 		return followByUserList.size();
@@ -167,14 +170,16 @@ public class User implements Serializable {
 	/**
 	 * 该用户点赞的收藏数量。
 	 */
+	@JsonGetter
 	@Transient
 	public Integer getPraiseToCollectCount() {
 		return praiseToCollectList.size();
 	}
 
 	/**
-	 * 收藏数量。
+	 * 收藏数量（包括已删除的）。
 	 */
+	@JsonGetter
 	@Transient
 	public Integer getCollectCount() {
 		return collectList.size();
@@ -183,6 +188,7 @@ public class User implements Serializable {
 	/**
 	 * 评论数量。
 	 */
+	@JsonGetter
 	@Transient
 	public Integer getNoticeCount() {
 		return noticeList.size();

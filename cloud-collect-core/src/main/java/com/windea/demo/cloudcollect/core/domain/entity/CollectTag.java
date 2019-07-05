@@ -1,5 +1,6 @@
 package com.windea.demo.cloudcollect.core.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -76,6 +77,7 @@ public class CollectTag implements Serializable {
 	/**
 	 * 收藏数量。
 	 */
+	@JsonGetter
 	@Transient
 	public Integer getCollectCount() {
 		return collectList.size();

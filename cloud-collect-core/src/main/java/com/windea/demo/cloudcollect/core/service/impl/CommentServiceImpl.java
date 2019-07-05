@@ -1,6 +1,7 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
-import com.windea.demo.cloudcollect.core.domain.entity.Comment;
+import com.windea.demo.cloudcollect.core.domain.entity.*;
+import com.windea.demo.cloudcollect.core.exception.NotImplementedException;
 import com.windea.demo.cloudcollect.core.repository.CollectRepository;
 import com.windea.demo.cloudcollect.core.repository.CommentRepository;
 import com.windea.demo.cloudcollect.core.service.CommentService;
@@ -20,37 +21,51 @@ public class CommentServiceImpl implements CommentService {
 
 
 	@Override
-	public void create(Comment comment, Long userId) {
+	public void create(Comment comment, Collect collect, User sponsorByUser) {
+		comment.setCollect(collect);
+		comment.setSponsorByUser(sponsorByUser);
+		repository.save(comment);
 
+		noticeFriends();
 	}
 
 	@Override
-	public void replyTo(Comment comment, Long userId, Long replyToUserId) {
+	public void replyTo(Comment comment, Collect collect, Comment replyToComment, User sponsorByUser) {
+		comment.setCollect(collect);
+		comment.setReplyToComment(replyToComment);
+		comment.setSponsorByUser(sponsorByUser);
+		repository.save(comment);
 
+		noticeFriends();
 	}
 
 	@Override
 	public void delete(Long id) {
-
+		repository.deleteById(id);
 	}
 
 	@Override
 	public Comment get(Long id) {
-		return null;
+		return repository.getOne(id);
 	}
 
 	@Override
 	public Page<Comment> queryByCollect(Long collectId, Pageable pageable) {
-		return null;
+		return repository.queryByCollect_Id(collectId, pageable);
+	}
+
+	@Override
+	public Page<Comment> queryByReplyToComment(Long replyToCommentId, Pageable pageable) {
+		return repository.queryByReplyToComment_Id(replyToCommentId, pageable);
 	}
 
 	@Override
 	public Page<Comment> queryBySponsorByUser(Long sponsorByUserId, Pageable pageable) {
-		return null;
+		return repository.queryBySponsorByUser_Id(sponsorByUserId, pageable);
 	}
 
 	@Override
-	public Page<Comment> queryByReplyToUser(Long replyToUserId, Pageable pageable) {
-		return null;
+	public void noticeFriends() {
+		throw new NotImplementedException();
 	}
 }

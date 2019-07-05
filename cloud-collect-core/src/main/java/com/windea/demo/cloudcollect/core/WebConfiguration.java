@@ -3,7 +3,10 @@ package com.windea.demo.cloudcollect.core;
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,6 +16,7 @@ import javax.validation.Validator;
 /**
  * Web模块的配置类。
  */
+@Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 	@Bean
 	public MessageSource messageSource() {
@@ -30,6 +34,11 @@ public class WebConfiguration implements WebMvcConfigurer {
 		factory.setProviderClass(HibernateValidator.class);
 		factory.setValidationMessageSource(messageSource());
 		return factory;
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
 	@Override

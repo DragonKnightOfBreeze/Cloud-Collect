@@ -66,6 +66,9 @@
 
 ## repository
 
+如果是实体类属性/实体类集合属性，则尽量根据实体类的id进行查询。  
+（因为lombok的默认equals方法实现不仅基于id属性。）
+
 * [X] `CollectRepository`
 * [X] `CollectCategoryRepository`
 * [X] `CollectTagRepository`
@@ -75,7 +78,10 @@
     
 ## service
 
-* [ ] `CollectService`
+增加、删除、修改方法全部传入实体类，查询方法尽量传入实体类的id。  
+类似“检查某一用户是否已存在”的功能，委托给自定义验证器。
+
+* [X] `CollectService`
     * 创建自己的收藏。（如果是别人的收藏，默认点赞）
     * 删除自己的收藏。（修改`collect.deleted=false`，仍然保留在数据库中）
     * 修改自己的收藏的名字、概述和地址。
@@ -92,29 +98,29 @@
     * 查询某一用户点赞的所有收藏。
     * 点赞当前收藏。
     * ［扩展］创建或点赞收藏时通知好友。
-* [ ] `CollectCategoryService`
+* [X] `CollectCategoryService`
     * 创建自己的分类。
     * 删除自己的分类。（不删除对应的收藏）
     * 修改自己的分类的名字和概述。
     * 展示某一用户的所有分类。
-* [ ] `CollectTagService`
+* [X] `CollectTagService`
     * 创建自己的标签。（标签可在添加时自动创建）
     * 删除自己的标签。（不删除对应的收藏）
     * 修改自己的标签的名字和概述。
     * 展示某一用户的所有标签。
-* [ ] `CommentService`
+* [X] `CommentService`
     * 创建自己的评论。
     * 删除自己的评论。
     * 展示某一收藏下的所有评论。
     * 展示某一用户的所有评论。
     * 展示回复某一用户的所有评论。
     * ［扩展］创建评论时通知好友。
-* [ ] `NoticeService`
+* [X] `NoticeService`
     * 阅读通知。
     * 展示自己的所有通知。
     * 展示自己的所有指定类型的通知。
     * 展示自己的所有已读通知。
-* [ ] `UserService`
+* [X] `UserService`
     * 注册用户。
     * 激活用户。
     * 登录用户。

@@ -1,6 +1,6 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
-import com.windea.demo.cloudcollect.core.domain.entity.CollectCategory;
+import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.repository.CollectCategoryRepository;
 import com.windea.demo.cloudcollect.core.repository.CollectRepository;
 import com.windea.demo.cloudcollect.core.service.CollectCategoryService;
@@ -20,37 +20,48 @@ public class CollectCategoryServiceImpl implements CollectCategoryService {
 
 
 	@Override
-	public void create(CollectCategory category) {
-
+	public void create(CollectCategory category, User user) {
+		category.setUser(user);
+		repository.save(category);
 	}
 
 	@Override
 	public void delete(Long id) {
-
+		repository.deleteById(id);
 	}
 
 	@Override
 	public void modify(Long id, CollectCategory category) {
-
+		var rawCategory = repository.getOne(id);
+		rawCategory.setName(category.getName());
+		rawCategory.setSummary(category.getSummary());
+		repository.save(rawCategory);
 	}
 
 	@Override
 	public CollectCategory get(Long id) {
-		return null;
+		return repository.getOne(id);
+	}
+
+	@Override
+	public Page<Collect> getCollectPage(Long id, Pageable pageable) {
+		return collectRepository.queryByCategory_IdAndDeletedFalse(id, pageable);
 	}
 
 	@Override
 	public Page<CollectCategory> queryByUser(Long userId, Pageable pageable) {
-		return null;
+		return repository.queryByUser_Id(userId, pageable);
 	}
 
 	@Override
 	public Page<CollectCategory> queryByUserAndName(Long userId, String name, Pageable pageable) {
-		return null;
+		return repository.queryByUser_IdAndNameContains(userId, name, pageable);
 	}
 
 	@Override
-	public boolean exists(Long userId, String name) {
-		return false;
+	public boolean exists(CollectCategory category) {
+		var userId = category.getUser().getId();
+		var name = category.getName();
+		return repository.existsByUser_IdAndName(userId, name);
 	}
 }
