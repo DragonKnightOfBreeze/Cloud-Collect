@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Set;
 
 @Service
@@ -25,6 +26,7 @@ public class CollectServiceImpl implements CollectService {
 	}
 
 
+	@Transactional
 	@Override
 	public void create(Collect collect, User user) {
 		collect.setUser(user);
@@ -33,6 +35,7 @@ public class CollectServiceImpl implements CollectService {
 		noticeFriends();
 	}
 
+	@Transactional
 	@Override
 	public void createFrom(Collect collect, User user) {
 		praise(collect.getId(), user);
@@ -44,6 +47,7 @@ public class CollectServiceImpl implements CollectService {
 		noticeFriends();
 	}
 
+	@Transactional
 	@Override
 	public void delete(Long id) {
 		var collect = repository.getOne(id);
@@ -51,6 +55,7 @@ public class CollectServiceImpl implements CollectService {
 		repository.save(collect);
 	}
 
+	@Transactional
 	@Override
 	public void modify(Long id, Collect collect) {
 		var rawCollect = repository.getOne(id);
@@ -62,6 +67,7 @@ public class CollectServiceImpl implements CollectService {
 		repository.save(rawCollect);
 	}
 
+	@Transactional
 	@Override
 	public void modifyCategory(Long id, CollectCategory category) {
 		var rawCollect = repository.getOne(id);
@@ -69,6 +75,7 @@ public class CollectServiceImpl implements CollectService {
 		repository.save(rawCollect);
 	}
 
+	@Transactional
 	@Override
 	public void modifyTags(Long id, Set<CollectTag> tags) {
 		var rawCollect = repository.getOne(id);
@@ -76,6 +83,7 @@ public class CollectServiceImpl implements CollectService {
 		repository.save(rawCollect);
 	}
 
+	@Transactional
 	@Override
 	public void modifyType(Long id, CollectType type) {
 		var rawCollect = repository.getOne(id);
@@ -83,6 +91,7 @@ public class CollectServiceImpl implements CollectService {
 		repository.save(rawCollect);
 	}
 
+	@Transactional
 	@Override
 	public void praise(Long id, User user) {
 		var collect = repository.getOne(id);

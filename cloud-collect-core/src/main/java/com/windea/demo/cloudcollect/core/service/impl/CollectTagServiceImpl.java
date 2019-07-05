@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class CollectTagServiceImpl implements CollectTagService {
 	private final CollectTagRepository repository;
@@ -19,17 +21,20 @@ public class CollectTagServiceImpl implements CollectTagService {
 	}
 
 
+	@Transactional
 	@Override
 	public void create(CollectTag tag, User user) {
 		tag.setUser(user);
 		repository.save(tag);
 	}
 
+	@Transactional
 	@Override
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
 
+	@Transactional
 	@Override
 	public void modify(Long id, CollectTag tag) {
 		var rawTag = repository.getOne(id);

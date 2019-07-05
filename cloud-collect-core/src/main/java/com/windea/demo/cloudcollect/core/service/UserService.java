@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface UserService {
 	/**
-	 * 注册用户（密码需要在控制层加密）。
+	 * 注册用户（密码需要加密）。
 	 */
 	void register(User user);
 

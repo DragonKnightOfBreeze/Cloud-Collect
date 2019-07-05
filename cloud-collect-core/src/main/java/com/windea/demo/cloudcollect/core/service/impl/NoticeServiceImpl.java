@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class NoticeServiceImpl implements NoticeService {
 	private final NoticeRepository repository;
@@ -16,16 +18,19 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 
+	@Transactional
 	@Override
 	public void create(Notice notice) {
 		repository.save(notice);
 	}
 
+	@Transactional
 	@Override
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
 
+	@Transactional
 	@Override
 	public void read(Long id) {
 		var notice = repository.getOne(id);

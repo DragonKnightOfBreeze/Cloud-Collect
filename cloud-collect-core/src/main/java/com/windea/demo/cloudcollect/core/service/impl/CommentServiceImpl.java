@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class CommentServiceImpl implements CommentService {
 	private final CommentRepository repository;
@@ -17,6 +19,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 
+	@Transactional
 	@Override
 	public void create(Comment comment, Collect collect, User sponsorByUser) {
 		comment.setCollect(collect);
@@ -26,6 +29,7 @@ public class CommentServiceImpl implements CommentService {
 		noticeFriends();
 	}
 
+	@Transactional
 	@Override
 	public void replyTo(Comment comment, Collect collect, Comment replyToComment, User sponsorByUser) {
 		comment.setCollect(collect);
@@ -36,6 +40,7 @@ public class CommentServiceImpl implements CommentService {
 		noticeFriends();
 	}
 
+	@Transactional
 	@Override
 	public void delete(Long id) {
 		repository.deleteById(id);

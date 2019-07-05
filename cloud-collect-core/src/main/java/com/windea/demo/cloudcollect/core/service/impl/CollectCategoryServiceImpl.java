@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class CollectCategoryServiceImpl implements CollectCategoryService {
 	private final CollectCategoryRepository repository;
@@ -19,17 +21,20 @@ public class CollectCategoryServiceImpl implements CollectCategoryService {
 	}
 
 
+	@Transactional
 	@Override
 	public void create(CollectCategory category, User user) {
 		category.setUser(user);
 		repository.save(category);
 	}
 
+	@Transactional
 	@Override
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
 
+	@Transactional
 	@Override
 	public void modify(Long id, CollectCategory category) {
 		var rawCategory = repository.getOne(id);
