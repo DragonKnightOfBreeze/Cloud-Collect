@@ -12,12 +12,12 @@ import java.util.Set;
  */
 public interface CollectService {
 	/**
-	 * 创建自己的收藏。
+	 * 创建自己的收藏（去除地址的查询参数）。
 	 */
 	void create(Collect collect, User user);
 
 	/**
-	 * 从别人的收藏创建自己的收藏（默认点赞原始收藏）。
+	 * 从别人的收藏创建自己的收藏（默认点赞原始收藏，去除地址的查询参数）。
 	 */
 	void createFrom(Collect collect, User user);
 

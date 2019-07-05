@@ -33,8 +33,7 @@ public class UseServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void register(User user) {
-		var password = passwordEncoder.encode(user.getPassword());
-		user.setPassword(password);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		repository.save(user);
 	}
 

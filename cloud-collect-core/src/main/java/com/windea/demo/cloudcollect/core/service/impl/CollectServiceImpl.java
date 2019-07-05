@@ -1,5 +1,6 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
+import com.windea.commons.kotlin.extension.StringExtensionsKt;
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
 import com.windea.demo.cloudcollect.core.exception.NotImplementedException;
@@ -29,6 +30,10 @@ public class CollectServiceImpl implements CollectService {
 	@Transactional
 	@Override
 	public void create(Collect collect, User user) {
+		collect.setUrl(StringExtensionsKt.toUrlInfo(collect.getUrl()).getFullPath());
+		if(collect.getLogoUrl() != null) {
+			collect.setLogoUrl(StringExtensionsKt.toUrlInfo(collect.getLogoUrl()).getFullPath());
+		}
 		collect.setUser(user);
 		repository.save(collect);
 
@@ -41,6 +46,10 @@ public class CollectServiceImpl implements CollectService {
 		praise(collect.getId(), user);
 
 		collect.setId(null);
+		collect.setUrl(StringExtensionsKt.toUrlInfo(collect.getUrl()).getFullPath());
+		if(collect.getLogoUrl() != null) {
+			collect.setLogoUrl(StringExtensionsKt.toUrlInfo(collect.getLogoUrl()).getFullPath());
+		}
 		collect.setUser(user);
 		repository.save(collect);
 
