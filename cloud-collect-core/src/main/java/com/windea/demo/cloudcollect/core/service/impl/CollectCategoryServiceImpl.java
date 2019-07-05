@@ -4,6 +4,7 @@ import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.repository.CollectCategoryRepository;
 import com.windea.demo.cloudcollect.core.repository.CollectRepository;
 import com.windea.demo.cloudcollect.core.service.CollectCategoryService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -43,26 +44,31 @@ public class CollectCategoryServiceImpl implements CollectCategoryService {
 		repository.save(rawCategory);
 	}
 
+	@Cacheable("collectCategory")
 	@Override
 	public CollectCategory get(Long id) {
 		return repository.getOne(id);
 	}
 
+	@Cacheable("collectCategory.collectPage")
 	@Override
 	public Page<Collect> getCollectPage(Long id, Pageable pageable) {
 		return collectRepository.queryByCategory_IdAndDeletedFalse(id, pageable);
 	}
 
+	@Cacheable("collectCategory.collectCount")
 	@Override
 	public Long getCollectCount(Long id) {
 		return collectRepository.countByCategory_IdAndDeletedFalse(id);
 	}
 
+	@Cacheable("collectCategoryPage.byUser")
 	@Override
 	public Page<CollectCategory> queryByUser(Long userId, Pageable pageable) {
 		return repository.queryByUser_Id(userId, pageable);
 	}
 
+	@Cacheable("collectCategoryPage.byUserAndName")
 	@Override
 	public Page<CollectCategory> queryByUserAndName(Long userId, String name, Pageable pageable) {
 		return repository.queryByUser_IdAndNameContains(userId, name, pageable);

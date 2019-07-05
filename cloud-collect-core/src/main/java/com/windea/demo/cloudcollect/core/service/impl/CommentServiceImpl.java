@@ -4,6 +4,7 @@ import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.exception.NotImplementedException;
 import com.windea.demo.cloudcollect.core.repository.CommentRepository;
 import com.windea.demo.cloudcollect.core.service.CommentService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -46,21 +47,25 @@ public class CommentServiceImpl implements CommentService {
 		repository.deleteById(id);
 	}
 
+	@Cacheable("comment")
 	@Override
 	public Comment get(Long id) {
 		return repository.getOne(id);
 	}
 
+	@Cacheable("comment.replyByCommentPage")
 	@Override
 	public Page<Comment> getReplyByCommentPage(Long id, Pageable pageable) {
 		return repository.queryByReplyToComment_Id(id, pageable);
 	}
 
+	@Cacheable("comment.replyByCommentCount")
 	@Override
 	public Long getReplyByCommentCount(Long id) {
 		return repository.countByReplyToComment_Id(id);
 	}
 
+	@Cacheable("commentPage.byComment")
 	@Override
 	public Page<Comment> queryByCollect(Long collectId, Pageable pageable) {
 		return repository.queryByCollect_Id(collectId, pageable);
