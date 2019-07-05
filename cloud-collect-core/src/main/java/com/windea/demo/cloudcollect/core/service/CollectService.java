@@ -62,19 +62,24 @@ public interface CollectService {
 	Page<User> getPraiseByUserPage(Long id, Pageable pageable);
 
 	/**
+	 * 得到某一收藏的点赞用户数量。
+	 */
+	Long getPraiseByUserCount(Long id);
+
+	/**
 	 * 分页得到某一收藏的所有评论。
 	 */
 	Page<Comment> getCommentPage(Long id, Pageable pageable);
 
 	/**
-	 * 分页查询某一用户的所有收藏。
+	 * 得到某一收藏的评论数量。
 	 */
-	Page<Collect> queryByUser(Long userId, Pageable pageable);
+	Long getCommentCount(Long id);
 
 	/**
-	 * 分页查询某一用户的所有已删除收藏。
+	 * 分页查询某一用户的所有已删除/未删除收藏。
 	 */
-	Page<Collect> queryByUserDeleted(Long userId, Pageable pageable);
+	Page<Collect> queryByUserAndDeleted(Long userId, Boolean deleted, Pageable pageable);
 
 	/**
 	 * 根据名字分页模糊查询某一用户的所有收藏。
@@ -100,11 +105,6 @@ public interface CollectService {
 	 * 根据名字分页全局查询所有收藏。
 	 */
 	Page<Collect> queryByName(String name, Pageable pageable);
-
-	/**
-	 * 根据点赞用户全局查询所有收藏。
-	 */
-	Page<Collect> queryByPraiseByUser(Long praiseUserId, Pageable pageable);
 
 	/**
 	 * 检查某一收藏是否已存在。

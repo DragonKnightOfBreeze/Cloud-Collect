@@ -1,7 +1,5 @@
 package com.windea.demo.cloudcollect.core.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,8 +10,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * 收藏的标签。
@@ -65,21 +61,4 @@ public class CollectTag implements Serializable {
 	@LastModifiedDate
 	@Column
 	private LocalDateTime lastModifiedTime;
-
-	/**
-	 * 收藏列表。懒加载。
-	 */
-	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "tags")
-	private List<Collect> collectList = new LinkedList<>();
-
-
-	/**
-	 * 收藏数量。
-	 */
-	@JsonGetter
-	@Transient
-	public Integer getCollectCount() {
-		return collectList.size();
-	}
 }

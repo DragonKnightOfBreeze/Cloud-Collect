@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 public class UseServiceImpl implements UserService {
 	private final UserRepository repository;
 	private final CollectRepository collectRepository;
-	private final CommentRepository commentRepository;
+	private final CollectCategoryRepository categoryRepository;
 	private final NoticeRepository noticeRepository;
 
 	public UseServiceImpl(UserRepository repository, CollectRepository collectRepository,
-		CommentRepository commentRepository, NoticeRepository noticeRepository) {
+		CollectCategoryRepository categoryRepository, NoticeRepository noticeRepository) {
 		this.repository = repository;
+		this.categoryRepository = categoryRepository;
 		this.collectRepository = collectRepository;
-		this.commentRepository = commentRepository;
 		this.noticeRepository = noticeRepository;
 	}
 
@@ -56,23 +56,48 @@ public class UseServiceImpl implements UserService {
 	}
 
 	@Override
+	public Long getFollowToUserCount(Long id) {
+		return null;
+	}
+
+	@Override
 	public Page<User> getFollowByUserPage(Long id, Pageable pageable) {
 		return repository.queryByFollowToUser_Id(id, pageable);
 	}
 
 	@Override
-	public Page<Collect> getCollectPage(Long id, Pageable pageable) {
-		return collectRepository.queryByUser_IdAndDeletedFalse(id, pageable);
+	public Long getFollowByUserCount(Long id) {
+		return null;
 	}
 
 	@Override
-	public Page<Comment> getCommentPage(Long id, Pageable pageable) {
-		return commentRepository.queryBySponsorByUser_Id(id, pageable);
+	public Page<Collect> getCollectPage(Long id, Pageable pageable) {
+		return collectRepository.queryByUser_IdAndDeleted(id, false, pageable);
+	}
+
+	@Override
+	public Long getCollectCount(Long id) {
+		return collectRepository.countByUser_IdAndDeleted(id, false);
+	}
+
+	@Override
+	public Page<CollectCategory> getCollectCategoryPage(Long id, Pageable pageable) {
+		return categoryRepository.queryByUser_Id(id, pageable);
+	}
+
+	@Override
+	public Long getCollectCategoryCount(Long id) {
+		return categoryRepository.countByUser_Id(id);
 	}
 
 	@Override
 	public Page<Notice> getNoticePage(Long id, Pageable pageable) {
 		return noticeRepository.queryByUser_Id(id, pageable);
+	}
+
+	@Override
+	public Long getNoticeCount(Long id) {
+		return noticeRepository.countByUser_Id(id);
 	}
 
 	@Override
@@ -83,21 +108,6 @@ public class UseServiceImpl implements UserService {
 	@Override
 	public Page<User> queryByRole(Role role, Pageable pageable) {
 		return repository.queryByRole(role, pageable);
-	}
-
-	@Override
-	public Page<User> queryByFollowToUser(Long followToUserId, Pageable pageable) {
-		return repository.queryByFollowToUser_Id(followToUserId, pageable);
-	}
-
-	@Override
-	public Page<User> queryByFollowByUser(Long followByUserId, Pageable pageable) {
-		return repository.queryByFollowByUser_Id(followByUserId, pageable);
-	}
-
-	@Override
-	public Page<User> queryByPraiseToCollect(Long praiseToCollectId, Pageable pageable) {
-		return repository.queryByPraiseToCollect_Id(praiseToCollectId, pageable);
 	}
 
 	@Override

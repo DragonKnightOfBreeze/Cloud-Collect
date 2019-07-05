@@ -49,6 +49,11 @@ public class CollectTagServiceImpl implements CollectTagService {
 	}
 
 	@Override
+	public Long getCollectCount(Long id) {
+		return collectRepository.countByTag_IdAndDeletedFalse(id);
+	}
+
+	@Override
 	public Page<CollectTag> queryByUser(Long userId, Pageable pageable) {
 		return repository.queryByUser_Id(userId, pageable);
 	}

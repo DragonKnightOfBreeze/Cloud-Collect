@@ -8,7 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 	Page<Comment> queryByCollect_Id(Long collectId, Pageable pageable);
 
-	Page<Comment> queryByReplyToComment_Id(Long replyToCommentId, Pageable pageable);
+	Long countByCollect_Id(Long collectId);
 
 	Page<Comment> queryBySponsorByUser_Id(Long sponsorByUserId, Pageable pageable);
+
+	Long countBySponsorByUser_Id(Long sponsorByUserId);
+
+	Page<Comment> queryByReplyToComment_Id(Long replyToCommentId, Pageable pageable);
+
+	Long countByReplyToComment_Id(Long replyToCommentId);
 }

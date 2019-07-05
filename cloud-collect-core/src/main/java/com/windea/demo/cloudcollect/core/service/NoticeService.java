@@ -29,7 +29,7 @@ public interface NoticeService {
 	Notice get(Long id);
 
 	/**
-	 * 分页查询某一用户的所有通知。
+	 * 查询某一用户的所有通知。
 	 */
 	Page<Notice> queryByUser(Long userId, Pageable pageable);
 

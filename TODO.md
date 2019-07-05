@@ -132,11 +132,13 @@
     * 得到该用户关注的用户。
     * 得到关注该用户的用户。
 * [ ] `QiniuService`
-    * 方法：upload, download
+    * 上传图片。
+    * 下载图片。
 * [ ] `EmailService`
-    * 方法：send, sendHtml, sendMarkdown
+    * 发送邮件。
 * [ ] ［扩展］`ImportExportService`
-    * 方法：fromXml, fromJson, from Yaml, toXml, toJson, toYaml 
+    * 从xml/json/yaml文件导入收藏。
+    * 导出收藏到xml/json/yaml文件。 
 
 ## controller
 

@@ -2,7 +2,6 @@ package com.windea.demo.cloudcollect.core.service.impl;
 
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.exception.NotImplementedException;
-import com.windea.demo.cloudcollect.core.repository.CollectRepository;
 import com.windea.demo.cloudcollect.core.repository.CommentRepository;
 import com.windea.demo.cloudcollect.core.service.CommentService;
 import org.springframework.data.domain.Page;
@@ -12,11 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommentServiceImpl implements CommentService {
 	private final CommentRepository repository;
-	private final CollectRepository collectRepository;
 
-	public CommentServiceImpl(CommentRepository repository, CollectRepository collectRepository) {
+	public CommentServiceImpl(CommentRepository repository) {
 		this.repository = repository;
-		this.collectRepository = collectRepository;
 	}
 
 
@@ -50,18 +47,18 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
+	public Page<Comment> getReplyByCommentPage(Long id, Pageable pageable) {
+		return repository.queryByReplyToComment_Id(id, pageable);
+	}
+
+	@Override
+	public Long getReplyByCommentCount(Long id) {
+		return repository.countByReplyToComment_Id(id);
+	}
+
+	@Override
 	public Page<Comment> queryByCollect(Long collectId, Pageable pageable) {
 		return repository.queryByCollect_Id(collectId, pageable);
-	}
-
-	@Override
-	public Page<Comment> queryByReplyToComment(Long replyToCommentId, Pageable pageable) {
-		return repository.queryByReplyToComment_Id(replyToCommentId, pageable);
-	}
-
-	@Override
-	public Page<Comment> queryBySponsorByUser(Long sponsorByUserId, Pageable pageable) {
-		return repository.queryBySponsorByUser_Id(sponsorByUserId, pageable);
 	}
 
 	@Override

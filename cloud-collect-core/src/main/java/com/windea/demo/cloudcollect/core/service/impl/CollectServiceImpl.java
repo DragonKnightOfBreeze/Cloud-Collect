@@ -103,18 +103,23 @@ public class CollectServiceImpl implements CollectService {
 	}
 
 	@Override
+	public Long getPraiseByUserCount(Long id) {
+		return userRepository.countByPraiseToCollect_Id(id);
+	}
+
+	@Override
 	public Page<Comment> getCommentPage(Long id, Pageable pageable) {
 		return commentRepository.queryByCollect_Id(id, pageable);
 	}
 
 	@Override
-	public Page<Collect> queryByUser(Long userId, Pageable pageable) {
-		return repository.queryByUser_IdAndDeletedFalse(userId, pageable);
+	public Long getCommentCount(Long id) {
+		return commentRepository.countByCollect_Id(id);
 	}
 
 	@Override
-	public Page<Collect> queryByUserDeleted(Long userId, Pageable pageable) {
-		return repository.queryByUser_IdAndDeletedTrue(userId, pageable);
+	public Page<Collect> queryByUserAndDeleted(Long userId, Boolean deleted, Pageable pageable) {
+		return repository.queryByUser_IdAndDeleted(userId, deleted, pageable);
 	}
 
 	@Override
@@ -140,11 +145,6 @@ public class CollectServiceImpl implements CollectService {
 	@Override
 	public Page<Collect> queryByName(String name, Pageable pageable) {
 		return repository.queryByNameContainsAndDeletedFalse(name, pageable);
-	}
-
-	@Override
-	public Page<Collect> queryByPraiseByUser(Long praiseUserId, Pageable pageable) {
-		return repository.queryByPraiseByUser_IdAndDeletedFalse(praiseUserId, pageable);
 	}
 
 	@Override

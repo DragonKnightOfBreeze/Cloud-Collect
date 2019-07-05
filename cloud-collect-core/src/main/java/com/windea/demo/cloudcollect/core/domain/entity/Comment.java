@@ -34,17 +34,17 @@ public class Comment implements Serializable {
 	private Collect collect;
 
 	/**
+	 * 发起该评论的用户。
+	 */
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private User sponsorByUser;
+
+	/**
 	 * 该评论回复的评论。
 	 */
 	@Nullable
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Comment replyToComment;
-
-	/**
-	 * 发起该评论的用户。
-	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private User sponsorByUser;
 
 	/**
 	 * 内容。

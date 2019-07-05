@@ -1,6 +1,5 @@
 package com.windea.demo.cloudcollect.core.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
 import lombok.Data;
@@ -104,35 +103,11 @@ public class Collect implements Serializable {
 	@Column
 	private LocalDateTime lastModifiedTime;
 
+
 	/**
 	 * 点赞该收藏的用户列表。懒加载。
 	 */
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "praiseToCollectList")
 	private List<User> praiseByUserList = new LinkedList<>();
-
-	/**
-	 * 评论列表。懒加载。
-	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "collect")
-	private List<Comment> commentList = new LinkedList<>();
-
-
-	/**
-	 * 点赞该收藏的用户数量。
-	 */
-	@JsonGetter
-	@Transient
-	public Integer getPraiseByUserCount() {
-		return praiseByUserList.size();
-	}
-
-	/**
-	 * 评论数量。
-	 */
-	@JsonGetter
-	@Transient
-	public Integer getCommentCount() {
-		return commentList.size();
-	}
 }

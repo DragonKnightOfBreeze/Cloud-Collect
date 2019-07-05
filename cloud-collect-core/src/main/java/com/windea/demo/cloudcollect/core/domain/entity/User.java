@@ -1,6 +1,5 @@
 package com.windea.demo.cloudcollect.core.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.windea.demo.cloudcollect.core.domain.enums.Role;
 import com.windea.demo.cloudcollect.core.validation.annotation.Password;
@@ -117,8 +116,8 @@ public class User implements Serializable {
 	 * 该用户关注的用户列表。懒加载。
 	 */
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "followByUserList")
-	private List<User> followToUserList;
+	@ManyToMany(cascade = CascadeType.MERGE)
+	private List<User> followToUserList = new LinkedList<>();
 
 	/**
 	 * 关注该用户的用户列表。懒加载。
@@ -131,66 +130,6 @@ public class User implements Serializable {
 	 * 该用户点赞的收藏列表。懒加载。
 	 */
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "praiseByUserList")
+	@ManyToMany(cascade = CascadeType.MERGE)
 	private List<Collect> praiseToCollectList = new LinkedList<>();
-
-	/**
-	 * 收藏列表。懒加载。
-	 */
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private List<Collect> collectList = new LinkedList<>();
-
-	/**
-	 * 通知列表。懒加载。
-	 */
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private List<Notice> noticeList = new LinkedList<>();
-
-
-	/**
-	 * 该用户关注的用户数量。
-	 */
-	@JsonGetter
-	@Transient
-	public Integer getFollowToUserCount() {
-		return followToUserList.size();
-	}
-
-	/**
-	 * 关注该用户的用户数量。
-	 */
-	@JsonGetter
-	@Transient
-	public Integer getFollowByUserCount() {
-		return followByUserList.size();
-	}
-
-	/**
-	 * 该用户点赞的收藏数量。
-	 */
-	@JsonGetter
-	@Transient
-	public Integer getPraiseToCollectCount() {
-		return praiseToCollectList.size();
-	}
-
-	/**
-	 * 收藏数量（包括已删除的）。
-	 */
-	@JsonGetter
-	@Transient
-	public Integer getCollectCount() {
-		return collectList.size();
-	}
-
-	/**
-	 * 评论数量。
-	 */
-	@JsonGetter
-	@Transient
-	public Integer getNoticeCount() {
-		return noticeList.size();
-	}
 }

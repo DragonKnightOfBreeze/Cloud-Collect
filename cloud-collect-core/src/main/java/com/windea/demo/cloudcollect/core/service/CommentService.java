@@ -29,19 +29,19 @@ public interface CommentService {
 	Comment get(Long id);
 
 	/**
-	 * 根据收藏分页查询所有评论。
+	 * 得到回复某一评论的所有评论。
+	 */
+	Page<Comment> getReplyByCommentPage(Long id, Pageable pageable);
+
+	/**
+	 * 得到回复某一评论的评论数量。
+	 */
+	Long getReplyByCommentCount(Long id);
+
+	/**
+	 * 查询某一收藏的所有评论。
 	 */
 	Page<Comment> queryByCollect(Long collectId, Pageable pageable);
-
-	/**
-	 * 根据回复评论分页查询所有评论。
-	 */
-	Page<Comment> queryByReplyToComment(Long replyToCommentId, Pageable pageable);
-
-	/**
-	 * 根据发起用户分页查询所有评论。
-	 */
-	Page<Comment> queryBySponsorByUser(Long sponsorByUserId, Pageable pageable);
 
 	/**
 	 * TODO 创建或回复评论时通知好友。

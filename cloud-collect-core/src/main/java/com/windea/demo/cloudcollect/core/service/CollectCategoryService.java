@@ -34,7 +34,12 @@ public interface CollectCategoryService {
 	Page<Collect> getCollectPage(Long id, Pageable pageable);
 
 	/**
-	 * 分页查询某一用户的所有分类。
+	 * 得到某一分类的收藏数量。
+	 */
+	Long getCollectCount(Long id);
+
+	/**
+	 * 得到某一用户的所有分类。
 	 */
 	Page<CollectCategory> queryByUser(Long userId, Pageable pageable);
 

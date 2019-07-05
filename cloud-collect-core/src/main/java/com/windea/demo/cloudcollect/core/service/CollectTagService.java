@@ -34,7 +34,12 @@ public interface CollectTagService {
 	Page<Collect> getCollectPage(Long id, Pageable pageable);
 
 	/**
-	 *分页查询某一用户的所有标签。
+	 * 得到某一标签的收藏数量。
+	 */
+	Long getCollectCount(Long id);
+
+	/**
+	 * 查询某一用户的所有标签。
 	 */
 	Page<CollectTag> queryByUser(Long userId, Pageable pageable);
 

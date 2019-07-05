@@ -35,9 +35,19 @@ public interface UserService {
 	Page<User> getFollowToUserPage(Long id, Pageable pageable);
 
 	/**
+	 * 得到某一用户的关注用户数量。
+	 */
+	Long getFollowToUserCount(Long id);
+
+	/**
 	 * 分页得到某一用户的所有粉丝用户。
 	 */
 	Page<User> getFollowByUserPage(Long id, Pageable pageable);
+
+	/**
+	 * 得到某一用户的粉丝用户数量。
+	 */
+	Long getFollowByUserCount(Long id);
 
 	/**
 	 * 分页得到某一用户的所有收藏。
@@ -45,14 +55,29 @@ public interface UserService {
 	Page<Collect> getCollectPage(Long id, Pageable pageable);
 
 	/**
-	 * 分页得到某一用户的所有评论。
+	 * 得到某一用户的收藏数量。
 	 */
-	Page<Comment> getCommentPage(Long id, Pageable pageable);
+	Long getCollectCount(Long id);
+
+	/**
+	 * 得到某一用户的所有收藏分类。
+	 */
+	Page<CollectCategory> getCollectCategoryPage(Long id, Pageable pageable);
+
+	/**
+	 * 得到某一用户的所有收藏分类数量。
+	 */
+	Long getCollectCategoryCount(Long id);
 
 	/**
 	 * 分页得到某一用户的所有通知。
 	 */
 	Page<Notice> getNoticePage(Long id, Pageable pageable);
+
+	/**
+	 * 得到某一用户的通知数量。
+	 */
+	Long getNoticeCount(Long id);
 
 	/**
 	 * 根据昵称分页全局模糊查询用户。
@@ -63,21 +88,6 @@ public interface UserService {
 	 * 根据身份分页全局查询用户。
 	 */
 	Page<User> queryByRole(Role role, Pageable pageable);
-
-	/**
-	 * 根据关注用户分页全局查询用户。
-	 */
-	Page<User> queryByFollowToUser(Long followToUserId, Pageable pageable);
-
-	/**
-	 * 根据粉丝用户分类全局查询用户。
-	 */
-	Page<User> queryByFollowByUser(Long followByUserId, Pageable pageable);
-
-	/**
-	 * 根据点赞用户分类全局查询用户。
-	 */
-	Page<User> queryByPraiseToCollect(Long praiseToCollectId, Pageable pageable);
 
 	/**
 	 * 检查某一用户是否已存在。

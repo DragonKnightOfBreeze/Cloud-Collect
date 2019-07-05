@@ -49,6 +49,11 @@ public class CollectCategoryServiceImpl implements CollectCategoryService {
 	}
 
 	@Override
+	public Long getCollectCount(Long id) {
+		return collectRepository.countByCategory_IdAndDeletedFalse(id);
+	}
+
+	@Override
 	public Page<CollectCategory> queryByUser(Long userId, Pageable pageable) {
 		return repository.queryByUser_Id(userId, pageable);
 	}
