@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,25 +30,23 @@ public class Notice implements Serializable {
 	private User user;
 
 	/**
+	 * 标题。
+	 */
+	@Column(nullable = false, columnDefinition = "text")
+	private String title;
+
+	/**
+	 * 内容。
+	 */
+	@Column(nullable = false, columnDefinition = "text")
+	private String content;
+
+	/**
 	 * 通知的类型。
 	 */
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private NoticeType type;
-
-	/**
-	 * 相关收藏。
-	 */
-	@Nullable
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private Collect relatedCollect;
-
-	/**
-	 * 相关评论。
-	 */
-	@Nullable
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private Comment relatedComment;
+	private NoticeType type = NoticeType.SYSTEM;
 
 	/**
 	 * 是否已读。

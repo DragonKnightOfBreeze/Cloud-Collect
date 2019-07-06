@@ -2,6 +2,9 @@ package com.windea.demo.cloudcollect.core.service;
 
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.Role;
+import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
+import com.windea.demo.cloudcollect.core.domain.view.EmailRegisterView;
+import com.windea.demo.cloudcollect.core.domain.view.UsernamePasswordLoginView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,14 +13,24 @@ import org.springframework.data.domain.Pageable;
  */
 public interface UserService {
 	/**
-	 * 注册用户（密码需要加密）。
+	 * 通过用户名&密码登录用户。
 	 */
-	void register(User user);
+	User loginByUsernameAndPassword(UsernamePasswordLoginView view);
+
+	/**
+	 * 通过邮箱注册用户（密码需要加密）。
+	 */
+	void registerByEmail(EmailRegisterView view);
 
 	/**
 	 * 激活用户（将activated设为true）。
 	 */
-	void activate(Long userId);
+	void activate(JwtUserDetails userDetails);
+
+	/**
+	 * 重置用户密码（密码需要加密）。
+	 */
+	void resetPassword(JwtUserDetails userDetails, String newPassword);
 
 	/**
 	 * 更新用户信息（不允许同时修改密码）。

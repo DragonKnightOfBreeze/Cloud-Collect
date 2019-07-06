@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.core.domain.request;
+package com.windea.demo.cloudcollect.core.domain.view;
 
 import com.windea.demo.cloudcollect.core.validation.annotation.Password;
 import lombok.Data;
@@ -7,7 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 /**
- * 用户邮箱&密码登录视图。
+ * 邮箱&密码登录视图。
  */
 @Data
 public class EmailPasswordLoginView implements LoginView {

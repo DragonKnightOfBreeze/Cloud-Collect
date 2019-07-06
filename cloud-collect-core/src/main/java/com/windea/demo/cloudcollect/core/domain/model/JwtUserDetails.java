@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.core.domain.request;
+package com.windea.demo.cloudcollect.core.domain.model;
 
 import com.windea.demo.cloudcollect.core.domain.entity.User;
 import org.springframework.security.core.GrantedAuthority;

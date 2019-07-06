@@ -1,7 +1,6 @@
 package com.windea.demo.cloudcollect.core.component;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -15,14 +14,12 @@ import java.io.IOException;
  * Jwt安全验证进入点。
  */
 @Component
+@CommonsLog
 public class JwtEntryPoint implements AuthenticationEntryPoint {
-	private static final Logger logger = LoggerFactory.getLogger(JwtEntryPoint.class);
-
-
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
 	throws IOException {
 		response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
-		logger.error("Unauthorized error. Message: " + e.getMessage());
+		log.error("Unauthorized error. Message: " + e.getMessage());
 	}
 }

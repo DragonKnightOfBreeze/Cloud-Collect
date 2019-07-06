@@ -1,6 +1,7 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
 import com.windea.demo.cloudcollect.core.domain.entity.*;
+import com.windea.demo.cloudcollect.core.exception.NotFoundException;
 import com.windea.demo.cloudcollect.core.repository.CollectCategoryRepository;
 import com.windea.demo.cloudcollect.core.repository.CollectRepository;
 import com.windea.demo.cloudcollect.core.service.CollectCategoryService;
@@ -47,7 +48,7 @@ public class CollectCategoryServiceImpl implements CollectCategoryService {
 	@Cacheable("collectCategory")
 	@Override
 	public CollectCategory get(Long id) {
-		return repository.getOne(id);
+		return repository.findById(id).orElseThrow(NotFoundException::new);
 	}
 
 	@Cacheable("collectCategory.collectPage")

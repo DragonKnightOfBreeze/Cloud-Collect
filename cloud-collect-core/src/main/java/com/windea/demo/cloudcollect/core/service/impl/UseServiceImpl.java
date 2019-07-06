@@ -2,11 +2,19 @@ package com.windea.demo.cloudcollect.core.service.impl;
 
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.Role;
+import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
+import com.windea.demo.cloudcollect.core.domain.view.EmailRegisterView;
+import com.windea.demo.cloudcollect.core.domain.view.UsernamePasswordLoginView;
+import com.windea.demo.cloudcollect.core.exception.NotFoundException;
 import com.windea.demo.cloudcollect.core.repository.*;
+import com.windea.demo.cloudcollect.core.service.EmailService;
 import com.windea.demo.cloudcollect.core.service.UserService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,33 +26,61 @@ public class UseServiceImpl implements UserService {
 	private final CollectRepository collectRepository;
 	private final CollectCategoryRepository categoryRepository;
 	private final NoticeRepository noticeRepository;
+	private final EmailService emailService;
 	private final PasswordEncoder passwordEncoder;
+	private final AuthenticationManager authenticationManager;
 
 	public UseServiceImpl(UserRepository repository, CollectRepository collectRepository,
 		CollectCategoryRepository categoryRepository, NoticeRepository noticeRepository,
-		PasswordEncoder passwordEncoder) {
+		EmailService emailService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
 		this.repository = repository;
 		this.categoryRepository = categoryRepository;
 		this.collectRepository = collectRepository;
 		this.noticeRepository = noticeRepository;
+		this.emailService = emailService;
 		this.passwordEncoder = passwordEncoder;
+		this.authenticationManager = authenticationManager;
 	}
 
 
-	@Transactional
 	@Override
-	public void register(User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		var result = repository.save(user);
+	public User loginByUsernameAndPassword(UsernamePasswordLoginView view) {
+		var authToken = new UsernamePasswordAuthenticationToken(view.getUsername(), view.getPassword());
+		var validAuthToken = authenticationManager.authenticate(authToken);
+		SecurityContextHolder.getContext().setAuthentication(validAuthToken);
 
-
+		var userDetails = (JwtUserDetails) validAuthToken.getPrincipal();
+		return userDetails.getDelegateUser();
 	}
 
 	@Transactional
 	@Override
-	public void activate(Long userId) {
-		var user = repository.getOne(userId);
+	public void registerByEmail(EmailRegisterView view) {
+		var user = new User();
+		user.setNickname(view.getNickname());
+		user.setUsername(view.getUsername());
+		user.setEmail(view.getEmail());
+		user.setPassword(passwordEncoder.encode(view.getPassword()));
+		repository.save(user);
+
+		emailService.sendActivateEmail();
+	}
+
+	@Transactional
+	@Override
+	public void activate(JwtUserDetails userDetails) {
+		var user = userDetails.getDelegateUser();
 		user.setActivated(true);
+		repository.save(user);
+
+		emailService.sendHelloEmail();
+	}
+
+	@Transactional
+	@Override
+	public void resetPassword(JwtUserDetails userDetails, String newPassword) {
+		var user = userDetails.getDelegateUser();
+		user.setPassword(passwordEncoder.encode(newPassword));
 		repository.save(user);
 	}
 
@@ -62,7 +98,7 @@ public class UseServiceImpl implements UserService {
 	@Cacheable("user")
 	@Override
 	public User get(Long id) {
-		return repository.getOne(id);
+		return repository.findById(id).orElseThrow(NotFoundException::new);
 	}
 
 	@Cacheable("user.followToUserPage")

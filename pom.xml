@@ -12,7 +12,7 @@
 
   <groupId>com.windea</groupId>
   <artifactId>cloud-collect</artifactId>
-  <version>0.1.14</version>
+  <version>0.1.15</version>
 
   <name>Cloud Collect</name>
   <description>毕业设计项目：云收藏的设计与实现。</description>

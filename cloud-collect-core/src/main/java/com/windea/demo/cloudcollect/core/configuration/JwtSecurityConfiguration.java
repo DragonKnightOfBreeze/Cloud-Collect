@@ -53,7 +53,7 @@ public class JwtSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				"/collectCategory/**",
 				"/collectTag/**",
 				"/comment/**",
-				"/notice/**",
+				"/create/**",
 				"/user/**").authenticated()
 			.antMatchers("/admin/**").hasRole(Role.ADMIN.toString())
 			.anyRequest().permitAll()

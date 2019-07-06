@@ -1,8 +1,7 @@
 package com.windea.demo.cloudcollect.core.component;
 
 import io.jsonwebtoken.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,9 +14,8 @@ import java.util.Objects;
  * Jwt提供器。
  */
 @Component
+@CommonsLog
 public class JwtProvider {
-	private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
-
 	@Value("${com.windea.security.jwtSecret}")
 	private String jwtSecret;
 	@Value("${com.windea.security.jwtExpiration}")
@@ -65,7 +63,7 @@ public class JwtProvider {
 		try {
 			return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 		} catch(Exception e) {
-			logger.error("Invalid Jwt format.");
+			log.error("Invalid Jwt format.");
 			return Jwts.claims();
 		}
 	}

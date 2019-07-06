@@ -69,7 +69,7 @@ public class User implements Serializable {
 	@NotEmpty(message = "validation.User.introduce.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.User.introduce.Size")
 	@Column(nullable = false, columnDefinition = "text")
-	private String introduce;
+	private String introduce = "这家伙很懒，什么也没留下。";
 
 	/**
 	 * 头像地址。

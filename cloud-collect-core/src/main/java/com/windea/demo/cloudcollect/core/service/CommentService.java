@@ -16,7 +16,7 @@ public interface CommentService {
 	/**
 	 * 创建自己的评论，回复某一评论。
 	 */
-	void replyTo(Comment comment, Collect collect, Comment replyToComment, User sponsorByUser);
+	void reply(Comment comment, Collect collect, Comment replyToComment, User sponsorByUser);
 
 	/**
 	 * 删除自己的评论。
@@ -42,9 +42,4 @@ public interface CommentService {
 	 * 查询某一收藏的所有评论。
 	 */
 	Page<Comment> queryByCollect(Long collectId, Pageable pageable);
-
-	/**
-	 * TODO 创建或回复评论时通知好友。
-	 */
-	void noticeFriends();
 }

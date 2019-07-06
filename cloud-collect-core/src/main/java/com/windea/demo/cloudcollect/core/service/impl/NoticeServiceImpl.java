@@ -1,6 +1,7 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
 import com.windea.demo.cloudcollect.core.domain.entity.Notice;
+import com.windea.demo.cloudcollect.core.domain.entity.User;
 import com.windea.demo.cloudcollect.core.repository.NoticeRepository;
 import com.windea.demo.cloudcollect.core.service.NoticeService;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,7 +22,8 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Transactional
 	@Override
-	public void create(Notice notice) {
+	public void create(Notice notice, User user) {
+		notice.setUser(user);
 		repository.save(notice);
 	}
 

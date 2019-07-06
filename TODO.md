@@ -1,85 +1,40 @@
-# 搁置事项
-
-## 功能上
-
-* ［扩展］收藏导入导出功能。
-* ［扩展］多用户互动功能。
-* ［可能］自由排序功能。
-* ［可能］树状目录/分类功能。
-
-## 结构上
-
-* 整合Swagger。
-* 整合Spring Security。
-* 整合Elastic Search。
-* ［可能］整合Docker。
-
 # 待办事项
 
-## domain
+## 结构
 
-整合jpa、lombok、bean validation、jackson。 
+* [X] 整合Jpa。
+* [X] 整合Lombok。
+* [X] 整合Bean Validation。
+* [X] 整合Jackson。 
+* [X] 整合Swagger。
+* [X] 整合Jwt和Spring Security。
+* [ ] ［可能］整合Elastic Search。
+* [ ] ［可能］整合Docker。
 
-### entity
+## 目录
 
-* [X] `Collect`
-    * 属性：id、用户、名字、地址、logo地址、概述、分类、标签集合?、类型?、评论列表、点赞、创建时间、修改时间、删除状态
-* [X] `CollectCategory` 
-    * 属性：id、用户、名字、概述、创建时间、修改时间
-* [X] `CollectTag`
-    * 属性：id、用户、名字、概述、创建时间、修改时间
-* [X] `Comment`
-    * 属性：id、用户、发起用户、回复用户?、内容、创建时间
-* [X] `Notice`
-    * 属性：id、用户、类型、关联收藏?、关联回复?、创建时间、是否已读
-* [X] `Follow`
-    * 属性：id、用户、关注用户列表、被关注用户列表、创建时间、修改时间
-* [X] `Praise`
-    * 属性：id、收藏、点赞用户列表、创建时间、修改时间
-* [X] `User`
-    * 属性：id、用户名、邮箱地址、密码、昵称、头像地址、背景地址、个人简介、角色、关注、注册时间、更新时间，激活状态
+* [X] 组件类 component
+* [X] 配置类 configuration
+* [X] 异常类 exception
+* [X] 参数验证 validation
 
-### enums
+* [X] 实体类 domain
+* [X] 持久层 repository
+* [ ] 服务层 service
+* [ ] 控制层 controller
 
-* [X] `CollectType`
-    * 成员：无、重要、喜欢、待办、搁置
-* [X] `NoticeType`
-* [X] `Role`
-    * 成员：普通用户、管理员
+## 功能
 
-### request
+* [ ] 基本的增删改查功能。
+* [ ] 跨表查询功能。
+* [ ] 基本的登录注册功能。
+* [ ] 整合邮箱激活的登录注册功能。
+* [ ] 收藏的导入导出功能。
+* [ ] 多用户互动功能。
+* [ ]［可能］收藏的自由排序功能。
+* [ ]［可能］收藏的树状目录/分类功能。
 
-* [X] `LoginView`
-* [X] `UsernamePasswordLoginView`
-    * 属性：用户名、密码
-* [X] `EmailPasswordLoginView`
-    * 属性：邮箱地址、密码
-* [ ] ［搁置］`UserDetailsView`
-    * 用于安全验证，与用户实体类相分离。
-
-### response    
-
-* [X] `CollectPraiseView`
-* [X] `UserFollowView`
-* [X] `UserPraiseView`
-* [ ] ［搁置］`UserResponseView`
-
-## repository
-
-如果是实体类属性/实体类集合属性，则尽量根据实体类的id进行查询。  
-（因为lombok的默认equals方法实现不仅基于id属性。）
-
-* [X] `CollectRepository`
-* [X] `CollectCategoryRepository`
-* [X] `CollectTagRepository`
-* [X] `CommentRepository`
-* [X] `NoticeRepository`
-* [X] `UserRepository`
-    
-## service
-
-增加、删除、修改方法全部传入实体类，查询方法尽量传入实体类的id。  
-类似“检查某一用户是否已存在”的功能，委托给自定义验证器。
+## 服务
 
 * [X] `CollectService`
     * 创建自己的收藏。（如果是别人的收藏，默认点赞）
@@ -136,32 +91,10 @@
     * 下载图片。
 * [ ] `EmailService`
     * 发送邮件。
-* [ ] ［扩展］`ImportExportService`
+    * 发送激活邮件。
+    * 发送欢迎邮件。
+* [ ] `ImportExportService`
     * 从xml/json/yaml文件导入收藏。
     * 导出收藏到xml/json/yaml文件。 
-
-## controller
-
-* [ ] `IndexController`
-* [ ] `AccountController`
-* [ ] `CollectController`
-* [ ] `CollectCategoryController`
-* [ ] `CollectTagController`
-* [ ] `CommentController`
-* [ ] `NoticeController`
-* [ ] `UserController`
-
-## exception
-
-* [X] `NotFoundException`
-* [X] `NotImplementedException`
-* [X] `ValidationException`
-* [X] `GlobalExceptionHandler`
-
-## security
-
-（搁置）
-
-## validation
-
-（略）
+* [X] `JwtUserDetailsService`
+    * 用于安全验证，与用户服务类相分离。

@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
 import com.windea.demo.cloudcollect.core.domain.entity.*;
-import com.windea.demo.cloudcollect.core.exception.NotImplementedException;
+import com.windea.demo.cloudcollect.core.exception.NotFoundException;
 import com.windea.demo.cloudcollect.core.repository.CommentRepository;
 import com.windea.demo.cloudcollect.core.service.CommentService;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,19 +26,15 @@ public class CommentServiceImpl implements CommentService {
 		comment.setCollect(collect);
 		comment.setSponsorByUser(sponsorByUser);
 		repository.save(comment);
-
-		noticeFriends();
 	}
 
 	@Transactional
 	@Override
-	public void replyTo(Comment comment, Collect collect, Comment replyToComment, User sponsorByUser) {
+	public void reply(Comment comment, Collect collect, Comment replyToComment, User sponsorByUser) {
 		comment.setCollect(collect);
 		comment.setReplyToComment(replyToComment);
 		comment.setSponsorByUser(sponsorByUser);
 		repository.save(comment);
-
-		noticeFriends();
 	}
 
 	@Transactional
@@ -50,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
 	@Cacheable("comment")
 	@Override
 	public Comment get(Long id) {
-		return repository.getOne(id);
+		return repository.findById(id).orElseThrow(NotFoundException::new);
 	}
 
 	@Cacheable("comment.replyByCommentPage")
@@ -69,10 +65,5 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public Page<Comment> queryByCollect(Long collectId, Pageable pageable) {
 		return repository.queryByCollect_Id(collectId, pageable);
-	}
-
-	@Override
-	public void noticeFriends() {
-		throw new NotImplementedException();
 	}
 }

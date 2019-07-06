@@ -3,7 +3,6 @@ package com.windea.demo.cloudcollect.core.service.impl;
 import com.windea.commons.kotlin.extension.StringExtensionsKt;
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
-import com.windea.demo.cloudcollect.core.exception.NotImplementedException;
 import com.windea.demo.cloudcollect.core.repository.*;
 import com.windea.demo.cloudcollect.core.service.CollectService;
 import org.springframework.cache.annotation.Cacheable;
@@ -37,8 +36,6 @@ public class CollectServiceImpl implements CollectService {
 		}
 		collect.setUser(user);
 		repository.save(collect);
-
-		noticeFriends();
 	}
 
 	@Transactional
@@ -53,8 +50,6 @@ public class CollectServiceImpl implements CollectService {
 		}
 		collect.setUser(user);
 		repository.save(collect);
-
-		noticeFriends();
 	}
 
 	@Transactional
@@ -109,12 +104,13 @@ public class CollectServiceImpl implements CollectService {
 		praiseByUserList.add(user);
 		collect.setPraiseByUserList(praiseByUserList);
 		repository.save(collect);
+
 	}
 
 	@Cacheable("collect")
 	@Override
 	public Collect get(Long id) {
-		return repository.getOne(id);
+		return repository.findById(id).orElseThrow(NotFoundException::new);
 	}
 
 	@Cacheable("collect.praiseByUserPage")
@@ -182,10 +178,5 @@ public class CollectServiceImpl implements CollectService {
 		var userId = collect.getUser().getId();
 		var name = collect.getName();
 		return repository.existsByUser_IdAndName(userId, name);
-	}
-
-	@Override
-	public void noticeFriends() {
-		throw new NotImplementedException();
 	}
 }

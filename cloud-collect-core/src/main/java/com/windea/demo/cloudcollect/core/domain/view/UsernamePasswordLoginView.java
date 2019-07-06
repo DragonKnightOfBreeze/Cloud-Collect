@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.core.domain.request;
+package com.windea.demo.cloudcollect.core.domain.view;
 
 import com.windea.demo.cloudcollect.core.validation.annotation.Password;
 import com.windea.demo.cloudcollect.core.validation.annotation.Username;

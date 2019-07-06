@@ -110,9 +110,4 @@ public interface CollectService {
 	 * 检查某一收藏是否已存在。
 	 */
 	boolean exists(Collect collect);
-
-	/**
-	 * TODO 创建或点赞收藏时通知好友。
-	 */
-	void noticeFriends();
 }

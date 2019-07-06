@@ -6,7 +6,7 @@ package com.windea.demo.cloudcollect.core.exception;
 public class NotImplementedException extends RuntimeException {
 	private static final long serialVersionUID = 3747208892156399108L;
 
-	private static final String message = "501 功能未完成！";
+	private static final String message = "501 功能未实现！";
 
 	public NotImplementedException() {
 		super(message);

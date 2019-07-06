@@ -1,6 +1,7 @@
 package com.windea.demo.cloudcollect.core.component;
 
 import com.windea.demo.cloudcollect.core.service.impl.JwtUserDetailsService;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ import java.io.IOException;
  * Jwt过滤器。
  */
 @Component
+@CommonsLog
 public class JwtFilter extends OncePerRequestFilter {
 	private final JwtProvider jwtProvider;
 	private final JwtUserDetailsService userDetailsService;
@@ -44,9 +46,9 @@ public class JwtFilter extends OncePerRequestFilter {
 			var authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 			authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(authToken);
-			logger.info("Set authentication from Jwt success. Authenticated user: " + username);
+			log.info("Set authentication from Jwt success. Authenticated user: " + username);
 		} else {
-			logger.error("Set authentication from Jwt failed.");
+			log.error("Set authentication from Jwt failed.");
 		}
 		chain.doFilter(request, response);
 	}

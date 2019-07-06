@@ -18,17 +18,17 @@ public interface ImportExportService {
 	/**
 	 * TODO 从xml文件导入收藏。
 	 */
-	List<Collect> fromXml(String text);
+	List<Collect> fromXml(String string);
 
 	/**
 	 * TODO 从json文件导入收藏。
 	 */
-	List<Collect> fromJson(String text);
+	List<Collect> fromJson(String string);
 
 	/**
 	 * TODO 从yaml文件导入收藏。
 	 */
-	List<Collect> fromYaml(String text);
+	List<Collect> fromYaml(String string);
 
 	/**
 	 * TODO 导出收藏到xml文件。

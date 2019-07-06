@@ -1,6 +1,7 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
 import com.windea.demo.cloudcollect.core.domain.entity.*;
+import com.windea.demo.cloudcollect.core.exception.NotFoundException;
 import com.windea.demo.cloudcollect.core.repository.CollectRepository;
 import com.windea.demo.cloudcollect.core.repository.CollectTagRepository;
 import com.windea.demo.cloudcollect.core.service.CollectTagService;
@@ -47,7 +48,7 @@ public class CollectTagServiceImpl implements CollectTagService {
 	@Cacheable("collectTag")
 	@Override
 	public CollectTag get(Long id) {
-		return repository.getOne(id);
+		return repository.findById(id).orElseThrow(NotFoundException::new);
 	}
 
 	@Cacheable("collectTag.collectPage")
