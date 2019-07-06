@@ -12,7 +12,8 @@ import javax.validation.ConstraintValidatorContext;
  * 唯一收藏的校验器。
  */
 public class UniqueCollectValidator implements ConstraintValidator<UniqueCollect, Collect> {
-	@Autowired private CollectService service;
+	@Autowired
+	private CollectService service;
 
 	@Override
 	public boolean isValid(Collect value, ConstraintValidatorContext context) {

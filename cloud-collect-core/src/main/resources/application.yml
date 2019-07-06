@@ -46,7 +46,13 @@ spring:
 com:
   windea:
     security:
+      # jwt口令的请求头
+      jwtTokenHeader: Authorization
+      # jwt口令的开头
+      jwtTokenHead: Bearer
+      # jwt密钥
       jwtSecret: com.windea
+      # jwt过期时间
       jwtExpiration: 86400
     validation:
       # 6~16位的字母、数字和下划线，以字母开头。

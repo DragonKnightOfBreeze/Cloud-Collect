@@ -93,10 +93,10 @@ public class User implements Serializable {
 	private Role role = Role.NORMAL;
 
 	/**
-	 * 是否已经激活。
+	 * TODO 是否已激活（暂时设为总是已激活）。
 	 */
 	@Column(nullable = false)
-	private Boolean activated = false;
+	private Boolean activated = true;
 
 	/**
 	 * 注册时间。

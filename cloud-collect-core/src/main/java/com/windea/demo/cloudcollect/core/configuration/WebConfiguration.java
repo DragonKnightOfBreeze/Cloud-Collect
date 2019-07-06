@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.core;
+package com.windea.demo.cloudcollect.core.configuration;
 
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.context.MessageSource;
@@ -14,13 +14,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.validation.Validator;
 
 /**
- * Web模块的配置类。
+ * Web的配置类。
  */
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 	@Bean
 	public MessageSource messageSource() {
-		// 在web环境中一定要定位到classpath 否则默认到当前web应用下找
+		// 在web环境中一定要定位到classpath，否则默认到当前web应用下找
 		var messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename("classpath:messages");
 		messageSource.setDefaultEncoding("UTF-8");
@@ -44,8 +44,6 @@ public class WebConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		//添加跨域请求映射。默认为空。
-		registry.addMapping("/**")
-			.allowedOrigins("*").allowedMethods("*").allowCredentials(false)
-			.maxAge(3600);
+		registry.addMapping("/**").allowedMethods("*").allowCredentials(false).maxAge(3600);
 	}
 }

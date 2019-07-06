@@ -12,7 +12,8 @@ import javax.validation.ConstraintValidatorContext;
  * 唯一用户的校验器。
  */
 public class UniqueUserValidator implements ConstraintValidator<UniqueUser, User> {
-	@Autowired private UserService service;
+	@Autowired
+	private UserService service;
 
 	@Override
 	public boolean isValid(User value, ConstraintValidatorContext context) {

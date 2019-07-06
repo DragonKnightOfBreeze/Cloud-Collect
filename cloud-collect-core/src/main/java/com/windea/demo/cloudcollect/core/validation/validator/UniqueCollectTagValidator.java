@@ -12,7 +12,8 @@ import javax.validation.ConstraintValidatorContext;
  * 唯一收藏标签的校验器。
  */
 public class UniqueCollectTagValidator implements ConstraintValidator<UniqueCollectTag, CollectTag> {
-	@Autowired private CollectTagService service;
+	@Autowired
+	private CollectTagService service;
 
 	@Override
 	public boolean isValid(CollectTag value, ConstraintValidatorContext context) {
