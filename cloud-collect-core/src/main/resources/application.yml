@@ -49,5 +49,7 @@ com:
       jwtSecret: com.windea
       jwtExpiration: 86400
     validation:
+      # 6~16位的字母、数字和下划线，以字母开头。
       validUsername: "\\w{6,16}"
+      # 6~16位的字母、数字和下划线。
       validPassword: "[a-zA-Z]\\w{5,15}"

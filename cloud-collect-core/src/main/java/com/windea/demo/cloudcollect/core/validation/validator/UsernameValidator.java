@@ -15,10 +15,6 @@ public class UsernameValidator implements ConstraintValidator<Username, String> 
 
 
 	@Override
-	public void initialize(Username constraintAnnotation) {
-	}
-
-	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		//6~16位的字母、数字和下划线。
 		return value.matches(validUsername);

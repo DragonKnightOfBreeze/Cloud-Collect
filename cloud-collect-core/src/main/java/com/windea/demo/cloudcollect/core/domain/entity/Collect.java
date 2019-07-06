@@ -2,6 +2,7 @@ package com.windea.demo.cloudcollect.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
+import com.windea.demo.cloudcollect.core.validation.annotation.UniqueCollect;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,6 +21,7 @@ import java.util.*;
  */
 @Data
 @NoArgsConstructor
+@UniqueCollect
 @Entity
 public class Collect implements Serializable {
 	private static final long serialVersionUID = -6764369348818887548L;
@@ -102,7 +104,6 @@ public class Collect implements Serializable {
 	@LastModifiedDate
 	@Column
 	private LocalDateTime lastModifiedTime;
-
 
 	/**
 	 * 点赞该收藏的用户列表。懒加载。

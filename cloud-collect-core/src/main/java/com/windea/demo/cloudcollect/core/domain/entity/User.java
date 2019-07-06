@@ -2,8 +2,7 @@ package com.windea.demo.cloudcollect.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.windea.demo.cloudcollect.core.domain.enums.Role;
-import com.windea.demo.cloudcollect.core.validation.annotation.Password;
-import com.windea.demo.cloudcollect.core.validation.annotation.Username;
+import com.windea.demo.cloudcollect.core.validation.annotation.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,6 +21,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
+@UniqueUser
 @Entity
 public class User implements Serializable {
 	private static final long serialVersionUID = 5006865220326542020L;

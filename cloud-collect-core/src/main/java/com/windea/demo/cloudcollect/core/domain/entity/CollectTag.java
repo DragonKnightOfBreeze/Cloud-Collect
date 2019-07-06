@@ -1,5 +1,6 @@
 package com.windea.demo.cloudcollect.core.domain.entity;
 
+import com.windea.demo.cloudcollect.core.validation.annotation.UniqueCollectTag;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @NoArgsConstructor
+@UniqueCollectTag
 @Entity
 public class CollectTag implements Serializable {
 	private static final long serialVersionUID = 4229783797803970576L;

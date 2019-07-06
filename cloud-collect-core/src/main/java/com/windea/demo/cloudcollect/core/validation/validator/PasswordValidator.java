@@ -15,10 +15,6 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
 
 
 	@Override
-	public void initialize(Password constraintAnnotation) {
-	}
-
-	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		//6~16位的字母、数字和下划线，以字母开头。
 		return value.matches(validPassword);
