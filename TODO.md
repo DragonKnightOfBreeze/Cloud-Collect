@@ -16,7 +16,7 @@
 * [ ] 组件类 component
     [X] 安全验证的相关组件。
     [ ] 自定义字符串到分页对象转换器。
-    [ ] 适用于BindingResult的切面（当控制层方法中含有bindingResult参数时，在有错时抛出异常）
+    [ ] 适用于BindingResult的切面（当控制层方法中含有bindingResult参数时，在有错时抛出参数验证异常）。
 * [ ] 配置类 configuration
     [X] 安全验证的相关配置。
     [X] Swagger2的相关配置。

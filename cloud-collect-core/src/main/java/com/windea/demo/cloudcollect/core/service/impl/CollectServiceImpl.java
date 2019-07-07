@@ -44,6 +44,8 @@ public class CollectServiceImpl implements CollectService {
 	public void createFrom(Collect collect, User user) {
 		praise(collect.getId(), user);
 
+		//从别人的收藏创建新的收藏，需要先将id设为null
+		collect.setId(null);
 		create(collect, user);
 	}
 
