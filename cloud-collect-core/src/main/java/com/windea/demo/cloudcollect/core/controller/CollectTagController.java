@@ -64,14 +64,19 @@ public class CollectTagController {
 		return service.getCollectCount(id);
 	}
 
-	@GetMapping("/queryByUser")
-	public Page<CollectTag> queryByUser(@RequestParam Long userId, @RequestParam Pageable pageable) {
-		return service.queryByUser(userId, pageable);
+	@GetMapping("/findAll")
+	public Page<CollectTag> findAll(@RequestParam Pageable pageable) {
+		return service.findAll(pageable);
 	}
 
-	@GetMapping("/queryByUserAndName")
-	public Page<CollectTag> queryByUserAndName(@RequestParam Long userId, @RequestParam String name,
+	@GetMapping("/findByUser")
+	public Page<CollectTag> findByUser(@RequestParam Long userId, @RequestParam Pageable pageable) {
+		return service.findByUser(userId, pageable);
+	}
+
+	@GetMapping("/findByUserAndName")
+	public Page<CollectTag> findByUserAndName(@RequestParam Long userId, @RequestParam String name,
 		@RequestParam Pageable pageable) {
-		return service.queryByUserAndName(userId, name, pageable);
+		return service.findByUserAndName(userId, name, pageable);
 	}
 }

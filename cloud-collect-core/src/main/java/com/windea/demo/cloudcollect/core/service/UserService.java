@@ -92,14 +92,19 @@ public interface UserService {
 	Long getNoticeCount(Long id);
 
 	/**
+	 * 分页得到所有用户。
+	 */
+	Page<User> findAll(Pageable pageable);
+
+	/**
 	 * 根据昵称分页全局模糊查询用户。
 	 */
-	Page<User> queryByNickname(String nickname, Pageable pageable);
+	Page<User> findByNickname(String nickname, Pageable pageable);
 
 	/**
 	 * 根据身份分页全局查询用户。
 	 */
-	Page<User> queryByRole(Role role, Pageable pageable);
+	Page<User> findByRole(Role role, Pageable pageable);
 
 	/**
 	 * 检查某一用户是否已存在。

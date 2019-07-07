@@ -29,7 +29,7 @@ public interface CommentService {
 	Comment get(Long id);
 
 	/**
-	 * 得到回复某一评论的所有评论。
+	 * 分页得到回复某一评论的所有评论。
 	 */
 	Page<Comment> getReplyByCommentPage(Long id, Pageable pageable);
 
@@ -39,7 +39,12 @@ public interface CommentService {
 	Long getReplyByCommentCount(Long id);
 
 	/**
-	 * 查询某一收藏的所有评论。
+	 * 分页得到所有评论。
 	 */
-	Page<Comment> queryByCollect(Long collectId, Pageable pageable);
+	Page<Comment> findAll(Pageable pageable);
+
+	/**
+	 * 分页查询某一收藏的所有评论。
+	 */
+	Page<Comment> findByCollect(Long collectId, Pageable pageable);
 }

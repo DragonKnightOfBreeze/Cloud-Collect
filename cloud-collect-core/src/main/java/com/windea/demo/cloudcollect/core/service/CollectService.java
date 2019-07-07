@@ -77,34 +77,39 @@ public interface CollectService {
 	Long getCommentCount(Long id);
 
 	/**
+	 * 分页得到所有收藏。
+	 */
+	Page<Collect> findAll(Pageable pageable);
+
+	/**
 	 * 分页查询某一用户的所有已删除/未删除收藏。
 	 */
-	Page<Collect> queryByUserAndDeleted(Long userId, Boolean deleted, Pageable pageable);
+	Page<Collect> findByUserAndDeleted(Long userId, Boolean deleted, Pageable pageable);
 
 	/**
 	 * 根据名字分页模糊查询某一用户的所有收藏。
 	 */
-	Page<Collect> queryByUserAndName(Long userId, String name, Pageable pageable);
+	Page<Collect> findByUserAndName(Long userId, String name, Pageable pageable);
 
 	/**
 	 * 根据分类分页查询某一用户的所有收藏（分类属于唯一用户）。
 	 */
-	Page<Collect> queryByUserAndCategory(Long categoryId, Pageable pageable);
+	Page<Collect> findByUserAndCategory(Long categoryId, Pageable pageable);
 
 	/**
 	 * 根据标签分页查询某一用户的所有收藏（标签属于唯一用户）。
 	 */
-	Page<Collect> queryByUserAndTag(Long tagId, Pageable pageable);
+	Page<Collect> findByUserAndTag(Long tagId, Pageable pageable);
 
 	/**
 	 * 根据类型分页查询某一用户的所有收藏。
 	 */
-	Page<Collect> queryByUserAndType(Long userId, CollectType type, Pageable pageable);
+	Page<Collect> findByUserAndType(Long userId, CollectType type, Pageable pageable);
 
 	/**
 	 * 根据名字分页全局查询所有收藏。
 	 */
-	Page<Collect> queryByName(String name, Pageable pageable);
+	Page<Collect> findByName(String name, Pageable pageable);
 
 	/**
 	 * 检查某一收藏是否已存在。

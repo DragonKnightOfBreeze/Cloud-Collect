@@ -65,14 +65,19 @@ public class CollectCategoryController {
 		return service.getCollectCount(id);
 	}
 
-	@GetMapping("/queryByUser")
-	public Page<CollectCategory> queryByUser(@RequestParam Long userId, @RequestParam Pageable pageable) {
-		return service.queryByUser(userId, pageable);
+	@GetMapping("/findAll")
+	public Page<CollectCategory> findAll(@RequestParam Pageable pageable) {
+		return service.findAll(pageable);
 	}
 
-	@GetMapping("/queryByUserAndName")
-	public Page<CollectCategory> queryByUserAndName(@RequestParam Long userId, @RequestParam String name,
+	@GetMapping("/findByUser")
+	public Page<CollectCategory> findByUser(@RequestParam Long userId, @RequestParam Pageable pageable) {
+		return service.findByUser(userId, pageable);
+	}
+
+	@GetMapping("/findByUserAndName")
+	public Page<CollectCategory> findByUserAndName(@RequestParam Long userId, @RequestParam String name,
 		@RequestParam Pageable pageable) {
-		return service.queryByUserAndName(userId, name, pageable);
+		return service.findByUserAndName(userId, name, pageable);
 	}
 }

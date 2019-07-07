@@ -102,7 +102,7 @@ public class UseServiceImpl implements UserService {
 	@Cacheable("user.followToUserPage")
 	@Override
 	public Page<User> getFollowToUserPage(Long id, Pageable pageable) {
-		return repository.queryByFollowByUser_Id(id, pageable);
+		return repository.findByFollowByUser_Id(id, pageable);
 	}
 
 	@Cacheable("user.followToUserCount")
@@ -114,7 +114,7 @@ public class UseServiceImpl implements UserService {
 	@Cacheable("user.followByUserPage")
 	@Override
 	public Page<User> getFollowByUserPage(Long id, Pageable pageable) {
-		return repository.queryByFollowToUser_Id(id, pageable);
+		return repository.findByFollowToUser_Id(id, pageable);
 	}
 
 	@Cacheable("user.followByUserCount")
@@ -126,7 +126,7 @@ public class UseServiceImpl implements UserService {
 	@Cacheable("user.collectPage")
 	@Override
 	public Page<Collect> getCollectPage(Long id, Pageable pageable) {
-		return collectRepository.queryByUser_IdAndDeleted(id, false, pageable);
+		return collectRepository.findByUser_IdAndDeleted(id, false, pageable);
 	}
 
 	@Cacheable("user.collectCount")
@@ -138,7 +138,7 @@ public class UseServiceImpl implements UserService {
 	@Cacheable("user.collectCategoryPage")
 	@Override
 	public Page<CollectCategory> getCollectCategoryPage(Long id, Pageable pageable) {
-		return categoryRepository.queryByUser_Id(id, pageable);
+		return categoryRepository.findByUser_Id(id, pageable);
 	}
 
 	@Cacheable("user.collectCategoryCount")
@@ -150,7 +150,7 @@ public class UseServiceImpl implements UserService {
 	@Cacheable("user.noticePage")
 	@Override
 	public Page<Notice> getNoticePage(Long id, Pageable pageable) {
-		return noticeRepository.queryByUser_Id(id, pageable);
+		return noticeRepository.findByUser_Id(id, pageable);
 	}
 
 	@Cacheable("collect.noticeCount")
@@ -159,16 +159,22 @@ public class UseServiceImpl implements UserService {
 		return noticeRepository.countByUser_Id(id);
 	}
 
+	@Cacheable("collectPage")
+	@Override
+	public Page<User> findAll(Pageable pageable) {
+		return repository.findAll(pageable);
+	}
+
 	@Cacheable("collectPage.byNickname")
 	@Override
-	public Page<User> queryByNickname(String nickname, Pageable pageable) {
-		return repository.queryByNicknameContains(nickname, pageable);
+	public Page<User> findByNickname(String nickname, Pageable pageable) {
+		return repository.findByNicknameContains(nickname, pageable);
 	}
 
 	@Cacheable("collectPage.byRole")
 	@Override
-	public Page<User> queryByRole(Role role, Pageable pageable) {
-		return repository.queryByRole(role, pageable);
+	public Page<User> findByRole(Role role, Pageable pageable) {
+		return repository.findByRole(role, pageable);
 	}
 
 	@Override

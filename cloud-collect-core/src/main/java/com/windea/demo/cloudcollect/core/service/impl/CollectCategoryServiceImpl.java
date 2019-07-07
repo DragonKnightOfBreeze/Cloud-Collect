@@ -54,7 +54,7 @@ public class CollectCategoryServiceImpl implements CollectCategoryService {
 	@Cacheable("collectCategory.collectPage")
 	@Override
 	public Page<Collect> getCollectPage(Long id, Pageable pageable) {
-		return collectRepository.queryByCategory_IdAndDeletedFalse(id, pageable);
+		return collectRepository.findByCategory_IdAndDeletedFalse(id, pageable);
 	}
 
 	@Cacheable("collectCategory.collectCount")
@@ -63,16 +63,22 @@ public class CollectCategoryServiceImpl implements CollectCategoryService {
 		return collectRepository.countByCategory_IdAndDeletedFalse(id);
 	}
 
+	@Cacheable("collectCategoryPage")
+	@Override
+	public Page<CollectCategory> findAll(Pageable pageable) {
+		return repository.findAll(pageable);
+	}
+
 	@Cacheable("collectCategoryPage.byUser")
 	@Override
-	public Page<CollectCategory> queryByUser(Long userId, Pageable pageable) {
-		return repository.queryByUser_Id(userId, pageable);
+	public Page<CollectCategory> findByUser(Long userId, Pageable pageable) {
+		return repository.findByUser_Id(userId, pageable);
 	}
 
 	@Cacheable("collectCategoryPage.byUserAndName")
 	@Override
-	public Page<CollectCategory> queryByUserAndName(Long userId, String name, Pageable pageable) {
-		return repository.queryByUser_IdAndNameContains(userId, name, pageable);
+	public Page<CollectCategory> findByUserAndName(Long userId, String name, Pageable pageable) {
+		return repository.findByUser_IdAndNameContains(userId, name, pageable);
 	}
 
 	@Override

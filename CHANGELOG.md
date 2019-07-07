@@ -29,3 +29,4 @@
 * 0.1.14 整合Swagger2、Jwt和Spring Security中。
 * 0.1.15 重构代码，实现登录、注册等服务。
 * 0.1.16 初步完成控制层，有待添加swagger注解，删改权限控制（除create方法外，service方法不传入user参数）。
+* 0.1.17 重命名`queryXxx`为`findXxx`，补充缺失的`findAll`方法。

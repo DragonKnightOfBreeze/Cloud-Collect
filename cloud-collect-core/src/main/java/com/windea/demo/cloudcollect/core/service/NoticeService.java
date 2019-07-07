@@ -30,12 +30,17 @@ public interface NoticeService {
 	Notice get(Long id);
 
 	/**
-	 * 查询某一用户的所有通知。
+	 * 分页得到所有通知。
 	 */
-	Page<Notice> queryByUser(Long userId, Pageable pageable);
+	Page<Notice> findAll(Pageable pageable);
+
+	/**
+	 * 分页查询某一用户的所有通知。
+	 */
+	Page<Notice> findByUser(Long userId, Pageable pageable);
 
 	/**
 	 * 分页查询某一用户的所有已读/未读通知。
 	 */
-	Page<Notice> queryByUserAndRead(Long userId, Boolean read, Pageable pageable);
+	Page<Notice> findByUserAndRead(Long userId, Boolean read, Pageable pageable);
 }

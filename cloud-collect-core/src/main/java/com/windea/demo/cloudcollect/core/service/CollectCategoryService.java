@@ -39,14 +39,19 @@ public interface CollectCategoryService {
 	Long getCollectCount(Long id);
 
 	/**
-	 * 得到某一用户的所有分类。
+	 * 分页得到所有分类。
 	 */
-	Page<CollectCategory> queryByUser(Long userId, Pageable pageable);
+	Page<CollectCategory> findAll(Pageable pageable);
+
+	/**
+	 * 分页得到某一用户的所有分类。
+	 */
+	Page<CollectCategory> findByUser(Long userId, Pageable pageable);
 
 	/**
 	 * 根据名字分页模糊查询某一用户的所有分类。
 	 */
-	Page<CollectCategory> queryByUserAndName(Long userId, String name, Pageable pageable);
+	Page<CollectCategory> findByUserAndName(Long userId, String name, Pageable pageable);
 
 	/**
 	 * 检查某一分类是否已存在。

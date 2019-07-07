@@ -39,14 +39,19 @@ public interface CollectTagService {
 	Long getCollectCount(Long id);
 
 	/**
-	 * 查询某一用户的所有标签。
+	 * 分页得到所有标签。
 	 */
-	Page<CollectTag> queryByUser(Long userId, Pageable pageable);
+	Page<CollectTag> findAll(Pageable pageable);
 
 	/**
-	 * 根据名字模糊查询某一用户的所有标签。
+	 * 分页查询某一用户的所有标签。
 	 */
-	Page<CollectTag> queryByUserAndName(Long userId, String name, Pageable pageable);
+	Page<CollectTag> findByUser(Long userId, Pageable pageable);
+
+	/**
+	 * 根据名字分页模糊查询某一用户的所有标签。
+	 */
+	Page<CollectTag> findByUserAndName(Long userId, String name, Pageable pageable);
 
 	/**
 	 * 检查某一标签是否已存在。

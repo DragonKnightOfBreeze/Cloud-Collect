@@ -47,15 +47,21 @@ public class NoticeServiceImpl implements NoticeService {
 		return repository.getOne(id);
 	}
 
+	@Cacheable("noticePage")
+	@Override
+	public Page<Notice> findAll(Pageable pageable) {
+		return repository.findAll(pageable);
+	}
+
 	@Cacheable("noticePage.byUser")
 	@Override
-	public Page<Notice> queryByUser(Long userId, Pageable pageable) {
-		return repository.queryByUser_Id(userId, pageable);
+	public Page<Notice> findByUser(Long userId, Pageable pageable) {
+		return repository.findByUser_Id(userId, pageable);
 	}
 
 	@Cacheable("noticePage.byUserAndRead")
 	@Override
-	public Page<Notice> queryByUserAndRead(Long userId, Boolean read, Pageable pageable) {
-		return repository.queryByUser_IdAndRead(userId, read, pageable);
+	public Page<Notice> findByUserAndRead(Long userId, Boolean read, Pageable pageable) {
+		return repository.findByUser_IdAndRead(userId, read, pageable);
 	}
 }

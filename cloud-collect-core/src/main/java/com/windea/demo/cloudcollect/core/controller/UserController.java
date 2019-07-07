@@ -83,14 +83,19 @@ public class UserController {
 		return service.getNoticeCount(id);
 	}
 
-	@GetMapping("/queryByNickname")
-	public Page<User> queryByNickname(@RequestParam String nickname, @RequestParam Pageable pageable) {
-		return service.queryByNickname(nickname, pageable);
+	@GetMapping("/findAll")
+	public Page<User> findAll(@RequestParam Pageable pageable) {
+		return service.findAll(pageable);
 	}
 
-	@GetMapping("/queryByRole")
-	public Page<User> queryByRole(@RequestParam Role role, @RequestParam Pageable pageable) {
-		return service.queryByRole(role, pageable);
+	@GetMapping("/findByNickname")
+	public Page<User> findByNickname(@RequestParam String nickname, @RequestParam Pageable pageable) {
+		return service.findByNickname(nickname, pageable);
+	}
+
+	@GetMapping("/findByRole")
+	public Page<User> findByRole(@RequestParam Role role, @RequestParam Pageable pageable) {
+		return service.findByRole(role, pageable);
 	}
 }
 

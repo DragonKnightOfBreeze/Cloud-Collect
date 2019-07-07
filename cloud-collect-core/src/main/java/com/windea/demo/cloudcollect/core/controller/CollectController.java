@@ -100,31 +100,36 @@ public class CollectController {
 		return service.getCommentCount(id);
 	}
 
-	@GetMapping("/queryByUserAndDeleted")
-	public Page<Collect> queryByUserAndDeleted(@RequestParam Long userId, @RequestParam Boolean deleted,
+	@GetMapping("/findAll")
+	public Page<Collect> findAll(@RequestParam Pageable pageable) {
+		return service.findAll(pageable);
+	}
+
+	@GetMapping("/findByUserAndDeleted")
+	public Page<Collect> findByUserAndDeleted(@RequestParam Long userId, @RequestParam Boolean deleted,
 		@RequestParam Pageable pageable) {
-		return service.queryByUserAndDeleted(userId, deleted, pageable);
+		return service.findByUserAndDeleted(userId, deleted, pageable);
 	}
 
-	@GetMapping("/queryByUserAndName")
-	public Page<Collect> queryByUserAndName(@RequestParam Long userId, @RequestParam String name,
+	@GetMapping("/findByUserAndName")
+	public Page<Collect> findByUserAndName(@RequestParam Long userId, @RequestParam String name,
 		@RequestParam Pageable pageable) {
-		return service.queryByUserAndName(userId, name, pageable);
+		return service.findByUserAndName(userId, name, pageable);
 	}
 
-	@GetMapping("/queryByUserAndCategory")
-	public Page<Collect> queryByUserAndCategory(@RequestParam Long categoryId, @RequestParam Pageable pageable) {
-		return service.queryByUserAndCategory(categoryId, pageable);
+	@GetMapping("/findByUserAndCategory")
+	public Page<Collect> findByUserAndCategory(@RequestParam Long categoryId, @RequestParam Pageable pageable) {
+		return service.findByUserAndCategory(categoryId, pageable);
 	}
 
-	@GetMapping("/queryByUserAndType")
-	public Page<Collect> queryByUserAndType(@RequestParam Long userId, @RequestParam CollectType type,
+	@GetMapping("/findByUserAndType")
+	public Page<Collect> findByUserAndType(@RequestParam Long userId, @RequestParam CollectType type,
 		@RequestParam Pageable pageable) {
-		return service.queryByUserAndType(userId, type, pageable);
+		return service.findByUserAndType(userId, type, pageable);
 	}
 
-	@GetMapping("/queryByName")
-	public Page<Collect> queryByName(@RequestParam String name, @RequestParam Pageable pageable) {
-		return service.queryByName(name, pageable);
+	@GetMapping("/findByName")
+	public Page<Collect> findByName(@RequestParam String name, @RequestParam Pageable pageable) {
+		return service.findByName(name, pageable);
 	}
 }

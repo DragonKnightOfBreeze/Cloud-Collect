@@ -37,14 +37,19 @@ public class NoticeController {
 		return service.get(id);
 	}
 
-	@GetMapping("/queryByUser")
-	public Page<Notice> queryByUser(@RequestParam Long userId, @RequestParam Pageable pageable) {
-		return service.queryByUser(userId, pageable);
+	@GetMapping("/findAll")
+	public Page<Notice> findAll(@RequestParam Pageable pageable) {
+		return service.findAll(pageable);
 	}
 
-	@GetMapping("/queryByUserAndRead")
-	public Page<Notice> queryByUserAndRead(@RequestParam Long userId, @RequestParam Boolean read,
+	@GetMapping("/findByUser")
+	public Page<Notice> findByUser(@RequestParam Long userId, @RequestParam Pageable pageable) {
+		return service.findByUser(userId, pageable);
+	}
+
+	@GetMapping("/findByUserAndRead")
+	public Page<Notice> findByUserAndRead(@RequestParam Long userId, @RequestParam Boolean read,
 		@RequestParam Pageable pageable) {
-		return service.queryByUserAndRead(userId, read, pageable);
+		return service.findByUserAndRead(userId, read, pageable);
 	}
 }

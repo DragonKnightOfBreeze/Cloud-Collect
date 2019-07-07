@@ -54,7 +54,7 @@ public class CollectTagServiceImpl implements CollectTagService {
 	@Cacheable("collectTag.collectPage")
 	@Override
 	public Page<Collect> getCollectPage(Long id, Pageable pageable) {
-		return collectRepository.queryByTag_IdAndDeletedFalse(id, pageable);
+		return collectRepository.findByTag_IdAndDeletedFalse(id, pageable);
 	}
 
 	@Cacheable("collectTag.collectCount")
@@ -63,16 +63,22 @@ public class CollectTagServiceImpl implements CollectTagService {
 		return collectRepository.countByTag_IdAndDeletedFalse(id);
 	}
 
+	@Cacheable("collectTagPage")
+	@Override
+	public Page<CollectTag> findAll(Pageable pageable) {
+		return repository.findAll(pageable);
+	}
+
 	@Cacheable("collectTagPage.byUser")
 	@Override
-	public Page<CollectTag> queryByUser(Long userId, Pageable pageable) {
-		return repository.queryByUser_Id(userId, pageable);
+	public Page<CollectTag> findByUser(Long userId, Pageable pageable) {
+		return repository.findByUser_Id(userId, pageable);
 	}
 
 	@Cacheable("collectTagPage.byUserAndName")
 	@Override
-	public Page<CollectTag> queryByUserAndName(Long userId, String name, Pageable pageable) {
-		return repository.queryByUser_IdAndNameContains(userId, name, pageable);
+	public Page<CollectTag> findByUserAndName(Long userId, String name, Pageable pageable) {
+		return repository.findByUser_IdAndNameContains(userId, name, pageable);
 	}
 
 	@Override

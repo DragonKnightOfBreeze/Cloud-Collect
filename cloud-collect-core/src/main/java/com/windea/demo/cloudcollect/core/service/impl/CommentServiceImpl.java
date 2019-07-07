@@ -52,7 +52,7 @@ public class CommentServiceImpl implements CommentService {
 	@Cacheable("comment.replyByCommentPage")
 	@Override
 	public Page<Comment> getReplyByCommentPage(Long id, Pageable pageable) {
-		return repository.queryByReplyToComment_Id(id, pageable);
+		return repository.findByReplyToComment_Id(id, pageable);
 	}
 
 	@Cacheable("comment.replyByCommentCount")
@@ -61,9 +61,15 @@ public class CommentServiceImpl implements CommentService {
 		return repository.countByReplyToComment_Id(id);
 	}
 
+	@Cacheable("commentPage")
+	@Override
+	public Page<Comment> findAll(Pageable pageable) {
+		return repository.findAll(pageable);
+	}
+
 	@Cacheable("commentPage.byComment")
 	@Override
-	public Page<Comment> queryByCollect(Long collectId, Pageable pageable) {
-		return repository.queryByCollect_Id(collectId, pageable);
+	public Page<Comment> findByCollect(Long collectId, Pageable pageable) {
+		return repository.findByCollect_Id(collectId, pageable);
 	}
 }

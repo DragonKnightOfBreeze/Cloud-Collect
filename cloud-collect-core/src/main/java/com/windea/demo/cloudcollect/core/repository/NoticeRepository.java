@@ -6,11 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
-	Page<Notice> queryByUser_Id(Long userId, Pageable pageable);
+	Page<Notice> findByUser_Id(Long userId, Pageable pageable);
 
 	Long countByUser_Id(Long userId);
 
-	Page<Notice> queryByUser_IdAndRead(Long userId, Boolean read, Pageable pageable);
+	Page<Notice> findByUser_IdAndRead(Long userId, Boolean read, Pageable pageable);
 
 	Long countByUser_IdAndRead(Long userId, Boolean read);
 }

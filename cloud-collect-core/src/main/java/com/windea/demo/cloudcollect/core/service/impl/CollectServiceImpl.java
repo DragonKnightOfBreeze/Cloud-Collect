@@ -111,7 +111,7 @@ public class CollectServiceImpl implements CollectService {
 	@Cacheable("collect.praiseByUserPage")
 	@Override
 	public Page<User> getPraiseByUserPage(Long id, Pageable pageable) {
-		return userRepository.queryByPraiseToCollect_Id(id, pageable);
+		return userRepository.findByPraiseToCollect_Id(id, pageable);
 	}
 
 	@Cacheable("collect.praiseByUserCount")
@@ -123,7 +123,7 @@ public class CollectServiceImpl implements CollectService {
 	@Cacheable("collect.commentPage")
 	@Override
 	public Page<Comment> getCommentPage(Long id, Pageable pageable) {
-		return commentRepository.queryByCollect_Id(id, pageable);
+		return commentRepository.findByCollect_Id(id, pageable);
 	}
 
 	@Cacheable("collect.commentCount")
@@ -132,40 +132,46 @@ public class CollectServiceImpl implements CollectService {
 		return commentRepository.countByCollect_Id(id);
 	}
 
+	@Cacheable("collectPage")
+	@Override
+	public Page<Collect> findAll(Pageable pageable) {
+		return repository.findAll(pageable);
+	}
+
 	@Cacheable("collectPage.byUserAndDeleted")
 	@Override
-	public Page<Collect> queryByUserAndDeleted(Long userId, Boolean deleted, Pageable pageable) {
-		return repository.queryByUser_IdAndDeleted(userId, deleted, pageable);
+	public Page<Collect> findByUserAndDeleted(Long userId, Boolean deleted, Pageable pageable) {
+		return repository.findByUser_IdAndDeleted(userId, deleted, pageable);
 	}
 
 	@Cacheable("collectPage.byUserAndName")
 	@Override
-	public Page<Collect> queryByUserAndName(Long userId, String name, Pageable pageable) {
-		return repository.queryByUser_IdAndNameContainsAndDeletedFalse(userId, name, pageable);
+	public Page<Collect> findByUserAndName(Long userId, String name, Pageable pageable) {
+		return repository.findByUser_IdAndNameContainsAndDeletedFalse(userId, name, pageable);
 	}
 
 	@Cacheable("collectPage.byUserAndCategory")
 	@Override
-	public Page<Collect> queryByUserAndCategory(Long categoryId, Pageable pageable) {
-		return repository.queryByCategory_IdAndDeletedFalse(categoryId, pageable);
+	public Page<Collect> findByUserAndCategory(Long categoryId, Pageable pageable) {
+		return repository.findByCategory_IdAndDeletedFalse(categoryId, pageable);
 	}
 
 	@Cacheable("collectPage.byUserAndTag")
 	@Override
-	public Page<Collect> queryByUserAndTag(Long tagId, Pageable pageable) {
-		return repository.queryByTag_IdAndDeletedFalse(tagId, pageable);
+	public Page<Collect> findByUserAndTag(Long tagId, Pageable pageable) {
+		return repository.findByTag_IdAndDeletedFalse(tagId, pageable);
 	}
 
 	@Cacheable("collectPage.byUserAndType")
 	@Override
-	public Page<Collect> queryByUserAndType(Long userId, CollectType type, Pageable pageable) {
-		return repository.queryByUser_IdAndTypeAndDeletedFalse(userId, type, pageable);
+	public Page<Collect> findByUserAndType(Long userId, CollectType type, Pageable pageable) {
+		return repository.findByUser_IdAndTypeAndDeletedFalse(userId, type, pageable);
 	}
 
 	@Cacheable("collectPage.byName")
 	@Override
-	public Page<Collect> queryByName(String name, Pageable pageable) {
-		return repository.queryByNameContainsAndDeletedFalse(name, pageable);
+	public Page<Collect> findByName(String name, Pageable pageable) {
+		return repository.findByNameContainsAndDeletedFalse(name, pageable);
 	}
 
 	@Override

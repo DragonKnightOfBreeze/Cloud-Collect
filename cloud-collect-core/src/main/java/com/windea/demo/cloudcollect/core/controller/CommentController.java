@@ -67,8 +67,13 @@ public class CommentController {
 		return service.getReplyByCommentCount(id);
 	}
 
-	@GetMapping("/queryByCollect")
-	public Page<Comment> queryByCollect(@RequestParam Long collectId, @RequestParam Pageable pageable) {
-		return service.queryByCollect(collectId, pageable);
+	@GetMapping("/findAll")
+	public Page<Comment> findAll(@RequestParam Pageable pageable) {
+		return service.findAll(pageable);
+	}
+
+	@GetMapping("/findByCollect")
+	public Page<Comment> findByCollect(@RequestParam Long collectId, @RequestParam Pageable pageable) {
+		return service.findByCollect(collectId, pageable);
 	}
 }
