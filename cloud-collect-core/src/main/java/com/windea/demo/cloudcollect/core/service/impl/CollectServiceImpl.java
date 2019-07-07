@@ -3,6 +3,7 @@ package com.windea.demo.cloudcollect.core.service.impl;
 import com.windea.commons.kotlin.extension.StringExtensionsKt;
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
+import com.windea.demo.cloudcollect.core.exception.NotFoundException;
 import com.windea.demo.cloudcollect.core.repository.*;
 import com.windea.demo.cloudcollect.core.service.CollectService;
 import org.springframework.cache.annotation.Cacheable;
@@ -43,13 +44,7 @@ public class CollectServiceImpl implements CollectService {
 	public void createFrom(Collect collect, User user) {
 		praise(collect.getId(), user);
 
-		collect.setId(null);
-		collect.setUrl(StringExtensionsKt.toUrlInfo(collect.getUrl()).getFullPath());
-		if(collect.getLogoUrl() != null) {
-			collect.setLogoUrl(StringExtensionsKt.toUrlInfo(collect.getLogoUrl()).getFullPath());
-		}
-		collect.setUser(user);
-		repository.save(collect);
+		create(collect, user);
 	}
 
 	@Transactional

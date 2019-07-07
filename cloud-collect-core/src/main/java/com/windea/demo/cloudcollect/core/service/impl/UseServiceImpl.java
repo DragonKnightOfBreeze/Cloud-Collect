@@ -68,8 +68,7 @@ public class UseServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void activate(JwtUserDetails userDetails) {
-		var user = userDetails.getDelegateUser();
+	public void activate(User user) {
 		user.setActivated(true);
 		repository.save(user);
 
@@ -78,8 +77,7 @@ public class UseServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void resetPassword(JwtUserDetails userDetails, String newPassword) {
-		var user = userDetails.getDelegateUser();
+	public void resetPassword(User user, String newPassword) {
 		user.setPassword(passwordEncoder.encode(newPassword));
 		repository.save(user);
 	}

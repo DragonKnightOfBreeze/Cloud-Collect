@@ -12,6 +12,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+	@ExceptionHandler(InvalidUserException.class)
+	ResponseEntity<?> handleInvalidUserException(InvalidUserException e) {
+		e.printStackTrace();
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+	}
+
 	@ExceptionHandler(NotFoundException.class)
 	ResponseEntity<?> handleNotFoundException(NotFoundException e) {
 		e.printStackTrace();

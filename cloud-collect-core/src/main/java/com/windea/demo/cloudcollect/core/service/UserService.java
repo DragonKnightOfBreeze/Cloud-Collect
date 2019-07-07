@@ -2,7 +2,6 @@ package com.windea.demo.cloudcollect.core.service;
 
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.Role;
-import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
 import com.windea.demo.cloudcollect.core.domain.view.EmailRegisterView;
 import com.windea.demo.cloudcollect.core.domain.view.UsernamePasswordLoginView;
 import org.springframework.data.domain.Page;
@@ -25,12 +24,12 @@ public interface UserService {
 	/**
 	 * 激活用户（将activated设为true）。
 	 */
-	void activate(JwtUserDetails userDetails);
+	void activate(User user);
 
 	/**
 	 * 重置用户密码（密码需要加密）。
 	 */
-	void resetPassword(JwtUserDetails userDetails, String newPassword);
+	void resetPassword(User user, String newPassword);
 
 	/**
 	 * 更新用户信息（不允许同时修改密码）。

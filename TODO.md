@@ -13,10 +13,18 @@
 
 ## 目录
 
-* [X] 组件类 component
-* [X] 配置类 configuration
-* [X] 异常类 exception
-* [X] 参数验证 validation
+* [ ] 组件类 component
+    [X] 安全验证的相关组件。
+    [ ] 自定义字符串到分页对象转换器。
+    [ ] 适用于BindingResult的切面（当控制层方法中含有bindingResult参数时，在有错时抛出异常）
+* [ ] 配置类 configuration
+    [X] 安全验证的相关配置。
+    [X] Swagger2的相关配置。
+* [ ] 异常类 exception
+    [X] 基于Http状态的必要的自定义异常。
+* [ ] 参数验证 validation
+    [X] 特殊属性的相关验证。
+    [X] 唯一实体类的相关验证。
 
 * [X] 实体类 domain
 * [X] 持久层 repository
