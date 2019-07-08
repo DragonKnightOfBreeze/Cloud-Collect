@@ -96,7 +96,7 @@ public class CommentController {
 		@ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	})
 	@GetMapping("/findAll")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Page<Comment> findAll(@RequestParam Pageable pageable) {
 		return service.findAll(pageable);
 	}

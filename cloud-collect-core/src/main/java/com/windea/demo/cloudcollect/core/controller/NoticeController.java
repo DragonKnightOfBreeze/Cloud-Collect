@@ -33,7 +33,7 @@ public class NoticeController {
 		@ApiImplicitParam(name = "notice", value = "新的通知", required = true)
 	})
 	@PostMapping("/create")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void create(@RequestBody @Valid Notice notice, BindingResult bindingResult, Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
 		service.create(notice);
@@ -72,7 +72,7 @@ public class NoticeController {
 		@ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	})
 	@GetMapping("/findAll")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Page<Notice> findAll(@RequestParam Pageable pageable) {
 		return service.findAll(pageable);
 	}
