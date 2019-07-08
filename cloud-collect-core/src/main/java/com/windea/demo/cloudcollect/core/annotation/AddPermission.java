@@ -9,6 +9,7 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AddPermission {
+	//确定为创建方法： @annotation(postMapping)
 	//targetId - 从返回值domain.id获得
 	//targetDomainType - 从返回值domain.class获得
 	//principalName - 从参数principal.name获得
