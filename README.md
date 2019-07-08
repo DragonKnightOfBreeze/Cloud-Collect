@@ -8,7 +8,6 @@
     * [Spring Boot Reference Guide](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle)
 	* [Spring Boot 中文导航](http://springboot.fun/)
 	* [spring-boot - 纯洁的微笑博客](http://www.ityouknow.com/spring-boot.html)
-* Spring Mail
     * [Spring Integration](https://docs.spring.io/spring-integration/docs/5.1.6.RELEASE/reference/html/#mail)
 * Elastic Search
     * ……
@@ -17,13 +16,26 @@
 * Weex
     * [WEEX](https://weex.apache.org/zh/)
 
+# 环境要求
+
+* Idea
+* Git
+* MySql 5+
+* ［可能］Nginx
+* ［可能］Docker
+* Jdk 11
+* Maven
+* Tomcat
+* Npm
+
 # 技术要求
 
 * 通用：
     * Markdown 用于编写项目文档，不直接编写doc
     * Yaml 用于编写配置文件
     * Git 用于版本管理
-	* nginx 负载均衡
+    * MySql 数据库
+	* ［可能］Nginx 负载均衡
 	* ［可能］Docker 应用容器
 * 后台：
     * SpringBoot 核心框架
@@ -32,7 +44,6 @@
     * Swagger 用于编写api文档
     * Lombok 便于实体类编写
     * Maven 用于后台依赖和目录管理
-    * MySql 后台数据库
 	* Spring Security 认证和授权框架
 	* ［可能］Elastic Search 搜索引擎
 * 前端：
