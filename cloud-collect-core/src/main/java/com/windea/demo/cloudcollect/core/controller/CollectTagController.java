@@ -43,7 +43,7 @@ public class CollectTagController {
 		@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	})
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.CollectTag','delete')")
+	@PreAuthorize("hasPermission(#id,'CollectTag','delete')")
 	public void delete(@PathVariable Long id) {
 		service.delete(id);
 	}
@@ -54,7 +54,7 @@ public class CollectTagController {
 		@ApiImplicitParam(name = "tag", value = "修改后的标签", required = true)
 	})
 	@PutMapping("/{id}")
-	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.CollectTag','write')")
+	@PreAuthorize("hasPermission(#id,'CollectTag','write')")
 	public void modify(@PathVariable Long id, @RequestBody @Valid CollectTag tag, BindingResult bindingResult) {
 		service.modify(id, tag);
 	}

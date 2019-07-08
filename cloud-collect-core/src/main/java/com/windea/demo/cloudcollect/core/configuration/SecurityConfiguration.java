@@ -1,13 +1,10 @@
 package com.windea.demo.cloudcollect.core.configuration;
 
-import com.windea.demo.cloudcollect.core.component.JwtEntryPoint;
-import com.windea.demo.cloudcollect.core.component.JwtFilter;
+import com.windea.demo.cloudcollect.core.component.*;
 import com.windea.demo.cloudcollect.core.domain.enums.Role;
 import com.windea.demo.cloudcollect.core.service.impl.JwtUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.acls.AclPermissionEvaluator;
-import org.springframework.security.acls.model.MutableAclService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -25,21 +22,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class JwtSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private final JwtFilter jwtFilter;
 	private final JwtEntryPoint jwtEntryPoint;
 	private final JwtUserDetailsService userDetailsService;
 	private final PasswordEncoder passwordEncoder;
-	private final MutableAclService mutableAclService;
+	private final AppPermissionEvaluator appPermissionEvaluator;
 
-	public JwtSecurityConfiguration(JwtFilter jwtFilter, JwtEntryPoint jwtEntryPoint,
+	public SecurityConfiguration(JwtFilter jwtFilter, JwtEntryPoint jwtEntryPoint,
 		JwtUserDetailsService userDetailsService, PasswordEncoder passwordEncoder,
-		MutableAclService mutableAclService) {
+		AppPermissionEvaluator appPermissionEvaluator) {
 		this.jwtFilter = jwtFilter;
 		this.jwtEntryPoint = jwtEntryPoint;
 		this.userDetailsService = userDetailsService;
 		this.passwordEncoder = passwordEncoder;
-		this.mutableAclService = mutableAclService;
+		this.appPermissionEvaluator = appPermissionEvaluator;
 	}
 
 
@@ -85,12 +82,7 @@ public class JwtSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
 		DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
-		handler.setPermissionEvaluator(aclPermissionEvaluator());
+		handler.setPermissionEvaluator(appPermissionEvaluator);
 		return handler;
-	}
-
-	@Bean
-	public AclPermissionEvaluator aclPermissionEvaluator() {
-		return new AclPermissionEvaluator(mutableAclService);
 	}
 }

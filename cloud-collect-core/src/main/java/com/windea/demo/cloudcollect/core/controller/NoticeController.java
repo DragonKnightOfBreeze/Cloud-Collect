@@ -44,7 +44,7 @@ public class NoticeController {
 		@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	})
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.Notice','delete')")
+	@PreAuthorize("hasPermission(#id,'Notice','delete')")
 	public void delete(@PathVariable Long id) {
 		service.delete(id);
 	}

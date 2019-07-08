@@ -31,6 +31,4 @@ public final class StringToPageableConverter implements Converter<String, Pageab
 
 		return PageRequest.of(page - 1, size, sort);
 	}
-
-
 }

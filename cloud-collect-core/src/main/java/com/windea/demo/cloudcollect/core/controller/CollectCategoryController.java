@@ -45,7 +45,7 @@ public class CollectCategoryController {
 		@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	})
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.CollectCategory','delete')")
+	@PreAuthorize("hasPermission(#id,'CollectCategory','delete')")
 	public void delete(@PathVariable Long id) {
 		service.delete(id);
 	}
@@ -56,7 +56,7 @@ public class CollectCategoryController {
 		@ApiImplicitParam(name = "category", value = "修改后的分类", required = true)
 	})
 	@PutMapping("/{id}")
-	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.CollectCategory','write')")
+	@PreAuthorize("hasPermission(#id,'CollectCategory','write')")
 	public void modify(@PathVariable Long id, @RequestBody @Valid CollectCategory category,
 		BindingResult bindingResult) {
 		service.modify(id, category);

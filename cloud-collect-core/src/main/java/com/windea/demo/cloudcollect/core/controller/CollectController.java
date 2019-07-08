@@ -55,7 +55,7 @@ public class CollectController {
 		@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	})
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.Collect','delete')")
+	@PreAuthorize("hasPermission(#id,'Collect','delete')")
 	public void delete(@PathVariable Long id) {
 		service.delete(id);
 	}
@@ -66,7 +66,7 @@ public class CollectController {
 		@ApiImplicitParam(name = "collect", value = "修改后的收藏", required = true)
 	})
 	@PutMapping("/{id}")
-	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.Collect','write')")
+	@PreAuthorize("hasPermission(#id,'Collect','write')")
 	public void modify(@PathVariable Long id, @RequestBody @Valid Collect collect, BindingResult bindingResult) {
 		service.modify(id, collect);
 	}
@@ -77,7 +77,7 @@ public class CollectController {
 		@ApiImplicitParam(name = "category", value = "修改后的收藏的分类", required = true)
 	})
 	@PutMapping("/{id}/category")
-	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.Collect','write')")
+	@PreAuthorize("hasPermission(#id,'Collect','write')")
 	public void modifyCategory(@PathVariable Long id, @RequestBody CollectCategory category) {
 		service.modifyCategory(id, category);
 	}
@@ -88,7 +88,7 @@ public class CollectController {
 		@ApiImplicitParam(name = "tags", value = "修改后的收藏的标签", required = true)
 	})
 	@PutMapping("/{id}/tags")
-	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.Collect','write')")
+	@PreAuthorize("hasPermission(#id,'Collect','write')")
 	public void modifyTags(@PathVariable Long id, @RequestBody Set<CollectTag> tags) {
 		service.modifyTags(id, tags);
 	}
@@ -99,7 +99,7 @@ public class CollectController {
 		@ApiImplicitParam(name = "type", value = "修改后的收藏的类型", required = true)
 	})
 	@PutMapping("/{id}/type")
-	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.CollectCategory','write')")
+	@PreAuthorize("hasPermission(#id,'CollectCategory','write')")
 	public void modifyType(@PathVariable Long id, @RequestBody CollectType type) {
 		service.modifyType(id, type);
 	}
