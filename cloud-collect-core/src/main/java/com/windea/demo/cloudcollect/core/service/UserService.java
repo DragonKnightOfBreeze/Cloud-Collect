@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * 用户的服务（登录、重置密码等功能委托给{@code UserDetailsService}）。
+ * 用户的服务。登录、重置密码等功能委托给{@code UserDetailsService}。
  */
 public interface UserService {
 	/**
@@ -17,22 +17,22 @@ public interface UserService {
 	User loginByUsernameAndPassword(UsernamePasswordLoginView view);
 
 	/**
-	 * 通过邮箱注册用户（密码需要加密）。
+	 * 通过邮箱注册用户。密码需要加密。
 	 */
 	void registerByEmail(EmailRegisterView view);
 
 	/**
-	 * 激活用户（将activated设为true）。
+	 * 激活用户。将activated设为true。
 	 */
 	void activate(User user);
 
 	/**
-	 * 重置用户密码（密码需要加密）。
+	 * 重置用户密码。密码需要加密。
 	 */
 	void resetPassword(User user, String newPassword);
 
 	/**
-	 * 更新用户信息（不允许同时修改密码）。
+	 * 更新用户信息。不允许同时修改密码。
 	 */
 	void update(Long id, User user);
 

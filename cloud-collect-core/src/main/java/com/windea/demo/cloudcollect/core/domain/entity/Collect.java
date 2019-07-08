@@ -86,7 +86,7 @@ public class Collect implements Serializable {
 	private CollectType type = CollectType.NONE;
 
 	/**
-	 * 是否已经删除。
+	 * 删除状态。
 	 */
 	@Column
 	private Boolean deleteStatus = false;

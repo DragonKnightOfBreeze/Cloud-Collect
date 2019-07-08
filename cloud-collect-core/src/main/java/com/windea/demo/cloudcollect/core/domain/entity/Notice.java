@@ -49,7 +49,7 @@ public class Notice implements Serializable {
 	private NoticeType type = NoticeType.SYSTEM;
 
 	/**
-	 * 是否已读。
+	 * 阅读状态。
 	 */
 	@Column
 	private Boolean readStatus = false;

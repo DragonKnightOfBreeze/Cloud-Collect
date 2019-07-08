@@ -12,22 +12,22 @@ import java.util.Set;
  */
 public interface CollectService {
 	/**
-	 * 创建自己的收藏（去除地址的查询参数）。
+	 * 创建自己的收藏。去除地址的查询参数。
 	 */
 	void create(Collect collect, User user);
 
 	/**
-	 * 从别人的收藏创建自己的收藏（默认点赞原始收藏，去除地址的查询参数）。
+	 * 从别人的收藏创建自己的收藏。默认点赞原始收藏，去除地址的查询参数。
 	 */
 	void createFrom(Collect collect, User user);
 
 	/**
-	 * 删除自己的收藏（不删除数据库中的数据，而是将deleteStatus设为true）。
+	 * 删除自己的收藏。不删除数据库中的数据，而是将deleteStatus设为true。
 	 */
 	void delete(Long id);
 
 	/**
-	 * 修改自己的收藏（名字，概述，分类，标签，类型）。
+	 * 修改自己的收藏。名字，概述，分类，标签，类型。
 	 */
 	void modify(Long id, Collect collect);
 
@@ -92,12 +92,12 @@ public interface CollectService {
 	Page<Collect> findByUserAndName(Long userId, String name, Pageable pageable);
 
 	/**
-	 * 根据分类分页查询某一用户的所有收藏（分类属于唯一用户）。
+	 * 根据分类分页查询某一用户的所有收藏。分类属于唯一用户。
 	 */
 	Page<Collect> findByUserAndCategory(Long categoryId, Pageable pageable);
 
 	/**
-	 * 根据标签分页查询某一用户的所有收藏（标签属于唯一用户）。
+	 * 根据标签分页查询某一用户的所有收藏。标签属于唯一用户。
 	 */
 	Page<Collect> findByUserAndTag(Long tagId, Pageable pageable);
 

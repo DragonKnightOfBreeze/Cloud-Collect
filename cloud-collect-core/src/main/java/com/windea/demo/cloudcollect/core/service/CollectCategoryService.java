@@ -19,7 +19,7 @@ public interface CollectCategoryService {
 	void delete(Long id);
 
 	/**
-	 * 修改自己的分类（名字，概述）。
+	 * 修改自己的分类。名字，概述。
 	 */
 	void modify(Long id, CollectCategory category);
 

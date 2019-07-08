@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
- * 字符串到排序对象的转化器。
+ * 字符串到排序对象的转换器。
  * <p>示例格式："", "+name", "+name,-age", "name,age"。
  */
 @Component

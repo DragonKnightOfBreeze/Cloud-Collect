@@ -20,7 +20,7 @@ public interface NoticeService {
 	void delete(Long id);
 
 	/**
-	 * 阅读通知（将readStatus设为true）。
+	 * 阅读自己的通知。将readStatus设为true。
 	 */
 	void read(Long id);
 

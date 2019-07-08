@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Jwt用户详情（用于安全验证）。
+ * Jwt用户详情。用于安全验证。
  */
 public class JwtUserDetails implements UserDetails {
 	private static final long serialVersionUID = -8990133011806369007L;

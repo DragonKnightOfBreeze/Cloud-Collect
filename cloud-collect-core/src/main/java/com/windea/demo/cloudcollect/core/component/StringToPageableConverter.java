@@ -9,7 +9,7 @@ import static com.windea.commons.kotlin.extension.CollectionExtensionsKt.getOrDe
 import static com.windea.commons.kotlin.extension.StringExtensionsKt.toIntOrDefault;
 
 /**
- * 字符串到分页对象的转化器（页面从1开始）。
+ * 字符串到分页对象的转换器。页面从1开始。
  * <p>示例格式："", "1,10", "1,10,+name"。
  */
 @Component

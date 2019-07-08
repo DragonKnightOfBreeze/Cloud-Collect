@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
 /**
- * Jwt用户详情的服务（用于安全验证）。
+ * Jwt用户详情的服务。用于安全验证。
  */
 @Service
 public class JwtUserDetailsService implements UserDetailsService {

@@ -19,7 +19,7 @@ public interface CollectTagService {
 	void delete(Long id);
 
 	/**
-	 * 修改自己的标签（名字，概述）。
+	 * 修改自己的标签。名字，概述。
 	 */
 	void modify(Long id, CollectTag tag);
 

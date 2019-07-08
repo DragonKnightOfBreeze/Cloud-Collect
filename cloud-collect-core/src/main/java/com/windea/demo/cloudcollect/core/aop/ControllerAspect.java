@@ -11,7 +11,7 @@ import org.springframework.validation.BindingResult;
 @Aspect
 public class ControllerAspect {
 	/**
-	 * 参数验证的切面（在bindingResult有错时，抛出ValidationException）。
+	 * 参数验证的切面。在bindingResult有错时，抛出ValidationException。
 	 */
 	@Before("within(com.windea.demo.cloudcollect.core.controller..*) && args(bindingResult, ..)")
 	public void bindingResultAdvice(BindingResult bindingResult) {

@@ -5,14 +5,17 @@ import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
 import com.windea.demo.cloudcollect.core.domain.view.EmailRegisterView;
 import com.windea.demo.cloudcollect.core.domain.view.UsernamePasswordLoginView;
 import com.windea.demo.cloudcollect.core.service.*;
+import io.swagger.annotations.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 /**
- * TODO 首页的控制器（包含登录、注册等操作）。
+ * TODO 首页的控制器。包含登录、注册等操作。
  */
+@Api("首页")
 @RestController
 @RequestMapping("/")
 @CrossOrigin
@@ -28,22 +31,36 @@ public class IndexController {
 	}
 
 
-	@PostMapping(value = "/login", params = {"!type", "type=usernameAndPassword"})
-	public User loginByUsernameAndPassword(@RequestBody UsernamePasswordLoginView view, BindingResult bindingResult) {
+	@ApiOperation("通过用户名&密码登录用户。")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "view", value = "用户名&密码登录视图", required = true)
+	})
+	@PostMapping({"/login", "/loginByUsernameAndPassword"})
+	public User loginByUsernameAndPassword(@RequestBody @Valid UsernamePasswordLoginView view,
+		BindingResult bindingResult) {
 		return userService.loginByUsernameAndPassword(view);
 	}
 
-	@PostMapping(value = "/register", params = {"!type", "type=email"})
-	public void registerByEmail(@RequestBody EmailRegisterView view, BindingResult bindingResult) {
+	@ApiOperation("通过邮箱注册用户。")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "view", value = "邮箱注册视图", required = true)
+	})
+	@PostMapping({"/register", "/registerByEmail"})
+	public void registerByEmail(@RequestBody @Valid EmailRegisterView view, BindingResult bindingResult) {
 		userService.registerByEmail(view);
 	}
 
+	@ApiOperation("激活用户。")
 	@PutMapping("/activate")
 	public void activate(Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
 		userService.activate(user);
 	}
 
+	@ApiOperation("重置用户密码。")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "newPassword", value = "新的密码", required = true)
+	})
 	@PutMapping("/resetPassword")
 	public void resetPassword(@RequestParam String newPassword, Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
