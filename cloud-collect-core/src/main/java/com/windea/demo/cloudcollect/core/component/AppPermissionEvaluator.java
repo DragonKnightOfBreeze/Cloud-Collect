@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * 自定义的许可鉴别器。基于实体类属性。判断此属性是否等于principal.name，且对应的permission是否相匹配。
  * <p>用于实现Spring El中的hasPermission()方法。
- * <p>TODO 加入缓存控制，扩展成微型框架。
+ * <p>TODO 加入缓存控制，提高扩展性。
  */
 @Component
 public class AppPermissionEvaluator implements PermissionEvaluator {
