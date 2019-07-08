@@ -11,7 +11,8 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * 自定义许可鉴别器。用于实现Spring El中的hasPermission()方法。
+ * 自定义的许可鉴别器。基于实体类属性。判断此属性是否等于principal.name，且对应的permission是否相匹配。
+ * <p>用于实现Spring El中的hasPermission()方法。
  * <p>TODO 加入缓存控制，扩展成微型框架。
  */
 @Component
@@ -37,29 +38,29 @@ public class AppPermissionEvaluator implements PermissionEvaluator {
 
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-		var principalName = "";
-		var permissionNames = Set.of();
+		var principal = "";
+		var permissions = Set.of();
 
 		if(targetDomainObject instanceof Collect) {
-			principalName = ((Collect) targetDomainObject).getUser().getUsername();
-			permissionNames = Set.of("read", "write", "create", "delete");
+			principal = ((Collect) targetDomainObject).getUser().getUsername();
+			permissions = Set.of("read", "write", "create", "delete");
 		} else if(targetDomainObject instanceof CollectTag) {
-			principalName = ((CollectTag) targetDomainObject).getUser().getUsername();
-			permissionNames = Set.of("read", "write", "create", "delete");
+			principal = ((CollectTag) targetDomainObject).getUser().getUsername();
+			permissions = Set.of("read", "write", "create", "delete");
 		} else if(targetDomainObject instanceof CollectCategory) {
-			principalName = ((CollectCategory) targetDomainObject).getUser().getUsername();
-			permissionNames = Set.of("read", "write", "create", "delete");
+			principal = ((CollectCategory) targetDomainObject).getUser().getUsername();
+			permissions = Set.of("read", "write", "create", "delete");
 		} else if(targetDomainObject instanceof Comment) {
-			principalName = ((Comment) targetDomainObject).getSponsorByUser().getUsername();
-			permissionNames = Set.of("read", "create", "delete");
+			principal = ((Comment) targetDomainObject).getSponsorByUser().getUsername();
+			permissions = Set.of("read", "create", "delete");
 		} else if(targetDomainObject instanceof Notice) {
-			principalName = ((Notice) targetDomainObject).getUser().getUsername();
-			permissionNames = Set.of("read", "delete");
+			principal = ((Notice) targetDomainObject).getUser().getUsername();
+			permissions = Set.of("read", "delete");
 		} else {
 			return false;
 		}
 
-		return Objects.equals(authentication.getName(), principalName) && permissionNames.contains(permission);
+		return Objects.equals(authentication.getName(), principal) && permissions.contains(permission);
 	}
 
 	@Override
