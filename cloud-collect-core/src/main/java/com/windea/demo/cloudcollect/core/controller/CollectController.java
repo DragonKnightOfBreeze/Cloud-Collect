@@ -7,6 +7,7 @@ import com.windea.demo.cloudcollect.core.service.CollectService;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,6 +55,7 @@ public class CollectController {
 		@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	})
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.Collect','delete')")
 	public void delete(@PathVariable Long id) {
 		service.delete(id);
 	}
@@ -64,6 +66,7 @@ public class CollectController {
 		@ApiImplicitParam(name = "collect", value = "修改后的收藏", required = true)
 	})
 	@PutMapping("/{id}")
+	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.Collect','write')")
 	public void modify(@PathVariable Long id, @RequestBody @Valid Collect collect, BindingResult bindingResult) {
 		service.modify(id, collect);
 	}
@@ -74,6 +77,7 @@ public class CollectController {
 		@ApiImplicitParam(name = "category", value = "修改后的收藏的分类", required = true)
 	})
 	@PutMapping("/{id}/category")
+	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.Collect','write')")
 	public void modifyCategory(@PathVariable Long id, @RequestBody CollectCategory category) {
 		service.modifyCategory(id, category);
 	}
@@ -84,8 +88,20 @@ public class CollectController {
 		@ApiImplicitParam(name = "tags", value = "修改后的收藏的标签", required = true)
 	})
 	@PutMapping("/{id}/tags")
+	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.Collect','write')")
 	public void modifyTags(@PathVariable Long id, @RequestBody Set<CollectTag> tags) {
 		service.modifyTags(id, tags);
+	}
+
+	@ApiOperation("修改自己的收藏的类型。")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
+		@ApiImplicitParam(name = "type", value = "修改后的收藏的类型", required = true)
+	})
+	@PutMapping("/{id}/type")
+	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.CollectCategory','write')")
+	public void modifyType(@PathVariable Long id, @RequestBody CollectType type) {
+		service.modifyType(id, type);
 	}
 
 	@ApiOperation("点赞某一收藏。")
@@ -150,6 +166,7 @@ public class CollectController {
 		@ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	})
 	@GetMapping("/findAll")
+	@PreAuthorize("hasRole('ADMIN')")
 	public Page<Collect> findAll(@RequestParam Pageable pageable) {
 		return service.findAll(pageable);
 	}

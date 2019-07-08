@@ -1,11 +1,17 @@
 package com.windea.demo.cloudcollect.core.controller;
 
 import com.windea.demo.cloudcollect.core.domain.entity.Notice;
+import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
 import com.windea.demo.cloudcollect.core.service.NoticeService;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  * 通知的控制器。
@@ -22,13 +28,23 @@ public class NoticeController {
 	}
 
 
-	//不允许用户自行创建通知
+	@ApiOperation("创建通知。")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "notice", value = "新的通知", required = true)
+	})
+	@PostMapping("/create")
+	@PreAuthorize("hasRole('ADMIN')")
+	public void create(@RequestBody @Valid Notice notice, BindingResult bindingResult, Principal principal) {
+		var user = ((JwtUserDetails) principal).getDelegateUser();
+		service.create(notice);
+	}
 
 	@ApiOperation("删除自己的通知。")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	})
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.Notice','delete')")
 	public void delete(@PathVariable Long id) {
 		service.delete(id);
 	}
@@ -56,6 +72,7 @@ public class NoticeController {
 		@ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	})
 	@GetMapping("/findAll")
+	@PreAuthorize("hasRole('ADMIN')")
 	public Page<Notice> findAll(@RequestParam Pageable pageable) {
 		return service.findAll(pageable);
 	}

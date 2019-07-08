@@ -7,6 +7,7 @@ import com.windea.demo.cloudcollect.core.service.CollectCategoryService;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,7 @@ public class CollectCategoryController {
 		@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	})
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.CollectCategory','delete')")
 	public void delete(@PathVariable Long id) {
 		service.delete(id);
 	}
@@ -54,6 +56,7 @@ public class CollectCategoryController {
 		@ApiImplicitParam(name = "category", value = "修改后的分类", required = true)
 	})
 	@PutMapping("/{id}")
+	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.CollectCategory','write')")
 	public void modify(@PathVariable Long id, @RequestBody @Valid CollectCategory category,
 		BindingResult bindingResult) {
 		service.modify(id, category);
@@ -92,6 +95,7 @@ public class CollectCategoryController {
 		@ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	})
 	@GetMapping("/findAll")
+	@PreAuthorize("hasRole('ADMIN')")
 	public Page<CollectCategory> findAll(@RequestParam Pageable pageable) {
 		return service.findAll(pageable);
 	}

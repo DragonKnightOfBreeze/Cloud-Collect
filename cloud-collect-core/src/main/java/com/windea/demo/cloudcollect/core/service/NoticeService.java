@@ -1,7 +1,6 @@
 package com.windea.demo.cloudcollect.core.service;
 
 import com.windea.demo.cloudcollect.core.domain.entity.Notice;
-import com.windea.demo.cloudcollect.core.domain.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,9 +9,9 @@ import org.springframework.data.domain.Pageable;
  */
 public interface NoticeService {
 	/**
-	 * 创建通知。
+	 * 创建通知，发送给所有用户。
 	 */
-	void create(Notice notice, User user);
+	void create(Notice notice);
 
 	/**
 	 * 删除通知。

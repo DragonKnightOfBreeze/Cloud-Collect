@@ -1,8 +1,8 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
 import com.windea.demo.cloudcollect.core.domain.entity.Notice;
-import com.windea.demo.cloudcollect.core.domain.entity.User;
 import com.windea.demo.cloudcollect.core.repository.NoticeRepository;
+import com.windea.demo.cloudcollect.core.repository.UserRepository;
 import com.windea.demo.cloudcollect.core.service.NoticeService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -14,17 +14,25 @@ import javax.transaction.Transactional;
 @Service
 public class NoticeServiceImpl implements NoticeService {
 	private final NoticeRepository repository;
+	private final UserRepository userRepository;
 
-	public NoticeServiceImpl(NoticeRepository repository) {
+	public NoticeServiceImpl(NoticeRepository repository, UserRepository userRepository) {
 		this.repository = repository;
+		this.userRepository = userRepository;
 	}
 
 
 	@Transactional
 	@Override
-	public void create(Notice notice, User user) {
-		notice.setUser(user);
-		repository.save(notice);
+	public void create(Notice notice) {
+		var userList = userRepository.findAll();
+		for(var user : userList) {
+			var newNotice = new Notice();
+			notice.setUser(user);
+			notice.setTitle(newNotice.getTitle());
+			notice.setContent(newNotice.getContent());
+			repository.save(newNotice);
+		}
 	}
 
 	@Transactional

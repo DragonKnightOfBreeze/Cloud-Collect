@@ -6,6 +6,7 @@ import com.windea.demo.cloudcollect.core.service.CommentService;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,6 +58,7 @@ public class CommentController {
 		@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	})
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasPermission(#id,'com.windea.demo.cloudcollect.core.domain.entity.Comment','delete')")
 	public void delete(@PathVariable Long id) {
 		service.delete(id);
 	}
@@ -94,6 +96,7 @@ public class CommentController {
 		@ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	})
 	@GetMapping("/findAll")
+	@PreAuthorize("hasRole('ADMIN')")
 	public Page<Comment> findAll(@RequestParam Pageable pageable) {
 		return service.findAll(pageable);
 	}

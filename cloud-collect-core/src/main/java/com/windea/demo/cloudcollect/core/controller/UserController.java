@@ -6,6 +6,7 @@ import com.windea.demo.cloudcollect.core.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -147,6 +148,7 @@ public class UserController {
 		@ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	})
 	@GetMapping("/findAll")
+	@PreAuthorize("hasRole('ADMIN')")
 	public Page<User> findAll(@RequestParam Pageable pageable) {
 		return service.findAll(pageable);
 	}
