@@ -1,9 +1,7 @@
 package com.windea.demo.cloudcollect.core.controller;
 
-import com.windea.demo.cloudcollect.core.domain.entity.Collect;
 import com.windea.demo.cloudcollect.core.domain.entity.Comment;
 import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
-import com.windea.demo.cloudcollect.core.exception.ValidationException;
 import com.windea.demo.cloudcollect.core.service.CommentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,23 +26,17 @@ public class CommentController {
 
 
 	@PostMapping("/create")
-	public void create(@RequestBody @Valid Comment comment, BindingResult bindingResult,
-		Collect collect, Principal principal) {
-		if(bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors());
-		}
+	public void create(@RequestParam Long collectId,
+		@RequestBody @Valid Comment comment, BindingResult bindingResult, Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
-		service.create(comment, collect, user);
+		service.create(collectId, comment, user);
 	}
 
 	@PostMapping("/reply")
-	public void reply(@RequestBody @Valid Comment comment, BindingResult bindingResult,
-		Collect collect, Comment replyToComment, Principal principal) {
-		if(bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors());
-		}
+	public void reply(@RequestParam Long collectId, @RequestParam Long replyToCommentId,
+		@RequestBody @Valid Comment comment, BindingResult bindingResult, Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
-		service.reply(comment, collect, replyToComment, user);
+		service.reply(collectId, replyToCommentId, comment, user);
 	}
 
 	@DeleteMapping("/{id}")

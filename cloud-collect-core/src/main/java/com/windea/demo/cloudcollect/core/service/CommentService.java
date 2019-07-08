@@ -1,6 +1,7 @@
 package com.windea.demo.cloudcollect.core.service;
 
-import com.windea.demo.cloudcollect.core.domain.entity.*;
+import com.windea.demo.cloudcollect.core.domain.entity.Comment;
+import com.windea.demo.cloudcollect.core.domain.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,12 +12,12 @@ public interface CommentService {
 	/**
 	 * 创建自己的评论。
 	 */
-	void create(Comment comment, Collect collect, User sponsorByUser);
+	void create(Long collectId, Comment comment, User sponsorByUser);
 
 	/**
 	 * 创建自己的评论，回复某一评论。
 	 */
-	void reply(Comment comment, Collect collect, Comment replyToComment, User sponsorByUser);
+	void reply(Long collectId, Long replyToCommentId, Comment comment, User sponsorByUser);
 
 	/**
 	 * 删除自己的评论。

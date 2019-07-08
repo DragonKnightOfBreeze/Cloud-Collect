@@ -8,33 +8,34 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface CollectRepository extends JpaRepository<Collect, Long> {
-	Page<Collect> findByUser_IdAndDeleted(Long userId, Boolean deleted, Pageable pageable);
+	Page<Collect> findByUser_IdAndDeleteStatus(Long userId, Boolean deleteStatus, Pageable pageable);
 
-	Long countByUser_IdAndDeleted(Long userId, Boolean deleted);
+	long countByUser_IdAndDeleteStatus(Long userId, Boolean deleteStatus);
 
-	Page<Collect> findByUser_IdAndNameContainsAndDeletedFalse(Long userId, String name, Pageable pageable);
+	Page<Collect> findByUser_IdAndNameContainsAndDeleteStatusFalse(Long userId, String name, Pageable pageable);
 
-	Page<Collect> findByCategory_IdAndDeletedFalse(Long categoryId, Pageable pageable);
+	Page<Collect> findByCategory_IdAndDeleteStatusFalse(Long categoryId, Pageable pageable);
 
-	Long countByCategory_IdAndDeletedFalse(Long categoryId);
+	long countByCategory_IdAndDeleteStatusFalse(Long categoryId);
 
-	@Query("from Collect c, in(c.tags) t where t.id=:tagId and c.deleted=false")
-	Page<Collect> findByTag_IdAndDeletedFalse(Long tagId, Pageable pageable);
+	@Query("from Collect c, in(c.tags) t where t.id=:tagId and c.deleteStatus=false")
+	Page<Collect> findByTag_IdAndDeleteStatusFalse(Long tagId, Pageable pageable);
 
-	@Query("select count(c) from Collect c, in(c.tags) t where t.id=:tagId and c.deleted=false")
-	Long countByTag_IdAndDeletedFalse(Long tagId);
+	@Query("select count(c) from Collect c, in(c.tags) t where t.id=:tagId and c.deleteStatus=false")
+	long countByTag_IdAndDeleteStatusFalse(Long tagId);
 
-	Page<Collect> findByUser_IdAndTypeAndDeletedFalse(Long userId, CollectType type, Pageable pageable);
+	Page<Collect> findByUser_IdAndTypeAndDeleteStatusFalse(Long userId, CollectType type, Pageable pageable);
 
-	Long countByUser_IdAndTypeAndDeletedFalse(Long userId, CollectType type);
+	long countByUser_IdAndTypeAndDeleteStatusFalse(Long userId, CollectType type);
 
-	@Query("from Collect c, in(c.praiseByUserList) u where u.id=:praiseByUserId and c.deleted=false")
-	Page<Collect> findByPraiseByUser_IdAndDeletedFalse(Long praiseByUserId, Pageable pageable);
+	@Query("from Collect c, in(c.praiseByUserList) u where u.id=:praiseByUserId and c.deleteStatus=false")
+	Page<Collect> findByPraiseByUser_IdAndDeleteStatusFalse(Long praiseByUserId, Pageable pageable);
 
-	@Query("select count(c) from Collect c, in(c.praiseByUserList) u where u.id=:praiseByUserId and c.deleted=false")
-	Long countByPraiseByUser_IdAndDeletedFalse(Long praiseByUserId);
+	@Query("select count(c) from Collect c, in(c.praiseByUserList) u where u.id=:praiseByUserId and c" +
+		".deleteStatus=false")
+	long countByPraiseByUser_IdAndDeleteStatusFalse(Long praiseByUserId);
 
-	Page<Collect> findByNameContainsAndDeletedFalse(String name, Pageable pageable);
+	Page<Collect> findByNameContainsAndDeleteStatusFalse(String name, Pageable pageable);
 
 	boolean existsByUser_IdAndName(Long userId, String name);
 }

@@ -37,7 +37,7 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public void read(Long id) {
 		var notice = repository.getOne(id);
-		notice.setRead(true);
+		notice.setReadStatus(true);
 		repository.save(notice);
 	}
 
@@ -61,7 +61,7 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Cacheable("noticePage.byUserAndRead")
 	@Override
-	public Page<Notice> findByUserAndRead(Long userId, Boolean read, Pageable pageable) {
-		return repository.findByUser_IdAndRead(userId, read, pageable);
+	public Page<Notice> findByUserAndReadStatus(Long userId, Boolean readStatus, Pageable pageable) {
+		return repository.findByUser_IdAndReadStatus(userId, readStatus, pageable);
 	}
 }

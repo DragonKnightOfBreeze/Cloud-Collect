@@ -30,13 +30,13 @@ public class Comment implements Serializable {
 	/**
 	 * 所属收藏。
 	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	private Collect collect;
 
 	/**
 	 * 发起该评论的用户。
 	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	private User sponsorByUser;
 
 	/**
@@ -51,7 +51,7 @@ public class Comment implements Serializable {
 	 */
 	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
-	@Column(nullable = false, columnDefinition = "text")
+	@Column(nullable = false)
 	private String content;
 
 	/**

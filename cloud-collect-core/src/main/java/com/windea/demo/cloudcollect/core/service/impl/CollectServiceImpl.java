@@ -1,6 +1,5 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
-import com.windea.commons.kotlin.extension.StringExtensionsKt;
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
 import com.windea.demo.cloudcollect.core.exception.NotFoundException;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Set;
+
+import static com.windea.commons.kotlin.extension.StringExtensionsKt.toUrlInfo;
 
 @Service
 public class CollectServiceImpl implements CollectService {
@@ -31,9 +32,9 @@ public class CollectServiceImpl implements CollectService {
 	@Transactional
 	@Override
 	public void create(Collect collect, User user) {
-		collect.setUrl(StringExtensionsKt.toUrlInfo(collect.getUrl()).getFullPath());
+		collect.setUrl(toUrlInfo(collect.getUrl()).getFullPath());
 		if(collect.getLogoUrl() != null) {
-			collect.setLogoUrl(StringExtensionsKt.toUrlInfo(collect.getLogoUrl()).getFullPath());
+			collect.setLogoUrl(toUrlInfo(collect.getLogoUrl()).getFullPath());
 		}
 		collect.setUser(user);
 		repository.save(collect);
@@ -53,7 +54,7 @@ public class CollectServiceImpl implements CollectService {
 	@Override
 	public void delete(Long id) {
 		var collect = repository.getOne(id);
-		collect.setDeleted(true);
+		collect.setDeleteStatus(true);
 		repository.save(collect);
 	}
 
@@ -140,40 +141,40 @@ public class CollectServiceImpl implements CollectService {
 		return repository.findAll(pageable);
 	}
 
-	@Cacheable("collectPage.byUserAndDeleted")
+	@Cacheable("collectPage.byUserAndDeleteStatus")
 	@Override
-	public Page<Collect> findByUserAndDeleted(Long userId, Boolean deleted, Pageable pageable) {
-		return repository.findByUser_IdAndDeleted(userId, deleted, pageable);
+	public Page<Collect> findByUserAndDeleteStatus(Long userId, Boolean deleteStatus, Pageable pageable) {
+		return repository.findByUser_IdAndDeleteStatus(userId, deleteStatus, pageable);
 	}
 
 	@Cacheable("collectPage.byUserAndName")
 	@Override
 	public Page<Collect> findByUserAndName(Long userId, String name, Pageable pageable) {
-		return repository.findByUser_IdAndNameContainsAndDeletedFalse(userId, name, pageable);
+		return repository.findByUser_IdAndNameContainsAndDeleteStatusFalse(userId, name, pageable);
 	}
 
 	@Cacheable("collectPage.byUserAndCategory")
 	@Override
 	public Page<Collect> findByUserAndCategory(Long categoryId, Pageable pageable) {
-		return repository.findByCategory_IdAndDeletedFalse(categoryId, pageable);
+		return repository.findByCategory_IdAndDeleteStatusFalse(categoryId, pageable);
 	}
 
 	@Cacheable("collectPage.byUserAndTag")
 	@Override
 	public Page<Collect> findByUserAndTag(Long tagId, Pageable pageable) {
-		return repository.findByTag_IdAndDeletedFalse(tagId, pageable);
+		return repository.findByTag_IdAndDeleteStatusFalse(tagId, pageable);
 	}
 
 	@Cacheable("collectPage.byUserAndType")
 	@Override
 	public Page<Collect> findByUserAndType(Long userId, CollectType type, Pageable pageable) {
-		return repository.findByUser_IdAndTypeAndDeletedFalse(userId, type, pageable);
+		return repository.findByUser_IdAndTypeAndDeleteStatusFalse(userId, type, pageable);
 	}
 
 	@Cacheable("collectPage.byName")
 	@Override
 	public Page<Collect> findByName(String name, Pageable pageable) {
-		return repository.findByNameContainsAndDeletedFalse(name, pageable);
+		return repository.findByNameContainsAndDeleteStatusFalse(name, pageable);
 	}
 
 	@Override

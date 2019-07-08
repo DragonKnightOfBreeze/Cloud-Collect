@@ -47,7 +47,7 @@ public class CollectTag implements Serializable {
 	 */
 	@NotEmpty(message = "validation.CollectTag.summary.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.CollectTag.summary.Size")
-	@Column(nullable = false, columnDefinition = "text")
+	@Column(nullable = false)
 	private String summary;
 
 	/**

@@ -39,16 +39,18 @@ public class JwtFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 	throws ServletException, IOException {
 		var token = getToken(request);
-		var username = jwtProvider.getUsername(token);
-		var userDetails = userDetailsService.loadUserByUsername(username);
-
-		if(StringUtils.hasText(token) && jwtProvider.validateToken(token, userDetails)) {
-			var authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-			authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-			SecurityContextHolder.getContext().setAuthentication(authToken);
-			log.info("Set authentication from Jwt success. Authenticated user: " + username);
-		} else {
-			log.error("Set authentication from Jwt failed.");
+		//如果存在令牌，则解析令牌，生成并存入认真对象
+		if(StringUtils.hasText(token)) {
+			var username = jwtProvider.getUsername(token);
+			var userDetails = userDetailsService.loadUserByUsername(username);
+			if(jwtProvider.validateToken(token, userDetails)) {
+				var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+				auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				SecurityContextHolder.getContext().setAuthentication(auth);
+				log.info("Set authentication from Jwt success. Authenticated user: " + username);
+			} else {
+				log.error("Set authentication from Jwt failed.");
+			}
 		}
 		chain.doFilter(request, response);
 	}

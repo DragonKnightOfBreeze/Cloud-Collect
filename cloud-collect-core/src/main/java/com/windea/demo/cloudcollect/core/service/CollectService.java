@@ -22,7 +22,7 @@ public interface CollectService {
 	void createFrom(Collect collect, User user);
 
 	/**
-	 * 删除自己的收藏（不删除数据库中的数据，而是将deleted设为true）。
+	 * 删除自己的收藏（不删除数据库中的数据，而是将deleteStatus设为true）。
 	 */
 	void delete(Long id);
 
@@ -84,7 +84,7 @@ public interface CollectService {
 	/**
 	 * 分页查询某一用户的所有已删除/未删除收藏。
 	 */
-	Page<Collect> findByUserAndDeleted(Long userId, Boolean deleted, Pageable pageable);
+	Page<Collect> findByUserAndDeleteStatus(Long userId, Boolean deleteStatus, Pageable pageable);
 
 	/**
 	 * 根据名字分页模糊查询某一用户的所有收藏。

@@ -60,7 +60,7 @@ public class JwtUserDetails implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return delegateUser.getActivated();
+		return delegateUser.getActivateStatus();
 	}
 }
 

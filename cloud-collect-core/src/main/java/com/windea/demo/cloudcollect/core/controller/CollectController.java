@@ -3,7 +3,6 @@ package com.windea.demo.cloudcollect.core.controller;
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
 import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
-import com.windea.demo.cloudcollect.core.exception.ValidationException;
 import com.windea.demo.cloudcollect.core.service.CollectService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,18 +29,12 @@ public class CollectController {
 
 	@PostMapping("/create")
 	public void create(@RequestBody @Valid Collect collect, BindingResult bindingResult, Principal principal) {
-		if(bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors());
-		}
 		var user = ((JwtUserDetails) principal).getDelegateUser();
 		service.create(collect, user);
 	}
 
 	@PostMapping("/createFrom")
 	public void createFrom(@RequestBody @Valid Collect collect, BindingResult bindingResult, Principal principal) {
-		if(bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors());
-		}
 		var user = ((JwtUserDetails) principal).getDelegateUser();
 		service.createFrom(collect, user);
 	}
@@ -53,9 +46,6 @@ public class CollectController {
 
 	@PutMapping("/{id}")
 	public void modify(@PathVariable Long id, @RequestBody @Valid Collect collect, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors());
-		}
 		service.modify(id, collect);
 	}
 
@@ -105,10 +95,10 @@ public class CollectController {
 		return service.findAll(pageable);
 	}
 
-	@GetMapping("/findByUserAndDeleted")
-	public Page<Collect> findByUserAndDeleted(@RequestParam Long userId, @RequestParam Boolean deleted,
+	@GetMapping("/findByUserAndDeleteStatus")
+	public Page<Collect> findByUserAndDeleteStatus(@RequestParam Long userId, @RequestParam Boolean deleteStatus,
 		@RequestParam Pageable pageable) {
-		return service.findByUserAndDeleted(userId, deleted, pageable);
+		return service.findByUserAndDeleteStatus(userId, deleteStatus, pageable);
 	}
 
 	@GetMapping("/findByUserAndName")

@@ -47,9 +47,9 @@ public class NoticeController {
 		return service.findByUser(userId, pageable);
 	}
 
-	@GetMapping("/findByUserAndRead")
-	public Page<Notice> findByUserAndRead(@RequestParam Long userId, @RequestParam Boolean read,
+	@GetMapping("/findByUserAndReadStatus")
+	public Page<Notice> findByUserAndReadStatus(@RequestParam Long userId, @RequestParam Boolean readStatus,
 		@RequestParam Pageable pageable) {
-		return service.findByUserAndRead(userId, read, pageable);
+		return service.findByUserAndReadStatus(userId, readStatus, pageable);
 	}
 }

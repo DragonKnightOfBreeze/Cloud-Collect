@@ -5,6 +5,7 @@ import com.windea.demo.cloudcollect.core.domain.enums.Role;
 import com.windea.demo.cloudcollect.core.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,7 +25,7 @@ public class UserController {
 	//注册、登录等操作委托给首页控制器
 
 	@PutMapping("/{id}")
-	public void update(@PathVariable Long id, @RequestBody User user) {
+	public void update(@PathVariable Long id, @RequestBody User user, BindingResult bindingResult) {
 		service.update(id, user);
 	}
 

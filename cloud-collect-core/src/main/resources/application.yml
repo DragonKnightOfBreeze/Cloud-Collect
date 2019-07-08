@@ -7,12 +7,10 @@ server:
     basedir: target/tomcat
   servlet:
     # 指定服务器的内容根路径
-    context-path: /cloud-collect/controller
+    context-path: /cloud-collect/api
 
 spring:
   jpa:
-    # 用于Jpa控制台调试
-    database-platform: org.hibernate.dialect.MySQLDialect
     # 表不存在时自动创建，之后更新
     hibernate:
       ddl-auto: update
@@ -23,7 +21,7 @@ spring:
   datasource:
     username: Windea
     password: BreezesLanding
-    url: jdbc:mysql://localhost:3306/CloudCollect
+    url: jdbc:mysql://localhost:3306/cloud_collect
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       data-source-properties:

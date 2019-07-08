@@ -54,13 +54,13 @@ public class CollectTagServiceImpl implements CollectTagService {
 	@Cacheable("collectTag.collectPage")
 	@Override
 	public Page<Collect> getCollectPage(Long id, Pageable pageable) {
-		return collectRepository.findByTag_IdAndDeletedFalse(id, pageable);
+		return collectRepository.findByTag_IdAndDeleteStatusFalse(id, pageable);
 	}
 
 	@Cacheable("collectTag.collectCount")
 	@Override
 	public Long getCollectCount(Long id) {
-		return collectRepository.countByTag_IdAndDeletedFalse(id);
+		return collectRepository.countByTag_IdAndDeleteStatusFalse(id);
 	}
 
 	@Cacheable("collectTagPage")

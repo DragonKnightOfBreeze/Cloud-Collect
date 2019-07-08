@@ -45,8 +45,8 @@ public class UseServiceImpl implements UserService {
 
 	@Override
 	public User loginByUsernameAndPassword(UsernamePasswordLoginView view) {
-		var authToken = new UsernamePasswordAuthenticationToken(view.getUsername(), view.getPassword());
-		var validAuthToken = authenticationManager.authenticate(authToken);
+		var auth = new UsernamePasswordAuthenticationToken(view.getUsername(), view.getPassword());
+		var validAuthToken = authenticationManager.authenticate(auth);
 		SecurityContextHolder.getContext().setAuthentication(validAuthToken);
 
 		var userDetails = (JwtUserDetails) validAuthToken.getPrincipal();
@@ -69,7 +69,7 @@ public class UseServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void activate(User user) {
-		user.setActivated(true);
+		user.setActivateStatus(true);
 		repository.save(user);
 
 		emailService.sendHelloEmail();
@@ -126,13 +126,13 @@ public class UseServiceImpl implements UserService {
 	@Cacheable("user.collectPage")
 	@Override
 	public Page<Collect> getCollectPage(Long id, Pageable pageable) {
-		return collectRepository.findByUser_IdAndDeleted(id, false, pageable);
+		return collectRepository.findByUser_IdAndDeleteStatus(id, false, pageable);
 	}
 
 	@Cacheable("user.collectCount")
 	@Override
 	public Long getCollectCount(Long id) {
-		return collectRepository.countByUser_IdAndDeleted(id, false);
+		return collectRepository.countByUser_IdAndDeleteStatus(id, false);
 	}
 
 	@Cacheable("user.collectCategoryPage")

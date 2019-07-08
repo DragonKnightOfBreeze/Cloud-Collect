@@ -4,7 +4,6 @@ import com.windea.demo.cloudcollect.core.domain.entity.User;
 import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
 import com.windea.demo.cloudcollect.core.domain.view.EmailRegisterView;
 import com.windea.demo.cloudcollect.core.domain.view.UsernamePasswordLoginView;
-import com.windea.demo.cloudcollect.core.exception.ValidationException;
 import com.windea.demo.cloudcollect.core.service.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -31,17 +30,11 @@ public class IndexController {
 
 	@PostMapping(value = "/login", params = {"!type", "type=usernameAndPassword"})
 	public User loginByUsernameAndPassword(@RequestBody UsernamePasswordLoginView view, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors());
-		}
 		return userService.loginByUsernameAndPassword(view);
 	}
 
 	@PostMapping(value = "/register", params = {"!type", "type=email"})
 	public void registerByEmail(@RequestBody EmailRegisterView view, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors());
-		}
 		userService.registerByEmail(view);
 	}
 

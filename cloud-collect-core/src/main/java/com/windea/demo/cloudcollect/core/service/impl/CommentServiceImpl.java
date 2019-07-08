@@ -1,7 +1,9 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
-import com.windea.demo.cloudcollect.core.domain.entity.*;
+import com.windea.demo.cloudcollect.core.domain.entity.Comment;
+import com.windea.demo.cloudcollect.core.domain.entity.User;
 import com.windea.demo.cloudcollect.core.exception.NotFoundException;
+import com.windea.demo.cloudcollect.core.repository.CollectRepository;
 import com.windea.demo.cloudcollect.core.repository.CommentRepository;
 import com.windea.demo.cloudcollect.core.service.CommentService;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,15 +16,18 @@ import javax.transaction.Transactional;
 @Service
 public class CommentServiceImpl implements CommentService {
 	private final CommentRepository repository;
+	private final CollectRepository collectRepository;
 
-	public CommentServiceImpl(CommentRepository repository) {
+	public CommentServiceImpl(CommentRepository repository, CollectRepository collectRepository) {
 		this.repository = repository;
+		this.collectRepository = collectRepository;
 	}
 
 
 	@Transactional
 	@Override
-	public void create(Comment comment, Collect collect, User sponsorByUser) {
+	public void create(Long collectId, Comment comment, User sponsorByUser) {
+		var collect = collectRepository.findById(collectId).orElseThrow(NotFoundException::new);
 		comment.setCollect(collect);
 		comment.setSponsorByUser(sponsorByUser);
 		repository.save(comment);
@@ -30,8 +35,10 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional
 	@Override
-	public void reply(Comment comment, Collect collect, Comment replyToComment, User sponsorByUser) {
+	public void reply(Long collectId, Long replyToCommentId, Comment comment, User sponsorByUser) {
+		var collect = collectRepository.findById(collectId).orElseThrow(NotFoundException::new);
 		comment.setCollect(collect);
+		var replyToComment = repository.findById(replyToCommentId).orElseThrow(NotFoundException::new);
 		comment.setReplyToComment(replyToComment);
 		comment.setSponsorByUser(sponsorByUser);
 		repository.save(comment);

@@ -20,7 +20,7 @@ public interface NoticeService {
 	void delete(Long id);
 
 	/**
-	 * 阅读通知（将read设为true）。
+	 * 阅读通知（将readStatus设为true）。
 	 */
 	void read(Long id);
 
@@ -42,5 +42,5 @@ public interface NoticeService {
 	/**
 	 * 分页查询某一用户的所有已读/未读通知。
 	 */
-	Page<Notice> findByUserAndRead(Long userId, Boolean read, Pageable pageable);
+	Page<Notice> findByUserAndReadStatus(Long userId, Boolean readStatus, Pageable pageable);
 }

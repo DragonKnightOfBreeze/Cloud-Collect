@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CollectCategoryRepository extends JpaRepository<CollectCategory, Long> {
 	Page<CollectCategory> findByUser_Id(Long userId, Pageable pageable);
 
-	Long countByUser_Id(Long userId);
+	long countByUser_Id(Long userId);
 
 	Page<CollectCategory> findByUser_IdAndNameContains(Long userId, String name, Pageable pageable);
 

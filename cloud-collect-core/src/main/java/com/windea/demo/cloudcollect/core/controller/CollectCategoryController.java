@@ -3,7 +3,6 @@ package com.windea.demo.cloudcollect.core.controller;
 import com.windea.demo.cloudcollect.core.domain.entity.Collect;
 import com.windea.demo.cloudcollect.core.domain.entity.CollectCategory;
 import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
-import com.windea.demo.cloudcollect.core.exception.ValidationException;
 import com.windea.demo.cloudcollect.core.service.CollectCategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,9 +29,6 @@ public class CollectCategoryController {
 	@PostMapping("/create")
 	public void create(@RequestBody @Valid CollectCategory category, BindingResult bindingResult,
 		Principal principal) {
-		if(bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors());
-		}
 		var user = ((JwtUserDetails) principal).getDelegateUser();
 		service.create(category, user);
 	}
@@ -44,9 +40,6 @@ public class CollectCategoryController {
 
 	@PutMapping("/{id}")
 	public void modify(@PathVariable Long id, @RequestBody CollectCategory category, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors());
-		}
 		service.modify(id, category);
 	}
 

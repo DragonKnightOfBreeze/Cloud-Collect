@@ -68,7 +68,7 @@ public class User implements Serializable {
 	 */
 	@NotEmpty(message = "validation.User.introduce.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.User.introduce.Size")
-	@Column(nullable = false, columnDefinition = "text")
+	@Column(nullable = false)
 	private String introduce = "这家伙很懒，什么也没留下。";
 
 	/**
@@ -95,8 +95,8 @@ public class User implements Serializable {
 	/**
 	 * TODO 是否已激活（暂时设为总是已激活）。
 	 */
-	@Column(nullable = false)
-	private Boolean activated = true;
+	@Column
+	private Boolean activateStatus = true;
 
 	/**
 	 * 注册时间。

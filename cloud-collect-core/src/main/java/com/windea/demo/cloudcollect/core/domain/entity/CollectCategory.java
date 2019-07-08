@@ -31,7 +31,7 @@ public class CollectCategory implements Serializable {
 	/**
 	 * 所属用户。
 	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	private User user;
 
 	/**
@@ -47,7 +47,7 @@ public class CollectCategory implements Serializable {
 	 */
 	@NotEmpty(message = "validation.CollectCategory.summary.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.CollectCategory.summary.Size")
-	@Column(nullable = false, columnDefinition = "text")
+	@Column(nullable = false)
 	private String summary;
 
 	/**

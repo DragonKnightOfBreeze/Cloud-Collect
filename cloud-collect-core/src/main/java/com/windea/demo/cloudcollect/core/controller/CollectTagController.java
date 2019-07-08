@@ -3,7 +3,6 @@ package com.windea.demo.cloudcollect.core.controller;
 import com.windea.demo.cloudcollect.core.domain.entity.Collect;
 import com.windea.demo.cloudcollect.core.domain.entity.CollectTag;
 import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
-import com.windea.demo.cloudcollect.core.exception.ValidationException;
 import com.windea.demo.cloudcollect.core.service.CollectTagService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,9 +28,6 @@ public class CollectTagController {
 
 	@PostMapping("/create")
 	public void create(@RequestBody @Valid CollectTag tag, BindingResult bindingResult, Principal principal) {
-		if(bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors());
-		}
 		var user = ((JwtUserDetails) principal).getDelegateUser();
 		service.create(tag, user);
 	}
@@ -43,9 +39,6 @@ public class CollectTagController {
 
 	@PutMapping("/{id}")
 	public void modify(@PathVariable Long id, @RequestBody CollectTag tag, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors());
-		}
 		service.modify(id, tag);
 	}
 

@@ -54,13 +54,13 @@ public class CollectCategoryServiceImpl implements CollectCategoryService {
 	@Cacheable("collectCategory.collectPage")
 	@Override
 	public Page<Collect> getCollectPage(Long id, Pageable pageable) {
-		return collectRepository.findByCategory_IdAndDeletedFalse(id, pageable);
+		return collectRepository.findByCategory_IdAndDeleteStatusFalse(id, pageable);
 	}
 
 	@Cacheable("collectCategory.collectCount")
 	@Override
 	public Long getCollectCount(Long id) {
-		return collectRepository.countByCategory_IdAndDeletedFalse(id);
+		return collectRepository.countByCategory_IdAndDeleteStatusFalse(id);
 	}
 
 	@Cacheable("collectCategoryPage")

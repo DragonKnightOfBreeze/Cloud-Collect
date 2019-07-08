@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
 	Page<Notice> findByUser_Id(Long userId, Pageable pageable);
 
-	Long countByUser_Id(Long userId);
+	long countByUser_Id(Long userId);
 
-	Page<Notice> findByUser_IdAndRead(Long userId, Boolean read, Pageable pageable);
+	Page<Notice> findByUser_IdAndReadStatus(Long userId, Boolean readStatus, Pageable pageable);
 
-	Long countByUser_IdAndRead(Long userId, Boolean read);
+	long countByUser_IdAndReadStatus(Long userId, Boolean readStatus);
 }

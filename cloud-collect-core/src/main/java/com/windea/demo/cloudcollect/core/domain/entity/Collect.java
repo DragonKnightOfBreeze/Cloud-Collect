@@ -33,7 +33,7 @@ public class Collect implements Serializable {
 	/**
 	 * 所属用户。
 	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	private User user;
 
 	/**
@@ -49,7 +49,7 @@ public class Collect implements Serializable {
 	 */
 	@NotEmpty(message = "validation.Collect.summary.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.Collect.summary.Size")
-	@Column(nullable = false, columnDefinition = "text")
+	@Column(nullable = false)
 	private String summary;
 
 	/**
@@ -88,8 +88,8 @@ public class Collect implements Serializable {
 	/**
 	 * 是否已经删除。
 	 */
-	@Column(nullable = false)
-	private Boolean deleted = false;
+	@Column
+	private Boolean deleteStatus = false;
 
 	/**
 	 * 创建时间。

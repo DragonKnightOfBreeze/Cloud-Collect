@@ -26,19 +26,19 @@ public class Notice implements Serializable {
 	/**
 	 * 所属用户。
 	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	private User user;
 
 	/**
 	 * 标题。
 	 */
-	@Column(nullable = false, columnDefinition = "text")
+	@Column(nullable = false)
 	private String title;
 
 	/**
 	 * 内容。
 	 */
-	@Column(nullable = false, columnDefinition = "text")
+	@Column(nullable = false, length = 32)
 	private String content;
 
 	/**
@@ -51,8 +51,8 @@ public class Notice implements Serializable {
 	/**
 	 * 是否已读。
 	 */
-	@Column(nullable = false)
-	private Boolean read = false;
+	@Column
+	private Boolean readStatus = false;
 
 	/**
 	 * 创建时间。

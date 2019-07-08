@@ -15,8 +15,8 @@
 
 * [ ] 组件类 component
     [X] 安全验证的相关组件。
-    [ ] 自定义字符串到分页对象转换器。
-    [ ] 适用于BindingResult的切面（当控制层方法中含有bindingResult参数时，在有错时抛出参数验证异常）。
+    [X] 自定义字符串到分页、排序对象转换器。
+    [X] 适用于BindingResult的切面（当控制层方法中含有bindingResult参数时，在有错时抛出参数验证异常）。
 * [ ] 配置类 configuration
     [X] 安全验证的相关配置。
     [X] Swagger2的相关配置。
@@ -25,6 +25,7 @@
 * [ ] 参数验证 validation
     [X] 特殊属性的相关验证。
     [X] 唯一实体类的相关验证。
+
 * [X] 实体类 domain
     [X] 一般的实体类、枚举、模型、视图。
 * [X] 持久层 repository
@@ -114,3 +115,7 @@
     * 导出收藏到xml/json/yaml文件。 
 * [X] `JwtUserDetailsService`
     * 用于安全验证，与用户服务类相分离。
+
+# 问题总结
+
+* 对于数据库：text类型不能指定默认值，bit类型需要指定默认值。
