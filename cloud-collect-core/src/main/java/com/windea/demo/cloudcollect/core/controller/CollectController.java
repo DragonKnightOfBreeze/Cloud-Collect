@@ -255,7 +255,8 @@ public class CollectController {
 	public void importData(@RequestParam(defaultValue = "YAML") DataType type, MultipartFile file, Principal principal)
 	throws IOException {
 		//不检查文件格式是否正确，委托给前端
-		var filePath = Path.of("D:/CloudCollect/temp/dataSchema." + type.getExtension());
+		var fileName = "dataSchema." + type.getExtension();
+		var filePath = Path.of("D:/CloudCollect/temp", fileName);
 		file.transferTo(filePath);
 
 		//读取写入过的文件内容，然后更新数据库
