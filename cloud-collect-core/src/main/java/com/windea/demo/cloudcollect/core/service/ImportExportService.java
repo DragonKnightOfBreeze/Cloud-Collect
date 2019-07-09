@@ -1,47 +1,20 @@
 package com.windea.demo.cloudcollect.core.service;
 
-import com.windea.demo.cloudcollect.core.domain.entity.Collect;
-
-import java.util.List;
+import com.windea.demo.cloudcollect.core.domain.entity.User;
+import com.windea.demo.cloudcollect.core.domain.enums.DataType;
 
 /**
- * 导入导出的服务。
- *
- * <p>文件结构：
- * <pre>
- * #/Collect/[]/name,summary,url,logoUrl,category,tags,type
- * #/CollectCategory/[]/name,summary
- * #/CollectTag/[]/name,summary
- * </pre>
+ * 导入/导出数据的服务。
+ * @see com.windea.demo.cloudcollect.core.domain.model.DataSchema
  */
 public interface ImportExportService {
 	/**
-	 * TODO 从xml文件导入收藏。
+	 * 从指定格式的文件导入收藏。例如：Xml、Json、Yaml。
 	 */
-	List<Collect> fromXml(String string);
+	void importData(DataType type, String string, User user);
 
 	/**
-	 * TODO 从json文件导入收藏。
+	 * 导出收藏到指定格式的文件。例如：Xml、Json、Yaml。
 	 */
-	List<Collect> fromJson(String string);
-
-	/**
-	 * TODO 从yaml文件导入收藏。
-	 */
-	List<Collect> fromYaml(String string);
-
-	/**
-	 * TODO 导出收藏到xml文件。
-	 */
-	void toXml();
-
-	/**
-	 * TODO 导出收藏到json文件。
-	 */
-	void toJson();
-
-	/**
-	 * TODO 导出收藏到yaml文件。
-	 */
-	void toYaml();
+	String exportData(DataType type);
 }

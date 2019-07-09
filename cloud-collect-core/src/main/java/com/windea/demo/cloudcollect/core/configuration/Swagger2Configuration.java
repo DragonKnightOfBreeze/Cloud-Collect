@@ -32,7 +32,7 @@ public class Swagger2Configuration {
 			.contact(contact())
 			.license("MIT License")
 			.licenseUrl("https://github.com/DragonKnightOfBreeze/Cloud-Collect/blob/master/LICENSE")
-			.version("0.1.23")
+			.version("0.1.24")
 			.build();
 	}
 

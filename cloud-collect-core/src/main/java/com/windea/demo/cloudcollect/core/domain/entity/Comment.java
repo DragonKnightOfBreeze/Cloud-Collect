@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -28,14 +29,25 @@ public class Comment implements Serializable {
 	private Long id;
 
 	/**
+	 * 内容。
+	 */
+	@NonNull
+	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
+	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
+	@Column(nullable = false)
+	private String content = "";
+
+	/**
 	 * 所属收藏。
 	 */
+	@NonNull
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	private Collect collect;
 
 	/**
 	 * 发起该评论的用户。
 	 */
+	@NonNull
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	private User sponsorByUser;
 
@@ -45,14 +57,6 @@ public class Comment implements Serializable {
 	@Nullable
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Comment replyToComment;
-
-	/**
-	 * 内容。
-	 */
-	@NotEmpty(message = "validation.CollectComment.content.NotEmpty")
-	@Size(min = 1, max = 255, message = "validation.CollectComment.content.Size")
-	@Column(nullable = false)
-	private String content;
 
 	/**
 	 * 创建时间。
@@ -67,4 +71,11 @@ public class Comment implements Serializable {
 	@LastModifiedDate
 	@Column
 	private LocalDateTime lastModifiedTime;
+
+	public Comment(String content, Collect collect, User sponsorByUser, @Nullable Comment replyToComment) {
+		this.content = content;
+		this.collect = collect;
+		this.sponsorByUser = sponsorByUser;
+		this.replyToComment = replyToComment;
+	}
 }

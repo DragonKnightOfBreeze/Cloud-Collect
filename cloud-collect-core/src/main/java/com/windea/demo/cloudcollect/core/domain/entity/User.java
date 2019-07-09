@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -33,39 +34,44 @@ public class User implements Serializable {
 	/**
 	 * 用户名。
 	 */
+	@NonNull
 	@NotEmpty(message = "validation.User.username.NotEmpty")
 	@Username(message = "validation.User.username.ValidUsername")
 	@Column(unique = true, nullable = false, length = 16)
-	private String username;
+	private String username = "";
 
 	/**
 	 * 邮箱。
 	 */
+	@NonNull
 	@NotEmpty(message = "validation.User.email.NotEmpty")
 	@Email(message = "validation.User.email.Email")
 	@Column(unique = true, nullable = false, length = 64)
-	private String email;
+	private String email = "";
 
 	/**
 	 * 密码。
 	 * 这里存储的是加密后的密码，可以进行参数验证，不能限制长度。
 	 */
+	@NonNull
 	@NotEmpty(message = "validation.User.password.NotEmpty")
 	@Password(message = "validation.User.password.ValidPassword")
 	@Column(nullable = false)
-	private String password;
+	private String password = "";
 
 	/**
 	 * 昵称。
 	 */
+	@NonNull
 	@NotEmpty(message = "validation.User.nickname.NotEmpty")
 	@Size(min = 1, max = 64, message = "validation.User.nickname.Size")
 	@Column(nullable = false, length = 64)
-	private String nickname;
+	private String nickname = "";
 
 	/**
 	 * 简介。
 	 */
+	@NonNull
 	@NotEmpty(message = "validation.User.introduce.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.User.introduce.Size")
 	@Column(nullable = false)
@@ -76,18 +82,19 @@ public class User implements Serializable {
 	 */
 	@Nullable
 	@Column(length = 512)
-	private String avatarUrl;
+	private String avatarUrl = "";
 
 	/**
 	 * 背景地址。
 	 */
 	@Nullable
 	@Column(length = 512)
-	private String backgroundUrl;
+	private String backgroundUrl = "";
 
 	/**
 	 * 身份。
 	 */
+	@NonNull
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Role role = Role.NORMAL;
@@ -95,6 +102,7 @@ public class User implements Serializable {
 	/**
 	 * TODO 激活状态。暂时设为总是已激活。
 	 */
+	@NonNull
 	@Column
 	private Boolean activateStatus = true;
 
@@ -115,6 +123,7 @@ public class User implements Serializable {
 	/**
 	 * 该用户关注的用户列表。懒加载。
 	 */
+	@NonNull
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.MERGE)
 	private List<User> followToUserList = new LinkedList<>();
@@ -122,6 +131,7 @@ public class User implements Serializable {
 	/**
 	 * 关注该用户的用户列表。懒加载。
 	 */
+	@NonNull
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "followToUserList")
 	private List<User> followByUserList;
@@ -129,7 +139,15 @@ public class User implements Serializable {
 	/**
 	 * 该用户点赞的收藏列表。懒加载。
 	 */
+	@NonNull
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.MERGE)
 	private List<Collect> praiseToCollectList = new LinkedList<>();
+
+	public User(String username, String email, String password, String nickname) {
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.nickname = nickname;
+	}
 }

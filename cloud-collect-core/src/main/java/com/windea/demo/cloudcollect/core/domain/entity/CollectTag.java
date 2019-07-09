@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -29,26 +30,29 @@ public class CollectTag implements Serializable {
 	private Long id;
 
 	/**
-	 * 所属用户。
-	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private User user;
-
-	/**
 	 * 名字。
 	 */
+	@NonNull
 	@NotEmpty(message = "validation.CollectTag.name.NotEmpty")
 	@Size(min = 1, max = 32, message = "validation.CollectTag.name.Size")
 	@Column(nullable = false, length = 32)
-	private String name;
+	private String name = "";
 
 	/**
 	 * 概述。
 	 */
+	@NonNull
 	@NotEmpty(message = "validation.CollectTag.summary.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.CollectTag.summary.Size")
 	@Column(nullable = false)
-	private String summary;
+	private String summary = "";
+
+	/**
+	 * 所属用户。
+	 */
+	@NonNull
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private User user;
 
 	/**
 	 * 创建时间。
@@ -63,4 +67,10 @@ public class CollectTag implements Serializable {
 	@LastModifiedDate
 	@Column
 	private LocalDateTime lastModifiedTime;
+
+	public CollectTag(String name, String summary, User user) {
+		this.name = name;
+		this.summary = summary;
+		this.user = user;
+	}
 }

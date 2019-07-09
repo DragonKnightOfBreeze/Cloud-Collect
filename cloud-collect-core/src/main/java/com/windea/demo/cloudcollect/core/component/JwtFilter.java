@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -14,9 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-import static org.springframework.util.StringUtils.hasText;
-import static org.springframework.util.StringUtils.startsWithIgnoreCase;
 
 /**
  * Jwt过滤器。
@@ -42,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
 	throws ServletException, IOException {
 		var token = getToken(request);
 		//如果存在令牌，则解析令牌，生成并存入认真对象
-		if(hasText(token)) {
+		if(StringUtils.hasText(token)) {
 			var username = jwtProvider.getUsername(token);
 			var userDetails = userDetailsService.loadUserByUsername(username);
 			if(jwtProvider.validateToken(token, userDetails)) {
@@ -59,7 +57,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	private String getToken(HttpServletRequest request) {
 		String header = request.getHeader(this.tokenHeader);
-		if(startsWithIgnoreCase(header, this.tokenHead)) {
+		if(StringUtils.startsWithIgnoreCase(header, this.tokenHead)) {
 			return header.substring(this.tokenHead.length() + 1);
 		}
 		return null;

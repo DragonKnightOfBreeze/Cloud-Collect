@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -31,39 +32,36 @@ public class Collect implements Serializable {
 	private Long id;
 
 	/**
-	 * 所属用户。
-	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
-	private User user;
-
-	/**
 	 * 名字。
 	 */
+	@NonNull
 	@NotEmpty(message = "validation.Collect.name.NotEmpty")
 	@Size(min = 1, max = 64, message = "validation.Collect.name.Size")
 	@Column(nullable = false, length = 64)
-	private String name;
+	private String name = "";
 
 	/**
 	 * 概述。
 	 */
+	@NonNull
 	@NotEmpty(message = "validation.Collect.summary.NotEmpty")
 	@Size(min = 1, max = 255, message = "validation.Collect.summary.Size")
 	@Column(nullable = false)
-	private String summary;
+	private String summary = "";
 
 	/**
 	 * 链接地址。
 	 */
+	@NonNull
 	@Column(nullable = false, length = 512)
-	private String url;
+	private String url = "";
 
 	/**
 	 * 标志地址。
 	 */
 	@Nullable
 	@Column(length = 512)
-	private String logoUrl;
+	private String logoUrl = "";
 
 	/**
 	 * 收藏的分类。
@@ -75,12 +73,14 @@ public class Collect implements Serializable {
 	/**
 	 * 收藏的标签。
 	 */
+	@NonNull
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	private Set<CollectTag> tags = new LinkedHashSet<>();
 
 	/**
 	 * 收藏的类型。
 	 */
+	@NonNull
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private CollectType type = CollectType.NONE;
@@ -88,8 +88,16 @@ public class Collect implements Serializable {
 	/**
 	 * 删除状态。
 	 */
+	@NonNull
 	@Column
 	private Boolean deleteStatus = false;
+
+	/**
+	 * 所属用户。
+	 */
+	@NonNull
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+	private User user;
 
 	/**
 	 * 创建时间。
@@ -108,7 +116,16 @@ public class Collect implements Serializable {
 	/**
 	 * 点赞该收藏的用户列表。懒加载。
 	 */
+	@NonNull
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "praiseToCollectList")
 	private List<User> praiseByUserList = new LinkedList<>();
+
+	public Collect(String name, String summary, String url, @Nullable String logoUrl, User user) {
+		this.name = name;
+		this.summary = summary;
+		this.url = url;
+		this.logoUrl = logoUrl;
+		this.user = user;
+	}
 }

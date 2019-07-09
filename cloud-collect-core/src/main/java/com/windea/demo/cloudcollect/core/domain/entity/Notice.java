@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,26 +25,23 @@ public class Notice implements Serializable {
 	private Long id;
 
 	/**
-	 * 所属用户。
-	 */
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
-	private User user;
-
-	/**
 	 * 标题。
 	 */
+	@NonNull
 	@Column(nullable = false)
-	private String title;
+	private String title = "";
 
 	/**
 	 * 内容。
 	 */
+	@NonNull
 	@Column(nullable = false, length = 32)
-	private String content;
+	private String content = "";
 
 	/**
 	 * 通知的类型。
 	 */
+	@NonNull
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private NoticeType type = NoticeType.SYSTEM;
@@ -51,8 +49,16 @@ public class Notice implements Serializable {
 	/**
 	 * 阅读状态。
 	 */
+	@NonNull
 	@Column
 	private Boolean readStatus = false;
+
+	/**
+	 * 所属用户。
+	 */
+	@NonNull
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+	private User user;
 
 	/**
 	 * 创建时间。
@@ -67,4 +73,11 @@ public class Notice implements Serializable {
 	@LastModifiedDate
 	@Column
 	private LocalDateTime lastModifiedTime;
+
+	public Notice(String title, String content, NoticeType type, User user) {
+		this.title = title;
+		this.content = content;
+		this.type = type;
+		this.user = user;
+	}
 }

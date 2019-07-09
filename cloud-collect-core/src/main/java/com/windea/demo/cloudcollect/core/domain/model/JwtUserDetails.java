@@ -2,11 +2,10 @@ package com.windea.demo.cloudcollect.core.domain.model;
 
 import com.windea.demo.cloudcollect.core.domain.entity.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-
-import static org.springframework.security.core.authority.AuthorityUtils.createAuthorityList;
 
 /**
  * Jwt用户详情。用于安全验证。
@@ -37,7 +36,7 @@ public class JwtUserDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return createAuthorityList(delegateUser.getRole().toString());
+		return AuthorityUtils.createAuthorityList(delegateUser.getRole().toString());
 	}
 
 	@Override

@@ -7,7 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface CollectRepository extends JpaRepository<Collect, Long> {
+	Optional<Collect> findByName(String name);
+
 	Page<Collect> findByUser_IdAndDeleteStatus(Long userId, Boolean deleteStatus, Pageable pageable);
 
 	long countByUser_IdAndDeleteStatus(Long userId, Boolean deleteStatus);

@@ -2,16 +2,23 @@ package com.windea.demo.cloudcollect.core.controller;
 
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
+import com.windea.demo.cloudcollect.core.domain.enums.DataType;
 import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
 import com.windea.demo.cloudcollect.core.service.CollectService;
+import com.windea.demo.cloudcollect.core.service.ImportExportService;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Principal;
 import java.util.Set;
 
@@ -24,9 +31,11 @@ import java.util.Set;
 @CrossOrigin
 public class CollectController {
 	private final CollectService service;
+	private final ImportExportService ieService;
 
-	public CollectController(CollectService service) {
+	public CollectController(CollectService service, ImportExportService ieService) {
 		this.service = service;
+		this.ieService = ieService;
 	}
 
 
@@ -235,5 +244,39 @@ public class CollectController {
 	@GetMapping("/findByName")
 	public Page<Collect> findByName(@RequestParam String name, @RequestParam Pageable pageable) {
 		return service.findByName(name, pageable);
+	}
+
+	@ApiOperation("从指定格式的文件导入收藏。例如：Xml、Json、Yaml。")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "type", value = "数据类型", required = true),
+		@ApiImplicitParam(name = "file", value = "上传的文件", required = true)
+	})
+	@PostMapping("/import")
+	public void importData(@RequestParam(defaultValue = "YAML") DataType type, MultipartFile file, Principal principal)
+	throws IOException {
+		//不检查文件格式是否正确，委托给前端
+		var filePath = Path.of("D:/CloudCollect/temp/dataSchema." + type.getExtension());
+		file.transferTo(filePath);
+
+		//读取写入过的文件内容，然后更新数据库
+		var string = Files.readString(filePath);
+		var user = ((JwtUserDetails) principal).getDelegateUser();
+		ieService.importData(type, string, user);
+	}
+
+	@ApiOperation("导出收藏到指定格式的文件。例如：Xml、Json、Yaml。")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "type", value = "数据类型", required = true)
+	})
+	@PostMapping("/export")
+	public ResponseEntity<byte[]> exportData(@RequestParam(defaultValue = "YAML") DataType type) {
+		//不在本地缓存文件
+		var fileName = "dataSchema." + type.getExtension();
+		var string = ieService.exportData(type);
+
+		//设置响应头，并设置响应体为byte[]类型（也可以是InputStream、Resource等，间接得到byte[]）
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentDisposition(ContentDisposition.builder("attachment").filename(fileName).build());
+		return new ResponseEntity<>(string.getBytes(), headers, HttpStatus.OK);
 	}
 }
