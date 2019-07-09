@@ -3,16 +3,18 @@ package com.windea.demo.cloudcollect.core.annotation;
 import java.lang.annotation.*;
 
 /**
- * TODO 添加访问权限。针对新创建的实体。
+ * 添加访问权限。针对新创建的实体。
  * <p>用于Spring Security Acl（访问控制列表）。
  */
+@Deprecated
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AddPermission {
-	//确定为创建方法： @annotation(postMapping)
+public @interface AclPermission {
+	//确定为创建方法： @annotation(postMapping) & arg(principal)
 	//targetId - 从返回值domain.id获得
 	//targetDomainType - 从返回值domain.class获得
 	//principalName - 从参数principal.name获得
+	//permission - 从注解的value属性获得。
 	String[] value() default {};
 }
 
