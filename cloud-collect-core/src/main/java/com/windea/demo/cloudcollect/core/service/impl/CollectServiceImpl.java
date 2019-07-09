@@ -1,5 +1,6 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
+import com.windea.commons.kotlin.extension.RandomExtensions;
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
 import com.windea.demo.cloudcollect.core.exception.NotFoundException;
@@ -31,23 +32,23 @@ public class CollectServiceImpl implements CollectService {
 
 	@Transactional
 	@Override
-	public void create(Collect collect, User user) {
+	public Collect create(Collect collect, User user) {
 		collect.setUrl(toUrlInfo(collect.getUrl()).getFullPath());
 		if(collect.getLogoUrl() != null) {
 			collect.setLogoUrl(toUrlInfo(collect.getLogoUrl()).getFullPath());
 		}
 		collect.setUser(user);
-		repository.save(collect);
+		return repository.save(collect);
 	}
 
 	@Transactional
 	@Override
-	public void createFrom(Collect collect, User user) {
+	public Collect createFrom(Collect collect, User user) {
 		praise(collect.getId(), user);
 
 		//从别人的收藏创建新的收藏，需要先将id设为null
 		collect.setId(null);
-		create(collect, user);
+		return create(collect, user);
 	}
 
 	@Transactional
@@ -60,48 +61,48 @@ public class CollectServiceImpl implements CollectService {
 
 	@Transactional
 	@Override
-	public void modify(Long id, Collect collect) {
+	public Collect modify(Long id, Collect collect) {
 		var rawCollect = repository.getOne(id);
 		rawCollect.setName(collect.getName());
 		rawCollect.setSummary(collect.getSummary());
 		rawCollect.setCategory(collect.getCategory());
 		rawCollect.setTags(collect.getTags());
 		rawCollect.setType(collect.getType());
-		repository.save(rawCollect);
+		return repository.save(rawCollect);
 	}
 
 	@Transactional
 	@Override
-	public void modifyCategory(Long id, CollectCategory category) {
+	public Collect modifyCategory(Long id, CollectCategory category) {
 		var rawCollect = repository.getOne(id);
 		rawCollect.setCategory(category);
-		repository.save(rawCollect);
+		return repository.save(rawCollect);
 	}
 
 	@Transactional
 	@Override
-	public void modifyTags(Long id, Set<CollectTag> tags) {
+	public Collect modifyTags(Long id, Set<CollectTag> tags) {
 		var rawCollect = repository.getOne(id);
 		rawCollect.setTags(tags);
-		repository.save(rawCollect);
+		return repository.save(rawCollect);
 	}
 
 	@Transactional
 	@Override
-	public void modifyType(Long id, CollectType type) {
+	public Collect modifyType(Long id, CollectType type) {
 		var rawCollect = repository.getOne(id);
 		rawCollect.setType(type);
-		repository.save(rawCollect);
+		return repository.save(rawCollect);
 	}
 
 	@Transactional
 	@Override
-	public void praise(Long id, User user) {
+	public Collect praise(Long id, User user) {
 		var collect = repository.getOne(id);
 		var praiseByUserList = collect.getPraiseByUserList();
 		praiseByUserList.add(user);
 		collect.setPraiseByUserList(praiseByUserList);
-		repository.save(collect);
+		return repository.save(collect);
 
 	}
 
@@ -109,6 +110,13 @@ public class CollectServiceImpl implements CollectService {
 	@Override
 	public Collect get(Long id) {
 		return repository.findById(id).orElseThrow(NotFoundException::new);
+	}
+
+	@Override
+	public Collect getByRandom() {
+		var count = repository.count();
+		var randomId = RandomExtensions.INSTANCE.range(1, count);
+		return repository.findById(randomId).orElseThrow(NotFoundException::new);
 	}
 
 	@Cacheable("collect.praiseByUserPage")

@@ -1,6 +1,7 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
 import com.windea.demo.cloudcollect.core.domain.entity.Notice;
+import com.windea.demo.cloudcollect.core.domain.entity.User;
 import com.windea.demo.cloudcollect.core.repository.NoticeRepository;
 import com.windea.demo.cloudcollect.core.repository.UserRepository;
 import com.windea.demo.cloudcollect.core.service.NoticeService;
@@ -24,14 +25,21 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Transactional
 	@Override
-	public void create(Notice notice) {
-		var userList = userRepository.findAll();
+	public Notice create(Notice notice, User user) {
+		notice.setUser(user);
+		return repository.save(notice);
+	}
+
+	@Override
+	public void sendToAll(Notice notice) {
+		var userList = userRepository.findAll(Pageable.unpaged()).getContent();
 		for(var user : userList) {
 			var newNotice = new Notice();
-			notice.setUser(user);
-			notice.setTitle(newNotice.getTitle());
-			notice.setContent(newNotice.getContent());
-			repository.save(newNotice);
+			newNotice.setUser(user);
+			newNotice.setTitle(notice.getTitle());
+			newNotice.setContent(notice.getContent());
+			newNotice.setType(notice.getType());
+			repository.save(notice);
 		}
 	}
 
@@ -43,10 +51,10 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Transactional
 	@Override
-	public void read(Long id) {
+	public Notice read(Long id) {
 		var notice = repository.getOne(id);
 		notice.setReadStatus(true);
-		repository.save(notice);
+		return repository.save(notice);
 	}
 
 	@Cacheable("notice")

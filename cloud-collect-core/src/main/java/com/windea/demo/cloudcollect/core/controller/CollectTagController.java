@@ -33,9 +33,9 @@ public class CollectTagController {
 		@ApiImplicitParam(name = "tag", value = "新的标签", required = true)
 	})
 	@PostMapping("/create")
-	public void create(@RequestBody @Valid CollectTag tag, BindingResult bindingResult, Principal principal) {
+	public CollectTag create(@RequestBody @Valid CollectTag tag, BindingResult bindingResult, Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
-		service.create(tag, user);
+		return service.create(tag, user);
 	}
 
 	@ApiOperation("删除自己的标签。")
@@ -55,8 +55,8 @@ public class CollectTagController {
 	})
 	@PutMapping("/{id}")
 	@PreAuthorize("hasPermission(#id,'CollectTag','write')")
-	public void modify(@PathVariable Long id, @RequestBody @Valid CollectTag tag, BindingResult bindingResult) {
-		service.modify(id, tag);
+	public CollectTag modify(@PathVariable Long id, @RequestBody @Valid CollectTag tag, BindingResult bindingResult) {
+		return service.modify(id, tag);
 	}
 
 	@ApiOperation("得到某一标签。")

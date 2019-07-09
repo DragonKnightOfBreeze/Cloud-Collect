@@ -12,12 +12,12 @@ public interface CommentService {
 	/**
 	 * 创建自己的评论。
 	 */
-	void create(Long collectId, Comment comment, User sponsorByUser);
+	Comment create(Long collectId, Comment comment, User sponsorByUser);
 
 	/**
 	 * 创建自己的评论，回复某一评论。
 	 */
-	void reply(Long collectId, Long replyToCommentId, Comment comment, User sponsorByUser);
+	Comment reply(Long collectId, Long replyToCommentId, Comment comment, User sponsorByUser);
 
 	/**
 	 * 删除自己的评论。

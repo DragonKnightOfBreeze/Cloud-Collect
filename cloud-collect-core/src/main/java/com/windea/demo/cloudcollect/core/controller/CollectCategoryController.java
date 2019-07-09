@@ -34,10 +34,10 @@ public class CollectCategoryController {
 		@ApiImplicitParam(name = "category", value = "新的分类", required = true)
 	})
 	@PostMapping("/create")
-	public void create(@RequestBody @Valid CollectCategory category, BindingResult bindingResult,
+	public CollectCategory create(@RequestBody @Valid CollectCategory category, BindingResult bindingResult,
 		Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
-		service.create(category, user);
+		return service.create(category, user);
 	}
 
 	@ApiOperation("删除自己的分类。")
@@ -57,9 +57,9 @@ public class CollectCategoryController {
 	})
 	@PutMapping("/{id}")
 	@PreAuthorize("hasPermission(#id,'CollectCategory','write')")
-	public void modify(@PathVariable Long id, @RequestBody @Valid CollectCategory category,
+	public CollectCategory modify(@PathVariable Long id, @RequestBody @Valid CollectCategory category,
 		BindingResult bindingResult) {
-		service.modify(id, category);
+		return service.modify(id, category);
 	}
 
 	@ApiOperation("得到某一分类。")

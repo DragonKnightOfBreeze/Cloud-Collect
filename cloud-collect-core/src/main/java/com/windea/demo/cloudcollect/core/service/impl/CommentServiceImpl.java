@@ -26,22 +26,22 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional
 	@Override
-	public void create(Long collectId, Comment comment, User sponsorByUser) {
+	public Comment create(Long collectId, Comment comment, User sponsorByUser) {
 		var collect = collectRepository.findById(collectId).orElseThrow(NotFoundException::new);
 		comment.setCollect(collect);
 		comment.setSponsorByUser(sponsorByUser);
-		repository.save(comment);
+		return repository.save(comment);
 	}
 
 	@Transactional
 	@Override
-	public void reply(Long collectId, Long replyToCommentId, Comment comment, User sponsorByUser) {
+	public Comment reply(Long collectId, Long replyToCommentId, Comment comment, User sponsorByUser) {
 		var collect = collectRepository.findById(collectId).orElseThrow(NotFoundException::new);
 		comment.setCollect(collect);
 		var replyToComment = repository.findById(replyToCommentId).orElseThrow(NotFoundException::new);
 		comment.setReplyToComment(replyToComment);
 		comment.setSponsorByUser(sponsorByUser);
-		repository.save(comment);
+		return repository.save(comment);
 	}
 
 	@Transactional

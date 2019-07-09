@@ -11,7 +11,7 @@ public interface CollectTagService {
 	/**
 	 * 创建自己的标签。
 	 */
-	void create(CollectTag tag, User user);
+	CollectTag create(CollectTag tag, User user);
 
 	/**
 	 * 删除自己的标签。
@@ -21,7 +21,7 @@ public interface CollectTagService {
 	/**
 	 * 修改自己的标签。名字，概述。
 	 */
-	void modify(Long id, CollectTag tag);
+	CollectTag modify(Long id, CollectTag tag);
 
 	/**
 	 * 得到某一标签。

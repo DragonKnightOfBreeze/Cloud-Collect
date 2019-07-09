@@ -25,9 +25,9 @@ public class CollectTagServiceImpl implements CollectTagService {
 
 	@Transactional
 	@Override
-	public void create(CollectTag tag, User user) {
+	public CollectTag create(CollectTag tag, User user) {
 		tag.setUser(user);
-		repository.save(tag);
+		return repository.save(tag);
 	}
 
 	@Transactional
@@ -38,11 +38,11 @@ public class CollectTagServiceImpl implements CollectTagService {
 
 	@Transactional
 	@Override
-	public void modify(Long id, CollectTag tag) {
+	public CollectTag modify(Long id, CollectTag tag) {
 		var rawTag = repository.getOne(id);
 		rawTag.setName(tag.getName());
 		rawTag.setSummary(tag.getSummary());
-		repository.save(rawTag);
+		return repository.save(rawTag);
 	}
 
 	@Cacheable("collectTag")

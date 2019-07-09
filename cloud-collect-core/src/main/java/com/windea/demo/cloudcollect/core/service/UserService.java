@@ -19,27 +19,32 @@ public interface UserService {
 	/**
 	 * 通过邮箱注册用户。密码需要加密。
 	 */
-	void registerByEmail(EmailRegisterView view);
+	User registerByEmail(EmailRegisterView view);
 
 	/**
 	 * 激活用户。将activated设为true。
 	 */
-	void activate(User user);
+	User activate(User user);
 
 	/**
 	 * 重置用户密码。密码需要加密。
 	 */
-	void resetPassword(User user, String newPassword);
+	User resetPassword(User user, String newPassword);
 
 	/**
 	 * 更新用户信息。不允许同时修改密码。
 	 */
-	void update(Long id, User user);
+	User update(Long id, User user);
 
 	/**
 	 * 得到用户信息。
 	 */
 	User get(Long id);
+
+	/**
+	 * 得到随机用户。
+	 */
+	User getByRandom();
 
 	/**
 	 * 分页得到某一用户的所有关注用户。

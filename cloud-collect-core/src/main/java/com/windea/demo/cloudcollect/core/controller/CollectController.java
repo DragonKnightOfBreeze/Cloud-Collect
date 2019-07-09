@@ -35,9 +35,9 @@ public class CollectController {
 		@ApiImplicitParam(name = "collect", value = "新的收藏", required = true)
 	})
 	@PostMapping("/create")
-	public void create(@RequestBody @Valid Collect collect, BindingResult bindingResult, Principal principal) {
+	public Collect create(@RequestBody @Valid Collect collect, BindingResult bindingResult, Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
-		service.create(collect, user);
+		return service.create(collect, user);
 	}
 
 	@ApiOperation("从别人的收藏创建自己的收藏。")
@@ -45,9 +45,9 @@ public class CollectController {
 		@ApiImplicitParam(name = "collect", value = "别人的收藏", required = true)
 	})
 	@PostMapping("/createFrom")
-	public void createFrom(@RequestBody @Valid Collect collect, BindingResult bindingResult, Principal principal) {
+	public Collect createFrom(@RequestBody @Valid Collect collect, BindingResult bindingResult, Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
-		service.createFrom(collect, user);
+		return service.createFrom(collect, user);
 	}
 
 	@ApiOperation("删除自己的收藏。")
@@ -67,8 +67,8 @@ public class CollectController {
 	})
 	@PutMapping("/{id}")
 	@PreAuthorize("hasPermission(#id,'Collect','write')")
-	public void modify(@PathVariable Long id, @RequestBody @Valid Collect collect, BindingResult bindingResult) {
-		service.modify(id, collect);
+	public Collect modify(@PathVariable Long id, @RequestBody @Valid Collect collect, BindingResult bindingResult) {
+		return service.modify(id, collect);
 	}
 
 	@ApiOperation("修改自己的收藏的分类。")
@@ -78,8 +78,8 @@ public class CollectController {
 	})
 	@PutMapping("/{id}/category")
 	@PreAuthorize("hasPermission(#id,'Collect','write')")
-	public void modifyCategory(@PathVariable Long id, @RequestBody CollectCategory category) {
-		service.modifyCategory(id, category);
+	public Collect modifyCategory(@PathVariable Long id, @RequestBody CollectCategory category) {
+		return service.modifyCategory(id, category);
 	}
 
 	@ApiOperation("修改自己的收藏的标签。")
@@ -89,8 +89,8 @@ public class CollectController {
 	})
 	@PutMapping("/{id}/tags")
 	@PreAuthorize("hasPermission(#id,'Collect','write')")
-	public void modifyTags(@PathVariable Long id, @RequestBody Set<CollectTag> tags) {
-		service.modifyTags(id, tags);
+	public Collect modifyTags(@PathVariable Long id, @RequestBody Set<CollectTag> tags) {
+		return service.modifyTags(id, tags);
 	}
 
 	@ApiOperation("修改自己的收藏的类型。")
@@ -100,8 +100,8 @@ public class CollectController {
 	})
 	@PutMapping("/{id}/type")
 	@PreAuthorize("hasPermission(#id,'CollectCategory','write')")
-	public void modifyType(@PathVariable Long id, @RequestBody CollectType type) {
-		service.modifyType(id, type);
+	public Collect modifyType(@PathVariable Long id, @RequestBody CollectType type) {
+		return service.modifyType(id, type);
 	}
 
 	@ApiOperation("点赞某一收藏。")
@@ -109,9 +109,9 @@ public class CollectController {
 		@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	})
 	@PutMapping("/{id}/praise")
-	public void praise(@PathVariable Long id, Principal principal) {
+	public Collect praise(@PathVariable Long id, Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
-		service.praise(id, user);
+		return service.praise(id, user);
 	}
 
 	@ApiOperation("得到某一收藏。")

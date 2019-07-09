@@ -34,10 +34,10 @@ public class CommentController {
 		@ApiImplicitParam(name = "comment", value = "新的评论", required = true)
 	})
 	@PostMapping("/create")
-	public void create(@RequestParam Long collectId,
+	public Comment create(@RequestParam Long collectId,
 		@RequestBody @Valid Comment comment, BindingResult bindingResult, Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
-		service.create(collectId, comment, user);
+		return service.create(collectId, comment, user);
 	}
 
 	@ApiOperation("创建自己的评论，回复某一评论。")
@@ -47,10 +47,10 @@ public class CommentController {
 		@ApiImplicitParam(name = "comment", value = "新的评论", required = true)
 	})
 	@PostMapping("/reply")
-	public void reply(@RequestParam Long collectId, @RequestParam Long replyToCommentId,
+	public Comment reply(@RequestParam Long collectId, @RequestParam Long replyToCommentId,
 		@RequestBody @Valid Comment comment, BindingResult bindingResult, Principal principal) {
 		var user = ((JwtUserDetails) principal).getDelegateUser();
-		service.reply(collectId, replyToCommentId, comment, user);
+		return service.reply(collectId, replyToCommentId, comment, user);
 	}
 
 	@ApiOperation("删除自己的评论。")

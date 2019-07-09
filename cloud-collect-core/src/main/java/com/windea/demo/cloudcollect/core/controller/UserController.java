@@ -35,8 +35,8 @@ public class UserController {
 		@ApiImplicitParam(name = "user", value = "更新后的用户信息", required = true)
 	})
 	@PutMapping("/{id}")
-	public void update(@PathVariable Long id, @RequestBody @Valid User user, BindingResult bindingResult) {
-		service.update(id, user);
+	public User update(@PathVariable Long id, @RequestBody @Valid User user, BindingResult bindingResult) {
+		return service.update(id, user);
 	}
 
 	@ApiOperation("得到用户信息。")

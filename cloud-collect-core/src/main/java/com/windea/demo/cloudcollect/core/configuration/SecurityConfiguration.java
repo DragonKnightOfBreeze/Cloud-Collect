@@ -56,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				"/collectCategory/**",
 				"/collectTag/**",
 				"/comment/**",
-				"/create/**",
+				"/createAndSendToAll/**",
 				"/user/**").authenticated()
 			.antMatchers("/admin/**").hasRole(Role.ADMIN.toString())
 			.anyRequest().permitAll()

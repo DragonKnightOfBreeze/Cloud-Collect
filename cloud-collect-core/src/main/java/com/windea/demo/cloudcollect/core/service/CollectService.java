@@ -14,12 +14,12 @@ public interface CollectService {
 	/**
 	 * 创建自己的收藏。去除地址的查询参数。
 	 */
-	void create(Collect collect, User user);
+	Collect create(Collect collect, User user);
 
 	/**
 	 * 从别人的收藏创建自己的收藏。默认点赞原始收藏，去除地址的查询参数。
 	 */
-	void createFrom(Collect collect, User user);
+	Collect createFrom(Collect collect, User user);
 
 	/**
 	 * 删除自己的收藏。不删除数据库中的数据，而是将deleteStatus设为true。
@@ -29,32 +29,37 @@ public interface CollectService {
 	/**
 	 * 修改自己的收藏。名字，概述，分类，标签，类型。
 	 */
-	void modify(Long id, Collect collect);
+	Collect modify(Long id, Collect collect);
 
 	/**
 	 * 修改自己的收藏的分类。
 	 */
-	void modifyCategory(Long id, CollectCategory category);
+	Collect modifyCategory(Long id, CollectCategory category);
 
 	/**
 	 * 修改自己的收藏的标签。
 	 */
-	void modifyTags(Long id, Set<CollectTag> tags);
+	Collect modifyTags(Long id, Set<CollectTag> tags);
 
 	/**
 	 * 修改自己的收藏的类型。
 	 */
-	void modifyType(Long id, CollectType type);
+	Collect modifyType(Long id, CollectType type);
 
 	/**
 	 * 点赞某一收藏。
 	 */
-	void praise(Long id, User user);
+	Collect praise(Long id, User user);
 
 	/**
 	 * 得到某一收藏。
 	 */
 	Collect get(Long id);
+
+	/**
+	 * 得到随机收藏。
+	 */
+	Collect getByRandom();
 
 	/**
 	 * 分页得到某一收藏的所有点赞用户。

@@ -11,7 +11,7 @@ public interface CollectCategoryService {
 	/**
 	 * 创建自己的分类。
 	 */
-	void create(CollectCategory category, User user);
+	CollectCategory create(CollectCategory category, User user);
 
 	/**
 	 * 删除自己的分类。
@@ -21,7 +21,7 @@ public interface CollectCategoryService {
 	/**
 	 * 修改自己的分类。名字，概述。
 	 */
-	void modify(Long id, CollectCategory category);
+	CollectCategory modify(Long id, CollectCategory category);
 
 	/**
 	 * 得到某一分类。

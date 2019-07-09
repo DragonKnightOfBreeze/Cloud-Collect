@@ -1,5 +1,6 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
+import com.windea.commons.kotlin.extension.RandomExtensions;
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.Role;
 import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
@@ -55,48 +56,59 @@ public class UseServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void registerByEmail(EmailRegisterView view) {
+	public User registerByEmail(EmailRegisterView view) {
 		var user = new User();
 		user.setNickname(view.getNickname());
 		user.setUsername(view.getUsername());
 		user.setEmail(view.getEmail());
 		user.setPassword(passwordEncoder.encode(view.getPassword()));
-		repository.save(user);
+		var result = repository.save(user);
 
 		emailService.sendActivateEmail();
+
+		return result;
 	}
 
 	@Transactional
 	@Override
-	public void activate(User user) {
+	public User activate(User user) {
 		user.setActivateStatus(true);
-		repository.save(user);
+		var result = repository.save(user);
 
 		emailService.sendHelloEmail();
+
+		return result;
 	}
 
 	@Transactional
 	@Override
-	public void resetPassword(User user, String newPassword) {
+	public User resetPassword(User user, String newPassword) {
 		user.setPassword(passwordEncoder.encode(newPassword));
-		repository.save(user);
+		return repository.save(user);
 	}
 
 	@Transactional
 	@Override
-	public void update(Long id, User user) {
+	public User update(Long id, User user) {
 		var rawUser = repository.getOne(id);
 		rawUser.setNickname(user.getNickname());
 		rawUser.setIntroduce(user.getIntroduce());
 		rawUser.setAvatarUrl(user.getAvatarUrl());
 		rawUser.setBackgroundUrl(user.getBackgroundUrl());
-		repository.save(user);
+		return repository.save(user);
 	}
 
 	@Cacheable("user")
 	@Override
 	public User get(Long id) {
 		return repository.findById(id).orElseThrow(NotFoundException::new);
+	}
+
+	@Override
+	public User getByRandom() {
+		var count = repository.count();
+		var randomId = RandomExtensions.INSTANCE.range(1, count);
+		return repository.findById(randomId).orElseThrow(NotFoundException::new);
 	}
 
 	@Cacheable("user.followToUserPage")

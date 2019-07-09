@@ -25,9 +25,9 @@ public class CollectCategoryServiceImpl implements CollectCategoryService {
 
 	@Transactional
 	@Override
-	public void create(CollectCategory category, User user) {
+	public CollectCategory create(CollectCategory category, User user) {
 		category.setUser(user);
-		repository.save(category);
+		return repository.save(category);
 	}
 
 	@Transactional
@@ -38,11 +38,11 @@ public class CollectCategoryServiceImpl implements CollectCategoryService {
 
 	@Transactional
 	@Override
-	public void modify(Long id, CollectCategory category) {
+	public CollectCategory modify(Long id, CollectCategory category) {
 		var rawCategory = repository.getOne(id);
 		rawCategory.setName(category.getName());
 		rawCategory.setSummary(category.getSummary());
-		repository.save(rawCategory);
+		return repository.save(rawCategory);
 	}
 
 	@Cacheable("collectCategory")

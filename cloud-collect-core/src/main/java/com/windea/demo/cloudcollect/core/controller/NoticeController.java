@@ -1,7 +1,6 @@
 package com.windea.demo.cloudcollect.core.controller;
 
 import com.windea.demo.cloudcollect.core.domain.entity.Notice;
-import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
 import com.windea.demo.cloudcollect.core.service.NoticeService;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
@@ -11,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
 /**
  * 通知的控制器。
@@ -28,15 +26,14 @@ public class NoticeController {
 	}
 
 
-	@ApiOperation("创建通知。")
+	@ApiOperation("创建通知，发送给所有用户。")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "notice", value = "新的通知", required = true)
 	})
-	@PostMapping("/create")
+	@PostMapping("/sendToAll")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void create(@RequestBody @Valid Notice notice, BindingResult bindingResult, Principal principal) {
-		var user = ((JwtUserDetails) principal).getDelegateUser();
-		service.create(notice);
+	public void sendToAll(@RequestBody @Valid Notice notice, BindingResult bindingResult) {
+		service.sendToAll(notice);
 	}
 
 	@ApiOperation("删除自己的通知。")
@@ -54,8 +51,8 @@ public class NoticeController {
 		@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	})
 	@PutMapping("/{id}/read")
-	public void read(@PathVariable Long id) {
-		service.read(id);
+	public Notice read(@PathVariable Long id) {
+		return service.read(id);
 	}
 
 	@ApiOperation("得到某一通知。")

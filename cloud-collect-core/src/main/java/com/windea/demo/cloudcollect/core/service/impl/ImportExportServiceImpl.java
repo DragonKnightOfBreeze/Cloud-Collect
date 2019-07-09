@@ -1,6 +1,8 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
+import com.windea.commons.kotlin.loader.JsonLoader;
 import com.windea.demo.cloudcollect.core.domain.entity.Collect;
+import com.windea.demo.cloudcollect.core.exception.NotImplementedException;
 import com.windea.demo.cloudcollect.core.repository.*;
 import com.windea.demo.cloudcollect.core.service.ImportExportService;
 import org.springframework.stereotype.Service;
@@ -23,13 +25,12 @@ public class ImportExportServiceImpl implements ImportExportService {
 
 	@Override
 	public List<Collect> fromXml(String string) {
-		//TODO
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public List<Collect> fromJson(String string) {
-		//TODO
+		var dataMap = JsonLoader.instance().fromString(string);
 		return null;
 	}
 
@@ -41,7 +42,7 @@ public class ImportExportServiceImpl implements ImportExportService {
 
 	@Override
 	public void toXml() {
-		//TODO
+		throw new NotImplementedException();
 	}
 
 	@Override
