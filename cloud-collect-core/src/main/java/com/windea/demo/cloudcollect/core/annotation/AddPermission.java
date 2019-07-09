@@ -3,7 +3,7 @@ package com.windea.demo.cloudcollect.core.annotation;
 import java.lang.annotation.*;
 
 /**
- * 添加访问权限。针对新创建的实体。
+ * TODO 添加访问权限。针对新创建的实体。
  * <p>用于Spring Security Acl（访问控制列表）。
  */
 @Target(ElementType.METHOD)

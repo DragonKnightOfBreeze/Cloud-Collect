@@ -16,9 +16,9 @@ import java.util.Set;
  * <p>TODO 加入缓存控制，提高扩展性。
  */
 @Component
-public class AppPermissionEvaluator implements PermissionEvaluator {
-	private final static Set<String> allPermissionNames = Set.of("read", "write", "create", "delete", "admin");
-	private final static String targetDomainPackage = "com.windea.demo.cloudcollect.core.domain.entity";
+public class PropertyBasedPermissionEvaluator implements PermissionEvaluator {
+	public final static Set<String> allPermissionNames = Set.of("read", "write", "create", "delete", "admin");
+	public final static String targetDomainPackage = "com.windea.demo.cloudcollect.core.domain.entity";
 
 	private final CollectService collectService;
 	private final CollectCategoryService categoryService;
@@ -26,7 +26,7 @@ public class AppPermissionEvaluator implements PermissionEvaluator {
 	private final CommentService commentService;
 	private final NoticeService noticeService;
 
-	public AppPermissionEvaluator(CollectService collectService, CollectCategoryService categoryService,
+	public PropertyBasedPermissionEvaluator(CollectService collectService, CollectCategoryService categoryService,
 		CollectTagService tagService, CommentService commentService, NoticeService noticeService) {
 		this.collectService = collectService;
 		this.categoryService = categoryService;

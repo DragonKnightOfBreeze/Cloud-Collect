@@ -27,11 +27,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private final JwtEntryPoint jwtEntryPoint;
 	private final JwtUserDetailsService userDetailsService;
 	private final PasswordEncoder passwordEncoder;
-	private final AppPermissionEvaluator appPermissionEvaluator;
+	private final PropertyBasedPermissionEvaluator appPermissionEvaluator;
 
 	public SecurityConfiguration(JwtFilter jwtFilter, JwtEntryPoint jwtEntryPoint,
 		JwtUserDetailsService userDetailsService, PasswordEncoder passwordEncoder,
-		AppPermissionEvaluator appPermissionEvaluator) {
+		PropertyBasedPermissionEvaluator appPermissionEvaluator) {
 		this.jwtFilter = jwtFilter;
 		this.jwtEntryPoint = jwtEntryPoint;
 		this.userDetailsService = userDetailsService;
