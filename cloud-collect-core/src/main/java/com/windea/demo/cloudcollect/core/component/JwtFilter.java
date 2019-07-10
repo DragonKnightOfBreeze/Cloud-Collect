@@ -29,7 +29,8 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Value("${com.windea.security.jwtTokenHead}")
 	private String tokenHead;
 
-	public JwtFilter(JwtProvider jwtProvider, JwtUserDetailsService userDetailsService) {
+	public JwtFilter(JwtProvider jwtProvider,
+		JwtUserDetailsService userDetailsService) {
 		this.jwtProvider = jwtProvider;
 		this.userDetailsService = userDetailsService;
 	}

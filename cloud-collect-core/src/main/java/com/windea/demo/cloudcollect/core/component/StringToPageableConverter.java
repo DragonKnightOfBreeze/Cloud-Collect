@@ -5,8 +5,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import static com.windea.commons.kotlin.extension.CollectionExtensionsKt.getOrDefault;
-import static com.windea.commons.kotlin.extension.StringExtensionsKt.toIntOrDefault;
+import static com.windea.commons.kotlin.extension.CollectionExtensionKt.getOrDefault;
+import static com.windea.commons.kotlin.extension.StringExtensionKt.toIntOrDefault;
 
 /**
  * 字符串到分页对象的转换器。页面从1开始。

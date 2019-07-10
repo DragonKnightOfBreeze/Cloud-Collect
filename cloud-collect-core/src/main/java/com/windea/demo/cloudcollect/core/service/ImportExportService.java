@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.service;
 
+import com.windea.commons.kotlin.enums.DataType;
 import com.windea.demo.cloudcollect.core.domain.entity.User;
-import com.windea.demo.cloudcollect.core.domain.enums.DataType;
 
 /**
  * 导入/导出数据的服务。

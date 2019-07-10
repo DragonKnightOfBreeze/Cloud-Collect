@@ -1,6 +1,6 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
-import com.windea.commons.kotlin.extension.RandomExtensions;
+import com.windea.commons.kotlin.extension.RandomExtension;
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.Role;
 import com.windea.demo.cloudcollect.core.domain.model.JwtUserDetails;
@@ -107,7 +107,7 @@ public class UseServiceImpl implements UserService {
 	@Override
 	public User getByRandom() {
 		var count = repository.count();
-		var randomId = RandomExtensions.INSTANCE.range(1, count);
+		var randomId = RandomExtension.INSTANCE.range(1, count);
 		return repository.findById(randomId).orElseThrow(NotFoundException::new);
 	}
 

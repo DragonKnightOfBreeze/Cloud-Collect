@@ -1,6 +1,6 @@
 package com.windea.demo.cloudcollect.core.service.impl;
 
-import com.windea.commons.kotlin.extension.RandomExtensions;
+import com.windea.commons.kotlin.extension.RandomExtension;
 import com.windea.demo.cloudcollect.core.domain.entity.*;
 import com.windea.demo.cloudcollect.core.domain.enums.CollectType;
 import com.windea.demo.cloudcollect.core.exception.NotFoundException;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Set;
 
-import static com.windea.commons.kotlin.extension.StringExtensionsKt.toUrlInfo;
+import static com.windea.commons.kotlin.extension.StringExtensionKt.toUrlInfo;
 
 @Service
 public class CollectServiceImpl implements CollectService {
@@ -115,7 +115,7 @@ public class CollectServiceImpl implements CollectService {
 	@Override
 	public Collect getByRandom() {
 		var count = repository.count();
-		var randomId = RandomExtensions.INSTANCE.range(1, count);
+		var randomId = RandomExtension.INSTANCE.range(1, count);
 		return repository.findById(randomId).orElseThrow(NotFoundException::new);
 	}
 
