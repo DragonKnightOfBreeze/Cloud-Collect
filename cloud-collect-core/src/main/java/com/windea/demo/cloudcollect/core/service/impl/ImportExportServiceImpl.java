@@ -23,9 +23,9 @@ public class ImportExportServiceImpl implements ImportExportService {
 		//根据指定数据类型读取数据
 		var dataSchema = type.getLoader().fromString(string, DataSchema.class);
 		//导入数据时，需要重置相关id，并设置用户为当前用户
-		dataSchema.getCollectList().stream().peek(collect -> {
+		dataSchema.getCollectList().forEach(collect -> {
 			collect.setId(null);
-			collect.getTags().stream().peek(tag -> {
+			collect.getTags().forEach(tag -> {
 				tag.setId(null);
 				tag.setUser(user);
 			});
