@@ -45,4 +45,9 @@ data class Notice(
 	@Column
 	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
+	
+	
+	override fun equals(other: Any?): Boolean {
+		return other is Notice && other.id == id
+	}
 }

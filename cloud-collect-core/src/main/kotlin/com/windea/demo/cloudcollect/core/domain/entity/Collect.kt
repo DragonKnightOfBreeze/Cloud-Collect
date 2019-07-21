@@ -74,4 +74,9 @@ data class Collect(
 	@ManyToMany(cascade = [CascadeType.MERGE], mappedBy = "praiseToCollectList")
 	@JsonIgnore
 	var praiseByUserList: MutableList<User> = mutableListOf()
+	
+	
+	override fun equals(other: Any?): Boolean {
+		return other is Collect && other.id == id
+	}
 }

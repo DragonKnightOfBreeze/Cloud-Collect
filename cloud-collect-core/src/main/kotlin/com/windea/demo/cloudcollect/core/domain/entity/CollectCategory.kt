@@ -42,4 +42,9 @@ data class CollectCategory(
 	@Column
 	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
+	
+	
+	override fun equals(other: Any?): Boolean {
+		return other is CollectCategory && other.id == id
+	}
 }

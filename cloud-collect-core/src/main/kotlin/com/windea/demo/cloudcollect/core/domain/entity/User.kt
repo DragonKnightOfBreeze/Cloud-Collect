@@ -90,4 +90,9 @@ data class User(
 	@ManyToMany(cascade = [CascadeType.MERGE])
 	@JsonIgnore
 	var praiseToCollectList: MutableList<Collect> = mutableListOf()
+	
+	
+	override fun equals(other: Any?): Boolean {
+		return other is User && other.id == id
+	}
 }

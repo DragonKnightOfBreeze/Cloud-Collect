@@ -42,4 +42,9 @@ data class CollectTag(
 	@Column
 	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
+	
+	
+	override fun equals(other: Any?): Boolean {
+		return other is CollectTag && other.id == id
+	}
 }

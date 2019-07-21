@@ -42,4 +42,9 @@ data class Comment(
 	@Column
 	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
+	
+	
+	override fun equals(other: Any?): Boolean {
+		return other is Comment && other.id == id
+	}
 }
