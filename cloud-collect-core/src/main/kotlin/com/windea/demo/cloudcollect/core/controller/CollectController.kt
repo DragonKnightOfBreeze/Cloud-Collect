@@ -40,7 +40,7 @@ class CollectController(
 		ApiImplicitParam(name = "collect", value = "新的收藏", required = true)
 	)
 	@PostMapping("/create")
-	@PreAuthorize("hasPermission(0, 'Collect', 'create')")
+	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Valid collect: Collect, bindingResult: BindingResult, authentication: Authentication): Collect {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return service.create(collect, user)
@@ -51,7 +51,7 @@ class CollectController(
 		ApiImplicitParam(name = "id", value = "别人的收藏的id", required = true)
 	)
 	@PostMapping("/createFrom")
-	@PreAuthorize("hasPermission(0, 'Collect', 'create')")
+	@PreAuthorize("isAuthenticated()")
 	fun createFrom(@RequestParam id: Long, authentication: Authentication): Collect {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return service.createFrom(id, user)
@@ -240,9 +240,10 @@ class CollectController(
 	@ApiOperation("从指定格式的文件导入收藏。例如：Xml、Json、Yaml。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "type", value = "数据类型", required = true),
-		ApiImplicitParam(name = "file", value = "上传的文件", required = true)
+		ApiImplicitParam(name = "multipartFile", value = "上传的文件", required = true)
 	)
 	@PostMapping("/import")
+	@PreAuthorize("isAuthenticated()")
 	fun importData(@RequestParam(defaultValue = "YAML") type: DataType, multipartFile: MultipartFile,
 		authentication: Authentication) {
 		//不检查文件格式是否正确，委托给前端
@@ -262,6 +263,7 @@ class CollectController(
 		ApiImplicitParam(name = "type", value = "数据类型", required = true)
 	)
 	@PostMapping("/export")
+	@PreAuthorize("isAuthenticated()")
 	fun exportData(@RequestParam(defaultValue = "YAML") type: DataType): ResponseEntity<ByteArray> {
 		//不在本地缓存文件
 		val fileName = "$dataSchemaFileName.${type.extension}"

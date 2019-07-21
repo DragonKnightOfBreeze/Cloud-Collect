@@ -40,7 +40,8 @@ open class SecurityConfiguration(
 				"/collectTag/**",
 				"/comment/**",
 				"/createAndSendToAll/**",
-				"/user/**").authenticated()
+				"/user/**"
+			).authenticated()
 			.antMatchers("/admin/**").hasRole(Role.ADMIN.toString())
 			.anyRequest().permitAll()
 			.and()
@@ -61,7 +62,7 @@ open class SecurityConfiguration(
 		return super.authenticationManagerBean()
 	}
 	
-	//使用自定义的许可鉴别器，以便使用注解进行许可控制。
+	//使用自定义的访问权限鉴别器，以便使用注解进行访问权限控制。
 	@Bean
 	open fun webSecurityExpressionHandler(): DefaultWebSecurityExpressionHandler {
 		return DefaultWebSecurityExpressionHandler().also {

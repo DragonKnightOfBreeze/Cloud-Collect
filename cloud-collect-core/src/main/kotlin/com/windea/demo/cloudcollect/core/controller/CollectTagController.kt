@@ -27,7 +27,7 @@ class CollectTagController(
 		ApiImplicitParam(name = "tag", value = "新的标签", required = true)
 	)
 	@PostMapping("/create")
-	@PreAuthorize("hasPermission(0, 'CollectTag', 'create')")
+	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Valid tag: CollectTag, bindingResult: BindingResult, authentication: Authentication): CollectTag {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return service.create(tag, user)

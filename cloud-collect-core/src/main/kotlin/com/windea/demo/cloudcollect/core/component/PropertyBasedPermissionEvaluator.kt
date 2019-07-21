@@ -8,7 +8,7 @@ import org.springframework.stereotype.*
 import java.io.*
 
 /**
- * 自定义的许可鉴别器。基于实体类属性。判断此属性是否等于principal.name，且对应的permission是否相匹配。
+ * 自定义的访问权限鉴别器。基于实体类属性。判断此属性是否等于principal.name，且对应的permission是否相匹配。
  *
  * 用于实现Spring El中的hasPermission()方法。
  *
@@ -23,43 +23,48 @@ class PropertyBasedPermissionEvaluator(
 	private val noticeService: NoticeService
 ) : PermissionEvaluator {
 	override fun hasPermission(authentication: Authentication, targetDomainObject: Any, permission: Any): Boolean {
-		val permissions: Set<String> = when(targetDomainObject) {
-			is Collect -> setOf("read", "write", "create", "delete")
-			is CollectTag -> setOf("read", "write", "create", "delete")
-			is CollectCategory -> setOf("read", "write", "create", "delete")
-			is Comment -> setOf("read", "create", "delete")
-			is Notice -> setOf("read", "create", "delete")
-			else -> return false
+		return when(targetDomainObject) {
+			is Collect -> when(permission) {
+				"read" -> true
+				"write" -> targetDomainObject.user.username == authentication.name
+				"create" -> authentication.isAuthenticated
+				"delete" -> targetDomainObject.user.username == authentication.name
+				else -> false
+			}
+			is CollectTag -> when(permission) {
+				"read" -> true
+				"write" -> targetDomainObject.user.username == authentication.name
+				"create" -> authentication.isAuthenticated
+				"delete" -> targetDomainObject.user.username == authentication.name
+				else -> false
+			}
+			is CollectCategory -> when(permission) {
+				"read" -> true
+				"write" -> targetDomainObject.user.username == authentication.name
+				"create" -> authentication.isAuthenticated
+				"delete" -> targetDomainObject.user.username == authentication.name
+				else -> false
+			}
+			is Comment -> when(permission) {
+				"read" -> true
+				"write" -> false
+				"create" -> authentication.isAuthenticated
+				"delete" -> targetDomainObject.sponsorByUser.username == authentication.name
+				else -> false
+			}
+			is Notice -> when(permission) {
+				"read" -> true
+				"write" -> "ADMIN" in authentication.authorities.map { it.authority }
+				"create" -> "ADMIN" in authentication.authorities.map { it.authority }
+				"delete" -> targetDomainObject.user.username == authentication.name
+				else -> false
+			}
+			else -> false
 		}
-		
-		if(permission !in permissions) return false
-		if(permission == "create") return true
-		
-		val principalName: String = when(targetDomainObject) {
-			is Collect -> targetDomainObject.user.username
-			is CollectTag -> targetDomainObject.user.username
-			is CollectCategory -> targetDomainObject.user.username
-			is Comment -> targetDomainObject.sponsorByUser.username
-			is Notice -> targetDomainObject.user.username
-			else -> return false
-		}
-		
-		return principalName == authentication.name
 	}
 	
-	override fun hasPermission(authentication: Authentication, targetId: Serializable, targetType: String, permission: Any): Boolean {
-		val permissions: Set<String> = when(targetType) {
-			"Collect" -> setOf("read", "write", "create", "delete")
-			"CollectTag" -> setOf("read", "write", "create", "delete")
-			"CollectCategory" -> setOf("read", "write", "create", "delete")
-			"Comment" -> setOf("read", "create", "delete")
-			"Notice" -> setOf("read", "create", "delete")
-			else -> return false
-		}
-		
-		if(permission !in permissions) return false
-		if(permission == "create") return true
-		
+	override fun hasPermission(authentication: Authentication, targetId: Serializable, targetType: String,
+		permission: Any): Boolean {
 		val targetDomainObject = when(targetType) {
 			"Collect" -> collectService.findById(targetId as Long)
 			"CollectCategory" -> categoryService.findById(targetId as Long)
@@ -68,16 +73,6 @@ class PropertyBasedPermissionEvaluator(
 			"Notice" -> noticeService.findById(targetId as Long)
 			else -> return false
 		}
-		
-		val principalName: String = when(targetDomainObject) {
-			is Collect -> targetDomainObject.user.username
-			is CollectTag -> targetDomainObject.user.username
-			is CollectCategory -> targetDomainObject.user.username
-			is Comment -> targetDomainObject.sponsorByUser.username
-			is Notice -> targetDomainObject.user.username
-			else -> return false
-		}
-		
-		return principalName == authentication.name
+		return hasPermission(authentication, targetDomainObject, permission)
 	}
 }

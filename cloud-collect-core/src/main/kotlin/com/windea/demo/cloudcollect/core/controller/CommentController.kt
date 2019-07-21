@@ -27,7 +27,7 @@ class CommentController(
 		ApiImplicitParam(name = "comment", value = "新的评论", required = true)
 	)
 	@PostMapping("/create")
-	@PreAuthorize("hasPermission(0, 'Comment', 'create')")
+	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestParam collectId: Long,
 		@RequestBody @Valid comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
@@ -41,7 +41,7 @@ class CommentController(
 		ApiImplicitParam(name = "comment", value = "新的评论", required = true)
 	)
 	@PostMapping("/reply")
-	@PreAuthorize("hasPermission(0, 'Comment', 'create')")
+	@PreAuthorize("isAuthenticated()")
 	fun reply(@RequestParam collectId: Long, @RequestParam replyToCommentId: Long,
 		@RequestBody @Valid comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
 		val user = (authentication.principal as JwtUserDetails).delegateUser

@@ -27,7 +27,7 @@ class CollectCategoryController(
 		ApiImplicitParam(name = "category", value = "新的分类", required = true)
 	)
 	@PostMapping("/create")
-	@PreAuthorize("hasPermission(0, 'CollectCategory', 'create')")
+	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Valid category: CollectCategory, bindingResult: BindingResult, authentication: Authentication): CollectCategory {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return service.create(category, user)
@@ -38,7 +38,7 @@ class CollectCategoryController(
 		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	)
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasPermission(#id,'CollectCategory','delete')")
+	@PreAuthorize("hasPermission(#id, 'CollectCategory', 'delete')")
 	fun delete(@PathVariable id: Long) {
 		service.delete(id)
 	}
@@ -49,7 +49,7 @@ class CollectCategoryController(
 		ApiImplicitParam(name = "category", value = "修改后的分类", required = true)
 	)
 	@PutMapping("/{id}")
-	@PreAuthorize("hasPermission(#id,'CollectCategory','write')")
+	@PreAuthorize("hasPermission(#id, 'CollectCategory', 'write')")
 	fun modify(@PathVariable id: Long, @RequestBody @Valid category: CollectCategory, bindingResult: BindingResult): CollectCategory {
 		return service.modify(id, category)
 	}

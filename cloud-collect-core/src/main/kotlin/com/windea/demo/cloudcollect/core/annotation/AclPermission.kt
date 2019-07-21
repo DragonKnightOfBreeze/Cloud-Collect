@@ -5,7 +5,7 @@ package com.windea.demo.cloudcollect.core.annotation
  *
  * 用于Spring Security Acl（访问控制列表）。
  */
-@Deprecated("使用基于属性的许可控制。")
+@Deprecated("使用基于属性的简单访问权限控制。")
 @Target(AnnotationTarget.FUNCTION)
 annotation class AclPermission(
 	vararg val value: String = []

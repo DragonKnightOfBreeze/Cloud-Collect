@@ -14,7 +14,7 @@ import javax.sql.*
  *
  * 如此麻烦……
  */
-@Deprecated("使用基于属性的许可控制。")
+@Deprecated("使用基于属性的简单访问权限控制。")
 @Configuration
 open class AclConfiguration(
 	private val dataSource: DataSource,

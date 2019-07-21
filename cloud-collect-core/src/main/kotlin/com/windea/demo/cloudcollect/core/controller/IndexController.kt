@@ -7,6 +7,7 @@ import com.windea.demo.cloudcollect.core.domain.model.*
 import com.windea.demo.cloudcollect.core.domain.view.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
+import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.web.bind.annotation.*
@@ -25,6 +26,7 @@ class IndexController(
 		ApiImplicitParam(name = "view", value = "用户名&密码登录视图", required = true)
 	)
 	@PostMapping("/login", "/loginByUsernameAndPassword")
+	@PreAuthorize("isAnonymous()")
 	fun loginByUsernameAndPassword(@RequestBody @Valid view: UsernamePasswordLoginView, bindingResult: BindingResult): User {
 		return userService.loginByUsernameAndPassword(view)
 	}
@@ -34,12 +36,14 @@ class IndexController(
 		ApiImplicitParam(name = "view", value = "邮箱注册视图", required = true)
 	)
 	@PostMapping("/register", "/registerByEmail")
+	@PreAuthorize("isAnonymous()")
 	fun registerByEmail(@RequestBody @Valid view: EmailRegisterView, bindingResult: BindingResult): User {
 		return userService.registerByEmail(view)
 	}
 	
 	@ApiOperation("激活用户。")
 	@PutMapping("/activate")
+	@PreAuthorize("isAnonymous()")
 	fun activate(authentication: Authentication): User {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return userService.activate(user)
@@ -50,6 +54,7 @@ class IndexController(
 		ApiImplicitParam(name = "newPassword", value = "新的密码", required = true)
 	)
 	@PutMapping("/resetPassword")
+	@PreAuthorize("isAnonymous()")
 	fun resetPassword(@RequestParam newPassword: String, authentication: Authentication): User {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return userService.resetPassword(user, newPassword)
