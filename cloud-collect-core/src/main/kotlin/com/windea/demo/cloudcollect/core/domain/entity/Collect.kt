@@ -76,7 +76,7 @@ data class Collect(
 	var praiseByUserList: MutableList<User> = mutableListOf()
 	
 	
-	override fun equals(other: Any?): Boolean {
-		return other is Collect && other.id == id
-	}
+	override fun equals(other: Any?) = other is Collect && other.id == id
+	
+	override fun hashCode() = id.hashCode()
 }

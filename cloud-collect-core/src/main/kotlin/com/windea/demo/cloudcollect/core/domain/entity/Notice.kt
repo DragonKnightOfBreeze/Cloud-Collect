@@ -47,7 +47,7 @@ data class Notice(
 	var lastModifiedTime: LocalDateTime? = null
 	
 	
-	override fun equals(other: Any?): Boolean {
-		return other is Notice && other.id == id
-	}
+	override fun equals(other: Any?) = other is Notice && other.id == id
+	
+	override fun hashCode() = id.hashCode()
 }

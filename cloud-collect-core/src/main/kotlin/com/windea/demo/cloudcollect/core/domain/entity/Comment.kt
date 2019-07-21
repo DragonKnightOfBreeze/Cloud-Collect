@@ -44,7 +44,7 @@ data class Comment(
 	var lastModifiedTime: LocalDateTime? = null
 	
 	
-	override fun equals(other: Any?): Boolean {
-		return other is Comment && other.id == id
-	}
+	override fun equals(other: Any?) = other is Comment && other.id == id
+	
+	override fun hashCode() = id.hashCode()
 }

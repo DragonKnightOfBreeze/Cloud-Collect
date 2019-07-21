@@ -92,7 +92,7 @@ data class User(
 	var praiseToCollectList: MutableList<Collect> = mutableListOf()
 	
 	
-	override fun equals(other: Any?): Boolean {
-		return other is User && other.id == id
-	}
+	override fun equals(other: Any?) = other is User && other.id == id
+	
+	override fun hashCode() = id.hashCode()
 }

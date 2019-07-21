@@ -44,7 +44,7 @@ data class CollectCategory(
 	var lastModifiedTime: LocalDateTime? = null
 	
 	
-	override fun equals(other: Any?): Boolean {
-		return other is CollectCategory && other.id == id
-	}
+	override fun equals(other: Any?) = other is CollectCategory && other.id == id
+	
+	override fun hashCode() = id.hashCode()
 }

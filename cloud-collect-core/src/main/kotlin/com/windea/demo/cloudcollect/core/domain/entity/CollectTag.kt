@@ -44,7 +44,7 @@ data class CollectTag(
 	var lastModifiedTime: LocalDateTime? = null
 	
 	
-	override fun equals(other: Any?): Boolean {
-		return other is CollectTag && other.id == id
-	}
+	override fun equals(other: Any?) = other is CollectTag && other.id == id
+	
+	override fun hashCode() = id.hashCode()
 }
