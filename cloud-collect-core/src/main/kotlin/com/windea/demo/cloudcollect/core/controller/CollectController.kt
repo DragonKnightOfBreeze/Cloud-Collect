@@ -31,8 +31,8 @@ class CollectController(
 	private val userService: UserService,
 	private val ieService: ImportExportService
 ) {
-	private lateinit var tempPath: String
-	private lateinit var dataSchemaFileName: String
+	lateinit var tempPath: String
+	lateinit var dataSchemaFileName: String
 	
 	
 	@ApiOperation("创建自己的收藏。")
