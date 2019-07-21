@@ -6,7 +6,7 @@ import org.springframework.security.core.authority.*
 import org.springframework.security.core.userdetails.*
 
 /**Jwt用户详情。用于安全验证。*/
-class JwtUserDetails(
+data class JwtUserDetails(
 	val delegateUser: User
 ) : UserDetails {
 	override fun getUsername(): String {
@@ -34,7 +34,7 @@ class JwtUserDetails(
 	}
 	
 	override fun isEnabled(): Boolean {
-		return delegateUser.activateStatus
+		return delegateUser.isActivated
 	}
 }
 

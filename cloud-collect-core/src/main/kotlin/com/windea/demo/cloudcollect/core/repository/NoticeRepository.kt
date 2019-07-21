@@ -4,12 +4,13 @@ import com.windea.demo.cloudcollect.core.domain.entity.*
 import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.*
 
+/**通知的仓库。*/
 interface NoticeRepository : JpaRepository<Notice, Long> {
-	fun findByUserId(userId: Long, pageable: Pageable): Page<Notice>
+	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Notice>
 	
 	fun countByUserId(userId: Long): Long
 	
-	fun findByUserIdAndReadStatus(userId: Long, readStatus: Boolean, pageable: Pageable): Page<Notice>
+	fun findAllByUserIdAndRead(userId: Long, isRead: Boolean, pageable: Pageable): Page<Notice>
 	
-	fun countByUserIdAndReadStatus(userId: Long, readStatus: Boolean): Long
+	fun countByUserIdAndRead(userId: Long, isRead: Boolean): Long
 }

@@ -4,7 +4,7 @@ import com.windea.demo.cloudcollect.core.validation.validator.*
 import javax.validation.*
 import kotlin.reflect.*
 
-/** 唯一用户的校验注解。*/
+/**唯一用户的校验注解。*/
 @MustBeDocumented
 @Constraint(validatedBy = [UniqueUserValidator::class])
 @Target(AnnotationTarget.CLASS)

@@ -9,39 +9,40 @@ import javax.persistence.Id
 
 /**通知。*/
 @Entity
-class Notice(
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null,
-	
-	/** 标题。*/
+data class Notice(
+	/**标题。*/
 	@Column(nullable = false)
 	var title: String = "",
 	
-	/** 内容。*/
+	/**内容。*/
 	@Column(nullable = false, length = 32)
 	var content: String = "",
 	
-	/** 通知的类型。*/
-	@Enumerated(EnumType.STRING)
+	/**通知的类型。*/
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	var type: NoticeType = NoticeType.SYSTEM,
 	
-	/** 阅读状态。*/
-	@Column
-	var readStatus: Boolean = false,
-	
-	/** 所属用户。*/
+	/**所属用户。*/
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var user: User = User(),
+	var user: User = User()
+) : Serializable {
+	/**编号。*/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	var id: Long? = null
 	
-	/** 创建时间。*/
+	@Column
+		/**是否已读。*/
+	var isRead: Boolean = false
+	
+	/**创建时间。*/
+	@Column
 	@CreatedDate
-	@Column
-	var createdTime: LocalDateTime? = null,
+	var createdTime: LocalDateTime? = null
 	
-	/** 最后更新时间。*/
-	@LastModifiedDate
+	/**最后更新时间。*/
 	@Column
+	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
-) : Serializable
+}

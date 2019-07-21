@@ -10,62 +10,64 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
+@CacheConfig(cacheNames = ["collectTag"])
 open class CollectTagServiceImpl(
-	private val repository: CollectTagRepository,
-	private val collectRepository: CollectRepository
+	private val repository: CollectTagRepository
 ) : CollectTagService {
 	@Transactional
+	@CachePut
 	override fun create(tag: CollectTag, user: User): CollectTag {
 		tag.user = user
 		return repository.save(tag)
 	}
 	
 	@Transactional
+	@CacheEvict
 	override fun delete(id: Long) {
 		repository.deleteById(id)
 	}
 	
 	@Transactional
+	@CachePut
 	override fun modify(id: Long, tag: CollectTag): CollectTag {
-		val rawTag = get(id)
+		val rawTag = findById(id)
 		rawTag.name = tag.name
 		rawTag.summary = tag.summary
 		return repository.save(rawTag)
 	}
 	
-	@Cacheable("collectTag")
-	override fun get(id: Long): CollectTag {
+	@Cacheable
+	override fun findById(id: Long): CollectTag {
 		return repository.findById(id).orElseThrow { NotFoundException() }
 	}
 	
-	@Cacheable("collectTag.collectPage")
-	override fun getCollectPage(id: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findByTagIdAndDeleteStatusFalse(id, pageable)
+	@Cacheable
+	override fun findByNameAndUserId(name: String, userId: Long): CollectTag {
+		return repository.findByNameAndUserId(name, userId).orElseThrow { NotFoundException() }
 	}
 	
-	@Cacheable("collectTag.collectCount")
-	override fun getCollectCount(id: Long): Long {
-		return collectRepository.countByTagIdAndDeleteStatusFalse(id)
-	}
-	
-	@Cacheable("collectTagPage")
+	@Cacheable
 	override fun findAll(pageable: Pageable): Page<CollectTag> {
 		return repository.findAll(pageable)
 	}
 	
-	@Cacheable("collectTagPage.byUser")
-	override fun findByUser(userId: Long, pageable: Pageable): Page<CollectTag> {
-		return repository.findByUserId(userId, pageable)
+	@Cacheable
+	override fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<CollectTag> {
+		return repository.findAllByNameContainsAndUserId(name, userId, pageable)
 	}
 	
-	@Cacheable("collectTagPage.byUserAndName")
-	override fun findByUserAndName(userId: Long, name: String, pageable: Pageable): Page<CollectTag> {
-		return repository.findByUserIdAndNameContains(userId, name, pageable)
+	@Cacheable
+	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectTag> {
+		return repository.findAllByUserId(userId, pageable)
+	}
+	
+	override fun countByUserId(userId: Long): Long {
+		return repository.countByUserId(userId)
 	}
 	
 	override fun exists(tag: CollectTag): Boolean {
-		val userId = tag.user.id ?: return false
 		val name = tag.name
-		return repository.existsByUserIdAndName(userId, name)
+		val userId = tag.user.id
+		return userId != null && repository.existsByNameAndUserId(name, userId)
 	}
 }

@@ -5,7 +5,7 @@ import org.springframework.http.*
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.method.annotation.*
 
-/** 全局异常处理器。*/
+/**全局异常处理器。*/
 @RestControllerAdvice
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 	@ExceptionHandler(InvalidUserException::class)

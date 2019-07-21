@@ -4,7 +4,7 @@ import com.windea.demo.cloudcollect.core.validation.validator.*
 import javax.validation.*
 import kotlin.reflect.*
 
-/** 唯一收藏的校验注解。*/
+/**唯一收藏的校验注解。*/
 @MustBeDocumented
 @Constraint(validatedBy = [UniqueCollectValidator::class])
 @Target(AnnotationTarget.CLASS)

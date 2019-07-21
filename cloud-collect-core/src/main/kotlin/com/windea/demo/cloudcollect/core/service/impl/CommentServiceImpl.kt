@@ -10,11 +10,13 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
+@CacheConfig(cacheNames = ["comment"])
 open class CommentServiceImpl(
 	private val repository: CommentRepository,
 	private val collectRepository: CollectRepository
 ) : CommentService {
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun create(collectId: Long, comment: Comment, sponsorByUser: User): Comment {
 		comment.collect = collectRepository.findById(collectId).orElseThrow { NotFoundException() }
 		comment.sponsorByUser = sponsorByUser
@@ -22,40 +24,54 @@ open class CommentServiceImpl(
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun reply(collectId: Long, replyToCommentId: Long, comment: Comment, sponsorByUser: User): Comment {
 		comment.collect = collectRepository.findById(collectId).orElseThrow { NotFoundException() }
-		comment.replyToComment = get(replyToCommentId)
+		comment.replyToComment = findById(replyToCommentId)
 		comment.sponsorByUser = sponsorByUser
 		return repository.save(comment)
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun delete(id: Long) {
 		repository.deleteById(id)
 	}
 	
-	@Cacheable("comment")
-	override fun get(id: Long): Comment {
+	@Cacheable(key = "methodName + args")
+	override fun findById(id: Long): Comment {
 		return repository.findById(id).orElseThrow { NotFoundException() }
 	}
 	
-	@Cacheable("comment.replyByCommentPage")
-	override fun getReplyByCommentPage(id: Long, pageable: Pageable): Page<Comment> {
-		return repository.findByReplyToCommentId(id, pageable)
-	}
-	
-	@Cacheable("comment.replyByCommentCount")
-	override fun getReplyByCommentCount(id: Long): Long {
-		return repository.countByReplyToCommentId(id)
-	}
-	
-	@Cacheable("commentPage")
+	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<Comment> {
 		return repository.findAll(pageable)
 	}
 	
-	@Cacheable("commentPage.byComment")
-	override fun findByCollect(collectId: Long, pageable: Pageable): Page<Comment> {
-		return repository.findByCollectId(collectId, pageable)
+	@Cacheable(key = "methodName + args")
+	override fun findAllByCollectId(collectId: Long, pageable: Pageable): Page<Comment> {
+		return repository.findAllByCollectId(collectId, pageable)
+	}
+	
+	override fun countByCollectId(collectId: Long): Long {
+		return repository.countByCollectId(collectId)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllBySponsorByUserId(sponsorByUserId: Long, pageable: Pageable): Page<Comment> {
+		return repository.findAllBySponsorByUserId(sponsorByUserId, pageable)
+	}
+	
+	override fun countBySponsorByUserId(sponsorByUserId: Long): Long {
+		return repository.countBySponsorByUserId(sponsorByUserId)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByReplyToCommentId(replyToCommentId: Long, pageable: Pageable): Page<Comment> {
+		return repository.findAllByReplyToCommentId(replyToCommentId, pageable)
+	}
+	
+	override fun countByReplyToCommentId(replyToCommentId: Long): Long {
+		return repository.countByReplyToCommentId(replyToCommentId)
 	}
 }

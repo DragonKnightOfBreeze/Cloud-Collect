@@ -6,7 +6,7 @@ import com.windea.demo.cloudcollect.core.repository.*
 import org.springframework.security.core.userdetails.*
 import org.springframework.stereotype.*
 
-/** Jwt用户详情的服务。用于安全验证。*/
+/**Jwt用户详情的服务。用于安全验证。*/
 @Service
 open class JwtUserDetailsService(
 	private val repository: UserRepository

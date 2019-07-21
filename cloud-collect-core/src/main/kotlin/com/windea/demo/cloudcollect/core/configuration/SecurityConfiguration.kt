@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.*
 import org.springframework.security.web.access.expression.*
 import org.springframework.security.web.authentication.*
 
-/** Spring Security的配置类。*/
+/**Spring Security的配置类。*/
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -55,15 +55,17 @@ open class SecurityConfiguration(
 			.headers().cacheControl()
 	}
 	
+	//需要重载方法以提取bean。
 	@Bean
 	override fun authenticationManagerBean(): AuthenticationManager {
 		return super.authenticationManagerBean()
 	}
 	
+	//使用自定义的许可鉴别器，以便使用注解进行许可控制。
 	@Bean
 	open fun webSecurityExpressionHandler(): DefaultWebSecurityExpressionHandler {
-		val handler = DefaultWebSecurityExpressionHandler()
-		handler.setPermissionEvaluator(permissionEvaluator)
-		return handler
+		return DefaultWebSecurityExpressionHandler().also {
+			it.setPermissionEvaluator(permissionEvaluator)
+		}
 	}
 }

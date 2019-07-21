@@ -2,8 +2,8 @@ package com.windea.demo.cloudcollect.core.domain.view
 
 import javax.validation.constraints.*
 
-/** 邮箱&验证码登录视图。 */
-class EmailCodeLoginView(
+/**邮箱&验证码登录视图。 */
+data class EmailCodeLoginView(
 	@NotEmpty(message = "{validation.User.email.NotEmpty}")
 	@Email(message = "{validation.User.email.Email}")
 	val email: String,

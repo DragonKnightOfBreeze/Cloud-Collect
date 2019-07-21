@@ -11,24 +11,24 @@ interface UserRepository : JpaRepository<User, Long> {
 	
 	fun findByEmail(email: String): Optional<User>
 	
-	fun findByNicknameContains(nickname: String, pageable: Pageable): Page<User>
+	fun findAllByNicknameContains(nickname: String, pageable: Pageable): Page<User>
 	
-	fun findByRole(role: Role, pageable: Pageable): Page<User>
+	fun findAllByRole(role: Role, pageable: Pageable): Page<User>
 	
 	@Query("from User u, in (u.followToUserList) fu where fu.id=:followToUserId")
-	fun findByFollowToUserId(followToUserId: Long, pageable: Pageable): Page<User>
+	fun findAllByFollowToUserId(followToUserId: Long, pageable: Pageable): Page<User>
 	
 	@Query("select count(u) from User u, in (u.followToUserList) fu where fu.id=:followToUserId")
 	fun countByFollowToUserId(followToUserId: Long): Long
 	
 	@Query("from User u, in (u.followByUserList) fu where fu.id=:followByUserId")
-	fun findByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User>
+	fun findAllByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User>
 	
 	@Query("select count(u) from User u, in (u.followByUserList) fu where fu.id=:followByUserId")
 	fun countByFollowByUserId(followByUserId: Long): Long
 	
 	@Query("from User u, in(u.praiseToCollectList) c where c.id=:praiseToCollectId")
-	fun findByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User>
+	fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User>
 	
 	@Query("select count(u) from User u, in(u.praiseToCollectList) c where c.id=:praiseToCollectId")
 	fun countByPraiseToCollectId(praiseToCollectId: Long): Long

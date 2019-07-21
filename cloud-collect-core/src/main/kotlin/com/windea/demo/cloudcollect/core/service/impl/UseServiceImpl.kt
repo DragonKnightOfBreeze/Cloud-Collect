@@ -17,11 +17,9 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
+@CacheConfig(cacheNames = ["user"])
 open class UseServiceImpl(
 	private val repository: UserRepository,
-	private val collectRepository: CollectRepository,
-	private val categoryRepository: CollectCategoryRepository,
-	private val noticeRepository: NoticeRepository,
 	private val emailService: EmailService,
 	private val passwordEncoder: PasswordEncoder,
 	private val authenticationManager: AuthenticationManager
@@ -35,6 +33,7 @@ open class UseServiceImpl(
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun registerByEmail(view: EmailRegisterView): User {
 		val user = User()
 		user.nickname = view.nickname
@@ -48,8 +47,9 @@ open class UseServiceImpl(
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun activate(user: User): User {
-		user.activateStatus = true
+		user.isActivated = true
 		val result = repository.save(user)
 		
 		emailService.sendHelloEmail()
@@ -57,14 +57,16 @@ open class UseServiceImpl(
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun resetPassword(user: User, newPassword: String): User {
 		user.password = passwordEncoder.encode(newPassword)
 		return repository.save(user)
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun update(id: Long, user: User): User {
-		val rawUser = get(id)
+		val rawUser = findById(id)
 		rawUser.nickname = user.nickname
 		rawUser.introduce = user.introduce
 		rawUser.avatarUrl = user.avatarUrl
@@ -72,80 +74,67 @@ open class UseServiceImpl(
 		return repository.save(user)
 	}
 	
-	@Cacheable("user")
-	override fun get(id: Long): User {
+	@Cacheable(key = "methodName + args")
+	override fun findById(id: Long): User {
 		return repository.findById(id).orElseThrow { NotFoundException() }
 	}
 	
-	override fun getByRandom(): User {
+	@Cacheable(key = "methodName + args")
+	override fun findByUsername(username: String): User {
+		return repository.findByUsername(username).orElseThrow { NotFoundException() }
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findByEmail(email: String): User {
+		return repository.findByEmail(email).orElseThrow { NotFoundException() }
+	}
+	
+	override fun findByRandom(): User {
 		val count = repository.count()
 		val randomId = RandomExtension.range(1, count)
 		return repository.findById(randomId).orElseThrow { NotFoundException() }
 	}
 	
-	@Cacheable("user.followToUserPage")
-	override fun getFollowToUserPage(id: Long, pageable: Pageable): Page<User> {
-		return repository.findByFollowByUserId(id, pageable)
-	}
-	
-	@Cacheable("user.followToUserCount")
-	override fun getFollowToUserCount(id: Long): Long {
-		return repository.countByFollowByUserId(id)
-	}
-	
-	@Cacheable("user.followByUserPage")
-	override fun getFollowByUserPage(id: Long, pageable: Pageable): Page<User> {
-		return repository.findByFollowToUserId(id, pageable)
-	}
-	
-	@Cacheable("user.followByUserCount")
-	override fun getFollowByUserCount(id: Long): Long {
-		return repository.countByFollowToUserId(id)
-	}
-	
-	@Cacheable("user.collectPage")
-	override fun getCollectPage(id: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findByUserIdAndDeleteStatus(id, false, pageable)
-	}
-	
-	@Cacheable("user.collectCount")
-	override fun getCollectCount(id: Long): Long {
-		return collectRepository.countByUserIdAndDeleteStatus(id, false)
-	}
-	
-	@Cacheable("user.collectCategoryPage")
-	override fun getCollectCategoryPage(id: Long, pageable: Pageable): Page<CollectCategory> {
-		return categoryRepository.findByUserId(id, pageable)
-	}
-	
-	@Cacheable("user.collectCategoryCount")
-	override fun getCollectCategoryCount(id: Long): Long {
-		return categoryRepository.countByUserId(id)
-	}
-	
-	@Cacheable("user.noticePage")
-	override fun getNoticePage(id: Long, pageable: Pageable): Page<Notice> {
-		return noticeRepository.findByUserId(id, pageable)
-	}
-	
-	@Cacheable("collect.noticeCount")
-	override fun getNoticeCount(id: Long): Long {
-		return noticeRepository.countByUserId(id)
-	}
-	
-	@Cacheable("collectPage")
+	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<User> {
 		return repository.findAll(pageable)
 	}
 	
-	@Cacheable("collectPage.byNickname")
-	override fun findByNickname(nickname: String, pageable: Pageable): Page<User> {
-		return repository.findByNicknameContains(nickname, pageable)
+	@Cacheable(key = "methodName + args")
+	override fun findAllByNicknameContains(nickname: String, pageable: Pageable): Page<User> {
+		return repository.findAllByNicknameContains(nickname, pageable)
 	}
 	
-	@Cacheable("collectPage.byRole")
-	override fun findByRole(role: Role, pageable: Pageable): Page<User> {
-		return repository.findByRole(role, pageable)
+	@Cacheable(key = "methodName + args")
+	override fun findAllByRole(role: Role, pageable: Pageable): Page<User> {
+		return repository.findAllByRole(role, pageable)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByFollowToUserId(followToUserId: Long, pageable: Pageable): Page<User> {
+		return repository.findAllByFollowToUserId(followToUserId, pageable)
+	}
+	
+	override fun countByFollowToUserId(followToUserId: Long): Long {
+		return repository.countByFollowToUserId(followToUserId)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User> {
+		return repository.findAllByFollowByUserId(followByUserId, pageable)
+	}
+	
+	override fun countByFollowByUserId(followByUserId: Long): Long {
+		return repository.countByFollowByUserId(followByUserId)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User> {
+		return repository.findAllByPraiseToCollectId(praiseToCollectId, pageable)
+	}
+	
+	override fun countByPraiseToCollectId(praiseToCollectId: Long): Long {
+		return repository.countByPraiseToCollectId(praiseToCollectId)
 	}
 	
 	override fun exists(user: User): Boolean {

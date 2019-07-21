@@ -7,7 +7,7 @@ import org.springframework.security.web.*
 import org.springframework.stereotype.*
 import javax.servlet.http.*
 
-/** Jwt安全验证进入点。*/
+/**Jwt安全验证进入点。*/
 @Component
 class JwtEntryPoint : AuthenticationEntryPoint {
 	override fun commence(request: HttpServletRequest, response: HttpServletResponse, e: AuthenticationException) {

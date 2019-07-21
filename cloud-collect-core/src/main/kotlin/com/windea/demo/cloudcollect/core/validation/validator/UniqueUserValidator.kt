@@ -6,7 +6,7 @@ import com.windea.demo.cloudcollect.core.validation.annotation.*
 import org.springframework.stereotype.*
 import javax.validation.*
 
-/** 唯一用户的校验器。*/
+/**唯一用户的校验器。*/
 @Component
 class UniqueUserValidator(
 	private val service: UserService

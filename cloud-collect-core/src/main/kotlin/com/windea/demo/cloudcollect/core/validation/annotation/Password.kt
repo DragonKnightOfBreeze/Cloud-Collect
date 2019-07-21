@@ -4,7 +4,7 @@ import com.windea.demo.cloudcollect.core.validation.validator.*
 import javax.validation.*
 import kotlin.reflect.*
 
-/** 密码的校验注解。*/
+/**密码的校验注解。*/
 @MustBeDocumented
 @Constraint(validatedBy = [PasswordValidator::class])
 @Target(AnnotationTarget.FIELD)

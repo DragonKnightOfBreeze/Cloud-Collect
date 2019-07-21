@@ -3,7 +3,7 @@ package com.windea.demo.cloudcollect.core.exception
 import com.windea.demo.cloudcollect.core.domain.enums.*
 import org.springframework.validation.*
 
-/** 参数校验的异常。 */
+/**参数校验的异常。 */
 class ValidationException : RuntimeException {
 	var validationErrors: List<ObjectError>
 	

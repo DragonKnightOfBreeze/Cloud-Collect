@@ -8,41 +8,38 @@ import javax.persistence.*
 import javax.persistence.Id
 import javax.validation.constraints.*
 
-/**
- * 收藏的分类。
- *
- * 一个收藏可以有多个分类。
- */
-@UniqueCollectCategory
+/**收藏的分类。一个收藏可以有多个分类。*/
 @Entity
-class CollectCategory(
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null,
-	
-	/** 名字。*/
+@UniqueCollectCategory
+data class CollectCategory(
+	/**名字。*/
+	@Column(nullable = false, length = 32)
 	@NotEmpty(message = "{validation.CollectCategory.name.NotEmpty}")
 	@Size(min = 1, max = 32, message = "{validation.CollectCategory.name.Size}")
-	@Column(nullable = false, length = 32)
 	var name: String = "",
 	
-	/** 概述。*/
+	/**概述。*/
+	@Column(nullable = false)
 	@NotEmpty(message = "{validation.CollectCategory.summary.NotEmpty}")
 	@Size(min = 1, max = 255, message = "{validation.CollectCategory.summary.Size}")
-	@Column(nullable = false)
 	var summary: String = "",
 	
-	/** 所属用户。*/
+	/**所属用户。*/
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var user: User = User(),
+	var user: User = User()
+) : Serializable {
+	/**编号。*/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	var id: Long? = null
 	
-	/** 创建时间。*/
+	/**创建时间。*/
+	@Column
 	@CreatedDate
-	@Column
-	var createdTime: LocalDateTime? = null,
+	var createdTime: LocalDateTime? = null
 	
-	/** 最后更新时间。*/
-	@LastModifiedDate
+	/**最后更新时间。*/
 	@Column
+	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
-) : Serializable
+}

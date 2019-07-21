@@ -7,18 +7,20 @@ import com.windea.demo.cloudcollect.core.domain.enums.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
-import org.springframework.security.access.prepost.*
 import org.springframework.validation.*
 import org.springframework.web.bind.annotation.*
 import javax.validation.*
 
-/** 用户的控制器。*/
+/**用户的控制器。*/
 @Api("用户")
 @RestController
 @RequestMapping("/user")
 @CrossOrigin
 class UserController(
-	private val service: UserService
+	private val service: UserService,
+	private val collectService: CollectService,
+	private val categoryService: CollectCategoryService,
+	private val noticeService: NoticeService
 ) {
 	//注册、登录等操作委托给首页控制器
 	
@@ -32,13 +34,13 @@ class UserController(
 		return service.update(id, user)
 	}
 	
-	@ApiOperation("得到用户信息。")
+	@ApiOperation("根据id得到用户。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	)
 	@GetMapping("/{id}")
-	operator fun get(@PathVariable id: Long): User {
-		return service.get(id)
+	fun findById(@PathVariable id: Long): User {
+		return service.findById(id)
 	}
 	
 	@ApiOperation("分页得到某一用户的所有关注用户。")
@@ -48,7 +50,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/followToUserPage")
 	fun getFollowToUserPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<User> {
-		return service.getFollowToUserPage(id, pageable)
+		return service.findAllByFollowByUserId(id, pageable)
 	}
 	
 	@ApiOperation("得到某一用户的关注用户数量。")
@@ -57,7 +59,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/followToUserCount")
 	fun getFollowToUserCount(@PathVariable id: Long): Long {
-		return service.getFollowToUserCount(id)
+		return service.countByFollowByUserId(id)
 	}
 	
 	@ApiOperation("分页得到某一用户的所有粉丝用户。")
@@ -67,7 +69,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/followByUserPage")
 	fun getFollowByUserPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<User> {
-		return service.getFollowByUserPage(id, pageable)
+		return service.findAllByFollowToUserId(id, pageable)
 	}
 	
 	@ApiOperation("得到某一用户的粉丝用户数量。")
@@ -76,7 +78,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/followByUserCount")
 	fun getFollowByUserCount(@PathVariable id: Long): Long {
-		return service.getFollowByUserCount(id)
+		return service.countByFollowToUserId(id)
 	}
 	
 	@ApiOperation("分页得到某一用户的所有收藏。")
@@ -86,7 +88,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/collectPage")
 	fun getCollectPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Collect> {
-		return service.getCollectPage(id, pageable)
+		return collectService.findAllByUserIdAndDeleted(id, false, pageable)
 	}
 	
 	@ApiOperation("得到某一用户的收藏数量。")
@@ -95,7 +97,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/collectCount")
 	fun getCollectCount(@PathVariable id: Long): Long {
-		return service.getCollectCount(id)
+		return collectService.countByUserIdAndDeleted(id, false)
 	}
 	
 	@ApiOperation("得到某一用户的所有收藏分类。")
@@ -105,7 +107,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/collectCategoryPage")
 	fun getCollectCategoryPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<CollectCategory> {
-		return service.getCollectCategoryPage(id, pageable)
+		return categoryService.findAllByUserId(id, pageable)
 	}
 	
 	@ApiOperation("得到某一用户的所有收藏分类数量。")
@@ -114,7 +116,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/collectCategoryCount")
 	fun getCollectCategoryCount(@PathVariable id: Long): Long {
-		return service.getCollectCategoryCount(id)
+		return categoryService.countByUserId(id)
 	}
 	
 	@ApiOperation("分页得到某一用户的所有通知。")
@@ -124,7 +126,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/noticePage")
 	fun getNoticePage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Notice> {
-		return service.getNoticePage(id, pageable)
+		return noticeService.findAllByUserId(id, pageable)
 	}
 	
 	@ApiOperation("得到某一用户的通知数量。")
@@ -133,7 +135,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/noticeCount")
 	fun getNoticeCount(@PathVariable id: Long): Long {
-		return service.getNoticeCount(id)
+		return noticeService.countByUserId(id)
 	}
 	
 	@ApiOperation("分页得到所有用户。")
@@ -141,7 +143,6 @@ class UserController(
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
 	@GetMapping("/findAll")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	fun findAll(@RequestParam pageable: Pageable): Page<User> {
 		return service.findAll(pageable)
 	}
@@ -151,9 +152,9 @@ class UserController(
 		ApiImplicitParam(name = "nickname", value = "昵称", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
-	@GetMapping("/findByNickname")
-	fun findByNickname(@RequestParam nickname: String, @RequestParam pageable: Pageable): Page<User> {
-		return service.findByNickname(nickname, pageable)
+	@GetMapping("/findAllByNicknameContains")
+	fun findAllByNicknameContains(@RequestParam nickname: String, @RequestParam pageable: Pageable): Page<User> {
+		return service.findAllByNicknameContains(nickname, pageable)
 	}
 	
 	@ApiOperation("根据身份分页全局查询用户。")
@@ -161,9 +162,9 @@ class UserController(
 		ApiImplicitParam(name = "role", value = "身份", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
-	@GetMapping("/findByRole")
-	fun findByRole(@RequestParam role: Role, @RequestParam pageable: Pageable): Page<User> {
-		return service.findByRole(role, pageable)
+	@GetMapping("/findAllByRole")
+	fun findAllByRole(@RequestParam role: Role, @RequestParam pageable: Pageable): Page<User> {
+		return service.findAllByRole(role, pageable)
 	}
 }
 

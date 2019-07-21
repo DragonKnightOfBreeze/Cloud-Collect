@@ -5,14 +5,15 @@ import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.*
 import java.util.*
 
+/**收藏的分类的仓库。*/
 interface CollectCategoryRepository : JpaRepository<CollectCategory, Long> {
-	fun findByName(name: String): Optional<CollectCategory>
+	fun findByNameAndUserId(name: String, userId: Long): Optional<CollectCategory>
 	
-	fun findByUserId(userId: Long, pageable: Pageable): Page<CollectCategory>
+	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<CollectCategory>
+	
+	fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectCategory>
 	
 	fun countByUserId(userId: Long): Long
 	
-	fun findByUserIdAndNameContains(userId: Long, name: String, pageable: Pageable): Page<CollectCategory>
-	
-	fun existsByUserIdAndName(userId: Long, name: String): Boolean
+	fun existsByNameAndUserId(name: String, userId: Long): Boolean
 }

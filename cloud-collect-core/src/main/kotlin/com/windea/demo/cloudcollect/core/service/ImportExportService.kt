@@ -8,9 +8,9 @@ import com.windea.demo.cloudcollect.core.domain.entity.*
  * @see com.windea.demo.cloudcollect.core.domain.model.DataSchema
  */
 interface ImportExportService {
-	/** 从指定格式的文件导入收藏。例如：Xml、Json、Yaml。*/
+	/**从指定格式的文件导入收藏。例如：Xml、Json、Yaml。*/
 	fun importData(type: DataType, string: String, user: User)
 	
-	/** 导出收藏到指定格式的文件。例如：Xml、Json、Yaml。*/
+	/**导出收藏到指定格式的文件。例如：Xml、Json、Yaml。*/
 	fun exportData(type: DataType): String
 }

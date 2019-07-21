@@ -6,13 +6,18 @@ import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.model.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
+import org.springframework.cache.annotation.*
 import org.springframework.stereotype.*
+import javax.transaction.*
 
 @Service
+@CacheConfig(cacheNames = ["collect"])
 @NotTested("未进行实际测试……")
 open class ImportExportServiceImpl(
 	private val collectRepository: CollectRepository
 ) : ImportExportService {
+	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun importData(type: DataType, string: String, user: User) {
 		//根据指定数据类型读取数据
 		val dataSchema = type.loader.fromString(string, DataSchema::class.java)
@@ -29,6 +34,7 @@ open class ImportExportServiceImpl(
 			}
 			collect.user = user
 		}
+		
 		//存储到数据库中
 		collectRepository.saveAll(dataSchema.collectList)
 	}

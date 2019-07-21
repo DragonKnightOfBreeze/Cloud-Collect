@@ -12,12 +12,12 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
+@CacheConfig(cacheNames = ["collect"])
 open class CollectServiceImpl(
-	private val repository: CollectRepository,
-	private val userRepository: UserRepository,
-	private val commentRepository: CommentRepository
+	private val repository: CollectRepository
 ) : CollectService {
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun create(collect: Collect, user: User): Collect {
 		collect.url = collect.url.toUrlInfo().fullPath
 		collect.logoUrl = collect.logoUrl.toUrlInfo().fullPath
@@ -26,25 +26,28 @@ open class CollectServiceImpl(
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun createFrom(id: Long, user: User): Collect {
 		praise(id, user)
 		
 		//从别人的收藏创建新的收藏，需要先将id设为null
-		val collect = get(id)
+		val collect = findById(id)
 		collect.id = null
 		return create(collect, user)
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun delete(id: Long) {
-		val collect = get(id)
-		collect.deleteStatus = true
+		val collect = findById(id)
+		collect.isDeleted = true
 		repository.save(collect)
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun modify(id: Long, collect: Collect): Collect {
-		val rawCollect = get(id)
+		val rawCollect = findById(id)
 		rawCollect.name = collect.name
 		rawCollect.summary = collect.summary
 		rawCollect.category = collect.category
@@ -54,29 +57,33 @@ open class CollectServiceImpl(
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun modifyCategory(id: Long, category: CollectCategory): Collect {
-		val rawCollect = get(id)
+		val rawCollect = findById(id)
 		rawCollect.category = category
 		return repository.save(rawCollect)
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun modifyTags(id: Long, tags: MutableSet<CollectTag>): Collect {
-		val rawCollect = get(id)
+		val rawCollect = findById(id)
 		rawCollect.tags = tags
 		return repository.save(rawCollect)
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun modifyType(id: Long, type: CollectType): Collect {
-		val rawCollect = get(id)
+		val rawCollect = findById(id)
 		rawCollect.type = type
 		return repository.save(rawCollect)
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun praise(id: Long, user: User): Collect {
-		val collect = get(id)
+		val collect = findById(id)
 		val praiseByUserList = collect.praiseByUserList
 		praiseByUserList.add(user)
 		collect.praiseByUserList = praiseByUserList
@@ -84,75 +91,88 @@ open class CollectServiceImpl(
 		
 	}
 	
-	@Cacheable("collect")
-	override fun get(id: Long): Collect {
+	@Cacheable(key = "methodName + args")
+	override fun findById(id: Long): Collect {
 		return repository.findById(id).orElseThrow { NotFoundException() }
 	}
 	
-	override fun getByRandom(): Collect {
+	@Cacheable(key = "methodName + args")
+	override fun findByNameAndUserIdAndDeleted(name: String, userId: Long, isDeleted: Boolean): Collect {
+		return repository.findByNameAndUserIdAndDeleted(name, userId, isDeleted).orElseThrow { NotFoundException() }
+	}
+	
+	override fun findByRandom(): Collect {
 		val count = repository.count()
 		val randomId = RandomExtension.range(1, count)
 		return repository.findById(randomId).orElseThrow { NotFoundException() }
 	}
 	
-	@Cacheable("collect.praiseByUserPage")
-	override fun getPraiseByUserPage(id: Long, pageable: Pageable): Page<User> {
-		return userRepository.findByPraiseToCollectId(id, pageable)
-	}
-	
-	@Cacheable("collect.praiseByUserCount")
-	override fun getPraiseByUserCount(id: Long): Long {
-		return userRepository.countByPraiseToCollectId(id)
-	}
-	
-	@Cacheable("collect.commentPage")
-	override fun getCommentPage(id: Long, pageable: Pageable): Page<Comment> {
-		return commentRepository.findByCollectId(id, pageable)
-	}
-	
-	@Cacheable("collect.commentCount")
-	override fun getCommentCount(id: Long): Long {
-		return commentRepository.countByCollectId(id)
-	}
-	
-	@Cacheable("collectPage")
+	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<Collect> {
 		return repository.findAll(pageable)
 	}
 	
-	@Cacheable("collectPage.byUserAndDeleteStatus")
-	override fun findByUserAndDeleteStatus(userId: Long, deleteStatus: Boolean, pageable: Pageable): Page<Collect> {
-		return repository.findByUserIdAndDeleteStatus(userId, deleteStatus, pageable)
+	@Cacheable(key = "methodName + args")
+	override fun findAllByNameContainsAndDeletedFalse(name: String, pageable: Pageable): Page<Collect> {
+		return repository.findAllByNameContainsAndDeletedFalse(name, pageable)
 	}
 	
-	@Cacheable("collectPage.byUserAndName")
-	override fun findByUserAndName(userId: Long, name: String, pageable: Pageable): Page<Collect> {
-		return repository.findByUserIdAndNameContainsAndDeleteStatusFalse(userId, name, pageable)
+	@Cacheable(key = "methodName + args")
+	override fun findAllByNameContainsAndUserIdAndDeletedFalse(name: String, userId: Long,
+		pageable: Pageable): Page<Collect> {
+		return repository.findAllByNameContainsAndUserIdAndDeletedFalse(name, userId, pageable)
 	}
 	
-	@Cacheable("collectPage.byUserAndCategory")
-	override fun findByUserAndCategory(categoryId: Long, pageable: Pageable): Page<Collect> {
-		return repository.findByCategoryIdAndDeleteStatusFalse(categoryId, pageable)
+	@Cacheable(key = "methodName + args")
+	override fun findAllByCategoryIdAndDeletedFalse(categoryId: Long, pageable: Pageable): Page<Collect> {
+		return repository.findAllByCategoryIdAndDeletedFalse(categoryId, pageable)
 	}
 	
-	@Cacheable("collectPage.byUserAndTag")
-	override fun findByUserAndTag(tagId: Long, pageable: Pageable): Page<Collect> {
-		return repository.findByTagIdAndDeleteStatusFalse(tagId, pageable)
+	override fun countByCategoryIdAndDeletedFalse(categoryId: Long): Long {
+		return repository.countByCategoryIdAndDeletedFalse(categoryId)
 	}
 	
-	@Cacheable("collectPage.byUserAndType")
-	override fun findByUserAndType(userId: Long, type: CollectType, pageable: Pageable): Page<Collect> {
-		return repository.findByUserIdAndTypeAndDeleteStatusFalse(userId, type, pageable)
+	@Cacheable(key = "methodName + args")
+	override fun findAllByTagIdAndDeletedFalse(tagId: Long, pageable: Pageable): Page<Collect> {
+		return repository.findAllByTagIdAndDeletedFalse(tagId, pageable)
 	}
 	
-	@Cacheable("collectPage.byName")
-	override fun findByName(name: String, pageable: Pageable): Page<Collect> {
-		return repository.findByNameContainsAndDeleteStatusFalse(name, pageable)
+	override fun countByTagIdAndDeletedFalse(tagId: Long): Long {
+		return repository.countByTagIdAndDeletedFalse(tagId)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByTypeAndUserIdAndDeletedFalse(type: CollectType, userId: Long,
+		pageable: Pageable): Page<Collect> {
+		return repository.findAllByTypeAndUserIdAndDeletedFalse(type, userId, pageable)
+	}
+	
+	override fun countByTypeAndUserIdAndDeletedFalse(type: CollectType, userId: Long): Long {
+		return repository.countByTypeAndUserIdAndDeletedFalse(type, userId)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByUserIdAndDeleted(userId: Long, isDeleted: Boolean, pageable: Pageable): Page<Collect> {
+		return repository.findAllByUserIdAndDeleted(userId, isDeleted, pageable)
+	}
+	
+	override fun countByUserIdAndDeleted(userId: Long, isDeleted: Boolean): Long {
+		return repository.countByUserIdAndDeleted(userId, isDeleted)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByPraiseByUserIdAndDeletedFalse(praiseByUserId: Long, pageable: Pageable): Page<Collect> {
+		return repository.findAllByPraiseByUserIdAndDeletedFalse(praiseByUserId, pageable)
+	}
+	
+	override fun countByPraiseByUserIdAndDeletedFalse(praiseByUserId: Long): Long {
+		return repository.countByPraiseByUserIdAndDeletedFalse(praiseByUserId)
 	}
 	
 	override fun exists(collect: Collect): Boolean {
-		val userId = collect.user.id ?: return false
 		val name = collect.name
-		return repository.existsByUserIdAndName(userId, name)
+		val userId = collect.user.id
+		val isDeleted = collect.isDeleted
+		return userId != null && repository.existsByNameAndUserIdAndDeleted(name, userId, isDeleted)
 	}
 }

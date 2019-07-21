@@ -10,83 +10,84 @@ import javax.persistence.*
 import javax.persistence.Id
 import javax.validation.constraints.*
 
-/** 用户。*/
-@UniqueUser
+/**用户。*/
 @Entity
-class User(
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null,
-	
-	/** 用户名。*/
+@UniqueUser
+data class User(
+	/**用户名。*/
+	@Column(unique = true, nullable = false, length = 16)
 	@NotEmpty(message = "{validation.User.username.NotEmpty}")
 	@Username(message = "{validation.User.username.ValidUsername}")
-	@Column(unique = true, nullable = false, length = 16)
 	var username: String = "",
 	
-	/** 邮箱。*/
+	/**邮箱。*/
+	@Column(unique = true, nullable = false, length = 64)
 	@NotEmpty(message = "{validation.User.email.NotEmpty}")
 	@Email(message = "{validation.User.email.Email}")
-	@Column(unique = true, nullable = false, length = 64)
 	var email: String = "",
 	
 	/**密码。这里存储的是加密后的密码，可以进行参数验证，不能限制长度。*/
+	@Column(nullable = false)
 	@NotEmpty(message = "{validation.User.password.NotEmpty}")
 	@Password(message = "{validation.User.password.ValidPassword}")
-	@Column(nullable = false)
 	var password: String = "",
 	
-	/** 昵称。*/
+	/**昵称。*/
+	@Column(nullable = false, length = 64)
 	@NotEmpty(message = "{validation.User.nickname.NotEmpty}")
 	@Size(min = 1, max = 64, message = "{validation.User.nickname.Size}")
-	@Column(nullable = false, length = 64)
 	var nickname: String = "",
 	
-	/** 简介。*/
+	/**简介。*/
+	@Column(nullable = false)
 	@NotEmpty(message = "{validation.User.introduce.NotEmpty}")
 	@Size(min = 1, max = 255, message = "{validation.User.introduce.Size}")
-	@Column(nullable = false)
 	var introduce: String = "这家伙很懒，什么也没留下。",
 	
-	/** 头像地址。*/
+	/**头像地址。*/
 	@Column(length = 512)
 	var avatarUrl: String = "",
 	
-	/** 背景地址。*/
+	/**背景地址。*/
 	@Column(length = 512)
-	var backgroundUrl: String = "",
+	var backgroundUrl: String = ""
+) : Serializable {
+	/**编号。*/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	var id: Long? = null
 	
-	/** 身份。*/
-	@Enumerated(EnumType.STRING)
+	/**身份。*/
 	@Column(nullable = false)
-	var role: Role = Role.NORMAL,
+	@Enumerated(EnumType.STRING)
+	var role: Role = Role.NORMAL
 	
-	/** TODO 激活状态。暂时设为总是已激活。*/
+	/**TODO 是否已激活。暂时设为总是已激活。*/
 	@Column
-	var activateStatus: Boolean = true,
+	var isActivated: Boolean = true
 	
-	/** 注册时间。*/
+	/**注册时间。*/
+	@Column
 	@CreatedDate
-	@Column
-	var registerTime: LocalDateTime? = null,
+	var registerTime: LocalDateTime? = null
 	
-	/** 资料更新时间。*/
+	/**资料更新时间。*/
+	@Column
 	@LastModifiedDate
-	@Column
-	var updateTime: LocalDateTime? = null,
+	var updateTime: LocalDateTime? = null
 	
-	/** 该用户关注的用户列表。懒加载。*/
-	@JsonIgnore
+	/**用户的关注用户列表。懒加载。*/
 	@ManyToMany(cascade = [CascadeType.MERGE])
-	var followToUserList: MutableList<User> = mutableListOf(),
-	
-	/** 关注该用户的用户列表。懒加载。*/
 	@JsonIgnore
+	var followToUserList: MutableList<User> = mutableListOf()
+	
+	/**该用户的粉丝用户列表。懒加载。*/
 	@ManyToMany(cascade = [CascadeType.MERGE], mappedBy = "followToUserList")
-	var followByUserList: MutableList<User> = mutableListOf(),
-	
-	/** 该用户点赞的收藏列表。懒加载。*/
 	@JsonIgnore
+	var followByUserList: MutableList<User> = mutableListOf()
+	
+	/**该用户点赞的收藏列表。懒加载。*/
 	@ManyToMany(cascade = [CascadeType.MERGE])
+	@JsonIgnore
 	var praiseToCollectList: MutableList<Collect> = mutableListOf()
-) : Serializable
+}

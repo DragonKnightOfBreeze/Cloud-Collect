@@ -6,6 +6,6 @@ import java.io.*
 /**
  * 数据约束。用于导入/导出数据。
  */
-class DataSchema(
+data class DataSchema(
 	val collectList: List<Collect>
 ) : Serializable

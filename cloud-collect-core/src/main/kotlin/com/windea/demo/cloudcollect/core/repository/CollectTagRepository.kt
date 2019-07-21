@@ -5,14 +5,15 @@ import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.*
 import java.util.*
 
+/**收藏的标签的仓库。*/
 interface CollectTagRepository : JpaRepository<CollectTag, Long> {
-	fun findByName(name: String): Optional<CollectTag>
+	fun findByNameAndUserId(name: String, userId: Long): Optional<CollectTag>
 	
-	fun findByUserId(userId: Long, pageable: Pageable): Page<CollectTag>
+	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<CollectTag>
+	
+	fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectTag>
 	
 	fun countByUserId(userId: Long): Long
 	
-	fun findByUserIdAndNameContains(userId: Long, name: String, pageable: Pageable): Page<CollectTag>
-	
-	fun existsByUserIdAndName(userId: Long, name: String): Boolean
+	fun existsByNameAndUserId(name: String, userId: Long): Boolean
 }

@@ -13,19 +13,21 @@ import org.springframework.validation.*
 import org.springframework.web.bind.annotation.*
 import javax.validation.*
 
-/** 收藏的分类的控制器。*/
+/**收藏的分类的控制器。*/
 @Api("收藏的分类")
 @RestController
 @RequestMapping("/collectCategory")
 @CrossOrigin
 class CollectCategoryController(
-	private val service: CollectCategoryService
+	private val service: CollectCategoryService,
+	private val collectService: CollectService
 ) {
 	@ApiOperation("创建自己的分类。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "category", value = "新的分类", required = true)
 	)
 	@PostMapping("/create")
+	@PreAuthorize("hasPermission(0, 'CollectCategory', 'create')")
 	fun create(@RequestBody @Valid category: CollectCategory, bindingResult: BindingResult, authentication: Authentication): CollectCategory {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return service.create(category, user)
@@ -52,32 +54,32 @@ class CollectCategoryController(
 		return service.modify(id, category)
 	}
 	
-	@ApiOperation("得到某一分类。")
+	@ApiOperation("根据id得到某一分类。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	)
 	@GetMapping("/{id}")
-	operator fun get(@PathVariable id: Long): CollectCategory {
-		return service.get(id)
+	fun findById(@PathVariable id: Long): CollectCategory {
+		return service.findById(id)
 	}
 	
-	@ApiOperation("分页得到某一分类的所有收藏。")
+	@ApiOperation("根据分类id分页查询所有未删除收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
 	@GetMapping("/{id]/collectPage")
 	fun getCollectPage(@PathVariable id: Long, @PathVariable pageable: Pageable): Page<Collect> {
-		return service.getCollectPage(id, pageable)
+		return collectService.findAllByCategoryIdAndDeletedFalse(id, pageable)
 	}
 	
-	@ApiOperation("得到某一分类的收藏数量。")
+	@ApiOperation("根据分类id得到收藏数量。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	)
 	@GetMapping("/{id}/collectCount")
 	fun getCollectCount(@PathVariable id: Long): Long {
-		return service.getCollectCount(id)
+		return collectService.countByCategoryIdAndDeletedFalse(id)
 	}
 	
 	@ApiOperation("分页得到所有分类。")
@@ -85,29 +87,28 @@ class CollectCategoryController(
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
 	@GetMapping("/findAll")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	fun findAll(@RequestParam pageable: Pageable): Page<CollectCategory> {
 		return service.findAll(pageable)
 	}
 	
-	@ApiOperation("分页得到某一用户的所有分类。")
+	@ApiOperation("根据用户id分页查询所有分类。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
-	@GetMapping("/findByUser")
-	fun findByUser(@RequestParam userId: Long, @RequestParam pageable: Pageable): Page<CollectCategory> {
-		return service.findByUser(userId, pageable)
+	@GetMapping("/findAllByUserId")
+	fun findAllByUserId(@RequestParam userId: Long, @RequestParam pageable: Pageable): Page<CollectCategory> {
+		return service.findAllByUserId(userId, pageable)
 	}
 	
-	@ApiOperation("根据名字分页模糊查询某一用户的所有分类。")
+	@ApiOperation("根据名字和用户id分页模糊查询所有分类。")
 	@ApiImplicitParams(
-		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
 		ApiImplicitParam(name = "name", value = "名字", required = true),
+		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
-	@GetMapping("/findByUserAndName")
-	fun findByUserAndName(@RequestParam userId: Long, @RequestParam name: String, @RequestParam pageable: Pageable): Page<CollectCategory> {
-		return service.findByUserAndName(userId, name, pageable)
+	@GetMapping("/findAllByNameContainsAndUserId")
+	fun findAllByNameContainsAndUserId(@RequestParam userId: Long, @RequestParam name: String, @RequestParam pageable: Pageable): Page<CollectCategory> {
+		return service.findAllByNameContainsAndUserId(userId, name, pageable)
 	}
 }

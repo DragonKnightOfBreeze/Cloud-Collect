@@ -10,62 +10,64 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
+@CacheConfig(cacheNames = ["collectCategory"])
 open class CollectCategoryServiceImpl(
-	private val repository: CollectCategoryRepository,
-	private val collectRepository: CollectRepository
+	private val repository: CollectCategoryRepository
 ) : CollectCategoryService {
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun create(category: CollectCategory, user: User): CollectCategory {
 		category.user = user
 		return repository.save(category)
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun delete(id: Long) {
 		repository.deleteById(id)
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun modify(id: Long, category: CollectCategory): CollectCategory {
-		val rawCategory = get(id)
+		val rawCategory = findById(id)
 		rawCategory.name = category.name
 		rawCategory.summary = category.summary
 		return repository.save(rawCategory)
 	}
 	
-	@Cacheable("collectCategory")
-	override fun get(id: Long): CollectCategory {
+	@Cacheable(key = "methodName + args")
+	override fun findById(id: Long): CollectCategory {
 		return repository.findById(id).orElseThrow { NotFoundException() }
 	}
 	
-	@Cacheable("collectCategory.collectPage")
-	override fun getCollectPage(id: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findByCategoryIdAndDeleteStatusFalse(id, pageable)
+	@Cacheable(key = "methodName + args")
+	override fun findByNameAndUserId(name: String, userId: Long): CollectCategory {
+		return repository.findByNameAndUserId(name, userId).orElseThrow { NotFoundException() }
 	}
 	
-	@Cacheable("collectCategory.collectCount")
-	override fun getCollectCount(id: Long): Long {
-		return collectRepository.countByCategoryIdAndDeleteStatusFalse(id)
-	}
-	
-	@Cacheable("collectCategoryPage")
+	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<CollectCategory> {
 		return repository.findAll(pageable)
 	}
 	
-	@Cacheable("collectCategoryPage.byUser")
-	override fun findByUser(userId: Long, pageable: Pageable): Page<CollectCategory> {
-		return repository.findByUserId(userId, pageable)
+	@Cacheable(key = "methodName + args")
+	override fun findAllByNameContainsAndUserId(userId: Long, name: String, pageable: Pageable): Page<CollectCategory> {
+		return repository.findAllByNameContainsAndUserId(name, userId, pageable)
 	}
 	
-	@Cacheable("collectCategoryPage.byUserAndName")
-	override fun findByUserAndName(userId: Long, name: String, pageable: Pageable): Page<CollectCategory> {
-		return repository.findByUserIdAndNameContains(userId, name, pageable)
+	@Cacheable(key = "methodName + args")
+	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectCategory> {
+		return repository.findAllByUserId(userId, pageable)
+	}
+	
+	override fun countByUserId(userId: Long): Long {
+		return repository.countByUserId(userId)
 	}
 	
 	override fun exists(category: CollectCategory): Boolean {
-		val userId = category.user.id ?: return false
 		val name = category.name
-		return repository.existsByUserIdAndName(userId, name)
+		val userId = category.user.id
+		return userId != null && repository.existsByNameAndUserId(name, userId)
 	}
 }

@@ -23,48 +23,61 @@ class PropertyBasedPermissionEvaluator(
 	private val noticeService: NoticeService
 ) : PermissionEvaluator {
 	override fun hasPermission(authentication: Authentication, targetDomainObject: Any, permission: Any): Boolean {
-		val principal: String?
-		val permissions: Set<String>
-		
-		when(targetDomainObject) {
-			is Collect -> {
-				principal = targetDomainObject.user.username
-				permissions = setOf("read", "write", "create", "delete")
-			}
-			is CollectTag -> {
-				principal = targetDomainObject.user.username
-				permissions = setOf("read", "write", "create", "delete")
-			}
-			is CollectCategory -> {
-				principal = targetDomainObject.user.username
-				permissions = setOf("read", "write", "create", "delete")
-			}
-			is Comment -> {
-				principal = targetDomainObject.sponsorByUser.username
-				permissions = setOf("read", "create", "delete")
-			}
-			is Notice -> {
-				principal = targetDomainObject.user.username
-				permissions = setOf("read", "delete")
-			}
+		val permissions: Set<String> = when(targetDomainObject) {
+			is Collect -> setOf("read", "write", "create", "delete")
+			is CollectTag -> setOf("read", "write", "create", "delete")
+			is CollectCategory -> setOf("read", "write", "create", "delete")
+			is Comment -> setOf("read", "create", "delete")
+			is Notice -> setOf("read", "create", "delete")
 			else -> return false
 		}
 		
-		return authentication.name == principal && permission in permissions
+		if(permission !in permissions) return false
+		if(permission == "create") return true
+		
+		val principalName: String = when(targetDomainObject) {
+			is Collect -> targetDomainObject.user.username
+			is CollectTag -> targetDomainObject.user.username
+			is CollectCategory -> targetDomainObject.user.username
+			is Comment -> targetDomainObject.sponsorByUser.username
+			is Notice -> targetDomainObject.user.username
+			else -> return false
+		}
+		
+		return principalName == authentication.name
 	}
 	
 	override fun hasPermission(authentication: Authentication, targetId: Serializable, targetType: String, permission: Any): Boolean {
-		val targetDomainObject: Any
-		
-		when(targetType) {
-			"Collect" -> targetDomainObject = collectService.get(targetId as Long)
-			"CollectCategory" -> targetDomainObject = categoryService.get(targetId as Long)
-			"CollectTag" -> targetDomainObject = tagService.get(targetId as Long)
-			"Comment" -> targetDomainObject = commentService.get(targetId as Long)
-			"Notice" -> targetDomainObject = noticeService.get(targetId as Long)
+		val permissions: Set<String> = when(targetType) {
+			"Collect" -> setOf("read", "write", "create", "delete")
+			"CollectTag" -> setOf("read", "write", "create", "delete")
+			"CollectCategory" -> setOf("read", "write", "create", "delete")
+			"Comment" -> setOf("read", "create", "delete")
+			"Notice" -> setOf("read", "create", "delete")
 			else -> return false
 		}
 		
-		return hasPermission(authentication, targetDomainObject, permission)
+		if(permission !in permissions) return false
+		if(permission == "create") return true
+		
+		val targetDomainObject = when(targetType) {
+			"Collect" -> collectService.findById(targetId as Long)
+			"CollectCategory" -> categoryService.findById(targetId as Long)
+			"CollectTag" -> tagService.findById(targetId as Long)
+			"Comment" -> commentService.findById(targetId as Long)
+			"Notice" -> noticeService.findById(targetId as Long)
+			else -> return false
+		}
+		
+		val principalName: String = when(targetDomainObject) {
+			is Collect -> targetDomainObject.user.username
+			is CollectTag -> targetDomainObject.user.username
+			is CollectCategory -> targetDomainObject.user.username
+			is Comment -> targetDomainObject.sponsorByUser.username
+			is Notice -> targetDomainObject.user.username
+			else -> return false
+		}
+		
+		return principalName == authentication.name
 	}
 }

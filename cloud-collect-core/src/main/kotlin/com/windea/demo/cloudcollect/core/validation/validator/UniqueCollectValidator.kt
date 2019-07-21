@@ -6,7 +6,7 @@ import com.windea.demo.cloudcollect.core.validation.annotation.*
 import org.springframework.stereotype.*
 import javax.validation.*
 
-/** 唯一收藏的校验器。*/
+/**唯一收藏的校验器。*/
 @Component
 class UniqueCollectValidator(
 	private val service: CollectService

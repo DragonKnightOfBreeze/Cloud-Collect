@@ -4,8 +4,8 @@ import com.windea.demo.cloudcollect.core.validation.annotation.*
 
 import javax.validation.constraints.*
 
-/** 邮箱注册视图。 */
-class EmailRegisterView(
+/**邮箱注册视图。 */
+data class EmailRegisterView(
 	@NotEmpty(message = "{validation.User.nickname.NotEmpty}")
 	@Size(min = 1, max = 64, message = "{validation.User.nickname.Size}")
 	val nickname: String,

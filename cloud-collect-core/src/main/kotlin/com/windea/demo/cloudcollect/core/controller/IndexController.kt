@@ -12,7 +12,7 @@ import org.springframework.validation.*
 import org.springframework.web.bind.annotation.*
 import javax.validation.*
 
-/** 首页的控制器。包含登录、注册等操作。*/
+/**首页的控制器。包含登录、注册等操作。*/
 @Api("首页")
 @RestController
 @RequestMapping("/")
@@ -58,12 +58,12 @@ class IndexController(
 	@ApiOperation("随便看看任一收藏。")
 	@GetMapping("/lookAroundCollect")
 	fun lookAroundCollect(): Collect {
-		return collectService.getByRandom()
+		return collectService.findByRandom()
 	}
 	
 	@ApiOperation("随便看看任一用户信息")
 	@GetMapping("/lookAroundUser")
 	fun lookAroundUser(): User {
-		return userService.getByRandom()
+		return userService.findByRandom()
 	}
 }

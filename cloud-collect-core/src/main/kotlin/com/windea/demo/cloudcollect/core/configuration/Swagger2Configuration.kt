@@ -7,7 +7,7 @@ import springfox.documentation.spi.*
 import springfox.documentation.spring.web.plugins.*
 import springfox.documentation.swagger2.annotations.*
 
-/** Swagger2的配置类。*/
+/**Swagger2的配置类。*/
 @Configuration
 @EnableSwagger2
 open class Swagger2Configuration {
@@ -28,9 +28,10 @@ open class Swagger2Configuration {
 			.contact(contact())
 			.license("MIT License")
 			.licenseUrl("https://github.com/DragonKnightOfBreeze/Cloud-Collect/blob/master/LICENSE")
-			.version("0.2.2")
+			.version("0.2.3")
 			.build()
 	}
+	
 	
 	private fun contact(): Contact {
 		return Contact(

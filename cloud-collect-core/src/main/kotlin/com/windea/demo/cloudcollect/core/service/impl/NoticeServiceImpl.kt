@@ -10,11 +10,13 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
+@CacheConfig(cacheNames = ["notice"])
 open class NoticeServiceImpl(
 	private val repository: NoticeRepository,
 	private val userRepository: UserRepository
 ) : NoticeService {
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun create(notice: Notice, user: User): Notice {
 		notice.user = user
 		return repository.save(notice)
@@ -33,34 +35,44 @@ open class NoticeServiceImpl(
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun delete(id: Long) {
 		repository.deleteById(id)
 	}
 	
 	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun read(id: Long): Notice {
-		val notice = get(id)
-		notice.readStatus = true
+		val notice = findById(id)
+		notice.isRead = true
 		return repository.save(notice)
 	}
 	
-	@Cacheable("notice")
-	override fun get(id: Long): Notice {
+	@Cacheable(key = "methodName + args")
+	override fun findById(id: Long): Notice {
 		return repository.findById(id).orElseThrow { NotFoundException() }
 	}
 	
-	@Cacheable("noticePage")
+	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<Notice> {
 		return repository.findAll(pageable)
 	}
 	
-	@Cacheable("noticePage.byUser")
-	override fun findByUser(userId: Long, pageable: Pageable): Page<Notice> {
-		return repository.findByUserId(userId, pageable)
+	@Cacheable(key = "methodName + args")
+	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Notice> {
+		return repository.findAllByUserId(userId, pageable)
 	}
 	
-	@Cacheable("noticePage.byUserAndRead")
-	override fun findByUserAndReadStatus(userId: Long, readStatus: Boolean, pageable: Pageable): Page<Notice> {
-		return repository.findByUserIdAndReadStatus(userId, readStatus, pageable)
+	override fun countByUserId(userId: Long): Long {
+		return repository.countByUserId(userId)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByUserIdAndRead(userId: Long, isRead: Boolean, pageable: Pageable): Page<Notice> {
+		return repository.findAllByUserIdAndRead(userId, isRead, pageable)
+	}
+	
+	override fun countByUserIdAndRead(userId: Long, isRead: Boolean): Long {
+		return repository.countByUserIdAndRead(userId, isRead)
 	}
 }
