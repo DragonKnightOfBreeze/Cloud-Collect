@@ -11,13 +11,13 @@ interface UserService {
 	fun loginByUsernameAndPassword(view: UsernamePasswordLoginView): User
 	
 	/**通过邮箱注册用户。密码需要加密。*/
-	fun registerByEmail(view: EmailRegisterView): User
+	fun registerByEmail(view: EmailRegisterView): User?
 	
-	/**激活用户。将activated设为true。*/
-	fun activate(user: User): User
+	/**激活用户。*/
+	fun activate(username: String, activateCode: String): User?
 	
 	/**重置用户密码。密码需要加密。*/
-	fun resetPassword(user: User, newPassword: String): User
+	fun resetPassword(username: String, newPassword: String): User?
 	
 	/**更新用户信息。不允许同时修改密码。*/
 	fun update(id: Long, user: User): User

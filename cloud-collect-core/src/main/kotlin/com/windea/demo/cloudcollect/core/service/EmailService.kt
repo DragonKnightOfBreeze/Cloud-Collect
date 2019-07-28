@@ -1,16 +1,16 @@
 package com.windea.demo.cloudcollect.core.service
 
+import com.windea.demo.cloudcollect.core.domain.entity.*
+import javax.mail.internet.*
+
 /**邮件的服务。*/
 interface EmailService {
-	/**TODO 发送邮件。*/
-	fun sendEmail()
+	/**发送邮件。*/
+	fun sendEmail(message: MimeMessage, user: User)
 	
-	/**TODO 发送激活邮件。*/
-	fun sendActivateEmail()
+	/**发送激活邮件。*/
+	fun sendActivateEmail(user: User)
 	
-	/**TODO 发送重置密码邮件。*/
-	fun sendResetPasswordEmail()
-	
-	/**TODO 发送欢迎邮件。*/
-	fun sendHelloEmail()
+	/**发送欢迎邮件。*/
+	fun sendHelloEmail(user: User)
 }

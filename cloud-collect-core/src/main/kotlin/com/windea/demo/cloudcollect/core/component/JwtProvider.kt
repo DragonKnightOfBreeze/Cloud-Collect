@@ -18,6 +18,7 @@ class JwtProvider {
 	lateinit var secret: String
 	var expiration: Int = 0
 	
+	
 	/**从http请求中得到令牌。*/
 	fun getToken(request: HttpServletRequest): String? {
 		val header = request.getHeader(this.tokenHeader)

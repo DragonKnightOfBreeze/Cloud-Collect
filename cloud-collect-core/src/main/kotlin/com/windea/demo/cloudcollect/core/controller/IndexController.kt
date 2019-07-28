@@ -3,12 +3,10 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.model.*
 import com.windea.demo.cloudcollect.core.domain.view.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.security.access.prepost.*
-import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.web.bind.annotation.*
 import javax.validation.*
@@ -19,7 +17,9 @@ import javax.validation.*
 @RequestMapping("/")
 @CrossOrigin
 class IndexController(
-	private val collectService: CollectService, private val userService: UserService
+	private val collectService: CollectService,
+	private val userService: UserService,
+	private val emailService: EmailService
 ) {
 	@ApiOperation("通过用户名&密码登录用户。")
 	@ApiImplicitParams(
@@ -37,27 +37,25 @@ class IndexController(
 	)
 	@PostMapping("/register", "/registerByEmail")
 	@PreAuthorize("isAnonymous()")
-	fun registerByEmail(@RequestBody @Valid view: EmailRegisterView, bindingResult: BindingResult): User {
+	fun registerByEmail(@RequestBody @Valid view: EmailRegisterView, bindingResult: BindingResult): User? {
 		return userService.registerByEmail(view)
 	}
 	
 	@ApiOperation("激活用户。")
-	@PutMapping("/activate")
+	@PostMapping("/activate")
 	@PreAuthorize("isAnonymous()")
-	fun activate(authentication: Authentication): User {
-		val user = (authentication.principal as JwtUserDetails).delegateUser
-		return userService.activate(user)
+	fun activate(@RequestParam username: String, @RequestParam activateCode: String): User? {
+		return userService.activate(username, activateCode)
 	}
 	
 	@ApiOperation("重置用户密码。")
 	@ApiImplicitParams(
+		ApiImplicitParam(name = "username", value = "用户名", required = true),
 		ApiImplicitParam(name = "newPassword", value = "新的密码", required = true)
 	)
-	@PutMapping("/resetPassword")
-	@PreAuthorize("isAnonymous()")
-	fun resetPassword(@RequestParam newPassword: String, authentication: Authentication): User {
-		val user = (authentication.principal as JwtUserDetails).delegateUser
-		return userService.resetPassword(user, newPassword)
+	@PostMapping("/resetPassword")
+	fun resetPassword(@RequestParam username: String, @RequestParam newPassword: String): User? {
+		return userService.resetPassword(username, newPassword)
 	}
 	
 	@ApiOperation("随便看看任一收藏。")

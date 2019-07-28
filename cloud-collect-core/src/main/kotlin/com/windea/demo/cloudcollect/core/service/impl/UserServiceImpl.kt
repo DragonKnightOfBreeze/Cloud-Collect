@@ -14,11 +14,12 @@ import org.springframework.security.authentication.*
 import org.springframework.security.core.context.*
 import org.springframework.security.crypto.password.*
 import org.springframework.stereotype.*
+import java.util.*
 import javax.transaction.*
 
 @Service
 @CacheConfig(cacheNames = ["user"])
-open class UseServiceImpl(
+open class UserServiceImpl(
 	private val repository: UserRepository,
 	private val emailService: EmailService,
 	private val passwordEncoder: PasswordEncoder,
@@ -40,27 +41,40 @@ open class UseServiceImpl(
 		user.username = view.username
 		user.email = view.email
 		user.password = passwordEncoder.encode(view.password)
+		//得到随机验证码
+		user.activateCode = UUID.randomUUID().toString()
 		val result = repository.save(user)
-		
-		emailService.sendActivateEmail()
+		//成功注册后，发送激活邮件
+		emailService.sendActivateEmail(user)
 		return result
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun activate(user: User): User {
-		user.isActivated = true
-		val result = repository.save(user)
-		
-		emailService.sendHelloEmail()
+	override fun activate(username: String, activateCode: String): User? {
+		var result: User? = null
+		repository.findByUsername(username).ifPresent { user ->
+			if(!user.isActivated && user.activateCode == activateCode) {
+				user.isActivated = true
+				user.activateCode = null
+				result = repository.save(user)
+				//成功激活后，发送欢迎邮件
+				emailService.sendHelloEmail(user)
+			}
+		}
 		return result
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun resetPassword(user: User, newPassword: String): User {
-		user.password = passwordEncoder.encode(newPassword)
-		return repository.save(user)
+	override fun resetPassword(username: String, newPassword: String): User? {
+		var result: User? = null
+		repository.findByUsername(username).ifPresent { user ->
+			//重置密码
+			user.password = passwordEncoder.encode(newPassword)
+			result = repository.save(user)
+		}
+		return result
 	}
 	
 	@Transactional

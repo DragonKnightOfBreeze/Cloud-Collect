@@ -9,12 +9,12 @@
 	* [Spring Boot 中文导航](http://springboot.fun/)
 	* [spring-boot - 纯洁的微笑博客](http://www.ityouknow.com/spring-boot.html)
     * [Spring Integration](https://docs.spring.io/spring-integration/docs/5.1.6.RELEASE/reference/html/#mail)
-* Elastic Search
-    * ……
 * Vue
+    * [介绍 — Vue.js](https://cn.vuejs.org/v2/guide/)
     * [Vuex 是什么？ | Vuex](https://vuex.vuejs.org/zh/)
-* Weex
-    * [WEEX](https://weex.apache.org/zh/)
+    * [介绍 | Vue Router](https://router.vuejs.org/zh/)
+* Element
+    * [Element - 网站快速成型工具](https://element.eleme.cn/#/zh-CN)
 
 # 环境要求
 
@@ -24,6 +24,7 @@
 * ［可能］Nginx
 * ［可能］Docker
 * Jdk 11
+* Kotlin Sdk
 * Maven
 * Tomcat
 * Npm
@@ -38,6 +39,7 @@
 	* ［可能］Nginx 负载均衡
 	* ［可能］Docker 应用容器
 * 后台：
+    * Kotlin
     * SpringBoot 核心框架
     * Spring+Spring Mvc+Spring Data Jpa 核心框架
     * Redis 用于缓存
@@ -47,6 +49,7 @@
 	* Spring Security 认证和授权框架
 	* ［可能］Elastic Search 搜索引擎
 * 前端：
+    * Html & Scss & Typescript
     * Vue 前端核心框架
     * Vue-router, Vuex, ... 扩展Vue的功能
     * Weex 用于网页端页面和移动端页面

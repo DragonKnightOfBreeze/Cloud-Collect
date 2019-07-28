@@ -66,6 +66,10 @@ data class User(
 	@Column
 	var isActivated: Boolean = true
 	
+	/**激活码。*/
+	@Column
+	var activateCode: String? = null
+	
 	/**注册时间。*/
 	@Column
 	@CreatedDate
