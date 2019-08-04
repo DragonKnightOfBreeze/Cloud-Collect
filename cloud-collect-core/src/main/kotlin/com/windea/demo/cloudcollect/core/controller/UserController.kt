@@ -31,7 +31,7 @@ class UserController(
 	)
 	@PutMapping("/{id}")
 	fun update(@PathVariable id: Long, @RequestBody @Valid user: User, bindingResult: BindingResult): User {
-		return service.update(id, user)
+		return service.modify(id, user)
 	}
 	
 	@ApiOperation("根据id得到用户。")

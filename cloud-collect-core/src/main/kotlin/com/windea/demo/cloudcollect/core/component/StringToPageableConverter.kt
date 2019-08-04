@@ -1,6 +1,6 @@
 package com.windea.demo.cloudcollect.core.component
 
-import com.windea.commons.kotlin.extension.*
+import com.windea.utility.common.extensions.*
 import org.springframework.core.convert.converter.*
 import org.springframework.data.domain.*
 import org.springframework.stereotype.*

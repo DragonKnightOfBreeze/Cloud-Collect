@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.service.impl
 
-import com.windea.commons.kotlin.annotation.*
 import com.windea.demo.cloudcollect.core.service.*
+import com.windea.utility.common.annotations.marks.*
 import org.springframework.stereotype.*
 
 @Service

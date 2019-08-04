@@ -37,25 +37,39 @@ class IndexController(
 	)
 	@PostMapping("/register", "/registerByEmail")
 	@PreAuthorize("isAnonymous()")
-	fun registerByEmail(@RequestBody @Valid view: EmailRegisterView, bindingResult: BindingResult): User? {
+	fun registerByEmail(@RequestBody @Valid view: EmailRegisterView, bindingResult: BindingResult): User {
 		return userService.registerByEmail(view)
 	}
 	
-	@ApiOperation("激活用户。")
-	@PostMapping("/activate")
+	@ApiOperation("忘记用户密码，发送重置密码邮件。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "username", value = "用户名", required = true)
+	)
+	@PostMapping("/forgotPassword")
 	@PreAuthorize("isAnonymous()")
-	fun activate(@RequestParam username: String, @RequestParam activateCode: String): User? {
+	fun forgotPassword(@RequestParam username: String): User {
+		return userService.forgotPassword(username)
+	}
+	
+	@ApiOperation("激活用户。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "username", value = "用户名", required = true),
+		ApiImplicitParam(name = "activateCode", value = "激活码", required = true)
+	)
+	@PutMapping("/activate")
+	fun activate(@RequestParam username: String, @RequestParam activateCode: String): Boolean {
 		return userService.activate(username, activateCode)
 	}
 	
 	@ApiOperation("重置用户密码。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "username", value = "用户名", required = true),
-		ApiImplicitParam(name = "newPassword", value = "新的密码", required = true)
+		ApiImplicitParam(name = "password", value = "新的密码", required = true),
+		ApiImplicitParam(name = "resetPasswordCode", value = "重置密码的识别码", required = true)
 	)
-	@PostMapping("/resetPassword")
-	fun resetPassword(@RequestParam username: String, @RequestParam newPassword: String): User? {
-		return userService.resetPassword(username, newPassword)
+	@PutMapping("/resetPassword")
+	fun resetPassword(@RequestParam username: String, @RequestParam password: String, @RequestParam resetPasswordCode: String): Boolean {
+		return userService.resetPassword(username, password, resetPasswordCode)
 	}
 	
 	@ApiOperation("随便看看任一收藏。")

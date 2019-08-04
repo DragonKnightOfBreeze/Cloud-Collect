@@ -70,6 +70,10 @@ data class User(
 	@Column
 	var activateCode: String? = null
 	
+	/**重置用户密码要用的识别码。*/
+	@Column
+	var resetPasswordCode: String? = null
+	
 	/**注册时间。*/
 	@Column
 	@CreatedDate

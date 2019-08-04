@@ -1,6 +1,5 @@
 package com.windea.demo.cloudcollect.core.service.impl
 
-import com.windea.commons.kotlin.extension.*
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.enums.*
 import com.windea.demo.cloudcollect.core.domain.model.*
@@ -8,6 +7,7 @@ import com.windea.demo.cloudcollect.core.domain.view.*
 import com.windea.demo.cloudcollect.core.exception.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
+import com.windea.utility.common.extensions.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
 import org.springframework.security.authentication.*
@@ -51,41 +51,52 @@ open class UserServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun activate(username: String, activateCode: String): User? {
-		var result: User? = null
-		repository.findByUsername(username).ifPresent { user ->
-			if(!user.isActivated && user.activateCode == activateCode) {
-				user.isActivated = true
-				user.activateCode = null
-				result = repository.save(user)
-				//成功激活后，发送欢迎邮件
-				emailService.sendHelloEmail(user)
-			}
-		}
+	override fun forgotPassword(username: String): User {
+		val user = findByUsername(username)
+		user.resetPasswordCode = UUID.randomUUID().toString()
+		val result = repository.save(user)
+		//发送重置密码邮件
+		emailService.sendResetPasswordEmail(user)
 		return result
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun resetPassword(username: String, newPassword: String): User? {
-		var result: User? = null
-		repository.findByUsername(username).ifPresent { user ->
-			//重置密码
-			user.password = passwordEncoder.encode(newPassword)
-			result = repository.save(user)
-		}
-		return result
+	override fun activate(username: String, activateCode: String): Boolean {
+		val rawUser = findByUsername(username)
+		//如果激活码不匹配，则直接返回false，否则清空激活码，然后激活用户，并发送欢迎邮件
+		if(rawUser.activateCode != activateCode) return false
+		
+		rawUser.activateCode = null
+		rawUser.isActivated = true
+		repository.save(rawUser)
+		emailService.sendHelloEmail(rawUser)
+		return true
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun update(id: Long, user: User): User {
+	override fun resetPassword(username: String, password: String, resetPasswordCode: String): Boolean {
+		val rawUser = findByUsername(username)
+		//如果识别码不匹配，则直接返回false，否则清空识别码，接着更改为新的加密后的密码
+		if(rawUser.resetPasswordCode != resetPasswordCode) return false
+		
+		rawUser.resetPasswordCode = null
+		rawUser.password = passwordEncoder.encode(password)
+		repository.save(rawUser)
+		emailService.sendResetPasswordSuccessEmail(rawUser)
+		return true
+	}
+	
+	@Transactional
+	@CacheEvict(allEntries = true)
+	override fun modify(id: Long, user: User): User {
 		val rawUser = findById(id)
 		rawUser.nickname = user.nickname
 		rawUser.introduce = user.introduce
 		rawUser.avatarUrl = user.avatarUrl
 		rawUser.backgroundUrl = user.backgroundUrl
-		return repository.save(user)
+		return repository.save(rawUser)
 	}
 	
 	@Cacheable(key = "methodName + args")

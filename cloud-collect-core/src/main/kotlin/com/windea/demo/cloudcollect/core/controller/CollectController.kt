@@ -2,11 +2,11 @@
 
 package com.windea.demo.cloudcollect.core.controller
 
-import com.windea.commons.kotlin.enums.*
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.enums.*
 import com.windea.demo.cloudcollect.core.domain.model.*
 import com.windea.demo.cloudcollect.core.service.*
+import com.windea.utility.common.enums.*
 import io.swagger.annotations.*
 import org.springframework.boot.context.properties.*
 import org.springframework.data.domain.*
