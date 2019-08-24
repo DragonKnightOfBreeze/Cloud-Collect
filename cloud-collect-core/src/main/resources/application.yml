@@ -60,7 +60,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: dk_breeze@qq.com
-    password: "******"
+    password: dpkqsdjhbbwidhec
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -83,10 +83,10 @@ com:
     validation:
       username:
         # 6~16位的字母、数字和下划线，以字母开头。
-        validRegex: "\\w{6,16}"
+        regex: "\\w{6,16}"
       password:
         # 6~16位的字母、数字和下划线。
-        validRegex: "[a-zA-Z]\\w{5,15}"
+        regex: "[a-zA-Z]\\w{5,15}"
     ie:
       # 缓存文件路径
       tempPath: D:/CloudCollect/temp

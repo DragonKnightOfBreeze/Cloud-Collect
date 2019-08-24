@@ -2,7 +2,7 @@ package com.windea.demo.cloudcollect.core.component
 
 import io.jsonwebtoken.*
 import mu.*
-import org.springframework.boot.context.properties.*
+import org.springframework.beans.factory.annotation.*
 import org.springframework.security.core.*
 import org.springframework.security.core.userdetails.*
 import org.springframework.stereotype.*
@@ -11,12 +11,15 @@ import javax.servlet.http.*
 
 /**Jwt提供器。*/
 @Component
-@ConfigurationProperties("com.windea.security")
 class JwtProvider {
-	lateinit var tokenHeader: String
-	lateinit var tokenHead: String
-	lateinit var secret: String
-	var expiration: Int = 0
+	@Value("\${com.windea.security.tokenHeader}")
+	private lateinit var tokenHeader: String
+	@Value("\${com.windea.security.tokenHead}")
+	private lateinit var tokenHead: String
+	@Value("\${com.windea.security.secret}")
+	private lateinit var secret: String
+	@Value("\${com.windea.security.expiration}")
+	private var expiration: Int = 0
 	
 	
 	/**从http请求中得到令牌。*/

@@ -1,6 +1,5 @@
 package com.windea.demo.cloudcollect.core
 
-import com.windea.commons.kotlin.annotation.*
 import org.junit.*
 import org.junit.runner.*
 import org.springframework.beans.factory.annotation.*
@@ -18,7 +17,6 @@ class TestControllerTests {
 	@Autowired private val mockMvc: MockMvc? = null
 	
 	//测试转换器
-	@Tested
 	@Test
 	fun test1() {
 		mockMvc!!.perform(get("/test/string").param("string", "abc")).andDo(print())

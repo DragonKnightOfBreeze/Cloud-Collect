@@ -8,7 +8,7 @@ import com.windea.demo.cloudcollect.core.domain.model.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.utility.common.enums.*
 import io.swagger.annotations.*
-import org.springframework.boot.context.properties.*
+import org.springframework.beans.factory.annotation.*
 import org.springframework.data.domain.*
 import org.springframework.http.*
 import org.springframework.security.access.prepost.*
@@ -21,17 +21,18 @@ import javax.validation.*
 
 /**收藏的控制器。*/
 @Api("收藏")
-@RequestMapping("/collect")
 @RestController
+@RequestMapping("/collect")
 @CrossOrigin
-@ConfigurationProperties("com.windea.ie")
 class CollectController(
 	private val service: CollectService,
 	private val commentService: CommentService,
 	private val userService: UserService,
 	private val ieService: ImportExportService
 ) {
-	lateinit var tempPath: String
+	@Value("\${com.windea.ie.tempPath}")
+	private lateinit var tempPath: String
+	@Value("\${com.windea.ie.dataSchemaFileName}")
 	lateinit var dataSchemaFileName: String
 	
 	
