@@ -26,37 +26,37 @@ class PropertyBasedPermissionEvaluator(
 		return when(targetDomainObject) {
 			is Collect -> when(permission) {
 				"read" -> true
-				"write" -> targetDomainObject.user?.username == authentication.name
+				"write" -> targetDomainObject.user.username == authentication.name
 				"create" -> authentication.isAuthenticated
-				"delete" -> targetDomainObject.user?.username == authentication.name
+				"delete" -> targetDomainObject.user.username == authentication.name
 				else -> false
 			}
 			is CollectTag -> when(permission) {
 				"read" -> true
-				"write" -> targetDomainObject.user?.username == authentication.name
+				"write" -> targetDomainObject.user.username == authentication.name
 				"create" -> authentication.isAuthenticated
-				"delete" -> targetDomainObject.user?.username == authentication.name
+				"delete" -> targetDomainObject.user.username == authentication.name
 				else -> false
 			}
 			is CollectCategory -> when(permission) {
 				"read" -> true
-				"write" -> targetDomainObject.user?.username == authentication.name
+				"write" -> targetDomainObject.user.username == authentication.name
 				"create" -> authentication.isAuthenticated
-				"delete" -> targetDomainObject.user?.username == authentication.name
+				"delete" -> targetDomainObject.user.username == authentication.name
 				else -> false
 			}
 			is Comment -> when(permission) {
 				"read" -> true
 				"write" -> false
 				"create" -> authentication.isAuthenticated
-				"delete" -> targetDomainObject.sponsorByUser?.username == authentication.name
+				"delete" -> targetDomainObject.sponsorByUser.username == authentication.name
 				else -> false
 			}
 			is Notice -> when(permission) {
 				"read" -> true
 				"write" -> "ADMIN" in authentication.authorities.map { it.authority }
 				"create" -> "ADMIN" in authentication.authorities.map { it.authority }
-				"delete" -> targetDomainObject.user?.username == authentication.name
+				"delete" -> targetDomainObject.user.username == authentication.name
 				else -> false
 			}
 			else -> false

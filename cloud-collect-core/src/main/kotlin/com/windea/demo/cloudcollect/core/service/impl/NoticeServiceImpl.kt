@@ -6,6 +6,7 @@ import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
+import org.springframework.data.repository.*
 import org.springframework.stereotype.*
 import javax.transaction.*
 
@@ -51,7 +52,7 @@ open class NoticeServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): Notice {
-		return noticeRepository.findById(id).orElseThrow { NotFoundException() }
+		return noticeRepository.findByIdOrNull(id) ?: throw NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")

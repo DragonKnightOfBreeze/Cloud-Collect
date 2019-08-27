@@ -8,6 +8,7 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.utility.common.extensions.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
+import org.springframework.data.repository.*
 import org.springframework.stereotype.*
 import javax.transaction.*
 
@@ -100,18 +101,17 @@ open class CollectServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): Collect {
-		return collectRepository.findById(id).orElseThrow { NotFoundException() }
+		return collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findByNameAndUserIdAndDeleted(name: String, userId: Long, isDeleted: Boolean): Collect {
-		return collectRepository.findByNameAndUserIdAndDeleted(name, userId, isDeleted).orElseThrow { NotFoundException() }
+		return collectRepository.findByNameAndUserIdAndDeleted(name, userId, isDeleted) ?: throw NotFoundException()
 	}
 	
 	override fun findByRandom(): Collect {
-		val count = collectRepository.count()
-		val randomId = RandomExtension.range(1, count)
-		return collectRepository.findById(randomId).orElseThrow { NotFoundException() }
+		val randomId = RandomExtension.range(1, collectRepository.count())
+		return findById(randomId)
 	}
 	
 	@Cacheable(key = "methodName + args")

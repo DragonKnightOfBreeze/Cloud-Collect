@@ -4,12 +4,11 @@ import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.enums.*
 import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.*
-import java.util.*
 
 interface UserRepository : JpaRepository<User, Long> {
-	fun findByUsername(username: String): Optional<User>
+	fun findByUsername(username: String): User?
 	
-	fun findByEmail(email: String): Optional<User>
+	fun findByEmail(email: String): User?
 	
 	fun findAllByNicknameContains(nickname: String, pageable: Pageable): Page<User>
 	

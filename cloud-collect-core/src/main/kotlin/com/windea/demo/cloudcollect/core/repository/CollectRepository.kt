@@ -4,11 +4,10 @@ import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.enums.*
 import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.*
-import java.util.*
 
 /**收藏的仓库。*/
 interface CollectRepository : JpaRepository<Collect, Long> {
-	fun findByNameAndUserIdAndDeleted(name: String, userId: Long, isDeleted: Boolean): Optional<Collect>
+	fun findByNameAndUserIdAndDeleted(name: String, userId: Long, isDeleted: Boolean): Collect?
 	
 	fun findAllByNameContainsAndDeletedFalse(name: String, pageable: Pageable): Page<Collect>
 	

@@ -12,7 +12,7 @@ open class JwtUserDetailsService(
 	private val userRepository: UserRepository
 ) : UserDetailsService {
 	override fun loadUserByUsername(username: String): UserDetails {
-		val user = userRepository.findByUsername(username).orElseThrow { UserNotFoundException() }
+		val user = userRepository.findByUsername(username) ?: throw UserNotFoundException()
 		return JwtUserDetails(user)
 	}
 }

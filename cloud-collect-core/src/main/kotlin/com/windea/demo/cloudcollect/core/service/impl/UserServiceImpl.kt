@@ -10,6 +10,7 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.utility.common.extensions.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
+import org.springframework.data.repository.*
 import org.springframework.security.authentication.*
 import org.springframework.security.core.context.*
 import org.springframework.security.crypto.password.*
@@ -108,23 +109,22 @@ open class UserServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): User {
-		return userRepository.findById(id).orElseThrow { NotFoundException() }
+		return userRepository.findByIdOrNull(id) ?: throw  NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findByUsername(username: String): User {
-		return userRepository.findByUsername(username).orElseThrow { NotFoundException() }
+		return userRepository.findByUsername(username) ?: throw  NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findByEmail(email: String): User {
-		return userRepository.findByEmail(email).orElseThrow { NotFoundException() }
+		return userRepository.findByEmail(email) ?: throw  NotFoundException()
 	}
 	
 	override fun findByRandom(): User {
-		val count = userRepository.count()
-		val randomId = RandomExtension.range(1, count)
-		return userRepository.findById(randomId).orElseThrow { NotFoundException() }
+		val randomId = RandomExtension.range(1, userRepository.count())
+		return findById(randomId)
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -147,6 +147,7 @@ open class UserServiceImpl(
 		return userRepository.findAllByFollowToUserId(followToUserId, pageable)
 	}
 	
+	@Cacheable(key = "methodName + args")
 	override fun countByFollowToUserId(followToUserId: Long): Long {
 		return userRepository.countByFollowToUserId(followToUserId)
 	}
@@ -156,6 +157,7 @@ open class UserServiceImpl(
 		return userRepository.findAllByFollowByUserId(followByUserId, pageable)
 	}
 	
+	@Cacheable(key = "methodName + args")
 	override fun countByFollowByUserId(followByUserId: Long): Long {
 		return userRepository.countByFollowByUserId(followByUserId)
 	}
@@ -165,6 +167,7 @@ open class UserServiceImpl(
 		return userRepository.findAllByPraiseToCollectId(praiseToCollectId, pageable)
 	}
 	
+	@Cacheable(key = "methodName + args")
 	override fun countByPraiseToCollectId(praiseToCollectId: Long): Long {
 		return userRepository.countByPraiseToCollectId(praiseToCollectId)
 	}

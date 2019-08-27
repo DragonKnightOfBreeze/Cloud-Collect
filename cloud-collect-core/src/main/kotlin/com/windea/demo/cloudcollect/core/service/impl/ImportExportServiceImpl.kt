@@ -70,10 +70,10 @@ open class ImportExportServiceImpl(
 			url = this.url,
 			logoUrl = this.logoUrl,
 			category = this.categoryName.let {
-				categoryRepository.findByNameAndUserId(it, userId).orElseGet { CollectCategory(name = name, user = user) }
+				categoryRepository.findByNameAndUserId(it, userId) ?: CollectCategory(name = name, user = user)
 			},
 			tags = tagNames.map {
-				tagRepository.findByNameAndUserId(it, userId).orElseGet { CollectTag(name = name, user = user) }
+				tagRepository.findByNameAndUserId(it, userId) ?: CollectTag(name = name, user = user)
 			}.distinctBy { it.name }.toMutableSet(),
 			type = this.type,
 			user = user

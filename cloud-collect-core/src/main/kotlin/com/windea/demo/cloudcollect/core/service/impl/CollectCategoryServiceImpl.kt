@@ -6,6 +6,7 @@ import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
+import org.springframework.data.repository.*
 import org.springframework.stereotype.*
 import javax.transaction.*
 
@@ -38,12 +39,12 @@ open class CollectCategoryServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): CollectCategory {
-		return categoryRepository.findById(id).orElseThrow { NotFoundException() }
+		return categoryRepository.findByIdOrNull(id) ?: throw NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findByNameAndUserId(name: String, userId: Long): CollectCategory {
-		return categoryRepository.findByNameAndUserId(name, userId).orElseThrow { NotFoundException() }
+		return categoryRepository.findByNameAndUserId(name, userId) ?: throw NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")

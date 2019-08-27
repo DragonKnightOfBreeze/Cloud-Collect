@@ -6,6 +6,7 @@ import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
+import org.springframework.data.repository.*
 import org.springframework.stereotype.*
 import javax.transaction.*
 
@@ -18,7 +19,7 @@ open class CommentServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun create(collectId: Long, comment: Comment, sponsorByUser: User): Comment {
-		comment.collect = collectRepository.findById(collectId).orElseThrow { NotFoundException() }
+		comment.collect = collectRepository.findByIdOrNull(collectId) ?: throw NotFoundException()
 		comment.sponsorByUser = sponsorByUser
 		return commentRepository.save(comment)
 	}
@@ -26,7 +27,7 @@ open class CommentServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun reply(collectId: Long, replyToCommentId: Long, comment: Comment, sponsorByUser: User): Comment {
-		comment.collect = collectRepository.findById(collectId).orElseThrow { NotFoundException() }
+		comment.collect = collectRepository.findByIdOrNull(collectId) ?: throw NotFoundException()
 		comment.sponsorByUser = sponsorByUser
 		comment.replyToComment = findById(replyToCommentId)
 		return commentRepository.save(comment)
@@ -40,7 +41,7 @@ open class CommentServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): Comment {
-		return commentRepository.findById(id).orElseThrow { NotFoundException() }
+		return commentRepository.findByIdOrNull(id) ?: throw NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -53,6 +54,7 @@ open class CommentServiceImpl(
 		return commentRepository.findAllByCollectId(collectId, pageable)
 	}
 	
+	@Cacheable(key = "methodName + args")
 	override fun countByCollectId(collectId: Long): Long {
 		return commentRepository.countByCollectId(collectId)
 	}
@@ -62,6 +64,7 @@ open class CommentServiceImpl(
 		return commentRepository.findAllBySponsorByUserId(sponsorByUserId, pageable)
 	}
 	
+	@Cacheable(key = "methodName + args")
 	override fun countBySponsorByUserId(sponsorByUserId: Long): Long {
 		return commentRepository.countBySponsorByUserId(sponsorByUserId)
 	}
@@ -71,6 +74,7 @@ open class CommentServiceImpl(
 		return commentRepository.findAllByReplyToCommentId(replyToCommentId, pageable)
 	}
 	
+	@Cacheable(key = "methodName + args")
 	override fun countByReplyToCommentId(replyToCommentId: Long): Long {
 		return commentRepository.countByReplyToCommentId(replyToCommentId)
 	}

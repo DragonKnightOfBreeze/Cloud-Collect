@@ -6,6 +6,7 @@ import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
+import org.springframework.data.repository.*
 import org.springframework.stereotype.*
 import javax.transaction.*
 
@@ -38,12 +39,12 @@ open class CollectTagServiceImpl(
 	
 	@Cacheable
 	override fun findById(id: Long): CollectTag {
-		return tagRepository.findById(id).orElseThrow { NotFoundException() }
+		return tagRepository.findByIdOrNull(id) ?: throw NotFoundException()
 	}
 	
 	@Cacheable
 	override fun findByNameAndUserId(name: String, userId: Long): CollectTag {
-		return tagRepository.findByNameAndUserId(name, userId).orElseThrow { NotFoundException() }
+		return tagRepository.findByNameAndUserId(name, userId) ?: throw NotFoundException()
 	}
 	
 	@Cacheable
@@ -61,6 +62,7 @@ open class CollectTagServiceImpl(
 		return tagRepository.findAllByUserId(userId, pageable)
 	}
 	
+	@Cacheable(key = "methodName + args")
 	override fun countByUserId(userId: Long): Long {
 		return tagRepository.countByUserId(userId)
 	}

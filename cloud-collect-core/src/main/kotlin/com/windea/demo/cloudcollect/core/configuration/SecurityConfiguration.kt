@@ -65,8 +65,8 @@ open class SecurityConfiguration(
 	//使用自定义的访问权限鉴别器，以便使用注解进行访问权限控制。
 	@Bean
 	open fun webSecurityExpressionHandler(): DefaultWebSecurityExpressionHandler {
-		return DefaultWebSecurityExpressionHandler().also {
-			it.setPermissionEvaluator(permissionEvaluator)
+		return DefaultWebSecurityExpressionHandler().apply {
+			setPermissionEvaluator(permissionEvaluator)
 		}
 	}
 }

@@ -25,18 +25,18 @@ open class WebConfiguration : WebMvcConfigurer {
 	//在web环境中一定要定位到classpath，否则默认到当前web应用下找。
 	@Bean
 	open fun messageSource(): ReloadableResourceBundleMessageSource {
-		return ReloadableResourceBundleMessageSource().also {
-			it.setBasename("classpath:messages")
-			it.setDefaultEncoding("UTF-8")
+		return ReloadableResourceBundleMessageSource().apply {
+			setBasename("classpath:messages")
+			setDefaultEncoding("UTF-8")
 		}
 	}
 	
 	//需要明确配置验证器，指定需要使用的资源文件。
 	@Bean
 	open fun validator(): Validator {
-		return LocalValidatorFactoryBean().also {
-			it.setProviderClass(HibernateValidator::class.java)
-			it.setValidationMessageSource(messageSource())
+		return LocalValidatorFactoryBean().apply {
+			setProviderClass(HibernateValidator::class.java)
+			setValidationMessageSource(messageSource())
 		}
 	}
 	
