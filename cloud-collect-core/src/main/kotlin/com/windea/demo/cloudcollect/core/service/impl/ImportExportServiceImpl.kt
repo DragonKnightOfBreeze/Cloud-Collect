@@ -27,7 +27,7 @@ open class ImportExportServiceImpl(
 			//根据指定数据类型读取数据
 			val dataSchema = type.loader.fromString(string, DataSchema::class.java)
 			//考虑使用序列而非列表，进行自顶向下的操作，而非自前往后，需要排除重复名字的收藏
-			val collectSchemaList = dataSchema.collectSchemaList.distinctBy { it.name }
+			val collectSchemaList = dataSchema.collectSchemaList
 			collectSchemaList.forEach {
 				//存储到数据库中，分类和标签会一并级联保存
 				collectRepository.save(it.toCollect(user))
@@ -50,7 +50,7 @@ open class ImportExportServiceImpl(
 	}
 	
 	private fun Collect.toCollectSchema(): CollectSchema {
-		val (name, summary, url, logoUrl, category, tags, type) = this
+		val (_, name, summary, url, logoUrl, category, tags, type) = this
 		val categoryName = category?.name ?: "默认分类"
 		val tagNames = tags.map { it.name }
 		return CollectSchema(name, summary, url, logoUrl, categoryName, tagNames, type)
@@ -62,11 +62,12 @@ open class ImportExportServiceImpl(
 		
 		val (name, summary, url, logoUrl, categoryName, tagNames, type) = this
 		val category = categoryName.let {
-			categoryRepository.findByNameAndUserId(it, userId).orElseGet { CollectCategory(name, "", user) }
+			categoryRepository.findByNameAndUserId(it, userId).orElseGet { CollectCategory(name = name, user = user) }
 		}
 		val tags = tagNames.map {
-			tagRepository.findByNameAndUserId(it, userId).orElseGet { CollectTag(name, "", user) }
+			tagRepository.findByNameAndUserId(it, userId).orElseGet { CollectTag(name = name, user = user) }
 		}.distinctBy { it.name }.toMutableSet()
-		return Collect(name, summary, url, logoUrl, category, tags, type, user)
+		
+		return Collect(name = name, summary = summary, url = url, logoUrl = logoUrl, category = category, tags = tags, type = type, user = user)
 	}
 }

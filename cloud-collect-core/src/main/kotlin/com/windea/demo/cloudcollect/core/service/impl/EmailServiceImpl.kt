@@ -3,17 +3,17 @@ package com.windea.demo.cloudcollect.core.service.impl
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.utility.common.annotations.marks.*
-import org.springframework.boot.context.properties.*
+import org.springframework.beans.factory.annotation.*
 import org.springframework.mail.javamail.*
 import org.springframework.stereotype.*
 
 @Service
-@ConfigurationProperties("spring.mail")
 @NotTested("未进行实际测试……")
 open class EmailServiceImpl(
 	private val mailSender: JavaMailSender
 ) : EmailService {
-	lateinit var username: String
+	@Value("\${spring.mail.username}")
+	private lateinit var username: String
 	
 	
 	override fun sendActivateEmail(user: User) {
@@ -31,8 +31,8 @@ open class EmailServiceImpl(
 		""".trimIndent()
 		
 		sendEmail(user) {
-			it.setSubject(subject)
-			it.setText(text)
+			setSubject(subject)
+			setText(text)
 		}
 	}
 	
@@ -49,8 +49,8 @@ open class EmailServiceImpl(
 		""".trimIndent()
 		
 		sendEmail(user) {
-			it.setSubject(subject)
-			it.setText(text)
+			setSubject(subject)
+			setText(text)
 		}
 	}
 	
@@ -69,8 +69,8 @@ open class EmailServiceImpl(
 		""".trimIndent()
 		
 		sendEmail(user) {
-			it.setSubject(subject)
-			it.setText(text)
+			setSubject(subject)
+			setText(text)
 		}
 	}
 	
@@ -87,12 +87,12 @@ open class EmailServiceImpl(
 		""".trimIndent()
 		
 		sendEmail(user) {
-			it.setSubject(subject)
-			it.setText(text)
+			setSubject(subject)
+			setText(text)
 		}
 	}
 	
-	private fun sendEmail(user: User, handler: (MimeMessageHelper) -> Unit) {
+	private fun sendEmail(user: User, handler: MimeMessageHelper.() -> Unit) {
 		val message = mailSender.createMimeMessage()
 		val helper = MimeMessageHelper(message)
 		helper.setFrom(username)

@@ -56,7 +56,12 @@
 * [ ] ［可能］收藏的自由排序功能。
 * [ ] ［可能］收藏的树状目录/分类功能。
 
-# 问题总结
+# 注意事项
 
-* Spring Boot会对某些bean进行自动配置。例如，自动配置转换器组件。
+## 后台
+
+* Spring Boot会对某些bean进行自动配置。例如，Converter、Formatter。
 * 对于数据库：text类型不能指定默认值。java boolean类型会转换为bit类型。
+* 当为作为主构造函数参数的实体类的属性注上validation注解时，需要添加`@field:`前缀。
+* 使用`@Value`或`@ConfigurationProperties`时，对应的属性必须是`lateinit var`或者可空类型。
+* 使用`@ConfigurationProperties`时，对应的属性必须是公开的。

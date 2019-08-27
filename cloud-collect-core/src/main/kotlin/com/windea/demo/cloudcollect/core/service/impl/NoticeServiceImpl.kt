@@ -12,67 +12,68 @@ import javax.transaction.*
 @Service
 @CacheConfig(cacheNames = ["notice"])
 open class NoticeServiceImpl(
-	private val repository: NoticeRepository,
+	private val noticeRepository: NoticeRepository,
 	private val userRepository: UserRepository
 ) : NoticeService {
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun create(notice: Notice, user: User): Notice {
 		notice.user = user
-		return repository.save(notice)
+		return noticeRepository.save(notice)
 	}
 	
 	override fun sendToAll(notice: Notice) {
 		val userList = userRepository.findAll()
 		for(user in userList) {
-			val newNotice = Notice()
-			newNotice.user = user
-			newNotice.title = notice.title
-			newNotice.content = notice.content
-			newNotice.type = notice.type
-			repository.save(notice)
+			val savedNotice = Notice(
+				title = notice.title,
+				content = notice.content,
+				type = notice.type,
+				user = user
+			)
+			noticeRepository.save(savedNotice)
 		}
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun delete(id: Long) {
-		repository.deleteById(id)
+		noticeRepository.deleteById(id)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun read(id: Long): Notice {
-		val notice = findById(id)
-		notice.isRead = true
-		return repository.save(notice)
+		val savedNotice = findById(id)
+		savedNotice.isRead = true
+		return noticeRepository.save(savedNotice)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): Notice {
-		return repository.findById(id).orElseThrow { NotFoundException() }
+		return noticeRepository.findById(id).orElseThrow { NotFoundException() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<Notice> {
-		return repository.findAll(pageable)
+		return noticeRepository.findAll(pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Notice> {
-		return repository.findAllByUserId(userId, pageable)
+		return noticeRepository.findAllByUserId(userId, pageable)
 	}
 	
 	override fun countByUserId(userId: Long): Long {
-		return repository.countByUserId(userId)
+		return noticeRepository.countByUserId(userId)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByUserIdAndRead(userId: Long, isRead: Boolean, pageable: Pageable): Page<Notice> {
-		return repository.findAllByUserIdAndRead(userId, isRead, pageable)
+		return noticeRepository.findAllByUserIdAndRead(userId, isRead, pageable)
 	}
 	
 	override fun countByUserIdAndRead(userId: Long, isRead: Boolean): Long {
-		return repository.countByUserIdAndRead(userId, isRead)
+		return noticeRepository.countByUserIdAndRead(userId, isRead)
 	}
 }

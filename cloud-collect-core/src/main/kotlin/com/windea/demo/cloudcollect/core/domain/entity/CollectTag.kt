@@ -12,38 +12,37 @@ import javax.validation.constraints.*
 @Entity
 @UniqueCollectTag
 data class CollectTag(
+	/**编号。*/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	var id: Long? = null,
+	
 	/**名字。*/
 	@Column(nullable = false, length = 32)
-	@NotEmpty(message = "{validation.CollectTag.name.NotEmpty}")
-	@Size(min = 1, max = 32, message = "{validation.CollectTag.name.Size}")
+	@field:NotEmpty(message = "{validation.CollectTag.name.NotEmpty}")
+	@field:Size(min = 1, max = 32, message = "{validation.CollectTag.name.Size}")
 	var name: String = "",
 	
 	/**概述。*/
 	@Column(nullable = false)
-	@NotEmpty(message = "{validation.CollectTag.summary.NotEmpty}")
-	@Size(min = 1, max = 255, message = "{validation.CollectTag.summary.Size}")
+	@field:NotEmpty(message = "{validation.CollectTag.summary.NotEmpty}")
+	@field:Size(min = 1, max = 255, message = "{validation.CollectTag.summary.Size}")
 	var summary: String = "",
 	
 	/**所属用户。*/
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
-	var user: User = User()
-) : Serializable {
-	/**编号。*/
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null
+	var user: User? = null,
 	
 	/**创建时间。*/
 	@Column
 	@CreatedDate
-	var createdTime: LocalDateTime? = null
+	var createdTime: LocalDateTime? = null,
 	
 	/**最后更新时间。*/
 	@Column
 	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
-	
-	
+) : Serializable {
 	override fun equals(other: Any?) = other is CollectTag && other.id == id
 	
 	override fun hashCode() = id.hashCode()

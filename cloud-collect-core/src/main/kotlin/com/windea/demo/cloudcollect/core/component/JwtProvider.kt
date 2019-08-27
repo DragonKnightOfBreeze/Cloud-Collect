@@ -19,7 +19,7 @@ class JwtProvider {
 	@Value("\${com.windea.security.secret}")
 	private lateinit var secret: String
 	@Value("\${com.windea.security.expiration}")
-	private var expiration: Int = 0
+	private lateinit var expiration: String
 	
 	
 	/**从http请求中得到令牌。*/
@@ -56,7 +56,7 @@ class JwtProvider {
 	
 	/**生成过期时间。*/
 	private fun generateExpiration(): Date {
-		return Date(System.currentTimeMillis() + expiration * 1000)
+		return Date(System.currentTimeMillis() + expiration.toInt() * 1000)
 	}
 	
 	/**得到要求。*/

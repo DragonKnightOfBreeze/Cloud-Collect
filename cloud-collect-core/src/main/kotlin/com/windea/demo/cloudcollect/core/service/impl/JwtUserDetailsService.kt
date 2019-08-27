@@ -9,10 +9,10 @@ import org.springframework.stereotype.*
 /**Jwt用户详情的服务。用于安全验证。*/
 @Service
 open class JwtUserDetailsService(
-	private val repository: UserRepository
+	private val userRepository: UserRepository
 ) : UserDetailsService {
 	override fun loadUserByUsername(username: String): UserDetails {
-		val user = repository.findByUsername(username).orElseThrow { UserNotFoundException() }
+		val user = userRepository.findByUsername(username).orElseThrow { UserNotFoundException() }
 		return JwtUserDetails(user)
 	}
 }

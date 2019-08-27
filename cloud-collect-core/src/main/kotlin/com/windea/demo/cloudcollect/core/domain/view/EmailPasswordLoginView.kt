@@ -5,11 +5,11 @@ import javax.validation.constraints.*
 
 /**邮箱&密码登录视图。 */
 data class EmailPasswordLoginView(
-	@NotEmpty(message = "{validation.User.email.NotEmpty}")
-	@Email(message = "{validation.User.email.Email}")
+	@field:NotEmpty(message = "{validation.User.email.NotEmpty}")
+	@field:Email(message = "{validation.User.email.Email}")
 	val email: String,
 	
-	@NotEmpty(message = "{validation.User.password.NotEmpty}")
-	@Password(message = "{validation.User.password.ValidPassword}")
+	@field:NotEmpty(message = "{validation.User.password.NotEmpty}")
+	@field:Password(message = "{validation.User.password.ValidPassword}")
 	val password: String
 ) : LoginView

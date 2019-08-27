@@ -14,34 +14,39 @@ import javax.validation.constraints.*
 @Entity
 @UniqueUser
 data class User(
+	/**编号。*/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	var id: Long? = null,
+	
 	/**用户名。*/
 	@Column(unique = true, nullable = false, length = 16)
-	@NotEmpty(message = "{validation.User.username.NotEmpty}")
-	@Username(message = "{validation.User.username.ValidUsername}")
+	@field:NotEmpty(message = "{validation.User.username.NotEmpty}")
+	@field:Username(message = "{validation.User.username.ValidUsername}")
 	var username: String = "",
 	
 	/**邮箱。*/
 	@Column(unique = true, nullable = false, length = 64)
-	@NotEmpty(message = "{validation.User.email.NotEmpty}")
-	@Email(message = "{validation.User.email.Email}")
+	@field:NotEmpty(message = "{validation.User.email.NotEmpty}")
+	@field:Email(message = "{validation.User.email.Email}")
 	var email: String = "",
 	
 	/**密码。这里存储的是加密后的密码，可以进行参数验证，不能限制长度。*/
 	@Column(nullable = false)
-	@NotEmpty(message = "{validation.User.password.NotEmpty}")
-	@Password(message = "{validation.User.password.ValidPassword}")
+	@field:NotEmpty(message = "{validation.User.password.NotEmpty}")
+	@field:Password(message = "{validation.User.password.ValidPassword}")
 	var password: String = "",
 	
 	/**昵称。*/
 	@Column(nullable = false, length = 64)
-	@NotEmpty(message = "{validation.User.nickname.NotEmpty}")
-	@Size(min = 1, max = 64, message = "{validation.User.nickname.Size}")
+	@field:NotEmpty(message = "{validation.User.nickname.NotEmpty}")
+	@field:Size(min = 1, max = 64, message = "{validation.User.nickname.Size}")
 	var nickname: String = "",
 	
 	/**简介。*/
 	@Column(nullable = false)
-	@NotEmpty(message = "{validation.User.introduce.NotEmpty}")
-	@Size(min = 1, max = 255, message = "{validation.User.introduce.Size}")
+	@field:NotEmpty(message = "{validation.User.introduce.NotEmpty}")
+	@field:Size(min = 1, max = 255, message = "{validation.User.introduce.Size}")
 	var introduce: String = "这家伙很懒，什么也没留下。",
 	
 	/**头像地址。*/
@@ -50,54 +55,51 @@ data class User(
 	
 	/**背景地址。*/
 	@Column(length = 512)
-	var backgroundUrl: String = ""
-) : Serializable {
-	/**编号。*/
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null
+	var backgroundUrl: String = "",
 	
 	/**身份。*/
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	var role: Role = Role.NORMAL
+	var role: Role = Role.NORMAL,
 	
 	/**TODO 是否已激活。暂时设为总是已激活。*/
 	@Column
-	var isActivated: Boolean = true
-	
-	/**激活码。*/
-	@Column
-	var activateCode: String? = null
-	
-	/**重置用户密码要用的识别码。*/
-	@Column
-	var resetPasswordCode: String? = null
+	var isActivated: Boolean = true,
 	
 	/**注册时间。*/
 	@Column
 	@CreatedDate
-	var registerTime: LocalDateTime? = null
+	var registerTime: LocalDateTime? = null,
 	
 	/**资料更新时间。*/
 	@Column
 	@LastModifiedDate
 	var updateTime: LocalDateTime? = null
+) : Serializable {
+	/**激活码。*/
+	@JsonIgnore
+	@Column
+	var activateCode: String? = null
+	
+	/**重置密码验证码。*/
+	@JsonIgnore
+	@Column
+	var resetPasswordCode: String? = null
 	
 	/**用户的关注用户列表。懒加载。*/
-	@ManyToMany(cascade = [CascadeType.MERGE])
 	@JsonIgnore
-	var followToUserList: MutableList<User> = mutableListOf()
+	@ManyToMany(cascade = [CascadeType.MERGE])
+	val followToUserList: MutableList<User> = mutableListOf()
 	
 	/**该用户的粉丝用户列表。懒加载。*/
-	@ManyToMany(cascade = [CascadeType.MERGE], mappedBy = "followToUserList")
 	@JsonIgnore
-	var followByUserList: MutableList<User> = mutableListOf()
+	@ManyToMany(cascade = [CascadeType.MERGE], mappedBy = "followToUserList")
+	val followByUserList: MutableList<User> = mutableListOf()
 	
 	/**该用户点赞的收藏列表。懒加载。*/
-	@ManyToMany(cascade = [CascadeType.MERGE])
 	@JsonIgnore
-	var praiseToCollectList: MutableList<Collect> = mutableListOf()
+	@ManyToMany(cascade = [CascadeType.MERGE])
+	val praiseToCollectList: MutableList<Collect> = mutableListOf()
 	
 	
 	override fun equals(other: Any?) = other is User && other.id == id

@@ -20,7 +20,7 @@ import javax.transaction.*
 @Service
 @CacheConfig(cacheNames = ["user"])
 open class UserServiceImpl(
-	private val repository: UserRepository,
+	private val userRepository: UserRepository,
 	private val emailService: EmailService,
 	private val passwordEncoder: PasswordEncoder,
 	private val authenticationManager: AuthenticationManager
@@ -36,135 +36,142 @@ open class UserServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun registerByEmail(view: EmailRegisterView): User {
-		val user = User()
-		user.nickname = view.nickname
-		user.username = view.username
-		user.email = view.email
-		user.password = passwordEncoder.encode(view.password)
-		//得到随机验证码
-		user.activateCode = UUID.randomUUID().toString()
-		val result = repository.save(user)
+		val savedUser = User(
+			nickname = view.nickname,
+			username = view.username,
+			email = view.email,
+			password = passwordEncoder.encode(view.password)
+		)
+		savedUser.activateCode = UUID.randomUUID().toString()
+		val result = userRepository.save(savedUser)
+		
 		//成功注册后，发送激活邮件
-		emailService.sendActivateEmail(user)
+		emailService.sendActivateEmail(savedUser)
 		return result
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun forgotPassword(username: String): User {
-		val user = findByUsername(username)
-		user.resetPasswordCode = UUID.randomUUID().toString()
-		val result = repository.save(user)
+		val savedUser = findByUsername(username)
+		//设置随机重置密码验证码
+		savedUser.resetPasswordCode = UUID.randomUUID().toString()
+		val result = userRepository.save(savedUser)
+		
 		//发送重置密码邮件
-		emailService.sendResetPasswordEmail(user)
+		emailService.sendResetPasswordEmail(savedUser)
 		return result
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun activate(username: String, activateCode: String): Boolean {
-		val rawUser = findByUsername(username)
-		//如果激活码不匹配，则直接返回false，否则清空激活码，然后激活用户，并发送欢迎邮件
-		if(rawUser.activateCode != activateCode) return false
+		val savedUser = findByUsername(username)
+		//如果激活码不匹配，则直接返回
+		if(savedUser.activateCode != activateCode) return false
 		
-		rawUser.activateCode = null
-		rawUser.isActivated = true
-		repository.save(rawUser)
-		emailService.sendHelloEmail(rawUser)
+		savedUser.activateCode = null
+		savedUser.isActivated = true
+		userRepository.save(savedUser)
+		
+		//发送欢迎邮件
+		emailService.sendHelloEmail(savedUser)
 		return true
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun resetPassword(username: String, password: String, resetPasswordCode: String): Boolean {
-		val rawUser = findByUsername(username)
-		//如果识别码不匹配，则直接返回false，否则清空识别码，接着更改为新的加密后的密码
-		if(rawUser.resetPasswordCode != resetPasswordCode) return false
+		val savedUser = findByUsername(username)
+		//如果重置密码验证码不匹配，则直接返回
+		if(savedUser.resetPasswordCode != resetPasswordCode) return false
 		
-		rawUser.resetPasswordCode = null
-		rawUser.password = passwordEncoder.encode(password)
-		repository.save(rawUser)
-		emailService.sendResetPasswordSuccessEmail(rawUser)
+		savedUser.resetPasswordCode = null
+		savedUser.password = passwordEncoder.encode(password)
+		userRepository.save(savedUser)
+		
+		//发送重置密码成功邮件
+		emailService.sendResetPasswordSuccessEmail(savedUser)
 		return true
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun modify(id: Long, user: User): User {
-		val rawUser = findById(id)
-		rawUser.nickname = user.nickname
-		rawUser.introduce = user.introduce
-		rawUser.avatarUrl = user.avatarUrl
-		rawUser.backgroundUrl = user.backgroundUrl
-		return repository.save(rawUser)
+		val savedUser = this.findById(id)
+		savedUser.nickname = user.nickname
+		savedUser.introduce = user.introduce
+		savedUser.avatarUrl = user.avatarUrl
+		savedUser.backgroundUrl = user.backgroundUrl
+		return userRepository.save(savedUser)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): User {
-		return repository.findById(id).orElseThrow { NotFoundException() }
+		return userRepository.findById(id).orElseThrow { NotFoundException() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findByUsername(username: String): User {
-		return repository.findByUsername(username).orElseThrow { NotFoundException() }
+		return userRepository.findByUsername(username).orElseThrow { NotFoundException() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findByEmail(email: String): User {
-		return repository.findByEmail(email).orElseThrow { NotFoundException() }
+		return userRepository.findByEmail(email).orElseThrow { NotFoundException() }
 	}
 	
 	override fun findByRandom(): User {
-		val count = repository.count()
+		val count = userRepository.count()
 		val randomId = RandomExtension.range(1, count)
-		return repository.findById(randomId).orElseThrow { NotFoundException() }
+		return userRepository.findById(randomId).orElseThrow { NotFoundException() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<User> {
-		return repository.findAll(pageable)
+		return userRepository.findAll(pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByNicknameContains(nickname: String, pageable: Pageable): Page<User> {
-		return repository.findAllByNicknameContains(nickname, pageable)
+		return userRepository.findAllByNicknameContains(nickname, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByRole(role: Role, pageable: Pageable): Page<User> {
-		return repository.findAllByRole(role, pageable)
+		return userRepository.findAllByRole(role, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByFollowToUserId(followToUserId: Long, pageable: Pageable): Page<User> {
-		return repository.findAllByFollowToUserId(followToUserId, pageable)
+		return userRepository.findAllByFollowToUserId(followToUserId, pageable)
 	}
 	
 	override fun countByFollowToUserId(followToUserId: Long): Long {
-		return repository.countByFollowToUserId(followToUserId)
+		return userRepository.countByFollowToUserId(followToUserId)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User> {
-		return repository.findAllByFollowByUserId(followByUserId, pageable)
+		return userRepository.findAllByFollowByUserId(followByUserId, pageable)
 	}
 	
 	override fun countByFollowByUserId(followByUserId: Long): Long {
-		return repository.countByFollowByUserId(followByUserId)
+		return userRepository.countByFollowByUserId(followByUserId)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User> {
-		return repository.findAllByPraiseToCollectId(praiseToCollectId, pageable)
+		return userRepository.findAllByPraiseToCollectId(praiseToCollectId, pageable)
 	}
 	
 	override fun countByPraiseToCollectId(praiseToCollectId: Long): Long {
-		return repository.countByPraiseToCollectId(praiseToCollectId)
+		return userRepository.countByPraiseToCollectId(praiseToCollectId)
 	}
 	
 	override fun exists(user: User): Boolean {
 		val username = user.username
 		val email = user.email
-		return repository.existsByUsernameOrEmail(username, email)
+		return userRepository.existsByUsernameOrEmail(username, email)
 	}
 }

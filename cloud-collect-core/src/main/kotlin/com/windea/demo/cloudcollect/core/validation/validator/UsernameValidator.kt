@@ -9,7 +9,7 @@ import javax.validation.*
 @Component
 class UsernameValidator : ConstraintValidator<Username, String> {
 	@Value("\${com.windea.validation.username.regex}")
-	lateinit var regex: String
+	private lateinit var regex: String
 	
 	
 	override fun isValid(value: String, context: ConstraintValidatorContext): Boolean {

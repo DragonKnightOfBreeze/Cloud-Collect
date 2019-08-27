@@ -28,7 +28,7 @@ open class Swagger2Configuration {
 			.contact(contact())
 			.license("MIT License")
 			.licenseUrl("https://github.com/DragonKnightOfBreeze/Cloud-Collect/blob/master/LICENSE")
-			.version("0.2.5")
+			.version("0.2.6")
 			.build()
 	}
 	

@@ -10,6 +10,11 @@ import javax.persistence.Id
 /**通知。*/
 @Entity
 data class Notice(
+	/**编号。*/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	var id: Long? = null,
+	
 	/**标题。*/
 	@Column(nullable = false)
 	var title: String = "",
@@ -23,30 +28,24 @@ data class Notice(
 	@Enumerated(EnumType.STRING)
 	var type: NoticeType = NoticeType.SYSTEM,
 	
-	/**所属用户。*/
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var user: User = User()
-) : Serializable {
-	/**编号。*/
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null
-	
 	@Column
-		/**是否已读。*/
-	var isRead: Boolean = false
+	/**是否已读。*/
+	var isRead: Boolean = false,
+	
+	/**所属用户。*/
+	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
+	var user: User? = null,
 	
 	/**创建时间。*/
 	@Column
 	@CreatedDate
-	var createdTime: LocalDateTime? = null
+	var createdTime: LocalDateTime? = null,
 	
 	/**最后更新时间。*/
 	@Column
 	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
-	
-	
+) : Serializable {
 	override fun equals(other: Any?) = other is Notice && other.id == id
 	
 	override fun hashCode() = id.hashCode()

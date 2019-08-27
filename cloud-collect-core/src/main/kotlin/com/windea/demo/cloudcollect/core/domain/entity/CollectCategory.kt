@@ -12,38 +12,37 @@ import javax.validation.constraints.*
 @Entity
 @UniqueCollectCategory
 data class CollectCategory(
+	/**编号。*/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	var id: Long? = null,
+	
 	/**名字。*/
 	@Column(nullable = false, length = 32)
-	@NotEmpty(message = "{validation.CollectCategory.name.NotEmpty}")
-	@Size(min = 1, max = 32, message = "{validation.CollectCategory.name.Size}")
+	@field:NotEmpty(message = "{validation.CollectCategory.name.NotEmpty}")
+	@field:Size(min = 1, max = 32, message = "{validation.CollectCategory.name.Size}")
 	var name: String = "",
 	
 	/**概述。*/
 	@Column(nullable = false)
-	@NotEmpty(message = "{validation.CollectCategory.summary.NotEmpty}")
-	@Size(min = 1, max = 255, message = "{validation.CollectCategory.summary.Size}")
+	@field:NotEmpty(message = "{validation.CollectCategory.summary.NotEmpty}")
+	@field:Size(min = 1, max = 255, message = "{validation.CollectCategory.summary.Size}")
 	var summary: String = "",
 	
 	/**所属用户。*/
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var user: User = User()
-) : Serializable {
-	/**编号。*/
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null
+	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
+	var user: User? = null,
 	
 	/**创建时间。*/
 	@Column
 	@CreatedDate
-	var createdTime: LocalDateTime? = null
+	var createdTime: LocalDateTime? = null,
 	
 	/**最后更新时间。*/
 	@Column
 	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
-	
-	
+) : Serializable {
 	override fun equals(other: Any?) = other is CollectCategory && other.id == id
 	
 	override fun hashCode() = id.hashCode()
