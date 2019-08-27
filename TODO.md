@@ -64,4 +64,7 @@
 * 对于数据库：text类型不能指定默认值。java boolean类型会转换为bit类型。
 * 当为作为主构造函数参数的实体类的属性注上validation注解时，需要添加`@field:`前缀。
 * 使用`@Value`或`@ConfigurationProperties`时，对应的属性必须是`lateinit var`或者可空类型。
-* 使用`@ConfigurationProperties`时，对应的属性必须是公开的。
+* 使用`@ConfigurationProperties`时，对应的属性必须是公开的。（考虑使用kotlin编译器插件`allopen `。）
+* 使用Jpa时，为了让懒加载如预期工作，实体类必须是`open class`。
+* Jpa不建议与`data class`和只读属性一同工作。
+* Jpa实体类可以不提供无参构造函数。

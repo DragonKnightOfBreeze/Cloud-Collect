@@ -9,7 +9,7 @@ import javax.persistence.Id
 
 /**通知。*/
 @Entity
-data class Notice(
+open class Notice(
 	/**编号。*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,11 +17,11 @@ data class Notice(
 	
 	/**标题。*/
 	@Column(nullable = false)
-	var title: String = "",
+	var title: String,
 	
 	/**内容。*/
 	@Column(nullable = false, length = 32)
-	var content: String = "",
+	var content: String = "……",
 	
 	/**通知的类型。*/
 	@Column(nullable = false)
@@ -33,8 +33,8 @@ data class Notice(
 	var isRead: Boolean = false,
 	
 	/**所属用户。*/
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
-	var user: User? = null,
+	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	var user: User,
 	
 	/**创建时间。*/
 	@Column

@@ -11,7 +11,7 @@ import javax.validation.constraints.*
 /**收藏的分类。一个收藏可以有多个分类。*/
 @Entity
 @UniqueCollectCategory
-data class CollectCategory(
+open class CollectCategory(
 	/**编号。*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +21,17 @@ data class CollectCategory(
 	@Column(nullable = false, length = 32)
 	@field:NotEmpty(message = "{validation.CollectCategory.name.NotEmpty}")
 	@field:Size(min = 1, max = 32, message = "{validation.CollectCategory.name.Size}")
-	var name: String = "",
+	var name: String,
 	
 	/**概述。*/
 	@Column(nullable = false)
 	@field:NotEmpty(message = "{validation.CollectCategory.summary.NotEmpty}")
 	@field:Size(min = 1, max = 255, message = "{validation.CollectCategory.summary.Size}")
-	var summary: String = "",
+	var summary: String = "……",
 	
 	/**所属用户。*/
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
-	var user: User? = null,
+	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	var user: User,
 	
 	/**创建时间。*/
 	@Column

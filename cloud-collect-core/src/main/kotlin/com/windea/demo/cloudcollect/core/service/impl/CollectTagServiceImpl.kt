@@ -67,7 +67,7 @@ open class CollectTagServiceImpl(
 	
 	override fun exists(tag: CollectTag): Boolean {
 		val name = tag.name
-		val userId = tag.user?.id ?: return false
+		val userId = tag.user.id ?: return false
 		return tagRepository.existsByNameAndUserId(name, userId)
 	}
 }

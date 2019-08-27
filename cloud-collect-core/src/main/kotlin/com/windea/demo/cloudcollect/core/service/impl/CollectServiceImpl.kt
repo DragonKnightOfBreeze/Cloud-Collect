@@ -38,9 +38,10 @@ open class CollectServiceImpl(
 			logoUrl = collect.logoUrl,
 			category = collect.category,
 			tags = collect.tags,
-			type = collect.type
+			type = collect.type,
+			user = collect.user
 		)
-		return create(savedCollect, user)
+		return collectRepository.save(savedCollect)
 	}
 	
 	@Transactional
@@ -182,7 +183,7 @@ open class CollectServiceImpl(
 	
 	override fun exists(collect: Collect): Boolean {
 		val name = collect.name
-		val userId = collect.user?.id ?: return false
+		val userId = collect.user.id ?: return false
 		val isDeleted = collect.isDeleted
 		return collectRepository.existsByNameAndUserIdAndDeleted(name, userId, isDeleted)
 	}

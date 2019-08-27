@@ -13,7 +13,7 @@ import javax.validation.constraints.*
 /**用户。*/
 @Entity
 @UniqueUser
-data class User(
+open class User(
 	/**编号。*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,25 +23,25 @@ data class User(
 	@Column(unique = true, nullable = false, length = 16)
 	@field:NotEmpty(message = "{validation.User.username.NotEmpty}")
 	@field:Username(message = "{validation.User.username.ValidUsername}")
-	var username: String = "",
+	var username: String,
 	
 	/**邮箱。*/
 	@Column(unique = true, nullable = false, length = 64)
 	@field:NotEmpty(message = "{validation.User.email.NotEmpty}")
 	@field:Email(message = "{validation.User.email.Email}")
-	var email: String = "",
+	var email: String,
 	
 	/**密码。这里存储的是加密后的密码，可以进行参数验证，不能限制长度。*/
 	@Column(nullable = false)
 	@field:NotEmpty(message = "{validation.User.password.NotEmpty}")
 	@field:Password(message = "{validation.User.password.ValidPassword}")
-	var password: String = "",
+	var password: String,
 	
 	/**昵称。*/
 	@Column(nullable = false, length = 64)
 	@field:NotEmpty(message = "{validation.User.nickname.NotEmpty}")
 	@field:Size(min = 1, max = 64, message = "{validation.User.nickname.Size}")
-	var nickname: String = "",
+	var nickname: String,
 	
 	/**简介。*/
 	@Column(nullable = false)

@@ -50,24 +50,33 @@ open class ImportExportServiceImpl(
 	}
 	
 	private fun Collect.toCollectSchema(): CollectSchema {
-		val (_, name, summary, url, logoUrl, category, tags, type) = this
-		val categoryName = category?.name ?: "默认分类"
-		val tagNames = tags.map { it.name }
-		return CollectSchema(name, summary, url, logoUrl, categoryName, tagNames, type)
+		return CollectSchema(
+			this.name,
+			this.summary,
+			this.url,
+			this.logoUrl,
+			this.category?.name ?: "默认分类",
+			this.tags.map { it.name },
+			this.type
+		)
 	}
 	
 	@Validated
 	private fun CollectSchema.toCollect(user: User): Collect {
 		val userId = user.id ?: throw UserNotFoundException()
-		
-		val (name, summary, url, logoUrl, categoryName, tagNames, type) = this
-		val category = categoryName.let {
-			categoryRepository.findByNameAndUserId(it, userId).orElseGet { CollectCategory(name = name, user = user) }
-		}
-		val tags = tagNames.map {
-			tagRepository.findByNameAndUserId(it, userId).orElseGet { CollectTag(name = name, user = user) }
-		}.distinctBy { it.name }.toMutableSet()
-		
-		return Collect(name = name, summary = summary, url = url, logoUrl = logoUrl, category = category, tags = tags, type = type, user = user)
+		return Collect(
+			name = this.name,
+			summary = this.summary,
+			url = this.url,
+			logoUrl = this.logoUrl,
+			category = this.categoryName.let {
+				categoryRepository.findByNameAndUserId(it, userId).orElseGet { CollectCategory(name = name, user = user) }
+			},
+			tags = tagNames.map {
+				tagRepository.findByNameAndUserId(it, userId).orElseGet { CollectTag(name = name, user = user) }
+			}.distinctBy { it.name }.toMutableSet(),
+			type = this.type,
+			user = user
+		)
 	}
 }

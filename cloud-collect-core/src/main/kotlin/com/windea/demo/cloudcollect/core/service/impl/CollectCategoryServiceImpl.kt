@@ -68,7 +68,7 @@ open class CollectCategoryServiceImpl(
 	
 	override fun exists(category: CollectCategory): Boolean {
 		val name = category.name
-		val userId = category.user?.id ?: return false
+		val userId = category.user.id ?: return false
 		return categoryRepository.existsByNameAndUserId(name, userId)
 	}
 }

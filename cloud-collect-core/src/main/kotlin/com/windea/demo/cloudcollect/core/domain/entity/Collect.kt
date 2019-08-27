@@ -13,7 +13,7 @@ import javax.validation.constraints.*
 /**收藏。*/
 @Entity
 @UniqueCollect
-data class Collect(
+open class Collect(
 	/**编号。*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,21 +23,21 @@ data class Collect(
 	@Column(nullable = false, length = 64)
 	@field:NotEmpty(message = "{validation.Collect.name.NotEmpty}")
 	@field:Size(min = 1, max = 64, message = "{validation.Collect.name.Size}")
-	var name: String = "",
+	var name: String,
 	
 	/**概述。*/
 	@Column(nullable = false)
 	@field:NotEmpty(message = "{validation.Collect.summary.NotEmpty}")
 	@field:Size(min = 1, max = 255, message = "{validation.Collect.summary.Size}")
-	var summary: String = "",
+	var summary: String = "……",
 	
 	/**链接地址。*/
 	@Column(nullable = false, length = 512)
-	var url: String = "",
+	var url: String,
 	
 	/**标志地址。*/
 	@Column(length = 512)
-	var logoUrl: String = "",
+	var logoUrl: String,
 	
 	/**收藏的分类。*/
 	@ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
@@ -57,8 +57,8 @@ data class Collect(
 	var isDeleted: Boolean = false,
 	
 	/**所属用户。*/
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
-	var user: User? = null,
+	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	var user: User,
 	
 	/**创建时间。*/
 	@Column
