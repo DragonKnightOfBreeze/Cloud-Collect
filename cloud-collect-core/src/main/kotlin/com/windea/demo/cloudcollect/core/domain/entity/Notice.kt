@@ -10,7 +10,7 @@ import javax.persistence.Id
 
 /**通知。*/
 @Entity
-open class Notice(
+class Notice(
 	/**编号。*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ open class Notice(
 	
 	@Column
 	/**是否已读。*/
-	var isRead: Boolean = false,
+	var readStatus: Boolean = false,
 	
 	/**所属用户。*/
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)

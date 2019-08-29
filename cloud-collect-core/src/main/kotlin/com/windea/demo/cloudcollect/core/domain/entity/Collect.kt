@@ -9,12 +9,13 @@ import java.time.*
 import java.util.*
 import javax.persistence.*
 import javax.persistence.Id
+import javax.validation.*
 import javax.validation.constraints.*
 
 /**收藏。*/
 @Entity
 @UniqueCollect
-open class Collect(
+class Collect(
 	/**编号。*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,10 +43,12 @@ open class Collect(
 	
 	/**收藏的分类。*/
 	@ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
+	@field:Valid
 	var category: CollectCategory? = null,
 	
 	/**收藏的标签。*/
 	@ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
+	@field:Valid
 	var tags: MutableSet<CollectTag> = mutableSetOf(),
 	
 	/**收藏的类型。*/

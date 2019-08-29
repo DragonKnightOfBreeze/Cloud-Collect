@@ -61,7 +61,7 @@ interface CollectService {
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Collect>
 	
 	/**检查某一收藏是否已存在。*/
-	fun exists(collect: Collect): Boolean
+	fun existsByNameAndUserId(name: String, userId: Long): Boolean
 	
 	
 	/**得到该收藏的点赞用户数量。*/

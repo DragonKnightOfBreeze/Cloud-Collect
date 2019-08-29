@@ -10,7 +10,7 @@ import javax.validation.constraints.*
 
 /**评论。一个收藏可以带有多条评论。*/
 @Entity
-open class Comment(
+class Comment(
 	/**编号。*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,7 +14,7 @@ interface NoticeService {
 	/**删除通知。*/
 	fun delete(id: Long)
 	
-	/**阅读自己的通知。将isRead设为true。*/
+	/**阅读自己的通知。将readStatus设为true。*/
 	fun read(id: Long): Notice
 	
 	/**根据id得到某一通知。*/
@@ -27,5 +27,5 @@ interface NoticeService {
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Notice>
 	
 	/**根据用户id和阅读状态查询所有通知。*/
-	fun findAllByUserIdAndRead(userId: Long, isRead: Boolean, pageable: Pageable): Page<Notice>
+	fun findAllByUserIdAndRead(userId: Long, readStatus: Boolean, pageable: Pageable): Page<Notice>
 }

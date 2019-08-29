@@ -12,7 +12,7 @@ import javax.validation.constraints.*
 /**收藏的标签。一个收藏可以带有多个标签。*/
 @Entity
 @UniqueCollectTag
-open class CollectTag(
+class CollectTag(
 	/**编号。*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -13,8 +13,7 @@ import javax.validation.constraints.*
 
 /**用户。*/
 @Entity
-@UniqueUser
-open class User(
+class User(
 	/**编号。*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +31,8 @@ open class User(
 	@field:Email(message = "{validation.User.email.Email}")
 	var email: String,
 	
-	/**密码。这里存储的是加密后的密码，可以进行参数验证，不能限制长度。*/
+	/**密码。这里存储的是加密后的密码，可以进行参数验证，不要限制长度。*/
+	@JsonIgnore
 	@Column(nullable = false)
 	@field:NotEmpty(message = "{validation.User.password.NotEmpty}")
 	@field:Password(message = "{validation.User.password.ValidPassword}")
@@ -63,9 +63,9 @@ open class User(
 	@Enumerated(EnumType.STRING)
 	var role: Role = Role.NORMAL,
 	
-	/**TODO 是否已激活。暂时设为总是已激活。*/
+	/**是否已激活。*/
 	@Column
-	var isActivated: Boolean = true,
+	var activateStatus: Boolean = false,
 	
 	/**注册时间。*/
 	@Column
@@ -100,7 +100,7 @@ open class User(
 	/**该用户点赞的收藏列表。懒加载。*/
 	@JsonIgnore
 	@ManyToMany(cascade = [CascadeType.MERGE])
-	val praiseToCollectList: MutableList<Collect> = mutableListOf()
+	var praiseToCollectList: MutableList<Collect> = mutableListOf()
 	
 	
 	override fun equals(other: Any?) = other is User && other.id == id

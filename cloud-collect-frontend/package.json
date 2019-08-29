@@ -1,5 +1,5 @@
 {
-  "name": "cloud-collect-web",
+  "name": "cloud-collect-frontend",
   "version": "0.2.7",
   "private": true,
   "scripts": {

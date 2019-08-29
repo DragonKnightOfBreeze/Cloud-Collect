@@ -12,7 +12,7 @@ import javax.transaction.*
 
 @Service
 @CacheConfig(cacheNames = ["collectCategory"])
-open class CollectCategoryServiceImpl(
+class CollectCategoryServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val categoryRepository: CollectCategoryRepository
 ) : CollectCategoryService {
@@ -63,11 +63,10 @@ open class CollectCategoryServiceImpl(
 		return categoryRepository.findAllByUserId(userId, pageable)
 	}
 	
-	override fun exists(category: CollectCategory): Boolean {
-		val name = category.name
-		val userId = category.user.id ?: return false
+	override fun existsByNameAndUserId(name: String, userId: Long): Boolean {
 		return categoryRepository.existsByNameAndUserId(name, userId)
 	}
+	
 	
 	@Cacheable(key = "methodName + args")
 	override fun getCollectCount(id: Long): Long {

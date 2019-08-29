@@ -8,7 +8,7 @@ import org.springframework.stereotype.*
 
 /**Jwt用户详情的服务。用于安全验证。*/
 @Service
-open class JwtUserDetailsService(
+class JwtUserDetailsService(
 	private val userRepository: UserRepository
 ) : UserDetailsService {
 	override fun loadUserByUsername(username: String): UserDetails {

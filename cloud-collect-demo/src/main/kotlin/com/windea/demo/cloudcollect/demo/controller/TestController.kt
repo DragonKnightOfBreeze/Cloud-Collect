@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.core
+package com.windea.demo.cloudcollect.demo.controller
 
 import org.springframework.data.domain.*
 import org.springframework.web.bind.annotation.*
@@ -7,12 +7,16 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/test")
 class TestController {
 	@GetMapping("/string")
-	internal fun getString(@RequestParam string: String) {
+	fun getString(@RequestParam string: String): String {
+		println("RESULT:")
 		println(string)
+		return string
 	}
 	
 	@GetMapping("/pageable")
-	internal fun getPageable(@RequestParam pageable: Pageable) {
+	fun getPageable(@RequestParam pageable: Pageable): Pageable {
+		println("RESULT:")
 		println(pageable)
+		return pageable
 	}
 }

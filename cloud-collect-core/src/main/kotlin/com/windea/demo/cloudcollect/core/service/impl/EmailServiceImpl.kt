@@ -9,7 +9,7 @@ import org.springframework.stereotype.*
 
 @Service
 @NotTested("未进行实际测试……")
-open class EmailServiceImpl(
+class EmailServiceImpl(
 	private val mailSender: JavaMailSender,
 	private val mailProperties: MailProperties
 ) : EmailService {
@@ -74,18 +74,36 @@ open class EmailServiceImpl(
 	}
 	
 	
-	private fun JavaMailSender.sendEmail(encoding: String? = null, prepare: MimeMessageHelper.() -> Unit) = this.send {
-		val helper = MimeMessageHelper(it, encoding)
-		helper.prepare()
+	private fun JavaMailSender.sendEmail(encoding: String? = null, prepare: MimeMessageHelper.() -> Unit) {
+		try {
+			this.send {
+				val helper = MimeMessageHelper(it, encoding)
+				helper.prepare()
+			}
+		} catch(e: Exception) {
+			e.printStackTrace()
+		}
 	}
 	
-	private fun JavaMailSender.sendEmail(multipart: Boolean, encoding: String? = null, prepare: MimeMessageHelper.() -> Unit) = this.send {
-		val helper = MimeMessageHelper(it, multipart, encoding)
-		helper.prepare()
+	private fun JavaMailSender.sendEmail(multipart: Boolean, encoding: String? = null, prepare: MimeMessageHelper.() -> Unit) {
+		try {
+			this.send {
+				val helper = MimeMessageHelper(it, multipart, encoding)
+				helper.prepare()
+			}
+		} catch(e: Exception) {
+			e.printStackTrace()
+		}
 	}
 	
-	private fun JavaMailSender.sendEmail(multipartMode: Int, encoding: String? = null, prepare: MimeMessageHelper.() -> Unit) = this.send {
-		val helper = MimeMessageHelper(it, multipartMode, encoding)
-		helper.prepare()
+	private fun JavaMailSender.sendEmail(multipartMode: Int, encoding: String? = null, prepare: MimeMessageHelper.() -> Unit) {
+		try {
+			this.send {
+				val helper = MimeMessageHelper(it, multipartMode, encoding)
+				helper.prepare()
+			}
+		} catch(e: Exception) {
+			e.printStackTrace()
+		}
 	}
 }

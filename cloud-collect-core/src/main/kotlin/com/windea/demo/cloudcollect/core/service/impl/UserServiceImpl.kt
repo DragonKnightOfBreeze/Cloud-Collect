@@ -19,7 +19,7 @@ import javax.transaction.*
 
 @Service
 @CacheConfig(cacheNames = ["user"])
-open class UserServiceImpl(
+class UserServiceImpl(
 	private val userRepository: UserRepository,
 	private val collectRepository: CollectRepository,
 	private val commentRepository: CommentRepository,
@@ -27,8 +27,8 @@ open class UserServiceImpl(
 	private val passwordEncoder: PasswordEncoder,
 	private val authenticationManager: AuthenticationManager
 ) : UserService {
-	override fun loginByUsernameAndPassword(view: UsernamePasswordLoginForm): User {
-		val authentication = UsernamePasswordAuthenticationToken(view.username, view.password)
+	override fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): User {
+		val authentication = UsernamePasswordAuthenticationToken(form.username, form.password)
 		val validAuthentication = authenticationManager.authenticate(authentication)
 		SecurityContextHolder.getContext().authentication = validAuthentication
 		
@@ -37,14 +37,26 @@ open class UserServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun registerByEmail(view: EmailRegisterForm): User {
+	override fun registerByEmail(form: EmailRegisterForm): User {
 		val savedUser = User(
-			nickname = view.nickname,
-			username = view.username,
-			email = view.email,
-			password = passwordEncoder.encode(view.password)
+			nickname = form.nickname,
+			username = form.username,
+			email = form.email,
+			password = passwordEncoder.encode(form.password)
 		)
 		savedUser.activateCode = UUID.randomUUID().toString()
+		return userRepository.save(savedUser)
+	}
+	
+	@Transactional
+	@CacheEvict(allEntries = true)
+	override fun activate(username: String, activateCode: String): User? {
+		val savedUser = findByUsername(username)
+		//如果激活码不匹配，则直接返回
+		if(savedUser.activateCode != activateCode) return null
+		
+		savedUser.activateCode = null
+		savedUser.activateStatus = true
 		return userRepository.save(savedUser)
 	}
 	
@@ -59,25 +71,13 @@ open class UserServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun activate(username: String, activateCode: String): User? {
-		val savedUser = findByUsername(username)
-		//如果激活码不匹配，则直接返回
-		if(savedUser.activateCode != activateCode) return null
-		
-		savedUser.activateCode = null
-		savedUser.isActivated = true
-		return userRepository.save(savedUser)
-	}
-	
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun resetPassword(username: String, password: String, resetPasswordCode: String): User? {
-		val savedUser = findByUsername(username)
+	override fun resetPassword(form: ResetPasswordForm, resetPasswordCode: String): User? {
+		val savedUser = findByUsername(form.username)
 		//如果重置密码验证码不匹配，则直接返回
 		if(savedUser.resetPasswordCode != resetPasswordCode) return null
 		
 		savedUser.resetPasswordCode = null
-		savedUser.password = passwordEncoder.encode(password)
+		savedUser.password = passwordEncoder.encode(form.password)
 		return userRepository.save(savedUser)
 	}
 	
@@ -85,6 +85,7 @@ open class UserServiceImpl(
 	@CacheEvict(allEntries = true)
 	override fun modify(id: Long, user: User): User {
 		val savedUser = this.findById(id)
+		savedUser.password = passwordEncoder.encode(user.password)
 		savedUser.nickname = user.nickname
 		savedUser.introduce = user.introduce
 		savedUser.avatarUrl = user.avatarUrl
@@ -137,9 +138,7 @@ open class UserServiceImpl(
 		return userRepository.findAllByPraiseToCollectId(praiseToCollectId, pageable)
 	}
 	
-	override fun exists(user: User): Boolean {
-		val username = user.username
-		val email = user.email
+	override fun existsByUsernameOrEmail(username: String, email: String): Boolean {
 		return userRepository.existsByUsernameOrEmail(username, email)
 	}
 	

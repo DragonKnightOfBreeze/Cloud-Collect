@@ -1,23 +1,12 @@
-server:
-  tomcat:
-    # 配置Tomcat的访问日志
-    accesslog:
-      enabled: true
-    # 指定Tomcat的发布目录
-    basedir: target/tomcat
-  servlet:
-    # 指定服务器的内容根路径
-    context-path: /cloud-collect/api
-
 spring:
-  jpa:
-    # 表不存在时自动创建，之后更新
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
+  application:
+    name: cloud-collect
+  main:
+    allow-bean-definition-overriding: true
+  data:
+    redis:
+      repositories:
+        enabled: false
   datasource:
     username: Windea
     password: BreezesLanding
@@ -34,6 +23,10 @@ spring:
     tomcat:
       db-properties:
         close-method: close
+  jackson:
+    serialization:
+      # 防止json序列化时出错，非常重要！
+      fail-on-empty-beans: false
   redis:
     # Redis数据库索引（默认为0）
     database: 0
@@ -53,10 +46,6 @@ spring:
         max-idle: 8
         # 连接池中的最小空闲连接 默认 0
         min-idle: 0
-  jackson:
-    serialization:
-      # 防止json序列化时出错，非常重要！
-      fail-on-empty-beans: false
   mail:
     host: smtp.qq.com
     username: dk_breeze@qq.com
@@ -66,27 +55,35 @@ spring:
       mail.smtp.starttls.enable: true
       mail.smtp.starttls.required: true
 
-### 以下是自定义配置
+server:
+  tomcat:
+    # 配置Tomcat的访问日志
+    accesslog:
+      enabled: true
+    # 指定Tomcat的发布目录
+    basedir: target/tomcat
+  servlet:
+    # 指定服务器的内容根路径
+    context-path: /cloud-collect/api
 
 com:
   windea:
+    config:
+      require-activate: false
+      send-email: false
     security:
       jwt:
-        # jwt口令的请求头
         token-header: Authorization
-        # jwt口令的开头
         token-head: Bearer
-        # jwt密钥
         secret: com.windea
-        # jwt过期时间
         expiration: 86400
     validation:
-      # 6~16位的字母、数字和下划线，以字母开头。
       username: "\\w{6,16}"
-      # 6~16位的字母、数字和下划线。
       password: "[a-zA-Z]\\w{5,15}"
     data-import-export:
-      # 缓存文件路径
       path: D:/CloudCollect
-      # 数据文件文件名
-      file-name: dataSchema
+      data-file-name: dataSchem
+
+#logging:
+#  level:
+#    org.springframework: debug

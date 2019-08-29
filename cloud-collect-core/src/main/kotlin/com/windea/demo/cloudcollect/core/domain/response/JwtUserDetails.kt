@@ -34,7 +34,7 @@ data class JwtUserDetails(
 	}
 	
 	override fun isEnabled(): Boolean {
-		return delegateUser.isActivated
+		return delegateUser.activateStatus
 	}
 }
 

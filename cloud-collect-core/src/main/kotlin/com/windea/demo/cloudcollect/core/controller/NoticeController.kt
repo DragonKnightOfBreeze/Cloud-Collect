@@ -79,11 +79,11 @@ class NoticeController(
 	@ApiOperation("查询某一用户的所有已读/未读通知。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
-		ApiImplicitParam(name = "isRead", value = "阅读状态", required = true),
+		ApiImplicitParam(name = "readStatus", value = "阅读状态", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
 	@GetMapping("/findAllByUserIdAndRead")
-	fun findAllByUserIdAndRead(@RequestParam userId: Long, @RequestParam isRead: Boolean, @RequestParam pageable: Pageable): Page<Notice> {
-		return noticeService.findAllByUserIdAndRead(userId, isRead, pageable)
+	fun findAllByUserIdAndRead(@RequestParam userId: Long, @RequestParam readStatus: Boolean, @RequestParam pageable: Pageable): Page<Notice> {
+		return noticeService.findAllByUserIdAndRead(userId, readStatus, pageable)
 	}
 }

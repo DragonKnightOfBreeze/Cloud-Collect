@@ -65,6 +65,7 @@
     <inspection_tool class="ParameterTypePreventsOverriding" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ProblematicVarargsMethodOverride" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="RedundantMethodOverride" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="RedundantModalityModifier" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="RemoveExplicitSuperQualifier" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="RemoveExplicitTypeArguments" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="RemoveForLoopIndices" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />

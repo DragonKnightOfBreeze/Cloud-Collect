@@ -8,10 +8,10 @@ import org.springframework.data.domain.*
 /**用户的服务。登录、重置密码等功能委托给`UserDetailsService`。*/
 interface UserService {
 	/**通过用户名&密码登录用户。*/
-	fun loginByUsernameAndPassword(view: UsernamePasswordLoginForm): User
+	fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): User
 	
 	/**通过邮箱注册用户。密码需要加密。*/
-	fun registerByEmail(view: EmailRegisterForm): User
+	fun registerByEmail(form: EmailRegisterForm): User
 	
 	/**激活用户。*/
 	fun activate(username: String, activateCode: String): User?
@@ -20,9 +20,9 @@ interface UserService {
 	fun forgotPassword(username: String): User
 	
 	/**重置用户密码。密码需要加密。*/
-	fun resetPassword(username: String, password: String, resetPasswordCode: String): User?
+	fun resetPassword(form: ResetPasswordForm, resetPasswordCode: String): User?
 	
-	/**更新用户信息。不允许同时修改密码。*/
+	/**更新用户信息。密码需要加密。*/
 	fun modify(id: Long, user: User): User
 	
 	/**根据id得到用户。*/
@@ -53,7 +53,7 @@ interface UserService {
 	fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User>
 	
 	/**检查某一用户是否已存在。*/
-	fun exists(user: User): Boolean
+	fun existsByUsernameOrEmail(username: String, email: String): Boolean
 	
 	
 	/**得到该用户的关注用户数量。*/

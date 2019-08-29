@@ -1,6 +1,5 @@
 package com.windea.demo.cloudcollect.core.component
 
-import com.windea.demo.cloudcollect.core.service.impl.*
 import mu.*
 import org.springframework.security.authentication.*
 import org.springframework.security.core.context.*
@@ -13,21 +12,22 @@ import javax.servlet.http.*
 /**Jwt过滤器。*/
 @Component
 class JwtFilter(
-	private val jwtProvider: JwtProvider,
-	private val userDetailsService: JwtUserDetailsService
+	private val jwtProvider: JwtProvider
 ) : OncePerRequestFilter() {
 	override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
-		val token = jwtProvider.getToken(request) ?: return
-		val username = jwtProvider.getUsername(token) ?: return
+		//NOTE 不要直接返回！！！
+		val token = jwtProvider.getToken(request)
 		
-		val userDetails = userDetailsService.loadUserByUsername(username)
-		if(jwtProvider.validateToken(token, userDetails)) {
-			val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
-			authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
-			SecurityContextHolder.getContext().authentication = authentication
-			logger.info("Set authentication from Jwt success. Authenticated user: $username")
-		} else {
-			logger.warn("Set authentication from Jwt failed.")
+		if(token != null) {
+			val userDetails = jwtProvider.validateToken(token)
+			if(userDetails != null) {
+				val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
+				authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
+				SecurityContextHolder.getContext().authentication = authentication
+				logger.info("Set authentication from Jwt success. Authenticated user: ${userDetails.username}")
+			} else {
+				logger.warn("Set authentication from Jwt failed.")
+			}
 		}
 		
 		chain.doFilter(request, response)

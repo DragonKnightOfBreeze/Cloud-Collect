@@ -30,7 +30,7 @@ interface CollectTagService {
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectTag>
 	
 	/**检查某一标签是否已存在。*/
-	fun exists(tag: CollectTag): Boolean
+	fun existsByNameAndUserId(name: String, userId: Long): Boolean
 	
 	
 	/**得到该标签的收藏数量。*/

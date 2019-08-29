@@ -10,7 +10,7 @@ import springfox.documentation.swagger2.annotations.*
 /**Swagger2的配置类。*/
 @Configuration
 @EnableSwagger2
-open class Swagger2Configuration {
+class Swagger2Configuration {
 	@Bean
 	open fun createRestApi(): Docket {
 		return Docket(DocumentationType.SWAGGER_2)

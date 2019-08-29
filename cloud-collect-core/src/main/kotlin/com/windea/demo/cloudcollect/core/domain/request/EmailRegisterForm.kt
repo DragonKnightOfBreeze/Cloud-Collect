@@ -5,6 +5,7 @@ import com.windea.demo.cloudcollect.core.validation.annotation.*
 import javax.validation.constraints.*
 
 /**邮箱注册视图。 */
+@UniqueEmailRegisterForm
 data class EmailRegisterForm(
 	@field:NotEmpty(message = "{validation.User.nickname.NotEmpty}")
 	@field:Size(min = 1, max = 64, message = "{validation.User.nickname.Size}")

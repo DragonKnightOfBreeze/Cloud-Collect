@@ -10,7 +10,7 @@ interface NoticeRepository : JpaRepository<Notice, Long> {
 	
 	fun countByUserId(userId: Long): Long
 	
-	fun findAllByUserIdAndRead(userId: Long, isRead: Boolean, pageable: Pageable): Page<Notice>
+	fun findAllByUserIdAndReadStatus(userId: Long, readStatus: Boolean, pageable: Pageable): Page<Notice>
 	
-	fun countByUserIdAndRead(userId: Long, isRead: Boolean): Long
+	fun countByUserIdAndReadStatus(userId: Long, readStatus: Boolean): Long
 }

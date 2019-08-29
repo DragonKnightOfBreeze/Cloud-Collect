@@ -12,7 +12,7 @@ import javax.transaction.*
 
 @Service
 @CacheConfig(cacheNames = ["comment"])
-open class CommentServiceImpl(
+class CommentServiceImpl(
 	private val commentRepository: CommentRepository,
 	private val collectRepository: CollectRepository
 ) : CommentService {

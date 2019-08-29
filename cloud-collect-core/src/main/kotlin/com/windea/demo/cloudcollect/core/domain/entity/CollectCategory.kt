@@ -12,7 +12,7 @@ import javax.validation.constraints.*
 /**收藏的分类。一个收藏可以有多个分类。*/
 @Entity
 @UniqueCollectCategory
-open class CollectCategory(
+class CollectCategory(
 	/**编号。*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

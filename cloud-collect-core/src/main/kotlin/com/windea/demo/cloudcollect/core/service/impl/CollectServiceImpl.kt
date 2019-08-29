@@ -14,7 +14,7 @@ import javax.transaction.*
 
 @Service
 @CacheConfig(cacheNames = ["collect"])
-open class CollectServiceImpl(
+class CollectServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val commentRepository: CommentRepository,
 	private val userRepository: UserRepository
@@ -151,9 +151,7 @@ open class CollectServiceImpl(
 		return collectRepository.findAllByUserId(userId, pageable)
 	}
 	
-	override fun exists(collect: Collect): Boolean {
-		val name = collect.name
-		val userId = collect.user.id ?: return false
+	override fun existsByNameAndUserId(name: String, userId: Long): Boolean {
 		return collectRepository.existsByNameAndUserId(name, userId)
 	}
 	

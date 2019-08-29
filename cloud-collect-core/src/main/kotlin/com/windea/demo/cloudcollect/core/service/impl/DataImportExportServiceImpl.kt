@@ -19,7 +19,7 @@ import javax.transaction.*
 @Service
 @CacheConfig(cacheNames = ["collect"])
 @NotTested("未进行实际测试……")
-open class DataImportExportServiceImpl(
+class DataImportExportServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val categoryRepository: CollectCategoryRepository,
 	private val tagRepository: CollectTagRepository,
@@ -29,7 +29,7 @@ open class DataImportExportServiceImpl(
 	@CacheEvict(allEntries = true)
 	override fun importData(type: DataType, multipartFile: MultipartFile, user: User) {
 		//不检查文件格式是否正确，委托给前端
-		val fileName = "${dataImportExportProperties.fileName}.${type.extension}"
+		val fileName = "${dataImportExportProperties.dataFileName}.${type.extension}"
 		val filePath = Path.of(dataImportExportProperties.path, fileName)
 		val file = filePath.toFile()
 		multipartFile.transferTo(file)
@@ -50,7 +50,7 @@ open class DataImportExportServiceImpl(
 	
 	override fun exportData(type: DataType): File {
 		//不在本地缓存文件
-		val fileName = "${dataImportExportProperties.fileName}.${type.extension}"
+		val fileName = "${dataImportExportProperties.dataFileName}.${type.extension}"
 		val filePath = Path.of(dataImportExportProperties.path, fileName)
 		val file = filePath.toFile()
 		

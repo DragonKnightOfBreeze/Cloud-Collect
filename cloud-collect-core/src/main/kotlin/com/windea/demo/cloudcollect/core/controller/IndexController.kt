@@ -4,6 +4,7 @@ package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.request.*
+import com.windea.demo.cloudcollect.core.properties.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.security.access.prepost.*
@@ -19,33 +20,34 @@ import javax.validation.*
 class IndexController(
 	private val collectService: CollectService,
 	private val userService: UserService,
-	private val emailService: EmailService
+	private val emailService: EmailService,
+	private val configProperties: ConfigProperties
 ) {
 	@ApiOperation("通过用户名&密码登录用户。")
 	@ApiImplicitParams(
-		ApiImplicitParam(name = "view", value = "用户名&密码登录视图", required = true)
+		ApiImplicitParam(name = "form", value = "用户名&密码登录视图", required = true)
 	)
 	@PostMapping("/login", "/loginByUsernameAndPassword")
 	@PreAuthorize("isAnonymous()")
-	fun loginByUsernameAndPassword(@RequestBody @Valid view: UsernamePasswordLoginForm, bindingResult: BindingResult): User {
-		return userService.loginByUsernameAndPassword(view).also {
+	fun loginByUsernameAndPassword(@RequestBody @Valid form: UsernamePasswordLoginForm, bindingResult: BindingResult): User {
+		return userService.loginByUsernameAndPassword(form).also {
 			//成功注册后，发送激活邮件
-			emailService.sendActivateEmail(it)
+			if(configProperties.sendEmail) emailService.sendActivateEmail(it)
 		}
 	}
 	
 	@ApiOperation("通过邮箱注册用户。")
 	@ApiImplicitParams(
-		ApiImplicitParam(name = "view", value = "邮箱注册视图", required = true)
+		ApiImplicitParam(name = "form", value = "邮箱注册视图", required = true)
 	)
 	@PostMapping("/register", "/registerByEmail")
 	@PreAuthorize("isAnonymous()")
-	fun registerByEmail(@RequestBody @Valid view: EmailRegisterForm, bindingResult: BindingResult): User {
-		return userService.registerByEmail(view).also {
-			////发送激活邮件
-			//emailService.sendActivateEmail(it)
-			//发送欢迎邮件
-			emailService.sendHelloEmail(it)
+	fun registerByEmail(@RequestBody @Valid form: EmailRegisterForm, bindingResult: BindingResult): User {
+		return userService.registerByEmail(form).also {
+			//发送激活邮件
+			if(configProperties.requireActivate && configProperties.sendEmail) emailService.sendActivateEmail(it)
+			
+			if(!configProperties.requireActivate) activate(it.username, it.activateCode!!)
 		}
 	}
 	
@@ -58,7 +60,7 @@ class IndexController(
 	fun forgotPassword(@RequestParam username: String): User {
 		return userService.forgotPassword(username).also {
 			//发送重置密码邮件
-			emailService.sendResetPasswordEmail(it)
+			if(configProperties.sendEmail) emailService.sendResetPasswordEmail(it)
 		}
 	}
 	
@@ -71,7 +73,7 @@ class IndexController(
 	fun activate(@RequestParam username: String, @RequestParam activateCode: String): User? {
 		return userService.activate(username, activateCode)?.also {
 			//发送欢迎邮件
-			emailService.sendHelloEmail(it)
+			if(configProperties.sendEmail) emailService.sendHelloEmail(it)
 		}
 	}
 	
@@ -82,12 +84,13 @@ class IndexController(
 		ApiImplicitParam(name = "resetPasswordCode", value = "重置密码的识别码", required = true)
 	)
 	@PutMapping("/resetPassword")
-	fun resetPassword(@RequestParam username: String, @RequestParam password: String, @RequestParam resetPasswordCode: String): User? {
-		return userService.resetPassword(username, password, resetPasswordCode)?.also {
+	fun resetPassword(@Valid @RequestBody form: ResetPasswordForm, bindingResult: BindingResult, @RequestParam resetPasswordCode: String): User? {
+		return userService.resetPassword(form, resetPasswordCode)?.also {
 			//发送重置密码成功邮件
-			emailService.sendResetPasswordSuccessEmail(it)
+			if(configProperties.sendEmail) emailService.sendResetPasswordSuccessEmail(it)
 		}
 	}
+	
 	
 	@ApiOperation("随便看看任一收藏。")
 	@GetMapping("/lookAroundCollect")

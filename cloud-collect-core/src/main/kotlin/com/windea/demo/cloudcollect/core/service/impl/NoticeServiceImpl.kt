@@ -12,7 +12,7 @@ import javax.transaction.*
 
 @Service
 @CacheConfig(cacheNames = ["notice"])
-open class NoticeServiceImpl(
+class NoticeServiceImpl(
 	private val noticeRepository: NoticeRepository,
 	private val userRepository: UserRepository
 ) : NoticeService {
@@ -46,7 +46,7 @@ open class NoticeServiceImpl(
 	@CacheEvict(allEntries = true)
 	override fun read(id: Long): Notice {
 		val savedNotice = findById(id)
-		savedNotice.isRead = true
+		savedNotice.readStatus = true
 		return noticeRepository.save(savedNotice)
 	}
 	
@@ -66,7 +66,7 @@ open class NoticeServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByUserIdAndRead(userId: Long, isRead: Boolean, pageable: Pageable): Page<Notice> {
-		return noticeRepository.findAllByUserIdAndRead(userId, isRead, pageable)
+	override fun findAllByUserIdAndRead(userId: Long, readStatus: Boolean, pageable: Pageable): Page<Notice> {
+		return noticeRepository.findAllByUserIdAndReadStatus(userId, readStatus, pageable)
 	}
 }

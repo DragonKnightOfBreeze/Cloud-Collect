@@ -100,9 +100,9 @@
 * Spring Boot会对某些bean进行自动配置。例如，Converter、Formatter。
 * 对于数据库：text类型不能指定默认值。java boolean类型会转换为bit类型。
 * 当为作为主构造函数参数的实体类的属性注上validation注解时，需要添加`@field:`前缀。
-* 使用`@Value`或`@ConfigurationProperties`时，对应的属性必须是`lateinit var`或者可空类型。
+* 使用`@Value`或`@ConfigurationProperties`时，对应的属性必须是`lateinit var`或者可空类型/存在默认值。
 * 使用`@ConfigurationProperties`时，对应的属性必须是公开的。
-* 使用Jpa时，为了让懒加载如预期工作，实体类必须是`open class`。
+* 使用Jpa时，为了让懒加载如预期工作，实体类必须是`open class`，实体类属性必须是`open var`。
 * Jpa不建议与`data class`和只读属性一同工作。
 * 使用kotlin编译器插件`spring`时，spring bean可以不显示声明为`open class`。
 * 使用kotlin编译器插件`jpa`时，实体类可以不显示声明无参构造函数。
@@ -110,3 +110,8 @@
     * `@Valid`属于标准JSR-303规范，`@Validated`属于Spring's JSR-303规范。
     * `@Valid`放在实体类属性上，用于嵌套验证。
     * `@Validated`可以进行分组验证。
+* 在实体类中，不要将Boolean属性写成`isRead`的形式。IDE认为幕后字段名为`read`，但是jpa仍然只识别`isRead`。
+* 使用Maven指令`kotlin:kapt`为配置文件生成元数据（存在中文注释乱码问题）。
+* 使用MockMvc进行测试：需要在测试之前启动项目。可以使用相对于context-path的url。
+* 使用`spring-boot-starter-data-redis`时，可能需要添加依赖`commons-pool2`。
+* 自定义参数验证器时，验证器需要提供无参构造函数。

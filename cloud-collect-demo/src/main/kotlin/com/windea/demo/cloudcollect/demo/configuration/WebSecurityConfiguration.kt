@@ -1,8 +1,7 @@
-package com.windea.demo.cloudcollect.core.configuration
+package com.windea.demo.cloudcollect.demo.configuration
 
-import com.windea.demo.cloudcollect.core.component.*
-import com.windea.demo.cloudcollect.core.domain.enums.Role
-import com.windea.demo.cloudcollect.core.service.impl.*
+import com.windea.demo.cloudcollect.demo.component.*
+import com.windea.demo.cloudcollect.demo.service.*
 import org.springframework.context.annotation.*
 import org.springframework.security.authentication.*
 import org.springframework.security.config.annotation.authentication.builders.*
@@ -11,19 +10,16 @@ import org.springframework.security.config.annotation.web.builders.*
 import org.springframework.security.config.annotation.web.configuration.*
 import org.springframework.security.config.http.*
 import org.springframework.security.crypto.password.*
-import org.springframework.security.web.access.expression.*
-import org.springframework.security.web.authentication.*
 
 /**Spring Security的配置类。*/
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-open class SecurityConfiguration(
-	private val jwtFilter: JwtFilter,
+class WebSecurityConfiguration(
+	//private val jwtFilter: JwtFilter,
 	private val jwtEntryPoint: JwtEntryPoint,
 	private val userDetailsService: JwtUserDetailsService,
-	private val passwordEncoder: PasswordEncoder,
-	private val permissionEvaluator: PropertyBasedPermissionEvaluator
+	private val passwordEncoder: PasswordEncoder
 ) : WebSecurityConfigurerAdapter() {
 	override fun configure(auth: AuthenticationManagerBuilder) {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder)
@@ -42,14 +38,14 @@ open class SecurityConfiguration(
 				"/createAndSendToAll/**",
 				"/user/**"
 			).authenticated()
-			.antMatchers("/admin/**").hasRole(Role.ADMIN.toString())
+			.antMatchers("/admin/**").hasRole("ADMIN")
 			.anyRequest().permitAll()
 			.and()
 			//不启用会话
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			//添加过滤器和错误处理器
-			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+			//.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
 			.exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
 			.and()
 			//禁用缓存
@@ -60,13 +56,5 @@ open class SecurityConfiguration(
 	@Bean
 	override fun authenticationManagerBean(): AuthenticationManager {
 		return super.authenticationManagerBean()
-	}
-	
-	//使用自定义的访问权限鉴别器，以便使用注解进行访问权限控制。
-	@Bean
-	open fun webSecurityExpressionHandler(): DefaultWebSecurityExpressionHandler {
-		return DefaultWebSecurityExpressionHandler().apply {
-			setPermissionEvaluator(permissionEvaluator)
-		}
 	}
 }
