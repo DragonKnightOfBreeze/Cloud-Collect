@@ -19,8 +19,7 @@ import javax.validation.*
 @RequestMapping("/collectCategory")
 @CrossOrigin
 class CollectCategoryController(
-	private val service: CollectCategoryService,
-	private val collectService: CollectService
+	private val categoryService: CollectCategoryService
 ) {
 	@ApiOperation("创建自己的分类。")
 	@ApiImplicitParams(
@@ -30,7 +29,7 @@ class CollectCategoryController(
 	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Valid category: CollectCategory, bindingResult: BindingResult, authentication: Authentication): CollectCategory {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
-		return service.create(category, user)
+		return categoryService.create(category, user)
 	}
 	
 	@ApiOperation("删除自己的分类。")
@@ -40,7 +39,7 @@ class CollectCategoryController(
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasPermission(#id, 'CollectCategory', 'delete')")
 	fun delete(@PathVariable id: Long) {
-		service.delete(id)
+		categoryService.delete(id)
 	}
 	
 	@ApiOperation("修改自己的分类。")
@@ -51,7 +50,7 @@ class CollectCategoryController(
 	@PutMapping("/{id}")
 	@PreAuthorize("hasPermission(#id, 'CollectCategory', 'write')")
 	fun modify(@PathVariable id: Long, @RequestBody @Valid category: CollectCategory, bindingResult: BindingResult): CollectCategory {
-		return service.modify(id, category)
+		return categoryService.modify(id, category)
 	}
 	
 	@ApiOperation("根据id得到某一分类。")
@@ -60,48 +59,29 @@ class CollectCategoryController(
 	)
 	@GetMapping("/{id}")
 	fun findById(@PathVariable id: Long): CollectCategory {
-		return service.findById(id)
+		return categoryService.findById(id)
 	}
 	
-	@ApiOperation("根据分类id分页查询所有未删除收藏。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
-		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
-	)
-	@GetMapping("/{id]/collectPage")
-	fun getCollectPage(@PathVariable id: Long, @PathVariable pageable: Pageable): Page<Collect> {
-		return collectService.findAllByCategoryId(id, pageable)
-	}
-	
-	@ApiOperation("根据分类id得到收藏数量。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
-	)
-	@GetMapping("/{id}/collectCount")
-	fun getCollectCount(@PathVariable id: Long): Long {
-		return collectService.countByCategoryId(id)
-	}
-	
-	@ApiOperation("分页得到所有分类。")
+	@ApiOperation("得到所有分类。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
 	@GetMapping("/findAll")
 	fun findAll(@RequestParam pageable: Pageable): Page<CollectCategory> {
-		return service.findAll(pageable)
+		return categoryService.findAll(pageable)
 	}
 	
-	@ApiOperation("根据用户id分页查询所有分类。")
+	@ApiOperation("根据用户id查询所有分类。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
 	@GetMapping("/findAllByUserId")
 	fun findAllByUserId(@RequestParam userId: Long, @RequestParam pageable: Pageable): Page<CollectCategory> {
-		return service.findAllByUserId(userId, pageable)
+		return categoryService.findAllByUserId(userId, pageable)
 	}
 	
-	@ApiOperation("根据名字和用户id分页模糊查询所有分类。")
+	@ApiOperation("根据名字和用户id模糊查询所有分类。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "name", value = "名字", required = true),
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
@@ -109,6 +89,26 @@ class CollectCategoryController(
 	)
 	@GetMapping("/findAllByNameContainsAndUserId")
 	fun findAllByNameContainsAndUserId(@RequestParam userId: Long, @RequestParam name: String, @RequestParam pageable: Pageable): Page<CollectCategory> {
-		return service.findAllByNameContainsAndUserId(userId, name, pageable)
+		return categoryService.findAllByNameContainsAndUserId(userId, name, pageable)
+	}
+	
+	
+	@ApiOperation("得到该分类的收藏数量。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
+	)
+	@GetMapping("/{id}/collectCount")
+	fun getCollectCount(@PathVariable id: Long): Long {
+		return categoryService.getCollectCount(id)
+	}
+	
+	@ApiOperation("得到该分类的所有收藏。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
+		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
+	)
+	@GetMapping("/{id}/collectPage")
+	fun getCollectPage(@PathVariable id: Long, @PathVariable pageable: Pageable): Page<Collect> {
+		return categoryService.getCollectPage(id, pageable)
 	}
 }

@@ -7,7 +7,6 @@ import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.exception.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
-import com.windea.utility.common.extensions.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
 import org.springframework.data.repository.*
@@ -22,11 +21,13 @@ import javax.transaction.*
 @CacheConfig(cacheNames = ["user"])
 open class UserServiceImpl(
 	private val userRepository: UserRepository,
-	private val emailService: EmailService,
+	private val collectRepository: CollectRepository,
+	private val commentRepository: CommentRepository,
+	private val noticeRepository: NoticeRepository,
 	private val passwordEncoder: PasswordEncoder,
 	private val authenticationManager: AuthenticationManager
 ) : UserService {
-	override fun loginByUsernameAndPassword(view: UsernamePasswordLoginView): User {
+	override fun loginByUsernameAndPassword(view: UsernamePasswordLoginForm): User {
 		val authentication = UsernamePasswordAuthenticationToken(view.username, view.password)
 		val validAuthentication = authenticationManager.authenticate(authentication)
 		SecurityContextHolder.getContext().authentication = validAuthentication
@@ -36,7 +37,7 @@ open class UserServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun registerByEmail(view: EmailRegisterView): User {
+	override fun registerByEmail(view: EmailRegisterForm): User {
 		val savedUser = User(
 			nickname = view.nickname,
 			username = view.username,
@@ -44,11 +45,7 @@ open class UserServiceImpl(
 			password = passwordEncoder.encode(view.password)
 		)
 		savedUser.activateCode = UUID.randomUUID().toString()
-		val result = userRepository.save(savedUser)
-		
-		//成功注册后，发送激活邮件
-		emailService.sendActivateEmail(savedUser)
-		return result
+		return userRepository.save(savedUser)
 	}
 	
 	@Transactional
@@ -57,43 +54,31 @@ open class UserServiceImpl(
 		val savedUser = findByUsername(username)
 		//设置随机重置密码验证码
 		savedUser.resetPasswordCode = UUID.randomUUID().toString()
-		val result = userRepository.save(savedUser)
-		
-		//发送重置密码邮件
-		emailService.sendResetPasswordEmail(savedUser)
-		return result
+		return userRepository.save(savedUser)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun activate(username: String, activateCode: String): Boolean {
+	override fun activate(username: String, activateCode: String): User? {
 		val savedUser = findByUsername(username)
 		//如果激活码不匹配，则直接返回
-		if(savedUser.activateCode != activateCode) return false
+		if(savedUser.activateCode != activateCode) return null
 		
 		savedUser.activateCode = null
 		savedUser.isActivated = true
-		userRepository.save(savedUser)
-		
-		//发送欢迎邮件
-		emailService.sendHelloEmail(savedUser)
-		return true
+		return userRepository.save(savedUser)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun resetPassword(username: String, password: String, resetPasswordCode: String): Boolean {
+	override fun resetPassword(username: String, password: String, resetPasswordCode: String): User? {
 		val savedUser = findByUsername(username)
 		//如果重置密码验证码不匹配，则直接返回
-		if(savedUser.resetPasswordCode != resetPasswordCode) return false
+		if(savedUser.resetPasswordCode != resetPasswordCode) return null
 		
 		savedUser.resetPasswordCode = null
 		savedUser.password = passwordEncoder.encode(password)
-		userRepository.save(savedUser)
-		
-		//发送重置密码成功邮件
-		emailService.sendResetPasswordSuccessEmail(savedUser)
-		return true
+		return userRepository.save(savedUser)
 	}
 	
 	@Transactional
@@ -122,11 +107,6 @@ open class UserServiceImpl(
 		return userRepository.findByEmail(email) ?: throw  NotFoundException()
 	}
 	
-	override fun findByRandom(): User {
-		val randomId = RandomExtension.range(1, userRepository.count())
-		return findById(randomId)
-	}
-	
 	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<User> {
 		return userRepository.findAll(pageable)
@@ -148,18 +128,8 @@ open class UserServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun countByFollowToUserId(followToUserId: Long): Long {
-		return userRepository.countByFollowToUserId(followToUserId)
-	}
-	
-	@Cacheable(key = "methodName + args")
 	override fun findAllByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User> {
 		return userRepository.findAllByFollowByUserId(followByUserId, pageable)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun countByFollowByUserId(followByUserId: Long): Long {
-		return userRepository.countByFollowByUserId(followByUserId)
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -167,14 +137,60 @@ open class UserServiceImpl(
 		return userRepository.findAllByPraiseToCollectId(praiseToCollectId, pageable)
 	}
 	
-	@Cacheable(key = "methodName + args")
-	override fun countByPraiseToCollectId(praiseToCollectId: Long): Long {
-		return userRepository.countByPraiseToCollectId(praiseToCollectId)
-	}
-	
 	override fun exists(user: User): Boolean {
 		val username = user.username
 		val email = user.email
 		return userRepository.existsByUsernameOrEmail(username, email)
+	}
+	
+	
+	@Cacheable(key = "methodName + args")
+	override fun getFollowToUserCount(id: Long): Long {
+		return userRepository.countByFollowByUserId(id)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getFollowByUserCount(id: Long): Long {
+		return userRepository.countByFollowToUserId(id)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getCollectCount(id: Long): Long {
+		return collectRepository.countByUserId(id)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getCommentCount(id: Long): Long {
+		return commentRepository.countBySponsorByUserId(id)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getNoticeCount(id: Long): Long {
+		return noticeRepository.countByUserId(id)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getFollowToUserPage(id: Long, pageable: Pageable): Page<User> {
+		return userRepository.findAllByFollowByUserId(id, pageable)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getFollowByUserPage(id: Long, pageable: Pageable): Page<User> {
+		return userRepository.findAllByFollowToUserId(id, pageable)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getCollectPage(id: Long, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByUserId(id, pageable)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getCommentPage(id: Long, pageable: Pageable): Page<Comment> {
+		return commentRepository.findAllBySponsorByUserId(id, pageable)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getNoticePage(id: Long, pageable: Pageable): Page<Notice> {
+		return noticeRepository.findAllByUserId(id, pageable)
 	}
 }

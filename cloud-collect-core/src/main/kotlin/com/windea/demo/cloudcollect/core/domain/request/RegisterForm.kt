@@ -2,5 +2,5 @@ package com.windea.demo.cloudcollect.core.domain.request
 
 import java.io.*
 
-/**登录视图。 */
-interface LoginView : Serializable
+/**用户注册视图。 */
+interface RegisterForm : Serializable

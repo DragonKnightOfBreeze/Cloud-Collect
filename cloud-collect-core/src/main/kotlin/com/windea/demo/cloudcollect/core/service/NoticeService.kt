@@ -20,18 +20,12 @@ interface NoticeService {
 	/**根据id得到某一通知。*/
 	fun findById(id: Long): Notice
 	
-	/**分页得到所有通知。*/
+	/**得到所有通知。*/
 	fun findAll(pageable: Pageable): Page<Notice>
 	
-	/**根据用户id分页查询所有通知。*/
+	/**根据用户id查询所有通知。*/
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Notice>
 	
-	/**根据用户id得到通知数量。*/
-	fun countByUserId(userId: Long): Long
-	
-	/**根据用户id和阅读状态分页查询所有通知。*/
+	/**根据用户id和阅读状态查询所有通知。*/
 	fun findAllByUserIdAndRead(userId: Long, isRead: Boolean, pageable: Pageable): Page<Notice>
-	
-	/**根据用户id和阅读状态得到通知数量。*/
-	fun countByUserIdAndRead(userId: Long, isRead: Boolean): Long
 }

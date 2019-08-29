@@ -5,7 +5,7 @@ import com.windea.demo.cloudcollect.core.validation.annotation.*
 import javax.validation.constraints.*
 
 /**邮箱注册视图。 */
-data class EmailRegisterView(
+data class EmailRegisterForm(
 	@field:NotEmpty(message = "{validation.User.nickname.NotEmpty}")
 	@field:Size(min = 1, max = 64, message = "{validation.User.nickname.Size}")
 	val nickname: String,
@@ -21,4 +21,4 @@ data class EmailRegisterView(
 	@field:NotEmpty(message = "{validation.User.password.NotEmpty}")
 	@field:Password(message = "{validation.User.password.ValidPassword}")
 	val password: String
-) : RegisterView
+) : RegisterForm

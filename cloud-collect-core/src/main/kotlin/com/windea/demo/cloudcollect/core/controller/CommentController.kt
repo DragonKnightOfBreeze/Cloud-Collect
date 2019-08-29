@@ -19,7 +19,7 @@ import javax.validation.*
 @RequestMapping("/comment")
 @CrossOrigin
 class CommentController(
-	private val service: CommentService
+	private val commentService: CommentService
 ) {
 	@ApiOperation("创建自己的评论。")
 	@ApiImplicitParams(
@@ -31,7 +31,7 @@ class CommentController(
 	fun create(@RequestParam collectId: Long,
 		@RequestBody @Valid comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
-		return service.create(collectId, comment, user)
+		return commentService.create(collectId, comment, user)
 	}
 	
 	@ApiOperation("创建自己的评论，回复某一评论。")
@@ -45,7 +45,7 @@ class CommentController(
 	fun reply(@RequestParam collectId: Long, @RequestParam replyToCommentId: Long,
 		@RequestBody @Valid comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
-		return service.reply(collectId, replyToCommentId, comment, user)
+		return commentService.reply(collectId, replyToCommentId, comment, user)
 	}
 	
 	@ApiOperation("删除自己的评论。")
@@ -55,7 +55,7 @@ class CommentController(
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasPermission(#id, 'Comment', 'delete')")
 	fun delete(@PathVariable id: Long) {
-		service.delete(id)
+		commentService.delete(id)
 	}
 	
 	@ApiOperation("根据id得到某一评论。")
@@ -64,17 +64,37 @@ class CommentController(
 	)
 	@GetMapping("/{id}")
 	fun findById(@PathVariable id: Long): Comment {
-		return service.findById(id)
+		return commentService.findById(id)
 	}
 	
-	@ApiOperation("分页得到回复某一评论的所有评论。")
+	@ApiOperation("得到所有评论。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
+	)
+	@GetMapping("/findAll")
+	fun findAll(@RequestParam pageable: Pageable): Page<Comment> {
+		return commentService.findAll(pageable)
+	}
+	
+	@ApiOperation("根据收藏id查询所有评论。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "collectId", value = "收藏的id", required = true),
+		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
+	)
+	@GetMapping("/findAllByCollectId")
+	fun findAllByCollectId(@RequestParam collectId: Long, @RequestParam pageable: Pageable): Page<Comment> {
+		return commentService.findAllByCollectId(collectId, pageable)
+	}
+	
+	
+	@ApiOperation("得到回复某一评论的所有评论。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
 	@GetMapping("/{id}/replyByCommentPage")
 	fun getReplyByCommentPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Comment> {
-		return service.findAllByReplyToCommentId(id, pageable)
+		return commentService.getReplyByCommentPage(id, pageable)
 	}
 	
 	@ApiOperation("得到回复某一评论的评论数量。")
@@ -83,25 +103,6 @@ class CommentController(
 	)
 	@GetMapping("/{id}/replyByCommentCount")
 	fun getReplyByCommentCount(@PathVariable id: Long): Long {
-		return service.countByReplyToCommentId(id)
-	}
-	
-	@ApiOperation("分页得到所有评论。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
-	)
-	@GetMapping("/findAll")
-	fun findAll(@RequestParam pageable: Pageable): Page<Comment> {
-		return service.findAll(pageable)
-	}
-	
-	@ApiOperation("根据收藏id分页查询所有评论。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "collectId", value = "收藏的id", required = true),
-		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
-	)
-	@GetMapping("/findAllByCollectId")
-	fun findAllByCollectId(@RequestParam collectId: Long, @RequestParam pageable: Pageable): Page<Comment> {
-		return service.findAllByCollectId(collectId, pageable)
+		return commentService.getReplyByCommentCount(id)
 	}
 }

@@ -15,7 +15,9 @@ import javax.transaction.*
 @Service
 @CacheConfig(cacheNames = ["collect"])
 open class CollectServiceImpl(
-	private val collectRepository: CollectRepository
+	private val collectRepository: CollectRepository,
+	private val commentRepository: CommentRepository,
+	private val userRepository: UserRepository
 ) : CollectService {
 	@Transactional
 	@CacheEvict(allEntries = true)
@@ -134,18 +136,8 @@ open class CollectServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun countByCategoryId(categoryId: Long): Long {
-		return collectRepository.countByCategoryId(categoryId)
-	}
-	
-	@Cacheable(key = "methodName + args")
 	override fun findAllByTagId(tagId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByTagId(tagId, pageable)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun countByTagId(tagId: Long): Long {
-		return collectRepository.countByTagId(tagId)
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -155,33 +147,34 @@ open class CollectServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun countByTypeAndUserId(type: CollectType, userId: Long): Long {
-		return collectRepository.countByTypeAndUserId(type, userId)
-	}
-	
-	@Cacheable(key = "methodName + args")
 	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByUserId(userId, pageable)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun countByUserId(userId: Long): Long {
-		return collectRepository.countByUserId(userId)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun findAllByPraiseByUserId(praiseByUserId: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByPraiseByUserId(praiseByUserId, pageable)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun countByPraiseByUserId(praiseByUserId: Long): Long {
-		return collectRepository.countByPraiseByUserId(praiseByUserId)
 	}
 	
 	override fun exists(collect: Collect): Boolean {
 		val name = collect.name
 		val userId = collect.user.id ?: return false
 		return collectRepository.existsByNameAndUserId(name, userId)
+	}
+	
+	
+	@Cacheable(key = "methodName + args")
+	override fun getPraiseByUserCount(id: Long): Long {
+		return userRepository.countByPraiseToCollectId(id)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getCommentCount(id: Long): Long {
+		return commentRepository.countByCollectId(id)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getPraiseByUserPage(id: Long, pageable: Pageable): Page<User> {
+		return userRepository.findAllByPraiseToCollectId(id, pageable)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getCommentPage(id: Long, pageable: Pageable): Page<Comment> {
+		return commentRepository.findAllByCollectId(id, pageable)
 	}
 }

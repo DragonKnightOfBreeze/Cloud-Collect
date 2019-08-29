@@ -20,18 +20,22 @@ interface CollectTagService {
 	/**根据名字和用户id得到某一标签。*/
 	fun findByNameAndUserId(name: String, userId: Long): CollectTag
 	
-	/**分页得到所有标签。*/
+	/**得到所有标签。*/
 	fun findAll(pageable: Pageable): Page<CollectTag>
 	
-	/**根据名字和用户id分页模糊查询所有标签。*/
+	/**根据名字和用户id模糊查询所有标签。*/
 	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<CollectTag>
 	
-	/**根据用户id分页查询所有标签。*/
+	/**根据用户id查询所有标签。*/
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectTag>
-	
-	/**根据用户id得到标签数量。 */
-	fun countByUserId(userId: Long): Long
 	
 	/**检查某一标签是否已存在。*/
 	fun exists(tag: CollectTag): Boolean
+	
+	
+	/**得到该标签的收藏数量。*/
+	fun getCollectCount(id: Long): Long
+	
+	/**得到该标签的所有收藏。*/
+	fun getCollectPage(id: Long, pageable: Pageable): Page<Collect>
 }

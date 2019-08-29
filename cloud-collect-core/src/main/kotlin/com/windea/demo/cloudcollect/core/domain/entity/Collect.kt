@@ -6,6 +6,7 @@ import com.windea.demo.cloudcollect.core.validation.annotation.*
 import org.springframework.data.annotation.*
 import java.io.*
 import java.time.*
+import java.util.*
 import javax.persistence.*
 import javax.persistence.Id
 import javax.validation.constraints.*
@@ -66,24 +67,13 @@ open class Collect(
 	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
 ) : Serializable {
-	/**评论列表。*/
-	@JsonIgnore
-	@OneToMany(cascade = [CascadeType.ALL], mappedBy = "collect")
-	val commentList: MutableList<Comment> = mutableListOf()
-	
 	/**点赞该收藏的用户列表。懒加载。*/
 	@JsonIgnore
 	@ManyToMany(cascade = [CascadeType.MERGE], mappedBy = "praiseToCollectList")
 	val praiseByUserList: MutableList<User> = mutableListOf()
 	
-	/**评论数量。*/
-	val commentCount: Int get() = commentList.size
-	
-	/**点赞该收藏的用户数量。*/
-	val praiseByUserCount get() = praiseByUserList.count()
-	
 	
 	override fun equals(other: Any?) = other is Collect && other.id == id
 	
-	override fun hashCode() = id.hashCode()
+	override fun hashCode() = Objects.hash(super.hashCode(), id.hashCode())
 }

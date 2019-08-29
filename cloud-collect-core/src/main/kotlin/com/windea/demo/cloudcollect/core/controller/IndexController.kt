@@ -27,8 +27,11 @@ class IndexController(
 	)
 	@PostMapping("/login", "/loginByUsernameAndPassword")
 	@PreAuthorize("isAnonymous()")
-	fun loginByUsernameAndPassword(@RequestBody @Valid view: UsernamePasswordLoginView, bindingResult: BindingResult): User {
-		return userService.loginByUsernameAndPassword(view)
+	fun loginByUsernameAndPassword(@RequestBody @Valid view: UsernamePasswordLoginForm, bindingResult: BindingResult): User {
+		return userService.loginByUsernameAndPassword(view).also {
+			//成功注册后，发送激活邮件
+			emailService.sendActivateEmail(it)
+		}
 	}
 	
 	@ApiOperation("通过邮箱注册用户。")
@@ -37,8 +40,13 @@ class IndexController(
 	)
 	@PostMapping("/register", "/registerByEmail")
 	@PreAuthorize("isAnonymous()")
-	fun registerByEmail(@RequestBody @Valid view: EmailRegisterView, bindingResult: BindingResult): User {
-		return userService.registerByEmail(view)
+	fun registerByEmail(@RequestBody @Valid view: EmailRegisterForm, bindingResult: BindingResult): User {
+		return userService.registerByEmail(view).also {
+			////发送激活邮件
+			//emailService.sendActivateEmail(it)
+			//发送欢迎邮件
+			emailService.sendHelloEmail(it)
+		}
 	}
 	
 	@ApiOperation("忘记用户密码，发送重置密码邮件。")
@@ -48,7 +56,10 @@ class IndexController(
 	@PostMapping("/forgotPassword")
 	@PreAuthorize("isAnonymous()")
 	fun forgotPassword(@RequestParam username: String): User {
-		return userService.forgotPassword(username)
+		return userService.forgotPassword(username).also {
+			//发送重置密码邮件
+			emailService.sendResetPasswordEmail(it)
+		}
 	}
 	
 	@ApiOperation("激活用户。")
@@ -57,8 +68,11 @@ class IndexController(
 		ApiImplicitParam(name = "activateCode", value = "激活码", required = true)
 	)
 	@PutMapping("/activate")
-	fun activate(@RequestParam username: String, @RequestParam activateCode: String): Boolean {
-		return userService.activate(username, activateCode)
+	fun activate(@RequestParam username: String, @RequestParam activateCode: String): User? {
+		return userService.activate(username, activateCode)?.also {
+			//发送欢迎邮件
+			emailService.sendHelloEmail(it)
+		}
 	}
 	
 	@ApiOperation("重置用户密码。")
@@ -68,19 +82,16 @@ class IndexController(
 		ApiImplicitParam(name = "resetPasswordCode", value = "重置密码的识别码", required = true)
 	)
 	@PutMapping("/resetPassword")
-	fun resetPassword(@RequestParam username: String, @RequestParam password: String, @RequestParam resetPasswordCode: String): Boolean {
-		return userService.resetPassword(username, password, resetPasswordCode)
+	fun resetPassword(@RequestParam username: String, @RequestParam password: String, @RequestParam resetPasswordCode: String): User? {
+		return userService.resetPassword(username, password, resetPasswordCode)?.also {
+			//发送重置密码成功邮件
+			emailService.sendResetPasswordSuccessEmail(it)
+		}
 	}
 	
 	@ApiOperation("随便看看任一收藏。")
 	@GetMapping("/lookAroundCollect")
 	fun lookAroundCollect(): Collect {
 		return collectService.findByRandom()
-	}
-	
-	@ApiOperation("随便看看任一用户信息")
-	@GetMapping("/lookAroundUser")
-	fun lookAroundUser(): User {
-		return userService.findByRandom()
 	}
 }

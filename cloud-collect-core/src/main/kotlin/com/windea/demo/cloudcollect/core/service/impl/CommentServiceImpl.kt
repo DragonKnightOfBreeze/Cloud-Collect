@@ -55,27 +55,18 @@ open class CommentServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun countByCollectId(collectId: Long): Long {
-		return commentRepository.countByCollectId(collectId)
-	}
-	
-	@Cacheable(key = "methodName + args")
 	override fun findAllBySponsorByUserId(sponsorByUserId: Long, pageable: Pageable): Page<Comment> {
 		return commentRepository.findAllBySponsorByUserId(sponsorByUserId, pageable)
 	}
 	
+	
 	@Cacheable(key = "methodName + args")
-	override fun countBySponsorByUserId(sponsorByUserId: Long): Long {
-		return commentRepository.countBySponsorByUserId(sponsorByUserId)
+	override fun getReplyByCommentCount(id: Long): Long {
+		return commentRepository.countByReplyToCommentId(id)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByReplyToCommentId(replyToCommentId: Long, pageable: Pageable): Page<Comment> {
-		return commentRepository.findAllByReplyToCommentId(replyToCommentId, pageable)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun countByReplyToCommentId(replyToCommentId: Long): Long {
-		return commentRepository.countByReplyToCommentId(replyToCommentId)
+	override fun getReplyByCommentPage(id: Long, pageable: Pageable): Page<Comment> {
+		return commentRepository.findAllByReplyToCommentId(id, pageable)
 	}
 }

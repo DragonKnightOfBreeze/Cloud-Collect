@@ -39,45 +39,40 @@ interface CollectService {
 	/**得到随机收藏。*/
 	fun findByRandom(): Collect
 	
-	/**分页得到所有收藏。*/
+	/**得到所有收藏。*/
 	fun findAll(pageable: Pageable): Page<Collect>
 	
-	/**根据名字分页模糊查询所有收藏。*/
+	/**根据名字模糊查询所有收藏。*/
 	fun findAllByNameContains(name: String, pageable: Pageable): Page<Collect>
 	
-	/**根据名字和用户id分页模糊查询所有收藏。*/
+	/**根据名字和用户id模糊查询所有收藏。*/
 	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<Collect>
 	
-	/**根据分类id分页查询所有收藏。*/
+	/**根据分类id查询所有收藏。*/
 	fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect>
 	
-	/**根据分类id得到收藏数量。*/
-	fun countByCategoryId(categoryId: Long): Long
-	
-	/**根据标签id分页查询所有收藏。*/
+	/**根据标签id查询所有收藏。*/
 	fun findAllByTagId(tagId: Long, pageable: Pageable): Page<Collect>
 	
-	/**根据标签id得到收藏数量。*/
-	fun countByTagId(tagId: Long): Long
-	
-	/**根据类型和用户id分页查询所有收藏。*/
+	/**根据类型和用户id查询所有收藏。*/
 	fun findAllByTypeAndUserId(type: CollectType, userId: Long, pageable: Pageable): Page<Collect>
 	
-	/**根据类型和用户id得到收藏数量。*/
-	fun countByTypeAndUserId(type: CollectType, userId: Long): Long
-	
-	/**根据用户id分页查询所有收藏。*/
+	/**根据用户id查询所有收藏。*/
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Collect>
-	
-	/**根据用户id得到收藏数量。*/
-	fun countByUserId(userId: Long): Long
-	
-	/**根据点赞用户id分页查询所有收藏。*/
-	fun findAllByPraiseByUserId(praiseByUserId: Long, pageable: Pageable): Page<Collect>
-	
-	/**根据点赞用户id得到收藏数量。*/
-	fun countByPraiseByUserId(praiseByUserId: Long): Long
 	
 	/**检查某一收藏是否已存在。*/
 	fun exists(collect: Collect): Boolean
+	
+	
+	/**得到该收藏的点赞用户数量。*/
+	fun getPraiseByUserCount(id: Long): Long
+	
+	/**得到该收藏的评论数量。*/
+	fun getCommentCount(id: Long): Long
+	
+	/**得到该收藏的所有点赞用户。*/
+	fun getPraiseByUserPage(id: Long, pageable: Pageable): Page<User>
+	
+	/**得到该收藏的所有评论。*/
+	fun getCommentPage(id: Long, pageable: Pageable): Page<Comment>
 }

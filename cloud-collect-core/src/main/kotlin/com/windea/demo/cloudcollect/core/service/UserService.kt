@@ -8,19 +8,19 @@ import org.springframework.data.domain.*
 /**用户的服务。登录、重置密码等功能委托给`UserDetailsService`。*/
 interface UserService {
 	/**通过用户名&密码登录用户。*/
-	fun loginByUsernameAndPassword(view: UsernamePasswordLoginView): User
+	fun loginByUsernameAndPassword(view: UsernamePasswordLoginForm): User
 	
 	/**通过邮箱注册用户。密码需要加密。*/
-	fun registerByEmail(view: EmailRegisterView): User
+	fun registerByEmail(view: EmailRegisterForm): User
 	
 	/**激活用户。*/
-	fun activate(username: String, activateCode: String): Boolean
+	fun activate(username: String, activateCode: String): User?
 	
 	/**忘记用户密码，发送重置密码邮件。*/
 	fun forgotPassword(username: String): User
 	
 	/**重置用户密码。密码需要加密。*/
-	fun resetPassword(username: String, password: String, resetPasswordCode: String): Boolean
+	fun resetPassword(username: String, password: String, resetPasswordCode: String): User?
 	
 	/**更新用户信息。不允许同时修改密码。*/
 	fun modify(id: Long, user: User): User
@@ -34,36 +34,55 @@ interface UserService {
 	/**根据邮箱得到用户。*/
 	fun findByEmail(email: String): User
 	
-	/**得到随机用户。*/
-	fun findByRandom(): User
-	
-	/**分页得到所有用户。*/
+	/**得到所有用户。*/
 	fun findAll(pageable: Pageable): Page<User>
 	
-	/**根据昵称分页全局模糊查询用户。*/
+	/**根据昵称全局模糊查询用户。*/
 	fun findAllByNicknameContains(nickname: String, pageable: Pageable): Page<User>
 	
-	/**根据身份分页全局查询用户。*/
+	/**根据身份全局查询用户。*/
 	fun findAllByRole(role: Role, pageable: Pageable): Page<User>
 	
-	/**根据关注用户id分页查询用户。*/
+	/**根据关注用户id查询用户。*/
 	fun findAllByFollowToUserId(followToUserId: Long, pageable: Pageable): Page<User>
 	
-	/**根据关注用户id得到用户数量。*/
-	fun countByFollowToUserId(followToUserId: Long): Long
-	
-	/**根据粉丝用户id分页查询用户。*/
+	/**根据粉丝用户id查询用户。*/
 	fun findAllByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User>
 	
-	/**根据粉丝用户id得到用户数量。*/
-	fun countByFollowByUserId(followByUserId: Long): Long
-	
-	/**根据点赞收藏id分页查询用户。*/
+	/**根据点赞收藏id查询用户。*/
 	fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User>
-	
-	/**根据点赞收藏id得到用户数量。*/
-	fun countByPraiseToCollectId(praiseToCollectId: Long): Long
 	
 	/**检查某一用户是否已存在。*/
 	fun exists(user: User): Boolean
+	
+	
+	/**得到该用户的关注用户数量。*/
+	fun getFollowToUserCount(id: Long): Long
+	
+	/**得到该用户的粉丝用户数量。*/
+	fun getFollowByUserCount(id: Long): Long
+	
+	/**得到该用户的收藏数量。*/
+	fun getCollectCount(id: Long): Long
+	
+	/**得到该用户的评论数量。*/
+	fun getCommentCount(id: Long): Long
+	
+	/**得到该用户的通知数量。*/
+	fun getNoticeCount(id: Long): Long
+	
+	/**得到该用户的所有关注用户。*/
+	fun getFollowToUserPage(id: Long, pageable: Pageable): Page<User>
+	
+	/**得到该用户的所有粉丝用户。*/
+	fun getFollowByUserPage(id: Long, pageable: Pageable): Page<User>
+	
+	/**得到该用户的所有收藏。*/
+	fun getCollectPage(id: Long, pageable: Pageable): Page<Collect>
+	
+	/**得到该用户的所有评论。*/
+	fun getCommentPage(id: Long, pageable: Pageable): Page<Comment>
+	
+	/**得到该用户的所有通知。*/
+	fun getNoticePage(id: Long, pageable: Pageable): Page<Notice>
 }

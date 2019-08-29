@@ -17,10 +17,7 @@ import javax.validation.*
 @RequestMapping("/user")
 @CrossOrigin
 class UserController(
-	private val service: UserService,
-	private val collectService: CollectService,
-	private val categoryService: CollectCategoryService,
-	private val noticeService: NoticeService
+	private val userService: UserService
 ) {
 	//注册、登录等操作委托给首页控制器
 	
@@ -31,7 +28,7 @@ class UserController(
 	)
 	@PutMapping("/{id}")
 	fun update(@PathVariable id: Long, @RequestBody @Valid user: User, bindingResult: BindingResult): User {
-		return service.modify(id, user)
+		return userService.modify(id, user)
 	}
 	
 	@ApiOperation("根据id得到用户。")
@@ -40,93 +37,73 @@ class UserController(
 	)
 	@GetMapping("/{id}")
 	fun findById(@PathVariable id: Long): User {
-		return service.findById(id)
+		return userService.findById(id)
 	}
 	
-	@ApiOperation("分页得到某一用户的所有关注用户。")
+	@ApiOperation("得到所有用户。")
 	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
-	@GetMapping("/{id}/followToUserPage")
-	fun getFollowToUserPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<User> {
-		return service.findAllByFollowByUserId(id, pageable)
+	@GetMapping("/findAll")
+	fun findAll(@RequestParam pageable: Pageable): Page<User> {
+		return userService.findAll(pageable)
 	}
 	
-	@ApiOperation("得到某一用户的关注用户数量。")
+	@ApiOperation("根据昵称全局模糊查询用户。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "nickname", value = "昵称", required = true),
+		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
+	)
+	@GetMapping("/findAllByNicknameContains")
+	fun findAllByNicknameContains(@RequestParam nickname: String, @RequestParam pageable: Pageable): Page<User> {
+		return userService.findAllByNicknameContains(nickname, pageable)
+	}
+	
+	@ApiOperation("根据身份全局查询用户。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "role", value = "身份", required = true),
+		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
+	)
+	@GetMapping("/findAllByRole")
+	fun findAllByRole(@RequestParam role: Role, @RequestParam pageable: Pageable): Page<User> {
+		return userService.findAllByRole(role, pageable)
+	}
+	
+	
+	@ApiOperation("得到该用户的关注用户数量。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	)
 	@GetMapping("/{id}/followToUserCount")
 	fun getFollowToUserCount(@PathVariable id: Long): Long {
-		return service.countByFollowByUserId(id)
+		return userService.getFollowToUserCount(id)
 	}
 	
-	@ApiOperation("分页得到某一用户的所有粉丝用户。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
-		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
-	)
-	@GetMapping("/{id}/followByUserPage")
-	fun getFollowByUserPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<User> {
-		return service.findAllByFollowToUserId(id, pageable)
-	}
-	
-	@ApiOperation("得到某一用户的粉丝用户数量。")
+	@ApiOperation("得到该用户的粉丝用户数量。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	)
 	@GetMapping("/{id}/followByUserCount")
 	fun getFollowByUserCount(@PathVariable id: Long): Long {
-		return service.countByFollowToUserId(id)
+		return userService.getFollowByUserCount(id)
 	}
 	
-	@ApiOperation("分页得到某一用户的所有收藏。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
-		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
-	)
-	@GetMapping("/{id}/collectPage")
-	fun getCollectPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Collect> {
-		return collectService.findAllByUserId(id, pageable)
-	}
-	
-	@ApiOperation("得到某一用户的收藏数量。")
+	@ApiOperation("得到该用户的收藏数量。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	)
 	@GetMapping("/{id}/collectCount")
 	fun getCollectCount(@PathVariable id: Long): Long {
-		return collectService.countByUserId(id)
+		return userService.getCollectCount(id)
 	}
 	
-	@ApiOperation("得到某一用户的所有收藏分类。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
-		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
-	)
-	@GetMapping("/{id}/collectCategoryPage")
-	fun getCollectCategoryPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<CollectCategory> {
-		return categoryService.findAllByUserId(id, pageable)
-	}
-	
-	@ApiOperation("得到某一用户的所有收藏分类数量。")
+	@ApiOperation("得到该用户的评论数量。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
 	)
-	@GetMapping("/{id}/collectCategoryCount")
-	fun getCollectCategoryCount(@PathVariable id: Long): Long {
-		return categoryService.countByUserId(id)
-	}
-	
-	@ApiOperation("分页得到某一用户的所有通知。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
-		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
-	)
-	@GetMapping("/{id}/noticePage")
-	fun getNoticePage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Notice> {
-		return noticeService.findAllByUserId(id, pageable)
+	@GetMapping("/{id}/commentCount")
+	fun getCommentCount(@PathVariable id: Long): Long {
+		return userService.getCommentCount(id)
 	}
 	
 	@ApiOperation("得到某一用户的通知数量。")
@@ -135,36 +112,57 @@ class UserController(
 	)
 	@GetMapping("/{id}/noticeCount")
 	fun getNoticeCount(@PathVariable id: Long): Long {
-		return noticeService.countByUserId(id)
+		return userService.getNoticeCount(id)
 	}
 	
-	@ApiOperation("分页得到所有用户。")
+	@ApiOperation("得到该用户的所有关注用户。")
 	@ApiImplicitParams(
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
-	@GetMapping("/findAll")
-	fun findAll(@RequestParam pageable: Pageable): Page<User> {
-		return service.findAll(pageable)
+	@GetMapping("/{id}/followToUserPage")
+	fun getFollowToUserPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<User> {
+		return userService.getFollowToUserPage(id, pageable)
 	}
 	
-	@ApiOperation("根据昵称分页全局模糊查询用户。")
+	@ApiOperation("得到该用户的所有粉丝用户。")
 	@ApiImplicitParams(
-		ApiImplicitParam(name = "nickname", value = "昵称", required = true),
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
-	@GetMapping("/findAllByNicknameContains")
-	fun findAllByNicknameContains(@RequestParam nickname: String, @RequestParam pageable: Pageable): Page<User> {
-		return service.findAllByNicknameContains(nickname, pageable)
+	@GetMapping("/{id}/followByUserPage")
+	fun getFollowByUserPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<User> {
+		return userService.getFollowByUserPage(id, pageable)
 	}
 	
-	@ApiOperation("根据身份分页全局查询用户。")
+	@ApiOperation("得到该用户的所有收藏。")
 	@ApiImplicitParams(
-		ApiImplicitParam(name = "role", value = "身份", required = true),
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
-	@GetMapping("/findAllByRole")
-	fun findAllByRole(@RequestParam role: Role, @RequestParam pageable: Pageable): Page<User> {
-		return service.findAllByRole(role, pageable)
+	@GetMapping("/{id}/collectPage")
+	fun getCollectPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Collect> {
+		return userService.getCollectPage(id, pageable)
+	}
+	
+	@ApiOperation("得到该用户的所有评论。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
+		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
+	)
+	@GetMapping("/{id}/commentPage")
+	fun getCommentPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Comment> {
+		return userService.getCommentPage(id, pageable)
+	}
+	
+	@ApiOperation("得到该用户的所有通知。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
+		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
+	)
+	@GetMapping("/{id}/noticePage")
+	fun getNoticePage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Notice> {
+		return userService.getNoticePage(id, pageable)
 	}
 }
 

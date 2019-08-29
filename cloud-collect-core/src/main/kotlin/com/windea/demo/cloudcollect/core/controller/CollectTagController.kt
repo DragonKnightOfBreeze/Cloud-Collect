@@ -19,8 +19,7 @@ import javax.validation.*
 @RequestMapping("/collectTag")
 @CrossOrigin
 class CollectTagController(
-	private val service: CollectTagService,
-	private val collectService: CollectService
+	private val tagService: CollectTagService
 ) {
 	@ApiOperation("创建自己的标签。")
 	@ApiImplicitParams(
@@ -30,7 +29,7 @@ class CollectTagController(
 	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Valid tag: CollectTag, bindingResult: BindingResult, authentication: Authentication): CollectTag {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
-		return service.create(tag, user)
+		return tagService.create(tag, user)
 	}
 	
 	@ApiOperation("删除自己的标签。")
@@ -40,7 +39,7 @@ class CollectTagController(
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasPermission(#id, 'CollectTag', 'delete')")
 	fun delete(@PathVariable id: Long) {
-		service.delete(id)
+		tagService.delete(id)
 	}
 	
 	@ApiOperation("修改自己的标签。")
@@ -51,7 +50,7 @@ class CollectTagController(
 	@PutMapping("/{id}")
 	@PreAuthorize("hasPermission(#id, 'CollectTag', 'write')")
 	fun modify(@PathVariable id: Long, @RequestBody @Valid tag: CollectTag, bindingResult: BindingResult): CollectTag {
-		return service.modify(id, tag)
+		return tagService.modify(id, tag)
 	}
 	
 	@ApiOperation("根据id得到某一标签。")
@@ -60,48 +59,29 @@ class CollectTagController(
 	)
 	@GetMapping("/{id}")
 	fun findById(@PathVariable id: Long): CollectTag {
-		return service.findById(id)
+		return tagService.findById(id)
 	}
 	
-	@ApiOperation("分页得到某一标签的所有收藏。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
-		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
-	)
-	@GetMapping("/{id]/collectPage")
-	fun getCollectPage(@PathVariable id: Long, @PathVariable pageable: Pageable): Page<Collect> {
-		return collectService.findAllByTagId(id, pageable)
-	}
-	
-	@ApiOperation("得到某一标签的收藏数量。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
-	)
-	@GetMapping("/{id}/collectCount")
-	fun getCollectCount(@PathVariable id: Long): Long {
-		return collectService.countByTagId(id)
-	}
-	
-	@ApiOperation("分页得到所有标签。")
+	@ApiOperation("得到所有标签。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
 	@GetMapping("/findAll")
 	fun findAll(@RequestParam pageable: Pageable): Page<CollectTag> {
-		return service.findAll(pageable)
+		return tagService.findAll(pageable)
 	}
 	
-	@ApiOperation("根据用户id分页查询所有标签。")
+	@ApiOperation("根据用户id查询所有标签。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
 	@GetMapping("/findAllByUserId")
 	fun findAllByUserId(@RequestParam userId: Long, @RequestParam pageable: Pageable): Page<CollectTag> {
-		return service.findAllByUserId(userId, pageable)
+		return tagService.findAllByUserId(userId, pageable)
 	}
 	
-	@ApiOperation("根据名字和用户id分页模糊查询所有标签。")
+	@ApiOperation("根据名字和用户id模糊查询所有标签。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "name", value = "名字", required = true),
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
@@ -109,6 +89,26 @@ class CollectTagController(
 	)
 	@GetMapping("/findAllByNameContainsAndUserId")
 	fun findAllByNameContainsAndUserId(@RequestParam name: String, @RequestParam userId: Long, @RequestParam pageable: Pageable): Page<CollectTag> {
-		return service.findAllByNameContainsAndUserId(name, userId, pageable)
+		return tagService.findAllByNameContainsAndUserId(name, userId, pageable)
+	}
+	
+	
+	@ApiOperation("得到某一标签的收藏数量。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
+	)
+	@GetMapping("/{id}/collectCount")
+	fun getCollectCount(@PathVariable id: Long): Long {
+		return tagService.getCollectCount(id)
+	}
+	
+	@ApiOperation("得到某一标签的所有收藏。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
+		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
+	)
+	@GetMapping("/{id}/collectPage")
+	fun getCollectPage(@PathVariable id: Long, @PathVariable pageable: Pageable): Page<Collect> {
+		return tagService.getCollectPage(id, pageable)
 	}
 }

@@ -5,7 +5,6 @@ package com.windea.demo.cloudcollect.core.controller
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.enums.*
 import com.windea.demo.cloudcollect.core.domain.response.*
-import com.windea.demo.cloudcollect.core.properties.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.utility.common.enums.*
 import io.swagger.annotations.*
@@ -16,7 +15,6 @@ import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.*
-import java.nio.file.Path
 import javax.validation.*
 
 /**收藏的控制器。*/
@@ -26,11 +24,8 @@ import javax.validation.*
 @CrossOrigin
 class CollectController(
 	private val service: CollectService,
-	private val commentService: CommentService,
-	private val userService: UserService,
 	private val dataImportExportService: DataImportExportService,
-	private val urlCopyService: UrlCopyService,
-	private val dataImportExportProperties: DataImportExportProperties
+	private val urlCopyService: UrlCopyService
 ) {
 	@ApiOperation("创建自己的收藏。")
 	@ApiImplicitParams(
@@ -124,45 +119,7 @@ class CollectController(
 		return service.findById(id)
 	}
 	
-	@ApiOperation("分页得到某一收藏的所有点赞用户。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
-		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
-	)
-	@GetMapping("/{id}/praiseByUserPage")
-	fun getPraiseByUserPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<User> {
-		return userService.findAllByPraiseToCollectId(id, pageable)
-	}
-	
-	@ApiOperation("得到某一收藏的点赞用户数量。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
-	)
-	@GetMapping("/{id}/praiseByUserCount")
-	fun getPraiseByUserCount(@PathVariable id: Long): Long {
-		return userService.countByPraiseToCollectId(id)
-	}
-	
-	@ApiOperation("分页得到某一收藏的所有评论。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
-		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
-	)
-	@GetMapping("/{id}/commentPage")
-	fun getCommentPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Comment> {
-		return commentService.findAllBySponsorByUserId(id, pageable)
-	}
-	
-	@ApiOperation("得到某一收藏的评论数量。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
-	)
-	@GetMapping("/{id}/commentCount")
-	fun getCommentCount(@PathVariable id: Long): Long {
-		return commentService.countBySponsorByUserId(id)
-	}
-	
-	@ApiOperation("分页得到所有收藏。")
+	@ApiOperation("得到所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
@@ -171,7 +128,7 @@ class CollectController(
 		return service.findAll(pageable)
 	}
 	
-	@ApiOperation("根据名字分页全局查询所有收藏。")
+	@ApiOperation("根据名字全局查询所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "name", value = "名字", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
@@ -181,7 +138,7 @@ class CollectController(
 		return service.findAllByNameContains(name, pageable)
 	}
 	
-	@ApiOperation("根据名字和用户id分页模糊查询所有收藏。")
+	@ApiOperation("根据名字和用户id模糊查询所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "name", value = "名字", required = true),
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
@@ -192,7 +149,7 @@ class CollectController(
 		return service.findAllByNameContainsAndUserId(name, userId, pageable)
 	}
 	
-	@ApiOperation("根据分类id分页查询所有收藏。")
+	@ApiOperation("根据分类id查询所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "categoryId", value = "分类的id", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
@@ -202,7 +159,7 @@ class CollectController(
 		return service.findAllByCategoryId(categoryId, pageable)
 	}
 	
-	@ApiOperation("根据标签id分页查询所有收藏。")
+	@ApiOperation("根据标签id查询所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "tagId", value = "标签的id", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
@@ -212,7 +169,7 @@ class CollectController(
 		return service.findAllByTagId(tagId, pageable)
 	}
 	
-	@ApiOperation("根据类型和用户id分页查询所有收藏。")
+	@ApiOperation("根据类型和用户id查询所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "type", value = "收藏的类型", required = true),
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
@@ -223,7 +180,7 @@ class CollectController(
 		return service.findAllByTypeAndUserId(type, userId, pageable)
 	}
 	
-	@ApiOperation("根据用户id和收藏状态分页查询所有收藏。")
+	@ApiOperation("根据用户id和收藏状态查询所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
@@ -234,6 +191,45 @@ class CollectController(
 	}
 	
 	
+	@ApiOperation("得到某一收藏的点赞用户数量。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
+	)
+	@GetMapping("/{id}/praiseByUserCount")
+	fun getPraiseByUserCount(@PathVariable id: Long): Long {
+		return service.getPraiseByUserCount(id)
+	}
+	
+	@ApiOperation("得到该收藏的评论数量。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path")
+	)
+	@GetMapping("/{id}/commentCount")
+	fun getCommentCount(@PathVariable id: Long): Long {
+		return service.getCommentCount(id)
+	}
+	
+	@ApiOperation("得到该收藏的所有点赞用户。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
+		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
+	)
+	@GetMapping("/{id}/praiseByUserPage")
+	fun getPraiseByUserPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<User> {
+		return service.getPraiseByUserPage(id, pageable)
+	}
+	
+	@ApiOperation("得到该收藏的所有评论。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "id", value = "id", required = true, paramType = "path"),
+		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
+	)
+	@GetMapping("/{id}/commentPage")
+	fun getCommentPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Comment> {
+		return service.getCommentPage(id, pageable)
+	}
+	
+	
 	@ApiOperation("从指定格式的文件导入收藏。例如：Xml、Json、Yaml。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "type", value = "数据类型", required = true),
@@ -241,18 +237,9 @@ class CollectController(
 	)
 	@PostMapping("/import")
 	@PreAuthorize("isAuthenticated()")
-	fun importData(@RequestParam(defaultValue = "YAML") type: DataType, multipartFile: MultipartFile,
-		authentication: Authentication) {
-		//不检查文件格式是否正确，委托给前端
-		val fileName = "${dataImportExportProperties.fileName}.${type.extension}"
-		val filePath = Path.of(dataImportExportProperties.path, fileName)
-		val file = filePath.toFile()
-		multipartFile.transferTo(file)
-		val string = file.readText()
-		
-		//更新数据库
+	fun importData(@RequestParam(defaultValue = "YAML") type: DataType, multipartFile: MultipartFile, authentication: Authentication) {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
-		dataImportExportService.importData(type, string, user)
+		dataImportExportService.importData(type, multipartFile, user)
 	}
 	
 	@ApiOperation("导出收藏到指定格式的文件。例如：Xml、Json、Yaml。")
@@ -262,17 +249,11 @@ class CollectController(
 	@PostMapping("/export")
 	@PreAuthorize("isAuthenticated()")
 	fun exportData(@RequestParam(defaultValue = "YAML") type: DataType): ResponseEntity<ByteArray> {
-		//不在本地缓存文件
-		val fileName = "${dataImportExportProperties.fileName}.${type.extension}"
-		val filePath = Path.of(dataImportExportProperties.path, fileName)
-		val file = filePath.toFile()
-		val string = dataImportExportService.exportData(type)
-		file.writeText(string)
-		
+		val file = dataImportExportService.exportData(type)
 		//设置响应头，并设置响应体为byte[]类型（也可以是InputStream、Resource等，间接得到byte[]）
 		val headers = HttpHeaders()
-		headers.contentDisposition = ContentDisposition.builder("attachment").filename(fileName).build()
-		return ResponseEntity(string.toByteArray(), headers, HttpStatus.OK)
+		headers.contentDisposition = ContentDisposition.builder("attachment").filename(file.name).build()
+		return ResponseEntity(file.readBytes(), headers, HttpStatus.OK)
 	}
 	
 	

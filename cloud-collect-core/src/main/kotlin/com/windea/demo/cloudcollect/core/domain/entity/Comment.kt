@@ -3,6 +3,7 @@ package com.windea.demo.cloudcollect.core.domain.entity
 import org.springframework.data.annotation.*
 import java.io.*
 import java.time.*
+import java.util.*
 import javax.persistence.*
 import javax.persistence.Id
 import javax.validation.constraints.*
@@ -45,5 +46,5 @@ open class Comment(
 ) : Serializable {
 	override fun equals(other: Any?) = other is Comment && other.id == id
 	
-	override fun hashCode() = id.hashCode()
+	override fun hashCode() = Objects.hash(super.hashCode(), id.hashCode())
 }

@@ -65,16 +65,8 @@ open class NoticeServiceImpl(
 		return noticeRepository.findAllByUserId(userId, pageable)
 	}
 	
-	override fun countByUserId(userId: Long): Long {
-		return noticeRepository.countByUserId(userId)
-	}
-	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByUserIdAndRead(userId: Long, isRead: Boolean, pageable: Pageable): Page<Notice> {
 		return noticeRepository.findAllByUserIdAndRead(userId, isRead, pageable)
-	}
-	
-	override fun countByUserIdAndRead(userId: Long, isRead: Boolean): Long {
-		return noticeRepository.countByUserIdAndRead(userId, isRead)
 	}
 }

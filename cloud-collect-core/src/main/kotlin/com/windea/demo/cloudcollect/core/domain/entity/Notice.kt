@@ -4,6 +4,7 @@ import com.windea.demo.cloudcollect.core.domain.enums.*
 import org.springframework.data.annotation.*
 import java.io.*
 import java.time.*
+import java.util.*
 import javax.persistence.*
 import javax.persistence.Id
 
@@ -48,5 +49,5 @@ open class Notice(
 ) : Serializable {
 	override fun equals(other: Any?) = other is Notice && other.id == id
 	
-	override fun hashCode() = id.hashCode()
+	override fun hashCode() = Objects.hash(super.hashCode(), id.hashCode())
 }

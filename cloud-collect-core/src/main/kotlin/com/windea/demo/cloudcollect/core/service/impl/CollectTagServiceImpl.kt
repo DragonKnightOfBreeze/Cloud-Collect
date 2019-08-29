@@ -13,6 +13,7 @@ import javax.transaction.*
 @Service
 @CacheConfig(cacheNames = ["collectTag"])
 open class CollectTagServiceImpl(
+	private val collectRepository: CollectRepository,
 	private val tagRepository: CollectTagRepository
 ) : CollectTagService {
 	@Transactional
@@ -62,14 +63,20 @@ open class CollectTagServiceImpl(
 		return tagRepository.findAllByUserId(userId, pageable)
 	}
 	
-	@Cacheable(key = "methodName + args")
-	override fun countByUserId(userId: Long): Long {
-		return tagRepository.countByUserId(userId)
-	}
-	
 	override fun exists(tag: CollectTag): Boolean {
 		val name = tag.name
 		val userId = tag.user.id ?: return false
 		return tagRepository.existsByNameAndUserId(name, userId)
+	}
+	
+	
+	@Cacheable(key = "methodName + args")
+	override fun getCollectCount(id: Long): Long {
+		return collectRepository.countByTagId(id)
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun getCollectPage(id: Long, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByTagId(id, pageable)
 	}
 }
