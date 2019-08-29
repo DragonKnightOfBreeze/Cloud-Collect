@@ -6,13 +6,13 @@ import org.springframework.data.domain.*
 
 /**收藏的服务。*/
 interface CollectService {
-	/**创建自己的收藏。去除地址的查询参数。*/
+	/**创建自己的收藏。*/
 	fun create(collect: Collect, user: User): Collect
 	
-	/**从别人的收藏创建自己的收藏。默认点赞原始收藏，去除地址的查询参数。*/
+	/**从别人的收藏创建自己的收藏。默认点赞原始收藏。*/
 	fun createFrom(id: Long, user: User): Collect
 	
-	/**删除自己的收藏。不删除数据库中的数据，而是将isDeleted设为true。*/
+	/**删除自己的收藏。*/
 	fun delete(id: Long)
 	
 	/**修改自己的收藏。包括名字，概述，分类，标签，类型。*/
@@ -33,8 +33,8 @@ interface CollectService {
 	/**根据id得到某一收藏。*/
 	fun findById(id: Long): Collect
 	
-	/**根据名字、用户id和删除状态得到某一收藏。*/
-	fun findByNameAndUserIdAndDeleted(name: String, userId: Long, isDeleted: Boolean): Collect
+	/**根据名字、用户id得到某一收藏。*/
+	fun findByNameAndUserId(name: String, userId: Long): Collect
 	
 	/**得到随机收藏。*/
 	fun findByRandom(): Collect
@@ -42,41 +42,41 @@ interface CollectService {
 	/**分页得到所有收藏。*/
 	fun findAll(pageable: Pageable): Page<Collect>
 	
-	/**根据名字分页模糊查询所有未删除收藏。*/
-	fun findAllByNameContainsAndDeletedFalse(name: String, pageable: Pageable): Page<Collect>
+	/**根据名字分页模糊查询所有收藏。*/
+	fun findAllByNameContains(name: String, pageable: Pageable): Page<Collect>
 	
-	/**根据名字和用户id分页模糊查询所有未删除收藏。*/
-	fun findAllByNameContainsAndUserIdAndDeletedFalse(name: String, userId: Long, pageable: Pageable): Page<Collect>
+	/**根据名字和用户id分页模糊查询所有收藏。*/
+	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<Collect>
 	
-	/**根据分类id分页查询所有未删除收藏。*/
-	fun findAllByCategoryIdAndDeletedFalse(categoryId: Long, pageable: Pageable): Page<Collect>
+	/**根据分类id分页查询所有收藏。*/
+	fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect>
 	
 	/**根据分类id得到收藏数量。*/
-	fun countByCategoryIdAndDeletedFalse(categoryId: Long): Long
+	fun countByCategoryId(categoryId: Long): Long
 	
-	/**根据标签id分页查询所有未删除收藏。*/
-	fun findAllByTagIdAndDeletedFalse(tagId: Long, pageable: Pageable): Page<Collect>
+	/**根据标签id分页查询所有收藏。*/
+	fun findAllByTagId(tagId: Long, pageable: Pageable): Page<Collect>
 	
 	/**根据标签id得到收藏数量。*/
-	fun countByTagIdAndDeletedFalse(tagId: Long): Long
+	fun countByTagId(tagId: Long): Long
 	
-	/**根据类型和用户id分页查询所有未删除收藏。*/
-	fun findAllByTypeAndUserIdAndDeletedFalse(type: CollectType, userId: Long, pageable: Pageable): Page<Collect>
+	/**根据类型和用户id分页查询所有收藏。*/
+	fun findAllByTypeAndUserId(type: CollectType, userId: Long, pageable: Pageable): Page<Collect>
 	
 	/**根据类型和用户id得到收藏数量。*/
-	fun countByTypeAndUserIdAndDeletedFalse(type: CollectType, userId: Long): Long
+	fun countByTypeAndUserId(type: CollectType, userId: Long): Long
 	
-	/**根据用户id和收藏状态分页查询所有收藏。*/
-	fun findAllByUserIdAndDeleted(userId: Long, isDeleted: Boolean, pageable: Pageable): Page<Collect>
+	/**根据用户id分页查询所有收藏。*/
+	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Collect>
 	
-	/**根据用户id和收藏状态得到收藏数量。*/
-	fun countByUserIdAndDeleted(userId: Long, isDeleted: Boolean): Long
+	/**根据用户id得到收藏数量。*/
+	fun countByUserId(userId: Long): Long
 	
-	/**根据点赞用户id分页查询所有未删除收藏。*/
-	fun findAllByPraiseByUserIdAndDeletedFalse(praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	/**根据点赞用户id分页查询所有收藏。*/
+	fun findAllByPraiseByUserId(praiseByUserId: Long, pageable: Pageable): Page<Collect>
 	
-	/**根据点赞用户id得到未删除收藏数量。*/
-	fun countByPraiseByUserIdAndDeletedFalse(praiseByUserId: Long): Long
+	/**根据点赞用户id得到收藏数量。*/
+	fun countByPraiseByUserId(praiseByUserId: Long): Long
 	
 	/**检查某一收藏是否已存在。*/
 	fun exists(collect: Collect): Boolean

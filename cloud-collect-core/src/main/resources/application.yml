@@ -73,22 +73,20 @@ com:
     security:
       jwt:
         # jwt口令的请求头
-        tokenHeader: Authorization
+        token-header: Authorization
         # jwt口令的开头
-        tokenHead: Bearer
+        token-head: Bearer
         # jwt密钥
         secret: com.windea
         # jwt过期时间
         expiration: 86400
     validation:
-      username:
-        # 6~16位的字母、数字和下划线，以字母开头。
-        regex: "\\w{6,16}"
-      password:
-        # 6~16位的字母、数字和下划线。
-        regex: "[a-zA-Z]\\w{5,15}"
-    ie:
+      # 6~16位的字母、数字和下划线，以字母开头。
+      username: "\\w{6,16}"
+      # 6~16位的字母、数字和下划线。
+      password: "[a-zA-Z]\\w{5,15}"
+    data-import-export:
       # 缓存文件路径
-      tempPath: D:/CloudCollect/temp
+      path: D:/CloudCollect
       # 数据文件文件名
-      dataSchemaFileName: dataSchema
+      file-name: dataSchema

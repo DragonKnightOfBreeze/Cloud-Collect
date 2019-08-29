@@ -3,7 +3,7 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.view.*
+import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.security.access.prepost.*

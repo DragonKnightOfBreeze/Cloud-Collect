@@ -48,9 +48,7 @@ open class CollectServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun delete(id: Long) {
-		val newCollect = findById(id)
-		newCollect.isDeleted = true
-		collectRepository.save(newCollect)
+		collectRepository.deleteById(id)
 	}
 	
 	@Transactional
@@ -105,8 +103,8 @@ open class CollectServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findByNameAndUserIdAndDeleted(name: String, userId: Long, isDeleted: Boolean): Collect {
-		return collectRepository.findByNameAndUserIdAndDeleted(name, userId, isDeleted) ?: throw NotFoundException()
+	override fun findByNameAndUserId(name: String, userId: Long): Collect {
+		return collectRepository.findByNameAndUserId(name, userId) ?: throw NotFoundException()
 	}
 	
 	override fun findByRandom(): Collect {
@@ -120,71 +118,70 @@ open class CollectServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByNameContainsAndDeletedFalse(name: String, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByNameContainsAndDeletedFalse(name, pageable)
+	override fun findAllByNameContains(name: String, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByNameContains(name, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByNameContainsAndUserIdAndDeletedFalse(name: String, userId: Long,
+	override fun findAllByNameContainsAndUserId(name: String, userId: Long,
 		pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByNameContainsAndUserIdAndDeletedFalse(name, userId, pageable)
+		return collectRepository.findAllByNameContainsAndUserId(name, userId, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByCategoryIdAndDeletedFalse(categoryId: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByCategoryIdAndDeletedFalse(categoryId, pageable)
+	override fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByCategoryId(categoryId, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun countByCategoryIdAndDeletedFalse(categoryId: Long): Long {
-		return collectRepository.countByCategoryIdAndDeletedFalse(categoryId)
+	override fun countByCategoryId(categoryId: Long): Long {
+		return collectRepository.countByCategoryId(categoryId)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByTagIdAndDeletedFalse(tagId: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByTagIdAndDeletedFalse(tagId, pageable)
+	override fun findAllByTagId(tagId: Long, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByTagId(tagId, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun countByTagIdAndDeletedFalse(tagId: Long): Long {
-		return collectRepository.countByTagIdAndDeletedFalse(tagId)
+	override fun countByTagId(tagId: Long): Long {
+		return collectRepository.countByTagId(tagId)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByTypeAndUserIdAndDeletedFalse(type: CollectType, userId: Long,
+	override fun findAllByTypeAndUserId(type: CollectType, userId: Long,
 		pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByTypeAndUserIdAndDeletedFalse(type, userId, pageable)
+		return collectRepository.findAllByTypeAndUserId(type, userId, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun countByTypeAndUserIdAndDeletedFalse(type: CollectType, userId: Long): Long {
-		return collectRepository.countByTypeAndUserIdAndDeletedFalse(type, userId)
+	override fun countByTypeAndUserId(type: CollectType, userId: Long): Long {
+		return collectRepository.countByTypeAndUserId(type, userId)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByUserIdAndDeleted(userId: Long, isDeleted: Boolean, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByUserIdAndDeleted(userId, isDeleted, pageable)
+	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByUserId(userId, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun countByUserIdAndDeleted(userId: Long, isDeleted: Boolean): Long {
-		return collectRepository.countByUserIdAndDeleted(userId, isDeleted)
+	override fun countByUserId(userId: Long): Long {
+		return collectRepository.countByUserId(userId)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByPraiseByUserIdAndDeletedFalse(praiseByUserId: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByPraiseByUserIdAndDeletedFalse(praiseByUserId, pageable)
+	override fun findAllByPraiseByUserId(praiseByUserId: Long, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByPraiseByUserId(praiseByUserId, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun countByPraiseByUserIdAndDeletedFalse(praiseByUserId: Long): Long {
-		return collectRepository.countByPraiseByUserIdAndDeletedFalse(praiseByUserId)
+	override fun countByPraiseByUserId(praiseByUserId: Long): Long {
+		return collectRepository.countByPraiseByUserId(praiseByUserId)
 	}
 	
 	override fun exists(collect: Collect): Boolean {
 		val name = collect.name
 		val userId = collect.user.id ?: return false
-		val isDeleted = collect.isDeleted
-		return collectRepository.existsByNameAndUserIdAndDeleted(name, userId, isDeleted)
+		return collectRepository.existsByNameAndUserId(name, userId)
 	}
 }

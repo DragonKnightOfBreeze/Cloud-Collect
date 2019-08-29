@@ -7,35 +7,35 @@ import org.springframework.data.jpa.repository.*
 
 /**收藏的仓库。*/
 interface CollectRepository : JpaRepository<Collect, Long> {
-	fun findByNameAndUserIdAndDeleted(name: String, userId: Long, isDeleted: Boolean): Collect?
+	fun findByNameAndUserId(name: String, userId: Long): Collect?
 	
-	fun findAllByNameContainsAndDeletedFalse(name: String, pageable: Pageable): Page<Collect>
+	fun findAllByNameContains(name: String, pageable: Pageable): Page<Collect>
 	
-	fun findAllByNameContainsAndUserIdAndDeletedFalse(name: String, userId: Long, pageable: Pageable): Page<Collect>
+	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<Collect>
 	
-	fun findAllByCategoryIdAndDeletedFalse(categoryId: Long, pageable: Pageable): Page<Collect>
+	fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect>
 	
-	fun countByCategoryIdAndDeletedFalse(categoryId: Long): Long
+	fun countByCategoryId(categoryId: Long): Long
 	
-	@Query("from Collect c, in(c.tags) t where t.id=:tagId and c.isDeleted=false")
-	fun findAllByTagIdAndDeletedFalse(tagId: Long, pageable: Pageable): Page<Collect>
+	@Query("from Collect c, in(c.tags) t where t.id=:tagId")
+	fun findAllByTagId(tagId: Long, pageable: Pageable): Page<Collect>
 	
-	@Query("select count(c) from Collect c, in(c.tags) t where t.id=:tagId and c.isDeleted=false")
-	fun countByTagIdAndDeletedFalse(tagId: Long): Long
+	@Query("select count(c) from Collect c, in(c.tags) t where t.id=:tagId")
+	fun countByTagId(tagId: Long): Long
 	
-	fun findAllByTypeAndUserIdAndDeletedFalse(type: CollectType, userId: Long, pageable: Pageable): Page<Collect>
+	fun findAllByTypeAndUserId(type: CollectType, userId: Long, pageable: Pageable): Page<Collect>
 	
-	fun countByTypeAndUserIdAndDeletedFalse(type: CollectType, userId: Long): Long
+	fun countByTypeAndUserId(type: CollectType, userId: Long): Long
 	
-	fun findAllByUserIdAndDeleted(userId: Long, isDeleted: Boolean, pageable: Pageable): Page<Collect>
+	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Collect>
 	
-	fun countByUserIdAndDeleted(userId: Long, isDeleted: Boolean): Long
+	fun countByUserId(userId: Long): Long
 	
-	@Query("from Collect c, in(c.praiseByUserList) u where u.id=:praiseByUserId and c.isDeleted=false")
-	fun findAllByPraiseByUserIdAndDeletedFalse(praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	@Query("from Collect c, in(c.praiseByUserList) u where u.id=:praiseByUserId")
+	fun findAllByPraiseByUserId(praiseByUserId: Long, pageable: Pageable): Page<Collect>
 	
-	@Query("select count(c) from Collect c, in(c.praiseByUserList) u where u.id=:praiseByUserId and c.isDeleted=false")
-	fun countByPraiseByUserIdAndDeletedFalse(praiseByUserId: Long): Long
+	@Query("select count(c) from Collect c, in(c.praiseByUserList) u where u.id=:praiseByUserId")
+	fun countByPraiseByUserId(praiseByUserId: Long): Long
 	
-	fun existsByNameAndUserIdAndDeleted(name: String, userId: Long, isDeleted: Boolean): Boolean
+	fun existsByNameAndUserId(name: String, userId: Long): Boolean
 }

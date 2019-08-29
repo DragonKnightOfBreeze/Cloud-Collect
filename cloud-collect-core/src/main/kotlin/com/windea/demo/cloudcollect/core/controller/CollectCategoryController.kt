@@ -3,7 +3,7 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.model.*
+import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
@@ -70,7 +70,7 @@ class CollectCategoryController(
 	)
 	@GetMapping("/{id]/collectPage")
 	fun getCollectPage(@PathVariable id: Long, @PathVariable pageable: Pageable): Page<Collect> {
-		return collectService.findAllByCategoryIdAndDeletedFalse(id, pageable)
+		return collectService.findAllByCategoryId(id, pageable)
 	}
 	
 	@ApiOperation("根据分类id得到收藏数量。")
@@ -79,7 +79,7 @@ class CollectCategoryController(
 	)
 	@GetMapping("/{id}/collectCount")
 	fun getCollectCount(@PathVariable id: Long): Long {
-		return collectService.countByCategoryIdAndDeletedFalse(id)
+		return collectService.countByCategoryId(id)
 	}
 	
 	@ApiOperation("分页得到所有分类。")

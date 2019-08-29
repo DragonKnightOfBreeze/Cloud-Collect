@@ -3,11 +3,8 @@ package com.windea.demo.cloudcollect.core.service
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.utility.common.enums.*
 
-/**
- * 导入/导出数据的服务。
- * @see com.windea.demo.cloudcollect.core.domain.model.DataSchema
- */
-interface ImportExportService {
+/**数据导入导出的服务。*/
+interface DataImportExportService {
 	/**从指定格式的文件导入收藏。例如：Xml、Json、Yaml。*/
 	fun importData(type: DataType, string: String, user: User)
 	

@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.service.impl
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.model.*
+import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.exception.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
@@ -15,11 +15,11 @@ import javax.transaction.*
 @Service
 @CacheConfig(cacheNames = ["collect"])
 @NotTested("未进行实际测试……")
-open class ImportExportServiceImpl(
+open class DataImportExportServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val categoryRepository: CollectCategoryRepository,
 	private val tagRepository: CollectTagRepository
-) : ImportExportService {
+) : DataImportExportService {
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun importData(type: DataType, string: String, user: User) {

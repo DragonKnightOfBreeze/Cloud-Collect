@@ -1,11 +1,7 @@
-package com.windea.demo.cloudcollect.core.domain.model
+package com.windea.demo.cloudcollect.core.domain.response
 
 import com.windea.demo.cloudcollect.core.domain.enums.*
-
-/**数据概要。用于导入导出数据。*/
-data class DataSchema(
-	val collectSchemaList: List<CollectSchema>
-)
+import java.io.*
 
 /**收藏的概要。用于导入导出数据。*/
 data class CollectSchema(
@@ -16,4 +12,4 @@ data class CollectSchema(
 	val categoryName: String,
 	val tagNames: List<String>,
 	val type: CollectType
-)
+) : Serializable

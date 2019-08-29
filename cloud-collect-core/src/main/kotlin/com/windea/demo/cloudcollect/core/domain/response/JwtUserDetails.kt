@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.core.domain.model
+package com.windea.demo.cloudcollect.core.domain.response
 
 import com.windea.demo.cloudcollect.core.domain.entity.User
 import org.springframework.security.core.*

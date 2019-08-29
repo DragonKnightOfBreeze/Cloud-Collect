@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.core.domain.view
+package com.windea.demo.cloudcollect.core.domain.request
 
 import com.windea.demo.cloudcollect.core.validation.annotation.*
 

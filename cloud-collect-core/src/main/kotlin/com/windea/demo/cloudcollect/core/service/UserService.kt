@@ -2,7 +2,7 @@ package com.windea.demo.cloudcollect.core.service
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.enums.*
-import com.windea.demo.cloudcollect.core.domain.view.*
+import com.windea.demo.cloudcollect.core.domain.request.*
 import org.springframework.data.domain.*
 
 /**用户的服务。登录、重置密码等功能委托给`UserDetailsService`。*/

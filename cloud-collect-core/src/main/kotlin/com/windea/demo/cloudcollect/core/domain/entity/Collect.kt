@@ -52,10 +52,6 @@ open class Collect(
 	@Enumerated(EnumType.STRING)
 	var type: CollectType = CollectType.NONE,
 	
-	/**是否已删除。*/
-	@Column
-	var isDeleted: Boolean = false,
-	
 	/**所属用户。*/
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
 	var user: User,
@@ -70,10 +66,21 @@ open class Collect(
 	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
 ) : Serializable {
+	/**评论列表。*/
+	@JsonIgnore
+	@OneToMany(cascade = [CascadeType.ALL], mappedBy = "collect")
+	val commentList: MutableList<Comment> = mutableListOf()
+	
 	/**点赞该收藏的用户列表。懒加载。*/
 	@JsonIgnore
 	@ManyToMany(cascade = [CascadeType.MERGE], mappedBy = "praiseToCollectList")
 	val praiseByUserList: MutableList<User> = mutableListOf()
+	
+	/**评论数量。*/
+	val commentCount: Int get() = commentList.size
+	
+	/**点赞该收藏的用户数量。*/
+	val praiseByUserCount get() = praiseByUserList.count()
 	
 	
 	override fun equals(other: Any?) = other is Collect && other.id == id

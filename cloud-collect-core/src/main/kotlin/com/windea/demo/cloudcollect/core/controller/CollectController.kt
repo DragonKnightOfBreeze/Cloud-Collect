@@ -4,11 +4,11 @@ package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.enums.*
-import com.windea.demo.cloudcollect.core.domain.model.*
+import com.windea.demo.cloudcollect.core.domain.response.*
+import com.windea.demo.cloudcollect.core.properties.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.utility.common.enums.*
 import io.swagger.annotations.*
-import org.springframework.beans.factory.annotation.*
 import org.springframework.data.domain.*
 import org.springframework.http.*
 import org.springframework.security.access.prepost.*
@@ -28,14 +28,10 @@ class CollectController(
 	private val service: CollectService,
 	private val commentService: CommentService,
 	private val userService: UserService,
-	private val ieService: ImportExportService
+	private val dataImportExportService: DataImportExportService,
+	private val urlCopyService: UrlCopyService,
+	private val dataImportExportProperties: DataImportExportProperties
 ) {
-	@Value("\${com.windea.ie.tempPath}")
-	private lateinit var tempPath: String
-	@Value("\${com.windea.ie.dataSchemaFileName}")
-	lateinit var dataSchemaFileName: String
-	
-	
 	@ApiOperation("创建自己的收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "collect", value = "新的收藏", required = true)
@@ -182,10 +178,10 @@ class CollectController(
 	)
 	@GetMapping("/findAllByNameContains")
 	fun findAllByNameContains(@RequestParam name: String, @RequestParam pageable: Pageable): Page<Collect> {
-		return service.findAllByNameContainsAndDeletedFalse(name, pageable)
+		return service.findAllByNameContains(name, pageable)
 	}
 	
-	@ApiOperation("根据名字和用户id分页模糊查询所有未删除收藏。")
+	@ApiOperation("根据名字和用户id分页模糊查询所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "name", value = "名字", required = true),
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
@@ -193,30 +189,30 @@ class CollectController(
 	)
 	@GetMapping("/findAllByNameContainsAndUserId")
 	fun findAllByNameContainsAndUserId(@RequestParam name: String, @RequestParam userId: Long, @RequestParam pageable: Pageable): Page<Collect> {
-		return service.findAllByNameContainsAndUserIdAndDeletedFalse(name, userId, pageable)
+		return service.findAllByNameContainsAndUserId(name, userId, pageable)
 	}
 	
-	@ApiOperation("根据分类id分页查询所有未删除收藏。")
+	@ApiOperation("根据分类id分页查询所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "categoryId", value = "分类的id", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
 	@GetMapping("/findByUserAndCategory")
 	fun findAllByCategoryId(@RequestParam categoryId: Long, @RequestParam pageable: Pageable): Page<Collect> {
-		return service.findAllByCategoryIdAndDeletedFalse(categoryId, pageable)
+		return service.findAllByCategoryId(categoryId, pageable)
 	}
 	
-	@ApiOperation("根据标签id分页查询所有未删除收藏。")
+	@ApiOperation("根据标签id分页查询所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "tagId", value = "标签的id", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
 	@GetMapping("/findAllByTagId")
 	fun findAllByTagId(@RequestParam tagId: Long, @RequestParam pageable: Pageable): Page<Collect> {
-		return service.findAllByTagIdAndDeletedFalse(tagId, pageable)
+		return service.findAllByTagId(tagId, pageable)
 	}
 	
-	@ApiOperation("根据类型和用户id分页查询所有未删除收藏。")
+	@ApiOperation("根据类型和用户id分页查询所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "type", value = "收藏的类型", required = true),
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
@@ -224,19 +220,19 @@ class CollectController(
 	)
 	@GetMapping("/findAllByTypeAndUserId")
 	fun findAllByTypeAndUserId(@RequestParam type: CollectType, @RequestParam userId: Long, @RequestParam pageable: Pageable): Page<Collect> {
-		return service.findAllByTypeAndUserIdAndDeletedFalse(type, userId, pageable)
+		return service.findAllByTypeAndUserId(type, userId, pageable)
 	}
 	
 	@ApiOperation("根据用户id和收藏状态分页查询所有收藏。")
 	@ApiImplicitParams(
 		ApiImplicitParam(name = "userId", value = "用户的id", required = true),
-		ApiImplicitParam(name = "isDeleted", value = "删除状态", required = true),
 		ApiImplicitParam(name = "pageable", value = "分页和排序", required = true)
 	)
-	@GetMapping("/findAllByUserIdAndDeleted")
-	fun findAllByUserIdAndDeleted(@RequestParam userId: Long, @RequestParam isDeleted: Boolean, @RequestParam pageable: Pageable): Page<Collect> {
-		return service.findAllByUserIdAndDeleted(userId, isDeleted, pageable)
+	@GetMapping("/findAllByUserId")
+	fun findAllByUserId(@RequestParam userId: Long, @RequestParam pageable: Pageable): Page<Collect> {
+		return service.findAllByUserId(userId, pageable)
 	}
+	
 	
 	@ApiOperation("从指定格式的文件导入收藏。例如：Xml、Json、Yaml。")
 	@ApiImplicitParams(
@@ -248,15 +244,15 @@ class CollectController(
 	fun importData(@RequestParam(defaultValue = "YAML") type: DataType, multipartFile: MultipartFile,
 		authentication: Authentication) {
 		//不检查文件格式是否正确，委托给前端
-		val fileName = "$dataSchemaFileName.${type.extension}"
-		val filePath = Path.of(tempPath, fileName)
+		val fileName = "${dataImportExportProperties.fileName}.${type.extension}"
+		val filePath = Path.of(dataImportExportProperties.path, fileName)
 		val file = filePath.toFile()
 		multipartFile.transferTo(file)
 		val string = file.readText()
 		
 		//更新数据库
 		val user = (authentication.principal as JwtUserDetails).delegateUser
-		ieService.importData(type, string, user)
+		dataImportExportService.importData(type, string, user)
 	}
 	
 	@ApiOperation("导出收藏到指定格式的文件。例如：Xml、Json、Yaml。")
@@ -267,15 +263,43 @@ class CollectController(
 	@PreAuthorize("isAuthenticated()")
 	fun exportData(@RequestParam(defaultValue = "YAML") type: DataType): ResponseEntity<ByteArray> {
 		//不在本地缓存文件
-		val fileName = "$dataSchemaFileName.${type.extension}"
-		val filePath = Path.of(tempPath, fileName)
+		val fileName = "${dataImportExportProperties.fileName}.${type.extension}"
+		val filePath = Path.of(dataImportExportProperties.path, fileName)
 		val file = filePath.toFile()
-		val string = ieService.exportData(type)
+		val string = dataImportExportService.exportData(type)
 		file.writeText(string)
 		
 		//设置响应头，并设置响应体为byte[]类型（也可以是InputStream、Resource等，间接得到byte[]）
 		val headers = HttpHeaders()
 		headers.contentDisposition = ContentDisposition.builder("attachment").filename(fileName).build()
 		return ResponseEntity(string.toByteArray(), headers, HttpStatus.OK)
+	}
+	
+	
+	@ApiOperation("复制为Html链接。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "collect", value = "目标收藏", required = true)
+	)
+	@PostMapping("/copyAsHtmlUrl")
+	fun copyAsHtmlUrl(@RequestBody collect: Collect): String {
+		return urlCopyService.copyAsHtmlUrl(collect)
+	}
+	
+	@ApiOperation("复制为Markdown链接。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "collect", value = "目标收藏", required = true)
+	)
+	@PostMapping("/copyAsMdUrl")
+	fun copyAsMdUrl(@RequestBody collect: Collect): String {
+		return urlCopyService.copyAsMdUrl(collect)
+	}
+	
+	@ApiOperation("复制为Markdown引用链接。")
+	@ApiImplicitParams(
+		ApiImplicitParam(name = "collect", value = "目标收藏", required = true)
+	)
+	@PostMapping("/copyAsMdRefUrl")
+	fun copyAsMdRefUrl(@RequestBody collect: Collect): Pair<String, String> {
+		return urlCopyService.copyAsMdRefUrl(collect)
 	}
 }

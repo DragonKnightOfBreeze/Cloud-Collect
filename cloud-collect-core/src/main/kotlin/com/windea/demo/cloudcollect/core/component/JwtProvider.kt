@@ -1,8 +1,8 @@
 package com.windea.demo.cloudcollect.core.component
 
+import com.windea.demo.cloudcollect.core.properties.*
 import io.jsonwebtoken.*
 import mu.*
-import org.springframework.beans.factory.annotation.*
 import org.springframework.security.core.*
 import org.springframework.security.core.userdetails.*
 import org.springframework.stereotype.*
@@ -11,22 +11,14 @@ import javax.servlet.http.*
 
 /**Jwt提供器。*/
 @Component
-class JwtProvider {
-	@Value("\${com.windea.security.tokenHeader}")
-	private lateinit var tokenHeader: String
-	@Value("\${com.windea.security.tokenHead}")
-	private lateinit var tokenHead: String
-	@Value("\${com.windea.security.secret}")
-	private lateinit var secret: String
-	@Value("\${com.windea.security.expiration}")
-	private lateinit var expiration: String
-	
-	
+class JwtProvider(
+	private val jwtProperties: JwtProperties
+) {
 	/**从http请求中得到令牌。*/
 	fun getToken(request: HttpServletRequest): String? {
-		val header = request.getHeader(this.tokenHeader)
-		return if(header?.startsWith(this.tokenHeader, true) == true) {
-			header.substring(this.tokenHead.length + 1).takeIf { it.isNotBlank() }
+		val header = request.getHeader(jwtProperties.tokenHeader)
+		return if(header?.startsWith(jwtProperties.tokenHeader, true) == true) {
+			header.substring(jwtProperties.tokenHead.length + 1).takeIf { it.isNotBlank() }
 		} else null
 	}
 	
@@ -36,7 +28,7 @@ class JwtProvider {
 			.setSubject((authentication.principal as UserDetails).username)
 			.setIssuedAt(Date())
 			.setExpiration(generateExpiration())
-			.signWith(SignatureAlgorithm.HS512, secret)
+			.signWith(SignatureAlgorithm.HS512, jwtProperties.secret)
 			.compact()
 	}
 	
@@ -49,20 +41,20 @@ class JwtProvider {
 				.setClaims(getClaims(token))
 				.setIssuedAt(Date())
 				.setExpiration(generateExpiration())
-				.signWith(SignatureAlgorithm.HS512, secret)
+				.signWith(SignatureAlgorithm.HS512, jwtProperties.secret)
 				.compact()
 		}
 	}
 	
 	/**生成过期时间。*/
 	private fun generateExpiration(): Date {
-		return Date(System.currentTimeMillis() + expiration.toInt() * 1000)
+		return Date(System.currentTimeMillis() + jwtProperties.expiration.toInt() * 1000)
 	}
 	
 	/**得到要求。*/
 	private fun getClaims(token: String): Claims {
 		return try {
-			Jwts.parser().setSigningKey(secret).parseClaimsJws(token).body
+			Jwts.parser().setSigningKey(jwtProperties.secret).parseClaimsJws(token).body
 		} catch(e: Exception) {
 			logger.error("Invalid Jwt format.")
 			Jwts.claims()

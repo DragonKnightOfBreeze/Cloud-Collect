@@ -92,3 +92,21 @@
 * 用户可以关注其他用户。可以查看关注被被关注人数和用户信息。
 
 * （其他尚未想到的，专注于收藏管理的功能）
+
+# 注意事项
+
+## 后台
+
+* Spring Boot会对某些bean进行自动配置。例如，Converter、Formatter。
+* 对于数据库：text类型不能指定默认值。java boolean类型会转换为bit类型。
+* 当为作为主构造函数参数的实体类的属性注上validation注解时，需要添加`@field:`前缀。
+* 使用`@Value`或`@ConfigurationProperties`时，对应的属性必须是`lateinit var`或者可空类型。
+* 使用`@ConfigurationProperties`时，对应的属性必须是公开的。
+* 使用Jpa时，为了让懒加载如预期工作，实体类必须是`open class`。
+* Jpa不建议与`data class`和只读属性一同工作。
+* 使用kotlin编译器插件`spring`时，spring bean可以不显示声明为`open class`。
+* 使用kotlin编译器插件`jpa`时，实体类可以不显示声明无参构造函数。
+* `@Valid`和`@Validated`的区别：[CSDN](https://blog.csdn.net/qq_27680317/article/details/79970590)
+    * `@Valid`属于标准JSR-303规范，`@Validated`属于Spring's JSR-303规范。
+    * `@Valid`放在实体类属性上，用于嵌套验证。
+    * `@Validated`可以进行分组验证。

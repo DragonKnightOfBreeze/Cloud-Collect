@@ -88,7 +88,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/collectPage")
 	fun getCollectPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Collect> {
-		return collectService.findAllByUserIdAndDeleted(id, false, pageable)
+		return collectService.findAllByUserId(id, pageable)
 	}
 	
 	@ApiOperation("得到某一用户的收藏数量。")
@@ -97,7 +97,7 @@ class UserController(
 	)
 	@GetMapping("/{id}/collectCount")
 	fun getCollectCount(@PathVariable id: Long): Long {
-		return collectService.countByUserIdAndDeleted(id, false)
+		return collectService.countByUserId(id)
 	}
 	
 	@ApiOperation("得到某一用户的所有收藏分类。")
