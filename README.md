@@ -102,7 +102,7 @@
 * 当为作为主构造函数参数的实体类的属性注上validation注解时，需要添加`@field:`前缀。
 * 使用`@Value`或`@ConfigurationProperties`时，对应的属性必须是`lateinit var`或者可空类型/存在默认值。
 * 使用`@ConfigurationProperties`时，对应的属性必须是公开的。
-* 使用Jpa时，为了让懒加载如预期工作，实体类必须是`open class`，实体类属性必须是`open var`。
+* 使用Jpa时，为了让懒加载如预期工作，实体类必须是`open class`，实体类属性必须是`open var`，推荐存在无参构造。
 * Jpa不建议与`data class`和只读属性一同工作。
 * 使用kotlin编译器插件`spring`时，spring bean可以不显示声明为`open class`。
 * 使用kotlin编译器插件`jpa`时，实体类可以不显示声明无参构造函数。
@@ -115,3 +115,7 @@
 * 使用MockMvc进行测试：需要在测试之前启动项目。可以使用相对于context-path的url。
 * 使用`spring-boot-starter-data-redis`时，可能需要添加依赖`commons-pool2`。
 * 自定义参数验证器时，验证器需要提供无参构造函数。
+* 在验证器中使用`@Autowired lateinit var`失败的问题：
+    * Hibernate在将数据存储到数据库之前会再验证一次，使用自己的反射机制得到验证器。
+    * 使用明确的验证分组，而非默认的Default，可以解决这个问题。
+* 如何启用Spring的`@CreatedTime`等审计注解：[简书](https://www.jianshu.com/p/30aef87f3171)，对应的属性可以是非空`lateinit var`。 

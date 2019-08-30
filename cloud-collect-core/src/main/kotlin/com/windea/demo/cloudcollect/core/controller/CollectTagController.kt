@@ -10,8 +10,8 @@ import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
+import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
-import javax.validation.*
 
 /**收藏的标签的控制器。*/
 @Api("收藏的标签")
@@ -27,7 +27,7 @@ class CollectTagController(
 	)
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody @Valid tag: CollectTag, bindingResult: BindingResult, authentication: Authentication): CollectTag {
+	fun create(@RequestBody @Validated tag: CollectTag, bindingResult: BindingResult, authentication: Authentication): CollectTag {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return tagService.create(tag, user)
 	}
@@ -49,7 +49,7 @@ class CollectTagController(
 	)
 	@PutMapping("/{id}")
 	@PreAuthorize("hasPermission(#id, 'CollectTag', 'write')")
-	fun modify(@PathVariable id: Long, @RequestBody @Valid tag: CollectTag, bindingResult: BindingResult): CollectTag {
+	fun modify(@PathVariable id: Long, @RequestBody @Validated tag: CollectTag, bindingResult: BindingResult): CollectTag {
 		return tagService.modify(id, tag)
 	}
 	

@@ -3,7 +3,9 @@ package com.windea.demo.cloudcollect.core.domain.entity
 import com.fasterxml.jackson.annotation.*
 import com.windea.demo.cloudcollect.core.domain.enums.*
 import com.windea.demo.cloudcollect.core.validation.annotation.*
+import com.windea.demo.cloudcollect.core.validation.group.*
 import org.springframework.data.annotation.*
+import org.springframework.data.jpa.domain.support.*
 import java.io.*
 import java.time.*
 import java.util.*
@@ -14,6 +16,7 @@ import javax.validation.constraints.*
 
 /**收藏。*/
 @Entity
+@EntityListeners(AuditingEntityListener::class)
 @UniqueCollect
 class Collect(
 	/**编号。*/
@@ -23,14 +26,14 @@ class Collect(
 	
 	/**名字。*/
 	@Column(nullable = false, length = 64)
-	@field:NotEmpty(message = "{validation.Collect.name.NotEmpty}")
-	@field:Size(min = 1, max = 64, message = "{validation.Collect.name.Size}")
+	@field:NotEmpty(message = "{validation.Collect.name.NotEmpty}", groups = [Default::class])
+	@field:Size(min = 1, max = 64, message = "{validation.Collect.name.Size}", groups = [Default::class])
 	var name: String,
 	
 	/**概述。*/
 	@Column(nullable = false)
-	@field:NotEmpty(message = "{validation.Collect.summary.NotEmpty}")
-	@field:Size(min = 1, max = 255, message = "{validation.Collect.summary.Size}")
+	@field:NotEmpty(message = "{validation.Collect.summary.NotEmpty}", groups = [Default::class])
+	@field:Size(min = 1, max = 255, message = "{validation.Collect.summary.Size}", groups = [Default::class])
 	var summary: String = "……",
 	
 	/**链接地址。*/
@@ -58,18 +61,18 @@ class Collect(
 	
 	/**所属用户。*/
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var user: User,
-	
+	var user: User
+) : Serializable {
 	/**创建时间。*/
 	@Column
 	@CreatedDate
-	var createdTime: LocalDateTime? = null,
+	var createdTime: LocalDateTime? = null
 	
-	/**最后修改时间。*/
+	/**最后更新时间。*/
 	@Column
 	@LastModifiedDate
 	var lastModifiedTime: LocalDateTime? = null
-) : Serializable {
+	
 	/**点赞该收藏的用户列表。懒加载。*/
 	@JsonIgnore
 	@ManyToMany(cascade = [CascadeType.MERGE], mappedBy = "praiseToCollectList")

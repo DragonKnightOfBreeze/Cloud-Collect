@@ -8,8 +8,8 @@ import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.validation.*
+import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
-import javax.validation.*
 
 /**用户的控制器。*/
 @Api("用户")
@@ -27,7 +27,7 @@ class UserController(
 		ApiImplicitParam(name = "user", value = "更新后的用户信息", required = true)
 	)
 	@PutMapping("/{id}")
-	fun update(@PathVariable id: Long, @RequestBody @Valid user: User, bindingResult: BindingResult): User {
+	fun update(@PathVariable id: Long, @RequestBody @Validated user: User, bindingResult: BindingResult): User {
 		return userService.modify(id, user)
 	}
 	

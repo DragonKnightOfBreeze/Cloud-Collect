@@ -10,8 +10,8 @@ import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
+import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
-import javax.validation.*
 
 /**收藏的分类的控制器。*/
 @Api("收藏的分类")
@@ -27,7 +27,7 @@ class CollectCategoryController(
 	)
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody @Valid category: CollectCategory, bindingResult: BindingResult, authentication: Authentication): CollectCategory {
+	fun create(@RequestBody @Validated category: CollectCategory, bindingResult: BindingResult, authentication: Authentication): CollectCategory {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return categoryService.create(category, user)
 	}
@@ -49,7 +49,7 @@ class CollectCategoryController(
 	)
 	@PutMapping("/{id}")
 	@PreAuthorize("hasPermission(#id, 'CollectCategory', 'write')")
-	fun modify(@PathVariable id: Long, @RequestBody @Valid category: CollectCategory, bindingResult: BindingResult): CollectCategory {
+	fun modify(@PathVariable id: Long, @RequestBody @Validated category: CollectCategory, bindingResult: BindingResult): CollectCategory {
 		return categoryService.modify(id, category)
 	}
 	

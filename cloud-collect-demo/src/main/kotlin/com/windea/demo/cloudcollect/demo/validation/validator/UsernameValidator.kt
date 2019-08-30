@@ -1,7 +1,7 @@
-package com.windea.demo.cloudcollect.core.validation.validator
+package com.windea.demo.cloudcollect.demo.validation.validator
 
-import com.windea.demo.cloudcollect.core.properties.*
-import com.windea.demo.cloudcollect.core.validation.annotation.*
+import com.windea.demo.cloudcollect.demo.properties.*
+import com.windea.demo.cloudcollect.demo.validation.annotation.*
 import org.springframework.beans.factory.annotation.*
 import javax.validation.*
 

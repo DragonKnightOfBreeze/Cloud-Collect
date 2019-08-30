@@ -1,6 +1,7 @@
 package com.windea.demo.cloudcollect.demo.component
 
 import com.windea.utility.common.extensions.*
+import org.springframework.beans.factory.annotation.*
 import org.springframework.core.convert.converter.*
 import org.springframework.data.domain.*
 import org.springframework.stereotype.*
@@ -11,9 +12,9 @@ import org.springframework.stereotype.*
  * 示例格式："", "1,10", "1,10,+name"。
  */
 @Component
-class StringToPageableConverter(
-	private val stringToSortConverter: StringToSortConverter
-) : Converter<String, Pageable> {
+class StringToPageableConverter : Converter<String, Pageable> {
+	@Autowired private lateinit var stringToSortConverter: StringToSortConverter
+	
 	override fun convert(string: String): Pageable {
 		val splitStrings = string.split(",".toRegex(), 3).toTypedArray()
 		

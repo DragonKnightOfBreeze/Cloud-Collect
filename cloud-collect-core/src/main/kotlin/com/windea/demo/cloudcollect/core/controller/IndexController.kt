@@ -9,8 +9,8 @@ import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.security.access.prepost.*
 import org.springframework.validation.*
+import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
-import javax.validation.*
 
 /**首页的控制器。包含登录、注册等操作。*/
 @Api("首页")
@@ -29,7 +29,7 @@ class IndexController(
 	)
 	@PostMapping("/login", "/loginByUsernameAndPassword")
 	@PreAuthorize("isAnonymous()")
-	fun loginByUsernameAndPassword(@RequestBody @Valid form: UsernamePasswordLoginForm, bindingResult: BindingResult): User {
+	fun loginByUsernameAndPassword(@RequestBody @Validated form: UsernamePasswordLoginForm, bindingResult: BindingResult): User {
 		return userService.loginByUsernameAndPassword(form).also {
 			//成功注册后，发送激活邮件
 			if(configProperties.sendEmail) emailService.sendActivateEmail(it)
@@ -42,7 +42,7 @@ class IndexController(
 	)
 	@PostMapping("/register", "/registerByEmail")
 	@PreAuthorize("isAnonymous()")
-	fun registerByEmail(@RequestBody @Valid form: EmailRegisterForm, bindingResult: BindingResult): User {
+	fun registerByEmail(@RequestBody @Validated form: EmailRegisterForm, bindingResult: BindingResult): User {
 		return userService.registerByEmail(form).also {
 			//发送激活邮件
 			if(configProperties.requireActivate && configProperties.sendEmail) emailService.sendActivateEmail(it)
@@ -84,7 +84,7 @@ class IndexController(
 		ApiImplicitParam(name = "resetPasswordCode", value = "重置密码的识别码", required = true)
 	)
 	@PutMapping("/resetPassword")
-	fun resetPassword(@Valid @RequestBody form: ResetPasswordForm, bindingResult: BindingResult, @RequestParam resetPasswordCode: String): User? {
+	fun resetPassword(@Validated @RequestBody form: ResetPasswordForm, bindingResult: BindingResult, @RequestParam resetPasswordCode: String): User? {
 		return userService.resetPassword(form, resetPasswordCode)?.also {
 			//发送重置密码成功邮件
 			if(configProperties.sendEmail) emailService.sendResetPasswordSuccessEmail(it)

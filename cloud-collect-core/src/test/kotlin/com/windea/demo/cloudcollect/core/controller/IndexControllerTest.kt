@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 @SpringBootTest
 @AutoConfigureMockMvc
 class IndexControllerTest {
-	@Autowired private lateinit var mockMvc: MockMvc
+	@Autowired lateinit var mockMvc: MockMvc
 	
 	@Test
 	fun test() {
@@ -32,7 +32,7 @@ class IndexControllerTest {
 	
 	@Test
 	fun registerByEmail() {
-		val form = EmailRegisterForm("Windea", "Windea", "dk_breeze@qq.com", "BreezesLanding")
+		val form = EmailRegisterForm("微风的龙骑士", "Windea", "dk_breeze@qq.com", "BreezesLanding")
 			.serialize(DataType.Json)
 		mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON_UTF8).content(form))
 			.andExpect(status().isOk)

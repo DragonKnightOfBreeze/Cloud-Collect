@@ -13,9 +13,9 @@ import org.springframework.http.*
 import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
+import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.*
-import javax.validation.*
 
 /**收藏的控制器。*/
 @Api("收藏")
@@ -33,7 +33,7 @@ class CollectController(
 	)
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody @Valid collect: Collect, bindingResult: BindingResult, authentication: Authentication): Collect {
+	fun create(@RequestBody @Validated collect: Collect, bindingResult: BindingResult, authentication: Authentication): Collect {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return service.create(collect, user)
 	}
@@ -66,7 +66,7 @@ class CollectController(
 	)
 	@PutMapping("/{id}")
 	@PreAuthorize("hasPermission(#id, 'Collect', 'write')")
-	fun modify(@PathVariable id: Long, @RequestBody @Valid collect: Collect, bindingResult: BindingResult): Collect {
+	fun modify(@PathVariable id: Long, @RequestBody @Validated collect: Collect, bindingResult: BindingResult): Collect {
 		return service.modify(id, collect)
 	}
 	

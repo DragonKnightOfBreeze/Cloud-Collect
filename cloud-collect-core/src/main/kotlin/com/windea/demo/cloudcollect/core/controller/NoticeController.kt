@@ -8,8 +8,8 @@ import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
 import org.springframework.validation.*
+import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
-import javax.validation.*
 
 /**通知的控制器。*/
 @Api("通知")
@@ -25,7 +25,7 @@ class NoticeController(
 	)
 	@PostMapping("/sendToAll")
 	@PreAuthorize("hasRole('ADMIN')")
-	fun sendToAll(@RequestBody @Valid notice: Notice, bindingResult: BindingResult) {
+	fun sendToAll(@RequestBody @Validated notice: Notice, bindingResult: BindingResult) {
 		noticeService.sendToAll(notice)
 	}
 	

@@ -23,6 +23,14 @@ spring:
     tomcat:
       db-properties:
         close-method: close
+  jpa:
+    # 表不存在时自动创建，之后更新
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
   jackson:
     serialization:
       # 防止json序列化时出错，非常重要！
@@ -82,8 +90,8 @@ com:
       password: "[a-zA-Z]\\w{5,15}"
     data-import-export:
       path: D:/CloudCollect
-      data-file-name: dataSchem
+      data-file-name: dataSchema
 
-#logging:
-#  level:
-#    org.springframework: debug
+logging:
+  level:
+    org.hibernate.validator: trace

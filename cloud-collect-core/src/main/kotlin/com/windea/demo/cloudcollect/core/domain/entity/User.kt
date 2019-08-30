@@ -3,7 +3,9 @@ package com.windea.demo.cloudcollect.core.domain.entity
 import com.fasterxml.jackson.annotation.*
 import com.windea.demo.cloudcollect.core.domain.enums.*
 import com.windea.demo.cloudcollect.core.validation.annotation.*
+import com.windea.demo.cloudcollect.core.validation.group.*
 import org.springframework.data.annotation.*
+import org.springframework.data.jpa.domain.support.*
 import java.io.*
 import java.time.*
 import java.util.*
@@ -13,6 +15,7 @@ import javax.validation.constraints.*
 
 /**用户。*/
 @Entity
+@EntityListeners(AuditingEntityListener::class)
 class User(
 	/**编号。*/
 	@Id
@@ -21,33 +24,33 @@ class User(
 	
 	/**用户名。*/
 	@Column(unique = true, nullable = false, length = 16)
-	@field:NotEmpty(message = "{validation.User.username.NotEmpty}")
-	@field:Username(message = "{validation.User.username.ValidUsername}")
+	@field:NotEmpty(message = "{validation.User.username.NotEmpty}", groups = [Default::class])
+	@field:Username(message = "{validation.User.username.ValidUsername}", groups = [Default::class])
 	var username: String,
-	
-	/**邮箱。*/
-	@Column(unique = true, nullable = false, length = 64)
-	@field:NotEmpty(message = "{validation.User.email.NotEmpty}")
-	@field:Email(message = "{validation.User.email.Email}")
-	var email: String,
 	
 	/**密码。这里存储的是加密后的密码，可以进行参数验证，不要限制长度。*/
 	@JsonIgnore
 	@Column(nullable = false)
-	@field:NotEmpty(message = "{validation.User.password.NotEmpty}")
-	@field:Password(message = "{validation.User.password.ValidPassword}")
+	@field:NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Default::class])
+	@field:Password(message = "{validation.User.password.ValidPassword}", groups = [Default::class])
 	var password: String,
+	
+	/**邮箱。*/
+	@Column(unique = true, nullable = false, length = 64)
+	@field:NotEmpty(message = "{validation.User.email.NotEmpty}", groups = [Default::class])
+	@field:Email(message = "{validation.User.email.Email}", groups = [Default::class])
+	var email: String,
 	
 	/**昵称。*/
 	@Column(nullable = false, length = 64)
-	@field:NotEmpty(message = "{validation.User.nickname.NotEmpty}")
-	@field:Size(min = 1, max = 64, message = "{validation.User.nickname.Size}")
+	@field:NotEmpty(message = "{validation.User.nickname.NotEmpty}", groups = [Default::class])
+	@field:Size(min = 1, max = 64, message = "{validation.User.nickname.Size}", groups = [Default::class])
 	var nickname: String,
 	
 	/**简介。*/
 	@Column(nullable = false)
-	@field:NotEmpty(message = "{validation.User.introduce.NotEmpty}")
-	@field:Size(min = 1, max = 255, message = "{validation.User.introduce.Size}")
+	@field:NotEmpty(message = "{validation.User.introduce.NotEmpty}", groups = [Default::class])
+	@field:Size(min = 1, max = 255, message = "{validation.User.introduce.Size}", groups = [Default::class])
 	var introduce: String = "这家伙很懒，什么也没留下。",
 	
 	/**头像地址。*/
@@ -65,18 +68,18 @@ class User(
 	
 	/**是否已激活。*/
 	@Column
-	var activateStatus: Boolean = false,
-	
+	var activateStatus: Boolean = false
+) : Serializable {
 	/**注册时间。*/
 	@Column
 	@CreatedDate
-	var registerTime: LocalDateTime? = null,
+	lateinit var registerTime: LocalDateTime
 	
 	/**资料更新时间。*/
 	@Column
 	@LastModifiedDate
-	var updateTime: LocalDateTime? = null
-) : Serializable {
+	lateinit var updateTime: LocalDateTime
+	
 	/**激活码。*/
 	@JsonIgnore
 	@Column
@@ -100,7 +103,7 @@ class User(
 	/**该用户点赞的收藏列表。懒加载。*/
 	@JsonIgnore
 	@ManyToMany(cascade = [CascadeType.MERGE])
-	var praiseToCollectList: MutableList<Collect> = mutableListOf()
+	val praiseToCollectList: MutableList<Collect> = mutableListOf()
 	
 	
 	override fun equals(other: Any?) = other is User && other.id == id

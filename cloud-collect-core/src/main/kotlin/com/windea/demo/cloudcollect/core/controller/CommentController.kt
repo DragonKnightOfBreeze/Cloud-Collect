@@ -10,8 +10,8 @@ import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
+import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
-import javax.validation.*
 
 /**评论的控制器。*/
 @Api("评论")
@@ -29,7 +29,7 @@ class CommentController(
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestParam collectId: Long,
-		@RequestBody @Valid comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
+		@RequestBody @Validated comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return commentService.create(collectId, comment, user)
 	}
@@ -43,7 +43,7 @@ class CommentController(
 	@PostMapping("/reply")
 	@PreAuthorize("isAuthenticated()")
 	fun reply(@RequestParam collectId: Long, @RequestParam replyToCommentId: Long,
-		@RequestBody @Valid comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
+		@RequestBody @Validated comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
 		return commentService.reply(collectId, replyToCommentId, comment, user)
 	}
