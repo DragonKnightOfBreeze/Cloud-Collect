@@ -38,15 +38,19 @@ class CollectCategory(
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
 	var user: User
 ) : Serializable {
+	@ApiModelProperty("收藏数量。")
+	@Transient
+	var collectCount: Long = 0
+	
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
-	var createdTime: LocalDateTime? = null
+	lateinit var createdTime: LocalDateTime
 	
 	@ApiModelProperty("最后更新时间。")
 	@Column
 	@LastModifiedDate
-	var lastModifiedTime: LocalDateTime? = null
+	lateinit var lastModifiedTime: LocalDateTime
 	
 	
 	override fun equals(other: Any?) = other is CollectCategory && other.id == id

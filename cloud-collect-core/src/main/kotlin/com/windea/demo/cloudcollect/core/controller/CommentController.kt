@@ -70,10 +70,4 @@ class CommentController(
 	fun getReplyByCommentPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Comment> {
 		return commentService.getReplyByCommentPage(id, pageable)
 	}
-	
-	@ApiOperation("得到回复某一评论的评论数量。")
-	@GetMapping("/{id}/replyByCommentCount")
-	fun getReplyByCommentCount(@PathVariable id: Long): Long {
-		return commentService.getReplyByCommentCount(id)
-	}
 }

@@ -38,15 +38,19 @@ class Comment(
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
 	var replyToComment: Comment? = null
 ) : Serializable {
+	@ApiModelProperty("回复此评论的评论数量。")
+	@Transient
+	var replyByCommentCount: Long = 0
+	
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
-	var createdTime: LocalDateTime? = null
+	lateinit var createdTime: LocalDateTime
 	
 	@ApiModelProperty("最后更新时间。")
 	@Column
 	@LastModifiedDate
-	var lastModifiedTime: LocalDateTime? = null
+	lateinit var lastModifiedTime: LocalDateTime
 	
 	
 	override fun equals(other: Any?) = other is Comment && other.id == id

@@ -17,61 +17,55 @@ class CollectTagServiceImpl(
 	private val tagRepository: CollectTagRepository
 ) : CollectTagService {
 	@Transactional
-	@CachePut
+	@CacheEvict(allEntries = true)
 	override fun create(tag: CollectTag, user: User): CollectTag {
 		tag.user = user
 		return tagRepository.save(tag)
 	}
 	
 	@Transactional
-	@CacheEvict
+	@CacheEvict(allEntries = true)
 	override fun delete(id: Long) {
 		tagRepository.deleteById(id)
 	}
 	
 	@Transactional
-	@CachePut
+	@CacheEvict(allEntries = true)
 	override fun modify(id: Long, tag: CollectTag): CollectTag {
-		val savedTag = findById(id)
+		val savedTag = tagRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		savedTag.name = tag.name
 		savedTag.summary = tag.summary
 		return tagRepository.save(savedTag)
 	}
 	
-	@Cacheable
+	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): CollectTag {
-		return tagRepository.findByIdOrNull(id) ?: throw NotFoundException()
+		return tagRepository.findByIdOrNull(id)?.lateInit() ?: throw NotFoundException()
 	}
 	
-	@Cacheable
-	override fun findByNameAndUserId(name: String, userId: Long): CollectTag {
-		return tagRepository.findByNameAndUserId(name, userId) ?: throw NotFoundException()
-	}
-	
-	@Cacheable
+	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<CollectTag> {
-		return tagRepository.findAll(pageable)
+		return tagRepository.findAll(pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable
+	@Cacheable(key = "methodName + args")
 	override fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<CollectTag> {
-		return tagRepository.findAllByNameContainsAndUserId(name, userId, pageable)
+		return tagRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable
+	@Cacheable(key = "methodName + args")
 	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectTag> {
-		return tagRepository.findAllByUserId(userId, pageable)
+		return tagRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
 	override fun existsByNameAndUserId(name: String, userId: Long): Boolean {
 		return tagRepository.existsByNameAndUserId(name, userId)
 	}
 	
-	
-	@Cacheable(key = "methodName + args")
-	override fun getCollectCount(id: Long): Long {
-		return collectRepository.countByTagId(id)
+	private fun CollectTag.lateInit() = this.apply {
+		collectCount = collectRepository.countByTagId(id!!)
 	}
+	
 	
 	@Cacheable(key = "methodName + args")
 	override fun getCollectPage(id: Long, pageable: Pageable): Page<Collect> {

@@ -32,7 +32,7 @@ class UserServiceImpl(
 		val validAuthentication = authenticationManager.authenticate(authentication)
 		SecurityContextHolder.getContext().authentication = validAuthentication
 		
-		return validAuthentication.principal as JwtUserDetails
+		return (validAuthentication.principal as JwtUserDetails).apply { delegateUser.lateInit() }
 	}
 	
 	@Transactional
@@ -51,7 +51,7 @@ class UserServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun activate(username: String, activateCode: String): User? {
-		val savedUser = findByUsername(username)
+		val savedUser = userRepository.findByUsername(username) ?: throw UserNotFoundException()
 		//如果激活码不匹配，则直接返回
 		if(savedUser.activateCode != activateCode) return null
 		
@@ -60,10 +60,8 @@ class UserServiceImpl(
 		return userRepository.save(savedUser)
 	}
 	
-	@Transactional
-	@CacheEvict(allEntries = true)
 	override fun forgotPassword(username: String): User {
-		val savedUser = findByUsername(username)
+		val savedUser = userRepository.findByUsername(username) ?: throw UserNotFoundException()
 		//设置随机重置密码验证码
 		savedUser.resetPasswordCode = UUID.randomUUID().toString()
 		return userRepository.save(savedUser)
@@ -72,7 +70,7 @@ class UserServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun resetPassword(form: ResetPasswordForm, resetPasswordCode: String): User? {
-		val savedUser = findByUsername(form.username)
+		val savedUser = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
 		//如果重置密码验证码不匹配，则直接返回
 		if(savedUser.resetPasswordCode != resetPasswordCode) return null
 		
@@ -84,7 +82,7 @@ class UserServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun modify(id: Long, user: User): User {
-		val savedUser = this.findById(id)
+		val savedUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		savedUser.password = passwordEncoder.encode(user.password)
 		savedUser.nickname = user.nickname
 		savedUser.introduce = user.introduce
@@ -95,78 +93,61 @@ class UserServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): User {
-		return userRepository.findByIdOrNull(id) ?: throw  NotFoundException()
+		return userRepository.findByIdOrNull(id)?.lateInit() ?: throw  NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findByUsername(username: String): User {
-		return userRepository.findByUsername(username) ?: throw  NotFoundException()
+		return userRepository.findByUsername(username)?.lateInit() ?: throw  NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findByEmail(email: String): User {
-		return userRepository.findByEmail(email) ?: throw  NotFoundException()
+		return userRepository.findByEmail(email)?.lateInit() ?: throw  NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<User> {
-		return userRepository.findAll(pageable)
+		return userRepository.findAll(pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByNicknameContains(nickname: String, pageable: Pageable): Page<User> {
-		return userRepository.findAllByNicknameContains(nickname, pageable)
+		return userRepository.findAllByNicknameContains(nickname, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByRole(role: Role, pageable: Pageable): Page<User> {
-		return userRepository.findAllByRole(role, pageable)
+		return userRepository.findAllByRole(role, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByFollowToUserId(followToUserId: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByFollowToUserId(followToUserId, pageable)
+		return userRepository.findAllByFollowToUserId(followToUserId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByFollowByUserId(followByUserId, pageable)
+		return userRepository.findAllByFollowByUserId(followByUserId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByPraiseToCollectId(praiseToCollectId, pageable)
+		return userRepository.findAllByPraiseToCollectId(praiseToCollectId, pageable).map { it.lateInit() }
 	}
 	
 	override fun existsByUsernameOrEmail(username: String, email: String): Boolean {
 		return userRepository.existsByUsernameOrEmail(username, email)
 	}
 	
-	
-	@Cacheable(key = "methodName + args")
-	override fun getFollowToUserCount(id: Long): Long {
-		return userRepository.countByFollowByUserId(id)
+	private fun User.lateInit() = this.apply {
+		followToUserCount = userRepository.countByFollowByUserId(id!!)
+		followByUserCount = userRepository.countByFollowToUserId(id!!)
+		collectCount = collectRepository.countByUserId(id!!)
+		commentCount = commentRepository.countBySponsorByUserId(id!!)
+		noticeCount = noticeRepository.countByUserId(id!!)
 	}
 	
-	@Cacheable(key = "methodName + args")
-	override fun getFollowByUserCount(id: Long): Long {
-		return userRepository.countByFollowToUserId(id)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun getCollectCount(id: Long): Long {
-		return collectRepository.countByUserId(id)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun getCommentCount(id: Long): Long {
-		return commentRepository.countBySponsorByUserId(id)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun getNoticeCount(id: Long): Long {
-		return noticeRepository.countByUserId(id)
-	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun getFollowToUserPage(id: Long, pageable: Pageable): Page<User> {

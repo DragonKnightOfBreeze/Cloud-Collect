@@ -27,9 +27,6 @@ interface CommentService {
 	fun findAllBySponsorByUserId(sponsorByUserId: Long, pageable: Pageable): Page<Comment>
 	
 	
-	/**得到回复此评论的评论数量。*/
-	fun getReplyByCommentCount(id: Long): Long
-	
 	/**得到回复此评论的所有评论。*/
 	fun getReplyByCommentPage(id: Long, pageable: Pageable): Page<Comment>
 }

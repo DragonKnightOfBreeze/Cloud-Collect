@@ -39,8 +39,8 @@ class CollectTagController(
 	@ApiOperation("修改自己的标签。")
 	@PutMapping("/{id}")
 	@PreAuthorize("hasPermission(#id, 'CollectTag', 'write')")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated tag: CollectTag, bindingResult: BindingResult): CollectTag {
-		return tagService.modify(id, tag)
+	fun modify(@PathVariable id: Long, @RequestBody @Validated tag: CollectTag, bindingResult: BindingResult) {
+		tagService.modify(id, tag)
 	}
 	
 	@ApiOperation("根据id得到某一标签。")
@@ -67,12 +67,6 @@ class CollectTagController(
 		return tagService.findAllByNameContainsAndUserId(name, userId, pageable)
 	}
 	
-	
-	@ApiOperation("得到某一标签的收藏数量。")
-	@GetMapping("/{id}/collectCount")
-	fun getCollectCount(@PathVariable id: Long): Long {
-		return tagService.getCollectCount(id)
-	}
 	
 	@ApiOperation("得到某一标签的所有收藏。")
 	@GetMapping("/{id}/collectPage")

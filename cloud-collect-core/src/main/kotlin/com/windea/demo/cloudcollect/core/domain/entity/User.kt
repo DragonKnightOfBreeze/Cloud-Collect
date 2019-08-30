@@ -71,6 +71,27 @@ class User(
 	@Column
 	var activateStatus: Boolean = false
 ) : Serializable {
+	@ApiModelProperty("关注用户数量。")
+	@Transient
+	var followToUserCount: Long = 0
+	
+	@ApiModelProperty("粉丝用户数量。")
+	@Transient
+	var followByUserCount: Long = 0
+	
+	@ApiModelProperty("收藏数量。")
+	@Transient
+	var collectCount: Long = 0
+	
+	@ApiModelProperty("评论数量。")
+	@Transient
+	var commentCount: Long = 0
+	
+	@ApiModelProperty("通知数量。")
+	@Transient
+	var noticeCount: Long = 0
+	
+	
 	@ApiModelProperty("注册时间。")
 	@Column
 	@CreatedDate

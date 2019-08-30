@@ -33,9 +33,6 @@ interface CollectService {
 	/**根据id得到某一收藏。*/
 	fun findById(id: Long): Collect
 	
-	/**根据名字、用户id得到某一收藏。*/
-	fun findByNameAndUserId(name: String, userId: Long): Collect
-	
 	/**得到随机收藏。*/
 	fun findByRandom(): Collect
 	
@@ -63,12 +60,6 @@ interface CollectService {
 	/**检查某一收藏是否已存在。*/
 	fun existsByNameAndUserId(name: String, userId: Long): Boolean
 	
-	
-	/**得到该收藏的点赞用户数量。*/
-	fun getPraiseByUserCount(id: Long): Long
-	
-	/**得到该收藏的评论数量。*/
-	fun getCommentCount(id: Long): Long
 	
 	/**得到该收藏的所有点赞用户。*/
 	fun getPraiseByUserPage(id: Long, pageable: Pageable): Page<User>

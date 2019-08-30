@@ -10,7 +10,6 @@ import com.windea.utility.common.annotations.marks.*
 import com.windea.utility.common.enums.*
 import org.springframework.cache.annotation.*
 import org.springframework.stereotype.*
-import org.springframework.validation.annotation.*
 import org.springframework.web.multipart.*
 import java.io.*
 import java.nio.file.*
@@ -66,34 +65,28 @@ class DataImportExportServiceImpl(
 		return file
 	}
 	
-	private fun Collect.toCollectSchema(): CollectSchema {
-		return CollectSchema(
-			this.name,
-			this.summary,
-			this.url,
-			this.logoUrl,
-			this.category?.name ?: "默认分类",
-			this.tags.map { it.name },
-			this.type
-		)
-	}
+	private fun Collect.toCollectSchema() = CollectSchema(
+		name = this.name,
+		summary = this.summary,
+		url = this.url,
+		logoUrl = this.logoUrl,
+		categoryName = this.category?.name ?: "默认分类",
+		tagNames = this.tags.map { it.name },
+		type = this.type
+	)
 	
-	@Validated
-	private fun CollectSchema.toCollect(user: User): Collect {
-		val userId = user.id ?: throw UserNotFoundException()
-		return Collect(
-			name = this.name,
-			summary = this.summary,
-			url = this.url,
-			logoUrl = this.logoUrl,
-			category = this.categoryName.let {
-				categoryRepository.findByNameAndUserId(it, userId) ?: CollectCategory(name = name, user = user)
-			},
-			tags = tagNames.map {
-				tagRepository.findByNameAndUserId(it, userId) ?: CollectTag(name = name, user = user)
-			}.distinctBy { it.name }.toMutableSet(),
-			type = this.type,
-			user = user
-		)
-	}
+	private fun CollectSchema.toCollect(user: User) = Collect(
+		name = this.name,
+		summary = this.summary,
+		url = this.url,
+		logoUrl = this.logoUrl,
+		category = this.categoryName.let {
+			categoryRepository.findByNameAndUserId(it, user.id!!) ?: CollectCategory(name = name, user = user)
+		},
+		tags = tagNames.map {
+			tagRepository.findByNameAndUserId(it, user.id!!) ?: CollectTag(name = name, user = user)
+		}.distinctBy { it.name }.toMutableSet(),
+		type = this.type,
+		user = user
+	)
 }

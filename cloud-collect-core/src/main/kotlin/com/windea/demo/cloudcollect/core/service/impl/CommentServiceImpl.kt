@@ -29,7 +29,7 @@ class CommentServiceImpl(
 	override fun reply(collectId: Long, replyToCommentId: Long, comment: Comment, sponsorByUser: User): Comment {
 		comment.collect = collectRepository.findByIdOrNull(collectId) ?: throw NotFoundException()
 		comment.sponsorByUser = sponsorByUser
-		comment.replyToComment = findById(replyToCommentId)
+		comment.replyToComment = commentRepository.findByIdOrNull(replyToCommentId) ?: throw NotFoundException()
 		return commentRepository.save(comment)
 	}
 	
@@ -59,11 +59,10 @@ class CommentServiceImpl(
 		return commentRepository.findAllBySponsorByUserId(sponsorByUserId, pageable)
 	}
 	
-	
-	@Cacheable(key = "methodName + args")
-	override fun getReplyByCommentCount(id: Long): Long {
-		return commentRepository.countByReplyToCommentId(id)
+	private fun Comment.lateInit() = this.apply {
+		replyByCommentCount = commentRepository.countByReplyToCommentId(id!!)
 	}
+	
 	
 	@Cacheable(key = "methodName + args")
 	override fun getReplyByCommentPage(id: Long, pageable: Pageable): Page<Comment> {

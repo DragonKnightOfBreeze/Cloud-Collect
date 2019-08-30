@@ -33,7 +33,7 @@ class CollectServiceImpl(
 		praise(id, user)
 		
 		//从别人的收藏创建新的收藏
-		val collect = findById(id)
+		val collect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		val savedCollect = Collect(
 			name = collect.name,
 			summary = collect.summary,
@@ -56,7 +56,7 @@ class CollectServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun modify(id: Long, collect: Collect): Collect {
-		val savedCollect = findById(id)
+		val savedCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		savedCollect.name = collect.name
 		savedCollect.summary = collect.summary
 		savedCollect.url = collect.url
@@ -70,7 +70,7 @@ class CollectServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun modifyCategory(id: Long, category: CollectCategory): Collect {
-		val savedCollect = findById(id)
+		val savedCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		savedCollect.category = category
 		return collectRepository.save(savedCollect)
 	}
@@ -78,7 +78,7 @@ class CollectServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun modifyTags(id: Long, tags: MutableSet<CollectTag>): Collect {
-		val savedCollect = findById(id)
+		val savedCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		savedCollect.tags = tags
 		return collectRepository.save(savedCollect)
 	}
@@ -86,7 +86,7 @@ class CollectServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun modifyType(id: Long, type: CollectType): Collect {
-		val savedCollect = findById(id)
+		val savedCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		savedCollect.type = type
 		return collectRepository.save(savedCollect)
 	}
@@ -94,77 +94,65 @@ class CollectServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun praise(id: Long, user: User): Collect {
-		val savedCollect = findById(id)
+		val savedCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		savedCollect.praiseByUserList += user
 		return collectRepository.save(savedCollect)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): Collect {
-		return collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun findByNameAndUserId(name: String, userId: Long): Collect {
-		return collectRepository.findByNameAndUserId(name, userId) ?: throw NotFoundException()
+		return collectRepository.findByIdOrNull(id)?.lateInit() ?: throw NotFoundException()
 	}
 	
 	override fun findByRandom(): Collect {
 		val randomId = RandomExtension.range(1, collectRepository.count())
-		return findById(randomId)
+		return collectRepository.findByIdOrNull(randomId)?.lateInit() ?: throw NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<Collect> {
-		return collectRepository.findAll(pageable)
+		return collectRepository.findAll(pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByNameContains(name: String, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByNameContains(name, pageable)
+		return collectRepository.findAllByNameContains(name, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByNameContainsAndUserId(name: String, userId: Long,
-		pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByNameContainsAndUserId(name, userId, pageable)
+	override fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByCategoryId(categoryId, pageable)
+		return collectRepository.findAllByCategoryId(categoryId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByTagId(tagId: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByTagId(tagId, pageable)
+		return collectRepository.findAllByTagId(tagId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByTypeAndUserId(type: CollectType, userId: Long,
-		pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByTypeAndUserId(type, userId, pageable)
+	override fun findAllByTypeAndUserId(type: CollectType, userId: Long, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByTypeAndUserId(type, userId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByUserId(userId, pageable)
+		return collectRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
 	override fun existsByNameAndUserId(name: String, userId: Long): Boolean {
 		return collectRepository.existsByNameAndUserId(name, userId)
 	}
 	
-	
-	@Cacheable(key = "methodName + args")
-	override fun getPraiseByUserCount(id: Long): Long {
-		return userRepository.countByPraiseToCollectId(id)
+	private fun Collect.lateInit() = this.apply {
+		praiseByUserCount = userRepository.countByPraiseToCollectId(id!!)
+		commentCount = commentRepository.countByCollectId(id!!)
 	}
 	
-	@Cacheable(key = "methodName + args")
-	override fun getCommentCount(id: Long): Long {
-		return commentRepository.countByCollectId(id)
-	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun getPraiseByUserPage(id: Long, pageable: Pageable): Page<User> {

@@ -49,8 +49,8 @@ class IndexController(
 	@ApiOperation("忘记用户密码，发送重置密码邮件。")
 	@PostMapping("/forgotPassword")
 	@PreAuthorize("isAnonymous()")
-	fun forgotPassword(@RequestParam username: String): User {
-		return userService.forgotPassword(username).also {
+	fun forgotPassword(@RequestParam username: String) {
+		userService.forgotPassword(username).also {
 			//发送重置密码邮件
 			if(configProperties.sendEmail) emailService.sendResetPasswordEmail(it)
 		}
@@ -58,8 +58,8 @@ class IndexController(
 	
 	@ApiOperation("激活用户。")
 	@PutMapping("/activate")
-	fun activate(@RequestParam username: String, @RequestParam activateCode: String): User? {
-		return userService.activate(username, activateCode)?.also {
+	fun activate(@RequestParam username: String, @RequestParam activateCode: String) {
+		userService.activate(username, activateCode)?.also {
 			//发送欢迎邮件
 			if(configProperties.sendEmail) emailService.sendHelloEmail(it)
 		}
@@ -67,8 +67,8 @@ class IndexController(
 	
 	@ApiOperation("重置用户密码。")
 	@PutMapping("/resetPassword")
-	fun resetPassword(@Validated @RequestBody form: ResetPasswordForm, bindingResult: BindingResult, @RequestParam resetPasswordCode: String): User? {
-		return userService.resetPassword(form, resetPasswordCode)?.also {
+	fun resetPassword(@Validated @RequestBody form: ResetPasswordForm, bindingResult: BindingResult, @RequestParam resetPasswordCode: String) {
+		userService.resetPassword(form, resetPasswordCode)?.also {
 			//发送重置密码成功邮件
 			if(configProperties.sendEmail) emailService.sendResetPasswordSuccessEmail(it)
 		}

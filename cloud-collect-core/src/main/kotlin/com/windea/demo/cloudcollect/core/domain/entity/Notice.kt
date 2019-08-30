@@ -43,12 +43,12 @@ class Notice(
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
-	var createdTime: LocalDateTime? = null
+	lateinit var createdTime: LocalDateTime
 	
 	@ApiModelProperty("最后更新时间。")
 	@Column
 	@LastModifiedDate
-	var lastModifiedTime: LocalDateTime? = null
+	lateinit var lastModifiedTime: LocalDateTime
 	
 	
 	override fun equals(other: Any?) = other is Notice && other.id == id

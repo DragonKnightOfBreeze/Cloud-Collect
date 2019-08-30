@@ -23,8 +23,8 @@ class UserController(
 	
 	@ApiOperation("更新用户信息。")
 	@PutMapping("/{id}")
-	fun update(@PathVariable id: Long, @RequestBody @Validated user: User, bindingResult: BindingResult): User {
-		return userService.modify(id, user)
+	fun update(@PathVariable id: Long, @RequestBody @Validated user: User, bindingResult: BindingResult) {
+		userService.modify(id, user)
 	}
 	
 	@ApiOperation("根据id得到用户。")
@@ -51,36 +51,6 @@ class UserController(
 		return userService.findAllByRole(role, pageable)
 	}
 	
-	
-	@ApiOperation("得到该用户的关注用户数量。")
-	@GetMapping("/{id}/followToUserCount")
-	fun getFollowToUserCount(@PathVariable id: Long): Long {
-		return userService.getFollowToUserCount(id)
-	}
-	
-	@ApiOperation("得到该用户的粉丝用户数量。")
-	@GetMapping("/{id}/followByUserCount")
-	fun getFollowByUserCount(@PathVariable id: Long): Long {
-		return userService.getFollowByUserCount(id)
-	}
-	
-	@ApiOperation("得到该用户的收藏数量。")
-	@GetMapping("/{id}/collectCount")
-	fun getCollectCount(@PathVariable id: Long): Long {
-		return userService.getCollectCount(id)
-	}
-	
-	@ApiOperation("得到该用户的评论数量。")
-	@GetMapping("/{id}/commentCount")
-	fun getCommentCount(@PathVariable id: Long): Long {
-		return userService.getCommentCount(id)
-	}
-	
-	@ApiOperation("得到某一用户的通知数量。")
-	@GetMapping("/{id}/noticeCount")
-	fun getNoticeCount(@PathVariable id: Long): Long {
-		return userService.getNoticeCount(id)
-	}
 	
 	@ApiOperation("得到该用户的所有关注用户。")
 	@GetMapping("/{id}/followToUserPage")

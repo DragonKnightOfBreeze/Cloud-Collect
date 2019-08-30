@@ -45,7 +45,7 @@ class NoticeServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun read(id: Long): Notice {
-		val savedNotice = findById(id)
+		val savedNotice = noticeRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		savedNotice.readStatus = true
 		return noticeRepository.save(savedNotice)
 	}

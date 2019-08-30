@@ -32,7 +32,7 @@ class CollectCategoryServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun modify(id: Long, category: CollectCategory): CollectCategory {
-		val savedCategory = findById(id)
+		val savedCategory = categoryRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		savedCategory.name = category.name
 		savedCategory.summary = category.summary
 		return categoryRepository.save(savedCategory)
@@ -40,38 +40,32 @@ class CollectCategoryServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): CollectCategory {
-		return categoryRepository.findByIdOrNull(id) ?: throw NotFoundException()
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun findByNameAndUserId(name: String, userId: Long): CollectCategory {
-		return categoryRepository.findByNameAndUserId(name, userId) ?: throw NotFoundException()
+		return categoryRepository.findByIdOrNull(id)?.lateInit() ?: throw NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAll(pageable: Pageable): Page<CollectCategory> {
-		return categoryRepository.findAll(pageable)
+		return categoryRepository.findAll(pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByNameContainsAndUserId(userId: Long, name: String, pageable: Pageable): Page<CollectCategory> {
-		return categoryRepository.findAllByNameContainsAndUserId(name, userId, pageable)
+		return categoryRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectCategory> {
-		return categoryRepository.findAllByUserId(userId, pageable)
+		return categoryRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
 	override fun existsByNameAndUserId(name: String, userId: Long): Boolean {
 		return categoryRepository.existsByNameAndUserId(name, userId)
 	}
 	
-	
-	@Cacheable(key = "methodName + args")
-	override fun getCollectCount(id: Long): Long {
-		return collectRepository.countByCategoryId(id)
+	private fun CollectCategory.lateInit() = this.apply {
+		collectCount = collectRepository.countByCategoryId(this.id!!)
 	}
+	
 	
 	@Cacheable(key = "methodName + args")
 	override fun getCollectPage(id: Long, pageable: Pageable): Page<Collect> {

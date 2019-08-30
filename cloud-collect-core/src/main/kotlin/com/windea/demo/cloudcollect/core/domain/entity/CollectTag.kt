@@ -38,6 +38,10 @@ class CollectTag(
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
 	var user: User
 ) : Serializable {
+	@ApiModelProperty("收藏数量。")
+	@Transient
+	var collectCount: Long = 0
+	
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate

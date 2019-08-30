@@ -53,36 +53,36 @@ class CollectController(
 	@ApiOperation("修改自己的收藏。")
 	@PutMapping("/{id}")
 	@PreAuthorize("hasPermission(#id, 'Collect', 'write')")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated collect: Collect, bindingResult: BindingResult): Collect {
-		return service.modify(id, collect)
+	fun modify(@PathVariable id: Long, @RequestBody @Validated collect: Collect, bindingResult: BindingResult) {
+		service.modify(id, collect)
 	}
 	
 	@ApiOperation("修改自己的收藏的分类。")
 	@PutMapping("/{id}/category")
 	@PreAuthorize("hasPermission(#id, 'Collect', 'write')")
-	fun modifyCategory(@PathVariable id: Long, @RequestBody category: CollectCategory): Collect {
-		return service.modifyCategory(id, category)
+	fun modifyCategory(@PathVariable id: Long, @RequestBody category: CollectCategory) {
+		service.modifyCategory(id, category)
 	}
 	
 	@ApiOperation("修改自己的收藏的标签。")
 	@PutMapping("/{id}/tags")
 	@PreAuthorize("hasPermission(#id, 'Collect', 'write')")
-	fun modifyTags(@PathVariable id: Long, @RequestBody tags: MutableSet<CollectTag>): Collect {
-		return service.modifyTags(id, tags)
+	fun modifyTags(@PathVariable id: Long, @RequestBody tags: MutableSet<CollectTag>) {
+		service.modifyTags(id, tags)
 	}
 	
 	@ApiOperation("修改自己的收藏的类型。")
 	@PutMapping("/{id}/type")
 	@PreAuthorize("hasPermission(#id, 'CollectCategory', 'write')")
-	fun modifyType(@PathVariable id: Long, @RequestBody type: CollectType): Collect {
-		return service.modifyType(id, type)
+	fun modifyType(@PathVariable id: Long, @RequestBody type: CollectType) {
+		service.modifyType(id, type)
 	}
 	
 	@ApiOperation("点赞某一收藏。")
 	@PutMapping("/{id}/praise")
-	fun praise(@PathVariable id: Long, authentication: Authentication): Collect {
+	fun praise(@PathVariable id: Long, authentication: Authentication) {
 		val user = (authentication.principal as JwtUserDetails).delegateUser
-		return service.praise(id, user)
+		service.praise(id, user)
 	}
 	
 	@ApiOperation("根据id得到某一收藏。")
@@ -133,18 +133,6 @@ class CollectController(
 		return service.findAllByUserId(userId, pageable)
 	}
 	
-	
-	@ApiOperation("得到某一收藏的点赞用户数量。")
-	@GetMapping("/{id}/praiseByUserCount")
-	fun getPraiseByUserCount(@PathVariable id: Long): Long {
-		return service.getPraiseByUserCount(id)
-	}
-	
-	@ApiOperation("得到该收藏的评论数量。")
-	@GetMapping("/{id}/commentCount")
-	fun getCommentCount(@PathVariable id: Long): Long {
-		return service.getCommentCount(id)
-	}
 	
 	@ApiOperation("得到该收藏的所有点赞用户。")
 	@GetMapping("/{id}/praiseByUserPage")

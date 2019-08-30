@@ -17,9 +17,6 @@ interface CollectCategoryService {
 	/**根据id得到某一分类。*/
 	fun findById(id: Long): CollectCategory
 	
-	/**根据名字和用户id得到某一分类。*/
-	fun findByNameAndUserId(name: String, userId: Long): CollectCategory
-	
 	/**得到所有分类。*/
 	fun findAll(pageable: Pageable): Page<CollectCategory>
 	
@@ -32,9 +29,6 @@ interface CollectCategoryService {
 	/**检查某一分类是否已存在。*/
 	fun existsByNameAndUserId(name: String, userId: Long): Boolean
 	
-	
-	/**得到该分类的收藏数量。*/
-	fun getCollectCount(id: Long): Long
 	
 	/**得到该分类的所有收藏。*/
 	fun getCollectPage(id: Long, pageable: Pageable): Page<Collect>

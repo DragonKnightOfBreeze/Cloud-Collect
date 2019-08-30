@@ -57,21 +57,6 @@ interface UserService {
 	fun existsByUsernameOrEmail(username: String, email: String): Boolean
 	
 	
-	/**得到该用户的关注用户数量。*/
-	fun getFollowToUserCount(id: Long): Long
-	
-	/**得到该用户的粉丝用户数量。*/
-	fun getFollowByUserCount(id: Long): Long
-	
-	/**得到该用户的收藏数量。*/
-	fun getCollectCount(id: Long): Long
-	
-	/**得到该用户的评论数量。*/
-	fun getCommentCount(id: Long): Long
-	
-	/**得到该用户的通知数量。*/
-	fun getNoticeCount(id: Long): Long
-	
 	/**得到该用户的所有关注用户。*/
 	fun getFollowToUserPage(id: Long, pageable: Pageable): Page<User>
 	

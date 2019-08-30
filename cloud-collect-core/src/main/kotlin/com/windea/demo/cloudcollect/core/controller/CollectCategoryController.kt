@@ -39,8 +39,8 @@ class CollectCategoryController(
 	@ApiOperation("修改自己的分类。")
 	@PutMapping("/{id}")
 	@PreAuthorize("hasPermission(#id, 'CollectCategory', 'write')")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated category: CollectCategory, bindingResult: BindingResult): CollectCategory {
-		return categoryService.modify(id, category)
+	fun modify(@PathVariable id: Long, @RequestBody @Validated category: CollectCategory, bindingResult: BindingResult) {
+		categoryService.modify(id, category)
 	}
 	
 	@ApiOperation("根据id得到某一分类。")
@@ -67,12 +67,6 @@ class CollectCategoryController(
 		return categoryService.findAllByNameContainsAndUserId(userId, name, pageable)
 	}
 	
-	
-	@ApiOperation("得到该分类的收藏数量。")
-	@GetMapping("/{id}/collectCount")
-	fun getCollectCount(@PathVariable id: Long): Long {
-		return categoryService.getCollectCount(id)
-	}
 	
 	@ApiOperation("得到该分类的所有收藏。")
 	@GetMapping("/{id}/collectPage")

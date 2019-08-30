@@ -35,8 +35,8 @@ class NoticeController(
 	
 	@ApiOperation("阅读自己的通知。")
 	@PutMapping("/{id}/read")
-	fun read(@PathVariable id: Long): Notice {
-		return noticeService.read(id)
+	fun read(@PathVariable id: Long) {
+		noticeService.read(id)
 	}
 	
 	@ApiOperation("得到某一通知。")

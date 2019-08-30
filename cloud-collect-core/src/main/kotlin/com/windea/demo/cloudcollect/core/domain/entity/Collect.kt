@@ -12,6 +12,7 @@ import java.time.*
 import java.util.*
 import javax.persistence.*
 import javax.persistence.Id
+import javax.persistence.Transient
 import javax.validation.*
 import javax.validation.constraints.*
 
@@ -64,15 +65,23 @@ class Collect(
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
 	var user: User
 ) : Serializable {
+	@ApiModelProperty("点赞用户数量。")
+	@Transient
+	var praiseByUserCount: Long = 0
+	
+	@ApiModelProperty("评论数量。")
+	@Transient
+	var commentCount: Long = 0
+	
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
-	var createdTime: LocalDateTime? = null
+	lateinit var createdTime: LocalDateTime
 	
 	@ApiModelProperty("最后更新时间。")
 	@Column
 	@LastModifiedDate
-	var lastModifiedTime: LocalDateTime? = null
+	lateinit var lastModifiedTime: LocalDateTime
 	
 	@ApiModelProperty("点赞该收藏的用户列表。懒加载。")
 	@JsonIgnore
