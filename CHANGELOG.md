@@ -58,5 +58,6 @@
     * [X] 重构参数验证功能，仍然存在bug。
     * [X] 为每个验证注解添加显式分组，以规避Jpa持久化操作时的依赖注入的NPE。
     * [X] 确保`@CreatedDate`和`@LastModifiedDate`能够正常工作。
+    * [X] 使用基于`spring-security-jwt`的jwt进行安全校验。
     * [ ] 为实体类添加额外字段。
     * [ ] 更新依赖的kotlin-utility。

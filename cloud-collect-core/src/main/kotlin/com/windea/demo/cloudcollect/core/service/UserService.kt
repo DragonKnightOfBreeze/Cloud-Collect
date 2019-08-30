@@ -3,12 +3,13 @@ package com.windea.demo.cloudcollect.core.service
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.enums.*
 import com.windea.demo.cloudcollect.core.domain.request.*
+import com.windea.demo.cloudcollect.core.domain.response.*
 import org.springframework.data.domain.*
 
 /**用户的服务。登录、重置密码等功能委托给`UserDetailsService`。*/
 interface UserService {
 	/**通过用户名&密码登录用户。*/
-	fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): User
+	fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): JwtUserDetails
 	
 	/**通过邮箱注册用户。密码需要加密。*/
 	fun registerByEmail(form: EmailRegisterForm): User

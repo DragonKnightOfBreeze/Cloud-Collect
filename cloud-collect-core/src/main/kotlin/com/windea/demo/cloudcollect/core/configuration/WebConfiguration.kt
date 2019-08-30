@@ -3,7 +3,6 @@ package com.windea.demo.cloudcollect.core.configuration
 import org.hibernate.validator.*
 import org.springframework.context.annotation.*
 import org.springframework.context.support.*
-import org.springframework.security.crypto.bcrypt.*
 import org.springframework.validation.*
 import org.springframework.validation.beanvalidation.*
 import org.springframework.web.servlet.config.annotation.*
@@ -34,11 +33,5 @@ class WebConfiguration : WebMvcConfigurer {
 			setProviderClass(HibernateValidator::class.java)
 			setValidationMessageSource(messageSource())
 		}
-	}
-	
-	//用于加密密码。
-	@Bean
-	open fun passwordEncoder(): BCryptPasswordEncoder {
-		return BCryptPasswordEncoder()
 	}
 }

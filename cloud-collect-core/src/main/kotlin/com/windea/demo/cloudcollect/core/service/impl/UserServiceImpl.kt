@@ -27,12 +27,12 @@ class UserServiceImpl(
 	private val passwordEncoder: PasswordEncoder,
 	private val authenticationManager: AuthenticationManager
 ) : UserService {
-	override fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): User {
+	override fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): JwtUserDetails {
 		val authentication = UsernamePasswordAuthenticationToken(form.username, form.password)
 		val validAuthentication = authenticationManager.authenticate(authentication)
 		SecurityContextHolder.getContext().authentication = validAuthentication
 		
-		return (validAuthentication.principal as JwtUserDetails).delegateUser
+		return validAuthentication.principal as JwtUserDetails
 	}
 	
 	@Transactional

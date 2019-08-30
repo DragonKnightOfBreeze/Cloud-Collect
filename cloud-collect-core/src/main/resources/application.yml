@@ -63,6 +63,8 @@ spring:
       mail.smtp.starttls.enable: true
       mail.smtp.starttls.required: true
 
+
+
 server:
   tomcat:
     # 配置Tomcat的访问日志
@@ -81,10 +83,10 @@ com:
       send-email: false
     security:
       jwt:
-        token-header: Authorization
-        token-head: Bearer
-        secret: com.windea
-        expiration: 86400
+        client-id: ""
+        secret: Windea
+        grant-type: password
+        resource-id: ""
     validation:
       username: "\\w{6,16}"
       password: "[a-zA-Z]\\w{5,15}"

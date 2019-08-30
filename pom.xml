@@ -20,7 +20,6 @@
 
   <modules>
     <module>cloud-collect-core</module>
-    <module>cloud-collect-demo</module>
   </modules>
 
   <properties>
@@ -37,6 +36,7 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>

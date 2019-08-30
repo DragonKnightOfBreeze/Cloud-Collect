@@ -7,15 +7,15 @@ import org.springframework.context.annotation.*
 @Configuration
 @ConfigurationProperties("com.windea.security.jwt")
 class JwtProperties {
-	/**jwt口令的请求头。*/
-	lateinit var tokenHeader: String
+	lateinit var signingKey: String
 	
-	/**jwt口令的开头。*/
-	lateinit var tokenHead: String
+	lateinit var verifierKey: String
 	
-	/**jwt密钥。*/
 	lateinit var secret: String
 	
-	/**jwt过期时间。*/
-	var expiration: Int = 86400
+	lateinit var clientId: String
+	
+	lateinit var resourceId: String
+	
+	var grantType: String = "password"
 }
