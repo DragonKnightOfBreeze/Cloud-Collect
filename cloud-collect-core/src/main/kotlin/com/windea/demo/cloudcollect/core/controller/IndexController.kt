@@ -24,16 +24,6 @@ class IndexController(
 	private val emailService: EmailService,
 	private val configProperties: ConfigProperties
 ) {
-	@ApiOperation("通过用户名&密码登录用户。")
-	@PostMapping("/login", "/loginByUsernameAndPassword")
-	@PreAuthorize("isAnonymous()")
-	fun loginByUsernameAndPassword(@RequestBody @Validated form: UsernamePasswordLoginForm, bindingResult: BindingResult): JwtUserDetails {
-		return userService.loginByUsernameAndPassword(form).also {
-			//成功注册后，发送激活邮件
-			if(configProperties.sendEmail) emailService.sendActivateEmail(it.delegateUser)
-		}
-	}
-	
 	@ApiOperation("通过邮箱注册用户。")
 	@PostMapping("/register", "/registerByEmail")
 	@PreAuthorize("isAnonymous()")
@@ -46,6 +36,25 @@ class IndexController(
 		}
 	}
 	
+	@ApiOperation("激活用户。")
+	@PutMapping("/activate")
+	fun activate(@RequestParam username: String, @RequestParam activateCode: String) {
+		userService.activate(username, activateCode)?.also {
+			//发送欢迎邮件
+			if(configProperties.sendEmail) emailService.sendHelloEmail(it)
+		}
+	}
+	
+	@ApiOperation("通过用户名&密码登录用户。")
+	@PostMapping("/login", "/loginByUsernameAndPassword")
+	@PreAuthorize("isAnonymous()")
+	fun loginByUsernameAndPassword(@RequestBody @Validated form: UsernamePasswordLoginForm, bindingResult: BindingResult): JwtUserDetails {
+		return userService.loginByUsernameAndPassword(form).also {
+			//成功注册后，发送激活邮件
+			if(configProperties.sendEmail) emailService.sendActivateEmail(it.delegateUser)
+		}
+	}
+	
 	@ApiOperation("忘记用户密码，发送重置密码邮件。")
 	@PostMapping("/forgotPassword")
 	@PreAuthorize("isAnonymous()")
@@ -53,15 +62,6 @@ class IndexController(
 		userService.forgotPassword(username).also {
 			//发送重置密码邮件
 			if(configProperties.sendEmail) emailService.sendResetPasswordEmail(it)
-		}
-	}
-	
-	@ApiOperation("激活用户。")
-	@PutMapping("/activate")
-	fun activate(@RequestParam username: String, @RequestParam activateCode: String) {
-		userService.activate(username, activateCode)?.also {
-			//发送欢迎邮件
-			if(configProperties.sendEmail) emailService.sendHelloEmail(it)
 		}
 	}
 	

@@ -8,14 +8,14 @@ import org.springframework.data.domain.*
 
 /**用户的服务。登录、重置密码等功能委托给`UserDetailsService`。*/
 interface UserService {
-	/**通过用户名&密码登录用户。*/
-	fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): JwtUserDetails
-	
 	/**通过邮箱注册用户。密码需要加密。*/
 	fun registerByEmail(form: EmailRegisterForm): User
 	
 	/**激活用户。*/
 	fun activate(username: String, activateCode: String): User?
+	
+	/**通过用户名&密码登录用户。*/
+	fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): JwtUserDetails
 	
 	/**忘记用户密码，发送重置密码邮件。*/
 	fun forgotPassword(username: String): User

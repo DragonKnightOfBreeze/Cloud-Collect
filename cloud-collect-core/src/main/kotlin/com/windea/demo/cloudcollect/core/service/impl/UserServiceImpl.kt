@@ -27,14 +27,6 @@ class UserServiceImpl(
 	private val passwordEncoder: PasswordEncoder,
 	private val authenticationManager: AuthenticationManager
 ) : UserService {
-	override fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): JwtUserDetails {
-		val authentication = UsernamePasswordAuthenticationToken(form.username, form.password)
-		val validAuthentication = authenticationManager.authenticate(authentication)
-		SecurityContextHolder.getContext().authentication = validAuthentication
-		
-		return (validAuthentication.principal as JwtUserDetails).apply { delegateUser.lateInit() }
-	}
-	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun registerByEmail(form: EmailRegisterForm): User {
@@ -58,6 +50,14 @@ class UserServiceImpl(
 		savedUser.activateCode = null
 		savedUser.activateStatus = true
 		return userRepository.save(savedUser)
+	}
+	
+	override fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): JwtUserDetails {
+		val authentication = UsernamePasswordAuthenticationToken(form.username, form.password)
+		val validAuthentication = authenticationManager.authenticate(authentication)
+		SecurityContextHolder.getContext().authentication = validAuthentication
+		
+		return (validAuthentication.principal as JwtUserDetails).apply { delegateUser.lateInit() }
 	}
 	
 	override fun forgotPassword(username: String): User {
