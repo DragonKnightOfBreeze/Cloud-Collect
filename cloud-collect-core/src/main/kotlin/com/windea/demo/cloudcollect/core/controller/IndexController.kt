@@ -4,6 +4,7 @@ package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.request.*
+import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.properties.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
@@ -29,10 +30,10 @@ class IndexController(
 	)
 	@PostMapping("/login", "/loginByUsernameAndPassword")
 	@PreAuthorize("isAnonymous()")
-	fun loginByUsernameAndPassword(@RequestBody @Validated form: UsernamePasswordLoginForm, bindingResult: BindingResult): User {
+	fun loginByUsernameAndPassword(@RequestBody @Validated form: UsernamePasswordLoginForm, bindingResult: BindingResult): JwtUserDetails {
 		return userService.loginByUsernameAndPassword(form).also {
 			//成功注册后，发送激活邮件
-			if(configProperties.sendEmail) emailService.sendActivateEmail(it)
+			if(configProperties.sendEmail) emailService.sendActivateEmail(it.delegateUser)
 		}
 	}
 	

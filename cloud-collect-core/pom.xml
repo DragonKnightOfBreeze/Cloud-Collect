@@ -68,9 +68,15 @@
       <artifactId>springfox-swagger-ui</artifactId>
       <version>2.6.1</version>
     </dependency>
+
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-pool2</artifactId>
+    </dependency>
+    <!--java8之后的版本需要手动添加jaxb-api的实现-->
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
     </dependency>
   </dependencies>
 </project>
