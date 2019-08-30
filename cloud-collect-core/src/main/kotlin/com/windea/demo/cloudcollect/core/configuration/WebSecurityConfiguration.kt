@@ -14,6 +14,7 @@ import org.springframework.security.web.access.expression.*
 import org.springframework.security.web.authentication.*
 
 /**Spring Security的配置类。*/
+//DONE 实现Jwt的自动配置，但仍然需要显式注册过滤器和进入点。
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

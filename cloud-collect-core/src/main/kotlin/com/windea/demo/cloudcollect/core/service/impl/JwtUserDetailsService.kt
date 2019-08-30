@@ -15,4 +15,7 @@ class JwtUserDetailsService(
 		val user = userRepository.findByUsername(username) ?: throw UserNotFoundException()
 		return JwtUserDetails(user)
 	}
+	
+	//登录方法向SecurityContext中存储的是validAuthentication，而非authentication
+	//前者不包含密码，但包含权限信息，因此不需要实现UserDetailsPasswordService
 }
