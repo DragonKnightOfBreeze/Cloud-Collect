@@ -61,4 +61,5 @@
     * [X] 使用基于`spring-security-jwt`的jwt进行安全校验。
     * [X] 重构swagger注解。
     * [X] 使用私有扩展方法实现：为实体类添加额外字段。
+    * [X] 对控制层的一些完善。
     * [ ] 更新依赖的kotlin-utility。

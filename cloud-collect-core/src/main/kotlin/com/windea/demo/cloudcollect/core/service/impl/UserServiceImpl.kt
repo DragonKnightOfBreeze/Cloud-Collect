@@ -7,6 +7,7 @@ import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.exception.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
+import com.windea.utility.common.extensions.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
 import org.springframework.data.repository.*
@@ -104,6 +105,11 @@ class UserServiceImpl(
 	@Cacheable(key = "methodName + args")
 	override fun findByEmail(email: String): User {
 		return userRepository.findByEmail(email)?.lateInit() ?: throw  NotFoundException()
+	}
+	
+	override fun findByRandom(): User {
+		val randomId = RandomExtension.range(1, userRepository.count())
+		return userRepository.findByIdOrNull(randomId)?.lateInit() ?: throw NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")

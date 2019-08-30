@@ -35,6 +35,9 @@ interface UserService {
 	/**根据邮箱得到用户。*/
 	fun findByEmail(email: String): User
 	
+	/**得到随机用户。*/
+	fun findByRandom(): User
+	
 	/**得到所有用户。*/
 	fun findAll(pageable: Pageable): Page<User>
 	

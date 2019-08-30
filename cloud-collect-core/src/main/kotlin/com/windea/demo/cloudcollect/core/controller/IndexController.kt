@@ -80,4 +80,10 @@ class IndexController(
 	fun lookAroundCollect(): Collect {
 		return collectService.findByRandom()
 	}
+	
+	@ApiOperation("随便看看任一用户。")
+	@GetMapping("/lookAroundUser")
+	fun lookAroundUser(): User {
+		return userService.findByRandom()
+	}
 }

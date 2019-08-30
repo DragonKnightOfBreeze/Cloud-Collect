@@ -33,6 +33,18 @@ class UserController(
 		return userService.findById(id)
 	}
 	
+	@ApiOperation("根据用户名得到用户。")
+	@GetMapping("/u/{username}")
+	fun findByUsername(@PathVariable username: String): User {
+		return userService.findByUsername(username)
+	}
+	
+	@ApiOperation("根据邮箱得到用户。")
+	@GetMapping("/e/{email}")
+	fun findByEmail(@PathVariable email: String): User {
+		return userService.findByEmail(email)
+	}
+	
 	@ApiOperation("得到所有用户。")
 	@GetMapping("/findAll")
 	fun findAll(@RequestParam pageable: Pageable): Page<User> {
