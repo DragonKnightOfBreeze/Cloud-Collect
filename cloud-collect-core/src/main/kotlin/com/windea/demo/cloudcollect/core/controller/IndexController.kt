@@ -25,9 +25,6 @@ class IndexController(
 	private val configProperties: ConfigProperties
 ) {
 	@ApiOperation("通过用户名&密码登录用户。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "form", value = "用户名&密码登录视图", required = true)
-	)
 	@PostMapping("/login", "/loginByUsernameAndPassword")
 	@PreAuthorize("isAnonymous()")
 	fun loginByUsernameAndPassword(@RequestBody @Validated form: UsernamePasswordLoginForm, bindingResult: BindingResult): JwtUserDetails {
@@ -38,9 +35,6 @@ class IndexController(
 	}
 	
 	@ApiOperation("通过邮箱注册用户。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "form", value = "邮箱注册视图", required = true)
-	)
 	@PostMapping("/register", "/registerByEmail")
 	@PreAuthorize("isAnonymous()")
 	fun registerByEmail(@RequestBody @Validated form: EmailRegisterForm, bindingResult: BindingResult): User {
@@ -53,9 +47,6 @@ class IndexController(
 	}
 	
 	@ApiOperation("忘记用户密码，发送重置密码邮件。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "username", value = "用户名", required = true)
-	)
 	@PostMapping("/forgotPassword")
 	@PreAuthorize("isAnonymous()")
 	fun forgotPassword(@RequestParam username: String): User {
@@ -66,10 +57,6 @@ class IndexController(
 	}
 	
 	@ApiOperation("激活用户。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "username", value = "用户名", required = true),
-		ApiImplicitParam(name = "activateCode", value = "激活码", required = true)
-	)
 	@PutMapping("/activate")
 	fun activate(@RequestParam username: String, @RequestParam activateCode: String): User? {
 		return userService.activate(username, activateCode)?.also {
@@ -79,11 +66,6 @@ class IndexController(
 	}
 	
 	@ApiOperation("重置用户密码。")
-	@ApiImplicitParams(
-		ApiImplicitParam(name = "username", value = "用户名", required = true),
-		ApiImplicitParam(name = "password", value = "新的密码", required = true),
-		ApiImplicitParam(name = "resetPasswordCode", value = "重置密码的识别码", required = true)
-	)
 	@PutMapping("/resetPassword")
 	fun resetPassword(@Validated @RequestBody form: ResetPasswordForm, bindingResult: BindingResult, @RequestParam resetPasswordCode: String): User? {
 		return userService.resetPassword(form, resetPasswordCode)?.also {
