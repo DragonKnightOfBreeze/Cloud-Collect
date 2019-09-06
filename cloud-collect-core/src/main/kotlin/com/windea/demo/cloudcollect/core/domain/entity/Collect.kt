@@ -54,7 +54,7 @@ class Collect(
 	@ApiModelProperty("收藏的标签。")
 	@ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
 	@field:Valid
-	var tags: MutableSet<CollectTag> = mutableSetOf(),
+	var tags: Set<CollectTag> = setOf(),
 	
 	@ApiModelProperty("收藏的类型。")
 	@Column(nullable = false)
