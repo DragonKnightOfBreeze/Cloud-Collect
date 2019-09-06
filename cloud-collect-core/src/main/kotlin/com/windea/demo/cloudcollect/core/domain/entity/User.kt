@@ -29,7 +29,7 @@ class User(
 	@field:Username(message = "{validation.User.username.ValidUsername}", groups = [Default::class])
 	var username: String,
 	
-	@ApiModelProperty("密码。这里存储的是加密后的密码，可以进行参数验证，不要限制长度。")
+	@ApiModelProperty("密码。这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度。")
 	@JsonIgnore
 	@Column(nullable = false)
 	@field:NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Default::class])
@@ -91,7 +91,6 @@ class User(
 	@Transient
 	var noticeCount: Long = 0
 	
-	
 	@ApiModelProperty("注册时间。")
 	@Column
 	@CreatedDate
@@ -101,16 +100,6 @@ class User(
 	@Column
 	@LastModifiedDate
 	lateinit var updateTime: LocalDateTime
-	
-	@ApiModelProperty("激活码。")
-	@JsonIgnore
-	@Column
-	var activateCode: String? = null
-	
-	@ApiModelProperty("重置密码验证码。")
-	@JsonIgnore
-	@Column
-	var resetPasswordCode: String? = null
 	
 	@ApiModelProperty("用户的关注用户列表。懒加载。")
 	@JsonIgnore

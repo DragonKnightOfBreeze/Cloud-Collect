@@ -5,11 +5,13 @@ import com.windea.demo.cloudcollect.core.domain.enums.*
 import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.exception.*
+import com.windea.demo.cloudcollect.core.properties.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.utility.common.extensions.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
+import org.springframework.data.redis.core.*
 import org.springframework.data.repository.*
 import org.springframework.security.authentication.*
 import org.springframework.security.core.context.*
@@ -26,31 +28,50 @@ class UserServiceImpl(
 	private val commentRepository: CommentRepository,
 	private val noticeRepository: NoticeRepository,
 	private val passwordEncoder: PasswordEncoder,
-	private val authenticationManager: AuthenticationManager
+	private val authenticationManager: AuthenticationManager,
+	private val redisTemplate: StringRedisTemplate,
+	private val redisProperties: RedisProperties,
+	private val emailService: EmailService,
+	private val configProperties: ConfigProperties
 ) : UserService {
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun registerByEmail(form: EmailRegisterForm): User {
+		//将激活码存储到缓存中，同时也暂时存储到User对象中
+		val activateCodeKey = "${redisProperties.activateCodePrefix}${form.username}"
+		val activateCodeValue = UUID.randomUUID().toString()
+		redisTemplate.opsForValue().set(activateCodeKey, activateCodeValue, redisProperties.expiration)
+		
 		val savedUser = User(
 			nickname = form.nickname,
 			username = form.username,
 			email = form.email,
 			password = passwordEncoder.encode(form.password)
 		)
-		savedUser.activateCode = UUID.randomUUID().toString()
-		return userRepository.save(savedUser)
+		return userRepository.save(savedUser).also {
+			//如果需要发送邮件，则发送激活邮件
+			if(configProperties.requireActivate && configProperties.sendEmail) emailService.sendActivateEmail(it, activateCodeValue)
+			
+			//如果不要求激活，则立即激活当前用户
+			if(!configProperties.requireActivate) activate(it.username, activateCodeValue)
+		}
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun activate(username: String, activateCode: String): User? {
-		val savedUser = userRepository.findByUsername(username) ?: throw UserNotFoundException()
-		//如果激活码不匹配，则直接返回
-		if(savedUser.activateCode != activateCode) return null
+		//冲缓存中得到激活码，如果不匹配，则直接返回null
+		val activateCodeKey = "${redisProperties.activateCodePrefix}${username}"
+		val activateCodeValue = redisTemplate.opsForValue()[activateCodeKey]
+		if(activateCode != activateCodeValue) return null
 		
-		savedUser.activateCode = null
+		//进行数据库操作
+		val savedUser = userRepository.findByUsername(username) ?: throw UserNotFoundException()
 		savedUser.activateStatus = true
-		return userRepository.save(savedUser)
+		return userRepository.save(savedUser).also {
+			//如果需要发送邮件，则发送欢迎邮件
+			if(configProperties.sendEmail) emailService.sendHelloEmail(it)
+		}
 	}
 	
 	override fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): JwtUserDetails {
@@ -58,26 +79,39 @@ class UserServiceImpl(
 		val validAuthentication = authenticationManager.authenticate(authentication)
 		SecurityContextHolder.getContext().authentication = validAuthentication
 		
-		return (validAuthentication.principal as JwtUserDetails).apply { delegateUser.lateInit() }
+		return (validAuthentication.principal as JwtUserDetails)
 	}
 	
 	override fun forgotPassword(username: String): User {
+		//首先要判断用户是否存在
 		val savedUser = userRepository.findByUsername(username) ?: throw UserNotFoundException()
-		//设置随机重置密码验证码
-		savedUser.resetPasswordCode = UUID.randomUUID().toString()
-		return userRepository.save(savedUser)
+		
+		//将验证码存储到缓存中，同时也暂时存储到User对象中
+		val resetPasswordCodeKey = "${redisProperties.resetPasswordPrefix}${username}"
+		val resetPasswordCodeValue = UUID.randomUUID().toString()
+		redisTemplate.opsForValue().set(resetPasswordCodeKey, resetPasswordCodeValue, redisProperties.expiration)
+		
+		return userRepository.save(savedUser).also {
+			//如果需要发送邮件，则发送重置密码邮件
+			if(configProperties.sendEmail) emailService.sendResetPasswordEmail(it, resetPasswordCodeValue)
+		}
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun resetPassword(form: ResetPasswordForm, resetPasswordCode: String): User? {
-		val savedUser = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
-		//如果重置密码验证码不匹配，则直接返回
-		if(savedUser.resetPasswordCode != resetPasswordCode) return null
+		//从缓存中得到激活码，如果不匹配，则直接返回null
+		val resetPasswordCodeKey = "${redisProperties.resetPasswordPrefix}${form.username}"
+		val resetPasswordCodeValue = redisTemplate.opsForValue()[resetPasswordCodeKey]
+		if(resetPasswordCode != resetPasswordCodeValue) return null
 		
-		savedUser.resetPasswordCode = null
+		//进行数据库操作
+		val savedUser = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
 		savedUser.password = passwordEncoder.encode(form.password)
-		return userRepository.save(savedUser)
+		return userRepository.save(savedUser).also {
+			//如果需要发送邮件，则发送重置密码成功邮件
+			if(configProperties.sendEmail) emailService.sendResetPasswordSuccessEmail(it)
+		}
 	}
 	
 	@Transactional

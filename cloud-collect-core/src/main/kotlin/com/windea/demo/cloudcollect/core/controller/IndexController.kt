@@ -5,7 +5,6 @@ package com.windea.demo.cloudcollect.core.controller
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.domain.response.*
-import com.windea.demo.cloudcollect.core.properties.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.security.access.prepost.*
@@ -20,58 +19,39 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin
 class IndexController(
 	private val collectService: CollectService,
-	private val userService: UserService,
-	private val emailService: EmailService,
-	private val configProperties: ConfigProperties
+	private val userService: UserService
 ) {
-	@ApiOperation("通过邮箱注册用户。")
+	@ApiOperation("通过邮箱注册用户。返回值中包含激活码。")
 	@PostMapping("/register", "/registerByEmail")
 	@PreAuthorize("isAnonymous()")
 	fun registerByEmail(@RequestBody @Validated form: EmailRegisterForm, bindingResult: BindingResult): User {
-		return userService.registerByEmail(form).also {
-			//发送激活邮件
-			if(configProperties.requireActivate && configProperties.sendEmail) emailService.sendActivateEmail(it)
-			
-			if(!configProperties.requireActivate) activate(it.username, it.activateCode!!)
-		}
+		return userService.registerByEmail(form)
 	}
 	
 	@ApiOperation("激活用户。")
 	@PutMapping("/activate")
 	fun activate(@RequestParam username: String, @RequestParam activateCode: String) {
-		userService.activate(username, activateCode)?.also {
-			//发送欢迎邮件
-			if(configProperties.sendEmail) emailService.sendHelloEmail(it)
-		}
+		userService.activate(username, activateCode)
 	}
 	
 	@ApiOperation("通过用户名&密码登录用户。")
 	@PostMapping("/login", "/loginByUsernameAndPassword")
 	@PreAuthorize("isAnonymous()")
 	fun loginByUsernameAndPassword(@RequestBody @Validated form: UsernamePasswordLoginForm, bindingResult: BindingResult): JwtUserDetails {
-		return userService.loginByUsernameAndPassword(form).also {
-			//成功注册后，发送激活邮件
-			if(configProperties.sendEmail) emailService.sendActivateEmail(it.delegateUser)
-		}
+		return userService.loginByUsernameAndPassword(form)
 	}
 	
-	@ApiOperation("忘记用户密码，发送重置密码邮件。")
+	@ApiOperation("忘记用户密码，发送重置密码邮件。返回值中包含忘记密码验证码。")
 	@PostMapping("/forgotPassword")
 	@PreAuthorize("isAnonymous()")
 	fun forgotPassword(@RequestParam username: String) {
-		userService.forgotPassword(username).also {
-			//发送重置密码邮件
-			if(configProperties.sendEmail) emailService.sendResetPasswordEmail(it)
-		}
+		userService.forgotPassword(username)
 	}
 	
 	@ApiOperation("重置用户密码。")
 	@PutMapping("/resetPassword")
 	fun resetPassword(@Validated @RequestBody form: ResetPasswordForm, bindingResult: BindingResult, @RequestParam resetPasswordCode: String) {
-		userService.resetPassword(form, resetPasswordCode)?.also {
-			//发送重置密码成功邮件
-			if(configProperties.sendEmail) emailService.sendResetPasswordSuccessEmail(it)
-		}
+		userService.resetPassword(form, resetPasswordCode)
 	}
 	
 	

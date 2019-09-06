@@ -18,7 +18,7 @@ class AuthorizationServerConfiguration(
 	private val accessTokenConverter: JwtAccessTokenConverter,
 	private val authenticationManager: AuthenticationManager,
 	private val passwordEncoder: PasswordEncoder,
-	private val jwtProperties: JwtProperties
+	private val jwtProperties: SecurityProperties
 ) : AuthorizationServerConfigurerAdapter() {
 	override fun configure(configurer: ClientDetailsServiceConfigurer) {
 		configurer.inMemory()

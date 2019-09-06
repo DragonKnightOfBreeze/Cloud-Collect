@@ -124,3 +124,7 @@
 	* 存储到http session中。
 	* 存储到数据库的user表中。（不推荐，待重构）
 	* 存储到redis缓存中。
+* 关于noarg和allopen编译器插件
+    * 对于Jpa实体类需要使用noarg和allopen插件，建议使用var属性。
+    * 对于Spring bean需要使用allopen插件。
+    * 对于json持久化也需要使用noarg插件，可以使用val属性。

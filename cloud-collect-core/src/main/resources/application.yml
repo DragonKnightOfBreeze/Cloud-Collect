@@ -82,14 +82,17 @@ com:
       require-activate: false
       send-email: false
     security:
-      jwt:
-        client-id: ""
-        secret: Windea
-        grant-type: password
-        resource-id: ""
+      client-id: ""
+      secret: Windea
+      grant-type: password
+      resource-id: ""
     validation:
       username: "\\w{6,16}"
       password: "[a-zA-Z]\\w{5,15}"
+    redis:
+      activateCodePrefix: "activateCode:"
+      resetPasswordPrefix: "resetPassword"
+      expiration: 90
     data-import-export:
       path: D:/CloudCollect
       data-file-name: dataSchema

@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.provider.token.*
 @EnableResourceServer
 class ResourceServerConfiguration(
 	private val tokenServices: ResourceServerTokenServices,
-	private val jwtProperties: JwtProperties
+	private val jwtProperties: SecurityProperties
 ) : ResourceServerConfigurerAdapter() {
 	override fun configure(resources: ResourceServerSecurityConfigurer) {
 		resources.resourceId(jwtProperties.resourceId).tokenServices(tokenServices)

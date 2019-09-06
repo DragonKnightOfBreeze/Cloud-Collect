@@ -13,8 +13,8 @@ class EmailServiceImpl(
 	private val mailSender: JavaMailSender,
 	private val mailProperties: MailProperties
 ) : EmailService {
-	override fun sendActivateEmail(user: User) = mailSender.sendEmail {
-		val url = "http://csntportal/activate?username=${user.username}&activateCode=${user.activateCode}"
+	override fun sendActivateEmail(user: User, activateCode: String) = mailSender.sendEmail {
+		val url = "http://csntportal/activate?username=${user.username}&activateCode=$activateCode"
 		
 		setFrom(mailProperties.username)
 		setTo(user.email)
@@ -43,8 +43,8 @@ class EmailServiceImpl(
 		""".trimIndent())
 	}
 	
-	override fun sendResetPasswordEmail(user: User) = mailSender.sendEmail {
-		val url = "http://csntportal/resetPassword?username=${user.username}&resetPasswordCode=${user.resetPasswordCode}"
+	override fun sendResetPasswordEmail(user: User, resetPasswordCode: String) = mailSender.sendEmail {
+		val url = "http://csntportal/resetPassword?username=${user.username}&resetPasswordCode=$resetPasswordCode"
 		
 		setFrom(mailProperties.username)
 		setTo(user.email)
