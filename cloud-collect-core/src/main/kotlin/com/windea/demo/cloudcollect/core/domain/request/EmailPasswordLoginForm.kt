@@ -1,11 +1,13 @@
 package com.windea.demo.cloudcollect.core.domain.request
 
+import com.windea.demo.cloudcollect.core.annotation.*
 import com.windea.demo.cloudcollect.core.validation.annotation.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import javax.validation.constraints.*
 
 @ApiModel("邮箱&密码登录表单。")
+@Model
 data class EmailPasswordLoginForm(
 	@ApiModelProperty("邮箱。")
 	@field:NotEmpty(message = "{validation.User.email.NotEmpty}", groups = [Default::class])

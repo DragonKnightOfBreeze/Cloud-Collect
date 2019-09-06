@@ -118,7 +118,8 @@
 * 在验证器中使用`@Autowired lateinit var`失败的问题：
     * Hibernate在将数据存储到数据库之前会再验证一次，使用自己的反射机制得到验证器。
     * 使用明确的验证分组，而非默认的Default，可以解决这个问题。
-* 如何启用Spring的`@CreatedTime`等审计注解：[简书](https://www.jianshu.com/p/30aef87f3171)，对应的属性可以是非空`lateinit var`。 
+* 如何启用Spring的`@CreatedTime`等审计注解：[简书](https://www.jianshu.com/p/30aef87f3171)
+    * 对应的属性可以是非空`lateinit var`。 
 * 验证码功能的几种实现：
 	* 存储到http session中。
 	* 存储到数据库的user表中。（不推荐，待重构）

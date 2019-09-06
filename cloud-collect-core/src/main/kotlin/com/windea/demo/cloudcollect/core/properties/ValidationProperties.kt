@@ -7,9 +7,9 @@ import org.springframework.context.annotation.*
 @Configuration
 @ConfigurationProperties("com.windea.validation")
 class ValidationProperties {
-	/**用户名为6~16位的字母、数字和下划线，以字母开头。。*/
+	/**用户名为6~16位的字母、数字和下划线，以字母开头。*/
 	lateinit var username: String
 	
-	/**密码为6~16位的字母、数字和下划线。。*/
+	/**密码为6~16位的字母、数字和下划线。*/
 	lateinit var password: String
 }

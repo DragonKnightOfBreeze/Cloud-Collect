@@ -1,5 +1,6 @@
 package com.windea.demo.cloudcollect.core.domain.request
 
+import com.windea.demo.cloudcollect.core.annotation.*
 import com.windea.demo.cloudcollect.core.validation.annotation.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
@@ -7,6 +8,7 @@ import io.swagger.annotations.*
 import javax.validation.constraints.*
 
 @ApiModel("邮箱注册表单。")
+@Model
 @UniqueEmailRegisterForm
 data class EmailRegisterForm(
 	@ApiModelProperty("用户名。")
