@@ -53,6 +53,8 @@
     * [X] 唯一实体类的相关验证。
 * 实体类 domain
     * [X] 一般的实体类、枚举、模型、视图。
+    * [X] Jpa和validation注解。
+    * [X] Swagger2注解。
 * 持久层 repository
     * [X] 一般的数据库操作方法。
 * 服务层 service
