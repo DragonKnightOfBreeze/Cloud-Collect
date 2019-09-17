@@ -1,59 +1,130 @@
 # 概述
 
-毕业设计项目：云收藏的设计与实现。此为后台模块。
+毕业设计项目：云收藏的设计与实现。
+
+# 参考
+
+* Spring Boot
+    * [Spring Boot Reference Guide](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle)
+	* [Spring Boot 中文导航](http://springboot.fun/)
+	* [spring-boot - 纯洁的微笑博客](http://www.ityouknow.com/spring-boot.html)
+    * [Spring Integration](https://docs.spring.io/spring-integration/docs/5.1.6.RELEASE/reference/html/#mail)
+* Vue
+    * [介绍 — Vue.js](https://cn.vuejs.org/v2/guide/)
+    * [Vuex 是什么？ | Vuex](https://vuex.vuejs.org/zh/)
+    * [介绍 | Vue Router](https://router.vuejs.org/zh/)
+* Element
+    * [Element - 网站快速成型工具](https://element.eleme.cn/#/zh-CN)
+
+# 环境要求
+
+* Idea
+* Git
+* MySql 5+
+* ［可能］Nginx
+* ［可能］Docker
+* Jdk 11
+* Kotlin Sdk
+* Maven
+* Tomcat
+* Npm
+
+# 技术要求
+
+* 通用：
+    * Markdown 用于编写项目文档，不直接编写doc
+    * Yaml 用于编写配置文件
+    * Git 用于版本管理
+    * MySql 数据库
+	* ［可能］Nginx 负载均衡
+	* ［可能］Docker 应用容器
+* 后台：
+    * Kotlin
+    * SpringBoot 核心框架
+    * Spring+Spring Mvc+Spring Data Jpa 核心框架
+    * Redis 用于缓存
+    * Swagger 用于编写api文档
+    * Lombok 便于实体类编写
+    * Maven 用于后台依赖和目录管理
+	* Spring Security 认证和授权框架
+	* ［可能］Elastic Search 搜索引擎
+* 前端：
+    * Html & Scss & Typescript
+    * Vue 前端核心框架
+    * Vue-router, Vuex, ... 扩展Vue的功能
+    * Weex 用于网页端页面和移动端页面
+    * Npm 用于前端依赖和目录管理
 
 # 主要功能
 
 * 收藏网络上的各类链接，对其进行归类整理。
 * 仅有一个（或者很少的）页面，但是功能较多，非常灵活。增强了一般浏览器的书签管理系统。
 
-* 可以为每个收藏命名。
-* 可以为每个收藏设置简单的隐私权限。
+* 可以创建新的收藏。
 * 可以为每个收藏进行分类。一个收藏只能有一个分类，由用户自定义。
 * 可以为每个收藏添加标签。一个收藏可以有多个标签，由用户自定义。
 * 可以为每个收藏添加特殊标记。如：待办，喜欢。由系统定义。
 * 可以为每个收藏添加概述。
-
-* 对于每个收藏，可以对其进行跳转、修改、移动、删除、排序等操作。
-* ［可能］可以同时对多个收藏进行除修改外的相同的操作。
-* 对于每个目录，可以对其进行重命名、移动、删除、排序等操作。删除时，可设置是否删除之中所有收藏，还是放回父级目录。
-* ［可能］可以同时对对个目录进行除重命名之外的相同操作。
-* 可以基于关键字、分类、标签、特殊编辑、备注查找收藏。
-* 可以进行高级查询查找收藏。
-* ［可能］可以对收藏进行自由排序。
-* 可以对收藏进行评论
-
+* 对于每个收藏，可以对其进行跳转、重命名、修改、移动、删除等操作。
+* ［可能］可以同时对多个收藏进行重命名、修改外的相同的操作。
+* 可以通过关键字、分类、标签、特殊标记查找收藏。
+* 可以通过高级查询查找收藏。
 * 可以基于多种方式复制收藏地址。例如：复制为html超链接、复制为Markdown超链接。
-* 可以基于多种方式导出收藏。例如：Xml、Json、Yaml。
-* 可以基于多种方式导入收藏。例如：Xml、Json、Yaml。
+* ［扩展］可以基于多种方式导出收藏。例如：Xml、Json、Yaml。
+* ［扩展］可以基于多种方式导入收藏。例如：Xml、Json、Yaml。
 * ［可能］对于以上3个功能，用户可以自定义其他方式。
+* ［可能］可以对收藏进行自由排序。
+* ［扩展］可以对收藏进行评论。
+* ［扩展］可以对收藏进行点赞。
+
+* 可以创建新的分类。
+* 对于每个分类，可以对其进行重命名、移动、删除等操作。删除时，可设置是否删除之中所有收藏，还是放回父级目录。
+* ［可能］可以同时对对个标签进行除重命名之外的相同操作。
+
+* 可以创建新的标签。
+* 标签除了一个收藏可带有多个之外，其余与分类类似。
+* 对于每个标签，可以对其进行重命名、移动、删除等操作。删除时对应收藏不删除。
+* ［可能］可以同时对对个标签进行除重命名之外的相同操作。
 
 * 拥有用户登录注册系统。
-* 用户带有简单的个人资料，可以修改密码、修改个人资料。
+* 用户带有简单的个人资料，可以重置密码、修改个人资料（此时不能修改密码）。
 * 用户可以查看他人的公开收藏。
-* 用户可以关注其他用户。
+* 用户可以关注其他用户。可以查看关注被被关注人数和用户信息。
 
 * （其他尚未想到的，专注于收藏管理的功能）
 
-# 技术要求
+# 注意事项
 
-* 通用：
-    * Git 用于版本管理
-    * Markdown 用于编写项目文档，不直接编写doc
-    * Yaml 用于编写配置文件。
-* 后台：
-    * SpringBoot 核心框架
-    + Spring+Spring Mvc+Spring Data Jpa 核心框架
-    * Redis 用于缓存
-    * Swagger 用于编写api文档
-    * Docker 用于项目部署
-    * Lombok 便于实体类编写
-    * Maven 用于后台依赖和目录管理
-    * MySql 后台数据库
-    * 七牛api
-* 前端：
-    * Vue 前端核心框架
-    * Vue的各类插件 拓展Vue的功能
-    * Weex 用于网页端页面和移动端页面
-    * Npm 用于前端依赖和目录管理
-    * ［可能］LocalStorage/IndexedDB 前端数据库
+## 后台
+
+* Spring Boot会对某些bean进行自动配置。例如，Converter、Formatter。
+* 对于数据库：text类型不能指定默认值。java boolean类型会转换为bit类型。
+* 当为作为主构造函数参数的实体类的属性注上validation注解时，需要添加`@field:`前缀。
+* 使用`@Value`或`@ConfigurationProperties`时，对应的属性必须是`lateinit var`或者可空类型/存在默认值。
+* 使用`@ConfigurationProperties`时，对应的属性必须是公开的。
+* 使用Jpa时，为了让懒加载如预期工作，实体类必须是`open class`，实体类属性必须是`open var`，推荐存在无参构造。
+* Jpa不建议与`data class`和只读属性一同工作。
+* 使用kotlin编译器插件`spring`时，spring bean可以不显示声明为`open class`。
+* 使用kotlin编译器插件`jpa`时，实体类可以不显示声明无参构造函数。
+* `@Valid`和`@Validated`的区别：[CSDN](https://blog.csdn.net/qq_27680317/article/details/79970590)
+    * `@Valid`属于标准JSR-303规范，`@Validated`属于Spring's JSR-303规范。
+    * `@Valid`放在实体类属性上，用于嵌套验证。
+    * `@Validated`可以进行分组验证。
+* 在实体类中，不要将Boolean属性写成`isRead`的形式。IDE认为幕后字段名为`read`，但是jpa仍然只识别`isRead`。
+* 使用Maven指令`kotlin:kapt`为配置文件生成元数据（存在中文注释乱码问题）。
+* 使用MockMvc进行测试：需要在测试之前启动项目。可以使用相对于context-path的url。
+* 使用`spring-boot-starter-data-redis`时，可能需要添加依赖`commons-pool2`。
+* 自定义参数验证器时，验证器需要提供无参构造函数。
+* 在验证器中使用`@Autowired lateinit var`失败的问题：
+    * Hibernate在将数据存储到数据库之前会再验证一次，使用自己的反射机制得到验证器。
+    * 使用明确的验证分组，而非默认的Default，可以解决这个问题。
+* 如何启用Spring的`@CreatedTime`等审计注解：[简书](https://www.jianshu.com/p/30aef87f3171)
+    * 对应的属性可以是非空`lateinit var`。 
+* 验证码功能的几种实现：
+	* 存储到http session中。
+	* 存储到数据库的user表中。（不推荐，待重构）
+	* 存储到redis缓存中。
+* 关于noarg和allopen编译器插件
+    * 对于Jpa实体类需要使用noarg和allopen插件，建议使用var属性。
+    * 对于Spring bean需要使用allopen插件。
+    * 对于json持久化也需要使用noarg插件，可以使用val属性。

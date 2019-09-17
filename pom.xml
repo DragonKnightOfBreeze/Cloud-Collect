@@ -12,26 +12,19 @@
 
   <groupId>com.windea</groupId>
   <artifactId>cloud-collect</artifactId>
-  <version>0.0.1</version>
+  <version>0.2.7</version>
 
   <name>Cloud Collect</name>
-  <description>毕业设计项目：云收藏的设计与实现。此为后台模块。</description>
+  <description>毕业设计项目：云收藏的设计与实现。</description>
   <url>https://github.com/DragonKnightOfBreeze/Cloud-Collect</url>
 
   <modules>
     <module>cloud-collect-core</module>
   </modules>
 
-  <scm>
-    <connection>scm:git@github.com:DragonKnightOfBreeze/Cloud-Collect.git</connection>
-    <developerConnection>scm:git@github.com:DragonKnightOfBreeze/Cloud-Collect.git</developerConnection>
-    <url>git@github.com:DragonKnightOfBreeze/Cloud-Collect.git</url>
-  </scm>
-
   <properties>
     <java.version>11</java.version>
-    <kotlin.version>1.3.40</kotlin.version>
-    <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+    <kotlin.version>1.3.41</kotlin.version>
   </properties>
 
   <dependencies>
@@ -41,42 +34,19 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-cache</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-security</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.windea</groupId>
       <artifactId>kotlin-utility</artifactId>
-      <version>LATEST</version>
+      <version>1.4.3</version>
     </dependency>
 
     <dependency>
@@ -84,9 +54,22 @@
       <artifactId>kotlin-stdlib</artifactId>
       <version>${kotlin.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-test-junit</artifactId>
+      <version>${kotlin.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.github.microutils</groupId>
+      <artifactId>kotlin-logging</artifactId>
+      <version>1.6.26</version>
+    </dependency>
   </dependencies>
 
   <build>
+    <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+    <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -95,7 +78,48 @@
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
+        <configuration>
+          <compilerPlugins>
+            <plugin>all-open</plugin>
+            <plugin>no-arg</plugin>
+            <plugin>spring</plugin>
+            <plugin>jpa</plugin>
+          </compilerPlugins>
+          <pluginOptions>
+            <option>no-arg:annotation=com.windea.demo.cloudcollect.core.annotation.Model</option>
+            <option>all-open:annotation=javax.persistence.Entity</option>
+            <option>all-open:annotation=javax.persistence.Embeddable</option>
+            <option>all-open:annotation=javax.persistence.MappedSuperclass</option>
+          </pluginOptions>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-allopen</artifactId>
+            <version>${kotlin.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-noarg</artifactId>
+            <version>${kotlin.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
+
+  <repositories>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+    </pluginRepository>
+  </pluginRepositories>
 </project>

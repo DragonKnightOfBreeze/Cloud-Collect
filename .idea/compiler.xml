@@ -9,10 +9,14 @@
         <module name="cloud-collect-core" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="cloud-collect-demo" target="11" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="cloud-collect-core" options="-parameters" />
+      <module name="cloud-collect-demo" options="-parameters" />
     </option>
   </component>
 </project>
