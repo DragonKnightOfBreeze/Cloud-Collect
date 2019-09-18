@@ -32,11 +32,10 @@ class WebSecurityConfiguration(
 		//配置路径权限规则
 		http.authorizeRequests()
 			.antMatchers(
-				"/collect/**",
 				"/collectCategory/**",
 				"/collectTag/**",
 				"/comment/**",
-				"/createAndSendToAll/**",
+				"/notice/**",
 				"/user/**"
 			).authenticated()
 			.antMatchers("/admin/**").hasRole("ADMIN")
