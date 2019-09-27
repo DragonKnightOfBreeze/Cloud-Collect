@@ -18,14 +18,13 @@ class AuthorizationServerConfiguration(
 	private val accessTokenConverter: JwtAccessTokenConverter,
 	private val authenticationManager: AuthenticationManager,
 	private val passwordEncoder: PasswordEncoder,
-	private val jwtProperties: SecurityProperties
+	private val securityProperties: SecurityProperties
 ) : AuthorizationServerConfigurerAdapter() {
 	override fun configure(configurer: ClientDetailsServiceConfigurer) {
 		configurer.inMemory()
-			.withClient(jwtProperties.clientId)
-			.secret(passwordEncoder.encode(jwtProperties.secret))
-			.authorizedGrantTypes(jwtProperties.grantType)
-			.resourceIds(jwtProperties.resourceId)
+			.withClient(securityProperties.clientId)
+			.secret(passwordEncoder.encode(securityProperties.secret))
+			.resourceIds(securityProperties.resourceId)
 	}
 	
 	override fun configure(endpoints: AuthorizationServerEndpointsConfigurer) {

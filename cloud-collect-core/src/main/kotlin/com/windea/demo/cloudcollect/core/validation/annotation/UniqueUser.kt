@@ -6,9 +6,9 @@ import kotlin.reflect.*
 
 /**唯一用户的校验注解。*/
 @MustBeDocumented
-@Constraint(validatedBy = [UniqueEmailRegisterFormValidator::class])
+@Constraint(validatedBy = [UniqueUserValidator::class])
 @Target(AnnotationTarget.CLASS)
-annotation class UniqueEmailRegisterForm(
+annotation class UniqueUser(
 	val message: String = "User is duplicate.",
 	val groups: Array<KClass<*>> = [],
 	val payload: Array<KClass<out Payload>> = []

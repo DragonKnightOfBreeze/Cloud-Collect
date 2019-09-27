@@ -76,27 +76,21 @@ server:
     # 指定服务器的内容根路径
     context-path: /cloud-collect/api
 
-com:
-  windea:
-    config:
-      require-activate: false
-      send-email: false
-    security:
-      client-id: ""
-      secret: Windea
-      grant-type: password
-      resource-id: ""
-    validation:
-      username: "\\w{6,16}"
-      password: "[a-zA-Z]\\w{5,15}"
-    redis:
-      activateCodePrefix: "activateCode:"
-      resetPasswordPrefix: "resetPassword"
-      expiration: 90
-    data-import-export:
-      path: D:/CloudCollect
-      data-file-name: dataSchema
-
-logging:
-  level:
-    org.hibernate.validator: trace
+cloud-collect:
+  application:
+    require-activate: false
+    send-email: false
+  security:
+    secret: Windea
+    resource-id: cloud-collect
+    client-id: cloud-collect
+  validation:
+    username: "\\w{6,16}"
+    password: "[a-zA-Z]\\w{5,15}"
+  redis:
+    activateCodePrefix: "activateCode:"
+    resetPasswordCodePrefix: "resetPassword"
+    expiration: 90
+  data-import-export:
+    path: D:/CloudCollect
+    file-name: dataSchema

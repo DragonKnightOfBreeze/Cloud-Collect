@@ -7,7 +7,6 @@ import org.springframework.data.annotation.*
 import org.springframework.data.jpa.domain.support.*
 import java.io.*
 import java.time.*
-import java.util.*
 import javax.persistence.*
 import javax.persistence.Id
 import javax.validation.constraints.*
@@ -15,33 +14,29 @@ import javax.validation.constraints.*
 @ApiModel("收藏的分类。一个收藏可以有多个分类。")
 @Entity
 @EntityListeners(AuditingEntityListener::class)
-@UniqueCollectCategory
-class CollectCategory(
+@UniqueCollectCategory(groups = [Create::class])
+data class CollectCategory(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	var id: Long? = null,
 	
 	@ApiModelProperty("名字。")
-	@Column(nullable = false, length = 32)
-	@field:NotEmpty(message = "{validation.CollectCategory.name.NotEmpty}", groups = [Default::class])
-	@field:Size(min = 1, max = 32, message = "{validation.CollectCategory.name.Size}", groups = [Default::class])
+	@field:NotEmpty(message = "{validation.CollectCategory.name.NotEmpty}", groups = [Create::class, Modify::class])
+	@field:Size(min = 1, max = 64, message = "{validation.CollectCategory.name.Size}", groups = [Create::class, Modify::class])
+	@Column(nullable = false, length = 64)
 	var name: String,
 	
 	@ApiModelProperty("概述。")
+	@field:NotEmpty(message = "{validation.CollectCategory.summary.NotEmpty}", groups = [Create::class, Modify::class])
+	@field:Size(min = 1, max = 255, message = "{validation.CollectCategory.summary.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false)
-	@field:NotEmpty(message = "{validation.CollectCategory.summary.NotEmpty}", groups = [Default::class])
-	@field:Size(min = 1, max = 255, message = "{validation.CollectCategory.summary.Size}", groups = [Default::class])
-	var summary: String = "……",
+	var summary: String = "",
 	
 	@ApiModelProperty("所属用户。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var user: User
+	val user: User
 ) : Serializable {
-	@ApiModelProperty("收藏数量。")
-	@Transient
-	var collectCount: Long = 0
-	
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
@@ -52,8 +47,12 @@ class CollectCategory(
 	@LastModifiedDate
 	lateinit var lastModifiedTime: LocalDateTime
 	
+	@ApiModelProperty("收藏数量。")
+	@Transient
+	var collectCount: Long = 0
 	
-	override fun equals(other: Any?) = other is CollectCategory && other.id == id
 	
-	override fun hashCode() = Objects.hash(super.hashCode(), id.hashCode())
+	override fun equals(other: Any?) = other === this || (other is CollectCategory && other.id == id)
+	
+	override fun hashCode() = id.hashCode()
 }

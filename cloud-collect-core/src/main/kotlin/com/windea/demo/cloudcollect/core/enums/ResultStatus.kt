@@ -1,7 +1,7 @@
-package com.windea.demo.cloudcollect.core.domain.enums
+package com.windea.demo.cloudcollect.core.enums
 
-/**响应结果。*/
-enum class ResponseResult(
+/**响应结果的状态。*/
+enum class ResultStatus(
 	val code: Int,
 	val message: String
 ) {

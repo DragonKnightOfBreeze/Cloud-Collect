@@ -3,9 +3,10 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.enums.*
 import com.windea.demo.cloudcollect.core.domain.response.*
+import com.windea.demo.cloudcollect.core.enums.*
 import com.windea.demo.cloudcollect.core.service.*
+import com.windea.demo.cloudcollect.core.validation.group.*
 import com.windea.utility.common.enums.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
@@ -30,8 +31,8 @@ class CollectController(
 	@ApiOperation("创建自己的收藏。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody @Validated collect: Collect, bindingResult: BindingResult, authentication: Authentication): Collect {
-		val user = (authentication.principal as JwtUserDetails).delegateUser
+	fun create(@RequestBody @Validated(Create::class) collect: Collect, bindingResult: BindingResult, authentication: Authentication): Collect {
+		val user = (authentication.principal as UserDetailsVo).delegateUser
 		return service.create(collect, user)
 	}
 	
@@ -39,41 +40,41 @@ class CollectController(
 	@PostMapping("/createFrom")
 	@PreAuthorize("isAuthenticated()")
 	fun createFrom(@RequestParam id: Long, authentication: Authentication): Collect {
-		val user = (authentication.principal as JwtUserDetails).delegateUser
+		val user = (authentication.principal as UserDetailsVo).delegateUser
 		return service.createFrom(id, user)
 	}
 	
 	@ApiOperation("删除自己的收藏。")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasPermission(#id, 'Collect', 'delete')")
+	@PreAuthorize("isAuthenticated()")
 	fun delete(@PathVariable id: Long) {
 		service.delete(id)
 	}
 	
 	@ApiOperation("修改自己的收藏。")
 	@PutMapping("/{id}")
-	@PreAuthorize("hasPermission(#id, 'Collect', 'write')")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated collect: Collect, bindingResult: BindingResult) {
+	@PreAuthorize("isAuthenticated()")
+	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) collect: Collect, bindingResult: BindingResult) {
 		service.modify(id, collect)
 	}
 	
 	@ApiOperation("修改自己的收藏的分类。")
 	@PutMapping("/{id}/category")
-	@PreAuthorize("hasPermission(#id, 'Collect', 'write')")
+	@PreAuthorize("isAuthenticated()")
 	fun modifyCategory(@PathVariable id: Long, @RequestBody category: CollectCategory) {
 		service.modifyCategory(id, category)
 	}
 	
 	@ApiOperation("修改自己的收藏的标签。")
 	@PutMapping("/{id}/tags")
-	@PreAuthorize("hasPermission(#id, 'Collect', 'write')")
+	@PreAuthorize("isAuthenticated()")
 	fun modifyTags(@PathVariable id: Long, @RequestBody tags: MutableSet<CollectTag>) {
 		service.modifyTags(id, tags)
 	}
 	
 	@ApiOperation("修改自己的收藏的类型。")
 	@PutMapping("/{id}/type")
-	@PreAuthorize("hasPermission(#id, 'CollectCategory', 'write')")
+	@PreAuthorize("isAuthenticated()")
 	fun modifyType(@PathVariable id: Long, @RequestBody type: CollectType) {
 		service.modifyType(id, type)
 	}
@@ -81,7 +82,7 @@ class CollectController(
 	@ApiOperation("点赞某一收藏。")
 	@PutMapping("/{id}/praise")
 	fun praise(@PathVariable id: Long, authentication: Authentication) {
-		val user = (authentication.principal as JwtUserDetails).delegateUser
+		val user = (authentication.principal as UserDetailsVo).delegateUser
 		service.praise(id, user)
 	}
 	
@@ -151,7 +152,7 @@ class CollectController(
 	@PostMapping("/import")
 	@PreAuthorize("isAuthenticated()")
 	fun importData(@RequestParam(defaultValue = "YAML") type: DataType, multipartFile: MultipartFile, authentication: Authentication) {
-		val user = (authentication.principal as JwtUserDetails).delegateUser
+		val user = (authentication.principal as UserDetailsVo).delegateUser
 		dataImportExportService.importData(type, multipartFile, user)
 	}
 	

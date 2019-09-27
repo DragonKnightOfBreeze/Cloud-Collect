@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.core.domain.enums
+package com.windea.demo.cloudcollect.core.enums
 
 /**通知的类型。*/
 enum class NoticeType {

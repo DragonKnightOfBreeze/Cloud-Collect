@@ -7,8 +7,6 @@ import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
-import org.springframework.validation.*
-import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
 /**通知的控制器。*/
@@ -22,13 +20,13 @@ class NoticeController(
 	@ApiOperation("创建通知，发送给所有用户。")
 	@PostMapping("/sendToAll")
 	@PreAuthorize("hasRole('ADMIN')")
-	fun sendToAll(@RequestBody @Validated notice: Notice, bindingResult: BindingResult) {
+	fun sendToAll(@RequestBody notice: Notice) {
 		noticeService.sendToAll(notice)
 	}
 	
 	@ApiOperation("删除自己的通知。")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasPermission(#id, 'Notice', 'delete')")
+	@PreAuthorize("isAuthenticated()")
 	fun delete(@PathVariable id: Long) {
 		noticeService.delete(id)
 	}

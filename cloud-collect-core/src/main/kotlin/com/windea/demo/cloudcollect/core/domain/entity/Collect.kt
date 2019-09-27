@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.domain.entity
 
 import com.fasterxml.jackson.annotation.*
-import com.windea.demo.cloudcollect.core.domain.enums.*
+import com.windea.demo.cloudcollect.core.enums.*
 import com.windea.demo.cloudcollect.core.validation.annotation.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
@@ -9,7 +9,6 @@ import org.springframework.data.annotation.*
 import org.springframework.data.jpa.domain.support.*
 import java.io.*
 import java.time.*
-import java.util.*
 import javax.persistence.*
 import javax.persistence.Id
 import javax.persistence.Transient
@@ -19,32 +18,32 @@ import javax.validation.constraints.*
 @ApiModel("收藏。")
 @Entity
 @EntityListeners(AuditingEntityListener::class)
-@UniqueCollect
-class Collect(
+@UniqueCollect(groups = [Create::class])
+data class Collect(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	var id: Long? = null,
 	
 	@ApiModelProperty("名字。")
+	@field:NotEmpty(message = "{validation.Collect.name.NotEmpty}", groups = [Create::class, Modify::class])
+	@field:Size(min = 1, max = 64, message = "{validation.Collect.name.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false, length = 64)
-	@field:NotEmpty(message = "{validation.Collect.name.NotEmpty}", groups = [Default::class])
-	@field:Size(min = 1, max = 64, message = "{validation.Collect.name.Size}", groups = [Default::class])
 	var name: String,
 	
 	@ApiModelProperty("概述。")
+	@field:NotEmpty(message = "{validation.Collect.summary.NotEmpty}", groups = [Create::class, Modify::class])
+	@field:Size(min = 1, max = 255, message = "{validation.Collect.summary.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false)
-	@field:NotEmpty(message = "{validation.Collect.summary.NotEmpty}", groups = [Default::class])
-	@field:Size(min = 1, max = 255, message = "{validation.Collect.summary.Size}", groups = [Default::class])
-	var summary: String = "……",
+	var summary: String = "",
 	
 	@ApiModelProperty("链接地址。")
 	@Column(nullable = false, length = 512)
-	var url: String,
+	var url: String = "",
 	
 	@ApiModelProperty("标志地址。")
-	@Column(length = 512)
-	var logoUrl: String,
+	@Column(nullable = false, length = 512)
+	var logoUrl: String = "",
 	
 	@ApiModelProperty("收藏的分类。")
 	@ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
@@ -63,16 +62,8 @@ class Collect(
 	
 	@ApiModelProperty("所属用户。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var user: User
+	val user: User
 ) : Serializable {
-	@ApiModelProperty("点赞用户数量。")
-	@Transient
-	var praiseByUserCount: Long = 0
-	
-	@ApiModelProperty("评论数量。")
-	@Transient
-	var commentCount: Long = 0
-	
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
@@ -88,8 +79,15 @@ class Collect(
 	@ManyToMany(cascade = [CascadeType.MERGE], mappedBy = "praiseToCollectList")
 	val praiseByUserList: MutableList<User> = mutableListOf()
 	
+	@ApiModelProperty("点赞用户数量。")
+	@Transient
+	var praiseByUserCount: Long = 0
 	
-	override fun equals(other: Any?) = other is Collect && other.id == id
+	@ApiModelProperty("评论数量。")
+	@Transient
+	var commentCount: Long = 0
 	
-	override fun hashCode() = Objects.hash(super.hashCode(), id.hashCode())
+	override fun equals(other: Any?) = other === this || (other is Collect && other.id == id)
+	
+	override fun hashCode() = id.hashCode()
 }

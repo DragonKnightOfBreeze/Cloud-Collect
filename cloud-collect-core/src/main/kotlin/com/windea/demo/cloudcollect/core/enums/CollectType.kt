@@ -1,4 +1,4 @@
-package com.windea.demo.cloudcollect.core.domain.enums
+package com.windea.demo.cloudcollect.core.enums
 
 /**收藏的类型。*/
 enum class CollectType {

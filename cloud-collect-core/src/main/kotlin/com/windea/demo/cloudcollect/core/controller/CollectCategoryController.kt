@@ -5,6 +5,7 @@ package com.windea.demo.cloudcollect.core.controller
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.service.*
+import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
@@ -24,22 +25,22 @@ class CollectCategoryController(
 	@ApiOperation("创建自己的分类。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody @Validated category: CollectCategory, bindingResult: BindingResult, authentication: Authentication): CollectCategory {
-		val user = (authentication.principal as JwtUserDetails).delegateUser
+	fun create(@RequestBody @Validated(Create::class) category: CollectCategory, bindingResult: BindingResult, authentication: Authentication): CollectCategory {
+		val user = (authentication.principal as UserDetailsVo).delegateUser
 		return categoryService.create(category, user)
 	}
 	
 	@ApiOperation("删除自己的分类。")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasPermission(#id, 'CollectCategory', 'delete')")
+	@PreAuthorize("isAuthenticated()")
 	fun delete(@PathVariable id: Long) {
 		categoryService.delete(id)
 	}
 	
 	@ApiOperation("修改自己的分类。")
 	@PutMapping("/{id}")
-	@PreAuthorize("hasPermission(#id, 'CollectCategory', 'write')")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated category: CollectCategory, bindingResult: BindingResult) {
+	@PreAuthorize("isAuthenticated()")
+	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) category: CollectCategory, bindingResult: BindingResult) {
 		categoryService.modify(id, category)
 	}
 	

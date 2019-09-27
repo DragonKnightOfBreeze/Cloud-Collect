@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.service
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.enums.*
+import com.windea.demo.cloudcollect.core.enums.*
 import org.springframework.data.domain.*
 
 /**收藏的服务。*/

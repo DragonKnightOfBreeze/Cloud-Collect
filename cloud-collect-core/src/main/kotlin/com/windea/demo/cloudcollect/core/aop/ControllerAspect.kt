@@ -1,6 +1,6 @@
 package com.windea.demo.cloudcollect.core.aop
 
-import com.windea.demo.cloudcollect.core.exception.*
+import com.windea.demo.cloudcollect.core.exceptions.*
 import org.aspectj.lang.annotation.*
 import org.springframework.validation.*
 

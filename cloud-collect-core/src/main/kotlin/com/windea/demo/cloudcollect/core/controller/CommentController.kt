@@ -5,6 +5,7 @@ package com.windea.demo.cloudcollect.core.controller
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.service.*
+import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
@@ -25,8 +26,8 @@ class CommentController(
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestParam collectId: Long,
-		@RequestBody @Validated comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
-		val user = (authentication.principal as JwtUserDetails).delegateUser
+		@RequestBody @Validated(Create::class) comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
+		val user = (authentication.principal as UserDetailsVo).delegateUser
 		return commentService.create(collectId, comment, user)
 	}
 	
@@ -34,14 +35,14 @@ class CommentController(
 	@PostMapping("/reply")
 	@PreAuthorize("isAuthenticated()")
 	fun reply(@RequestParam collectId: Long, @RequestParam replyToCommentId: Long,
-		@RequestBody @Validated comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
-		val user = (authentication.principal as JwtUserDetails).delegateUser
+		@RequestBody @Validated(Create::class) comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
+		val user = (authentication.principal as UserDetailsVo).delegateUser
 		return commentService.reply(collectId, replyToCommentId, comment, user)
 	}
 	
 	@ApiOperation("删除自己的评论。")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasPermission(#id, 'Comment', 'delete')")
+	@PreAuthorize("isAuthenticated()")
 	fun delete(@PathVariable id: Long) {
 		commentService.delete(id)
 	}

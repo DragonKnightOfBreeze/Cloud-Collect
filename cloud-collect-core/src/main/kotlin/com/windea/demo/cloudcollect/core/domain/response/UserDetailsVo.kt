@@ -7,8 +7,8 @@ import org.springframework.security.core.authority.*
 import org.springframework.security.core.userdetails.*
 
 /**Jwt用户详情。用于安全验证。*/
-@Model
-data class JwtUserDetails(
+@Domain
+class UserDetailsVo(
 	val delegateUser: User
 ) : UserDetails {
 	override fun getUsername(): String {

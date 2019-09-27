@@ -1,6 +1,6 @@
 package com.windea.demo.cloudcollect.core
 
-import com.windea.demo.cloudcollect.core.exception.*
+import com.windea.demo.cloudcollect.core.exceptions.*
 import org.springframework.http.*
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.method.annotation.*

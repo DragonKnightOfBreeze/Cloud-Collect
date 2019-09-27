@@ -1,8 +1,8 @@
 package com.windea.demo.cloudcollect.core.service.impl
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.response.*
-import com.windea.demo.cloudcollect.core.exception.*
+import com.windea.demo.cloudcollect.core.domain.serialize.*
+import com.windea.demo.cloudcollect.core.exceptions.*
 import com.windea.demo.cloudcollect.core.properties.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
@@ -28,7 +28,7 @@ class DataImportExportServiceImpl(
 	@CacheEvict(allEntries = true)
 	override fun importData(type: DataType, multipartFile: MultipartFile, user: User) {
 		//不检查文件格式是否正确，委托给前端
-		val fileName = "${dataImportExportProperties.dataFileName}.${type.extension}"
+		val fileName = "${dataImportExportProperties.fileName}.${type.extension}"
 		val filePath = Path.of(dataImportExportProperties.path, fileName)
 		val file = filePath.toFile()
 		multipartFile.transferTo(file)
@@ -49,7 +49,7 @@ class DataImportExportServiceImpl(
 	
 	override fun exportData(type: DataType): File {
 		//不在本地缓存文件
-		val fileName = "${dataImportExportProperties.dataFileName}.${type.extension}"
+		val fileName = "${dataImportExportProperties.fileName}.${type.extension}"
 		val filePath = Path.of(dataImportExportProperties.path, fileName)
 		val file = filePath.toFile()
 		
