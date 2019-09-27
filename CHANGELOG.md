@@ -66,4 +66,7 @@
     * [X] 将EmailService重新注入到service层。消除User中的不必要的activateCode等属性。
     * [X] DELAY 更加严格地限定实体类属性的类型和读写性。
     * [X] 修复验证分组的bug。
-    * [ ] DELAY 更新依赖的kotlin-utility。
+    * [X] ~~DELAY 更新依赖的kotlin-utility。~~
+* 0.2.9
+    * [X] 整理代码。
+    
