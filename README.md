@@ -31,29 +31,34 @@
 
 # 技术要求
 
-* 通用：
-    * Markdown 用于编写项目文档，不直接编写doc
-    * Yaml 用于编写配置文件
-    * Git 用于版本管理
-    * MySql 数据库
-	* ［可能］Nginx 负载均衡
-	* ［可能］Docker 应用容器
-* 后台：
-    * Kotlin
-    * SpringBoot 核心框架
-    * Spring+Spring Mvc+Spring Data Jpa 核心框架
-    * Redis 用于缓存
-    * Swagger 用于编写api文档
-    * Lombok 便于实体类编写
-    * Maven 用于后台依赖和目录管理
-	* Spring Security 认证和授权框架
-	* ［可能］Elastic Search 搜索引擎
-* 前端：
-    * Html & Scss & Typescript
-    * Vue 前端核心框架
-    * Vue-router, Vuex, ... 扩展Vue的功能
-    * Weex 用于网页端页面和移动端页面
-    * Npm 用于前端依赖和目录管理
+## 通用
+
+* Markdown 用于编写项目文档，不直接编写doc
+* Yaml 用于编写配置文件
+* Git 用于版本管理
+* MySql 数据库
+* ［可能］Nginx 负载均衡
+* ［可能］Docker 应用容器
+
+# 前端
+
+* Html & Scss & Typescript
+* Vue 前端核心框架
+* Vue-router, Vuex, ... 扩展Vue的功能
+* Weex 用于网页端页面和移动端页面
+* Npm 用于前端依赖和目录管理
+	
+## 后台
+
+* Kotlin
+* SpringBoot 核心框架
+* Spring+Spring Mvc+Spring Data Jpa 核心框架
+* Redis 用于缓存
+* Swagger 用于编写api文档
+* Lombok 便于实体类编写
+* Maven 用于后台依赖和目录管理
+* Spring Security 认证和授权框架
+* ［可能］Elastic Search 搜索引擎
 
 # 主要功能
 
@@ -91,7 +96,7 @@
 * 用户可以查看他人的公开收藏。
 * 用户可以关注其他用户。可以查看关注被被关注人数和用户信息。
 
-* （其他尚未想到的，专注于收藏管理的功能）
+* 其他尚未想到的，专注于收藏管理的功能。
 
 # 注意事项
 
@@ -110,6 +115,7 @@
     * `@Valid`属于标准JSR-303规范，`@Validated`属于Spring's JSR-303规范。
     * `@Valid`放在实体类属性上，用于嵌套验证。
     * `@Validated`可以进行分组验证。
+* 当自定义验证器存在依赖注入，且通过Jpa进行数据库进行操作时，需要为每个验证注解显式添加自定义的分组。
 * 在实体类中，不要将Boolean属性写成`isRead`的形式。IDE认为幕后字段名为`read`，但是jpa仍然只识别`isRead`。
 * 使用Maven指令`kotlin:kapt`为配置文件生成元数据（存在中文注释乱码问题）。
 * 使用MockMvc进行测试：需要在测试之前启动项目。可以使用相对于context-path的url。
