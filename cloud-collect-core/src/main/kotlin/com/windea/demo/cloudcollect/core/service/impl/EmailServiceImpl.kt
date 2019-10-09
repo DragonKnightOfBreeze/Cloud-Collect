@@ -2,13 +2,11 @@ package com.windea.demo.cloudcollect.core.service.impl
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.service.*
-import com.windea.utility.common.annotations.marks.*
 import org.springframework.boot.autoconfigure.mail.*
 import org.springframework.mail.javamail.*
 import org.springframework.stereotype.*
 
 @Service
-@NotTested("未进行实际测试……")
 class EmailServiceImpl(
 	private val mailSender: JavaMailSender,
 	private val mailProperties: MailProperties

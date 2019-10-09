@@ -50,8 +50,8 @@ class NoticeController(
 	}
 	
 	@ApiOperation("查询某一用户的所有通知。")
-	@GetMapping("/findByUser")
-	fun findByUser(@RequestParam userId: Long, @RequestParam pageable: Pageable): Page<Notice> {
+	@GetMapping("/findAllByUserId")
+	fun findAllByUserId(@RequestParam userId: Long, @RequestParam pageable: Pageable): Page<Notice> {
 		return noticeService.findAllByUserId(userId, pageable)
 	}
 	

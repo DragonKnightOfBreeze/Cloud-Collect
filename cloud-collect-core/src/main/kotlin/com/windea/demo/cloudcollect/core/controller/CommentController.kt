@@ -25,8 +25,8 @@ class CommentController(
 	@ApiOperation("创建自己的评论。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestParam collectId: Long,
-		@RequestBody @Validated(Create::class) comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
+	fun create(@RequestParam collectId: Long, @RequestBody @Validated(Create::class) comment: Comment,
+		bindingResult: BindingResult, authentication: Authentication): Comment {
 		val user = (authentication.principal as UserDetailsVo).delegateUser
 		return commentService.create(collectId, comment, user)
 	}
@@ -34,8 +34,8 @@ class CommentController(
 	@ApiOperation("创建自己的评论，回复某一评论。")
 	@PostMapping("/reply")
 	@PreAuthorize("isAuthenticated()")
-	fun reply(@RequestParam collectId: Long, @RequestParam replyToCommentId: Long,
-		@RequestBody @Validated(Create::class) comment: Comment, bindingResult: BindingResult, authentication: Authentication): Comment {
+	fun reply(@RequestParam collectId: Long, @RequestParam replyToCommentId: Long, @RequestBody @Validated(Create::class) comment: Comment,
+		bindingResult: BindingResult, authentication: Authentication): Comment {
 		val user = (authentication.principal as UserDetailsVo).delegateUser
 		return commentService.reply(collectId, replyToCommentId, comment, user)
 	}

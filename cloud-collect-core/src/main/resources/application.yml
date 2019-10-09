@@ -88,6 +88,6 @@ cloud-collect:
     activateCodePrefix: "activateCode:"
     resetPasswordCodePrefix: "resetPasswordCode:"
     expiration: 90
-  data-import-export:
+  data-serialize:
     path: D:/CloudCollect
     file-name: dataSchema

@@ -8,6 +8,18 @@ import org.springframework.web.servlet.mvc.method.annotation.*
 /**全局异常处理器。*/
 @RestControllerAdvice
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
+	@ExceptionHandler(ExportDataException::class)
+	fun handleExportDataException(e: ExportDataException): ResponseEntity<*> {
+		e.printStackTrace()
+		return ResponseEntity.badRequest().build<Any>()
+	}
+	
+	@ExceptionHandler(ImportDataException::class)
+	fun handleImportDataException(e: ImportDataException): ResponseEntity<*> {
+		e.printStackTrace()
+		return ResponseEntity.badRequest().build<Any>()
+	}
+	
 	@ExceptionHandler(InvalidUserException::class)
 	fun handleInvalidUserException(e: InvalidUserException): ResponseEntity<*> {
 		e.printStackTrace()

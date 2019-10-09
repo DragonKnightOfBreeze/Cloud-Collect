@@ -43,7 +43,7 @@ class IndexController(
 	}
 	
 	@ApiOperation("忘记用户密码，发送重置密码邮件。")
-	@PostMapping("/forgotPassword")
+	@GetMapping("/forgotPassword")
 	@PreAuthorize("isAnonymous()")
 	fun forgotPassword(@RequestParam username: String) {
 		userService.forgotPassword(username)
