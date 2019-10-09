@@ -6,7 +6,7 @@ import io.swagger.annotations.*
 import java.io.*
 import javax.validation.constraints.*
 
-@ApiModel("用户名&密码登录表单。 ")
+@ApiModel("登录表单。 ")
 @Domain
 class LoginForm(
 	@ApiModelProperty("用户名。")

@@ -11,17 +11,17 @@ interface UserService {
 	/**通过邮箱注册用户。密码需要加密。*/
 	fun register(user: User): User
 	
-	/**激活用户。*/
-	fun activate(username: String, activateCode: String): User?
-	
 	/**通过用户名&密码登录用户。*/
 	fun login(form: LoginForm): UserDetailsVo
 	
+	/**激活用户。*/
+	fun activate(form: ActivateForm): Boolean
+	
 	/**忘记用户密码，发送重置密码邮件。*/
-	fun forgotPassword(username: String): User
+	fun forgotPassword(username: String)
 	
 	/**重置用户密码。密码需要加密。*/
-	fun resetPassword(form: ResetPasswordForm, resetPasswordCode: String): User?
+	fun resetPassword(form: ResetPasswordForm): Boolean
 	
 	/**更新用户信息。密码需要加密。*/
 	fun modify(id: Long, user: User): User

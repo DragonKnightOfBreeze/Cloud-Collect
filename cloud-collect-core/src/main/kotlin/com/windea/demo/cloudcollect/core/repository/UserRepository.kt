@@ -32,5 +32,7 @@ interface UserRepository : JpaRepository<User, Long> {
 	@Query("select count(u) from User u, in(u.praiseToCollectList) c where c.id=:praiseToCollectId")
 	fun countByPraiseToCollectId(praiseToCollectId: Long): Long
 	
+	fun existsByUsername(username: String): Boolean
+	
 	fun existsByUsernameOrEmail(username: String, email: String): Boolean
 }

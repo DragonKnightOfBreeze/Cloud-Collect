@@ -69,7 +69,7 @@ class User(
 ) : Serializable {
 	@ApiModelProperty("是否已激活。")
 	@Column
-	var activateStatus: Boolean = true  //TODO
+	var activateStatus: Boolean = true  //TODO 测试时保持激活
 	
 	@ApiModelProperty("注册时间。")
 	@Column

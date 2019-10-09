@@ -27,15 +27,15 @@ data class Comment(
 	
 	@ApiModelProperty("所属收藏。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	val collect: Collect,
+	var collect: Collect,
 	
 	@ApiModelProperty("发起该评论的用户。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	val sponsorByUser: User,
+	var sponsorByUser: User,
 	
 	@ApiModelProperty("该评论回复的评论。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
-	val replyToComment: Comment? = null
+	var replyToComment: Comment? = null
 ) : Serializable {
 	@ApiModelProperty("创建时间。")
 	@Column

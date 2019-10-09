@@ -77,9 +77,6 @@ server:
     context-path: /cloud-collect/api
 
 cloud-collect:
-  application:
-    require-activate: false
-    send-email: false
   security:
     secret: Windea
     resource-id: cloud-collect
@@ -89,7 +86,7 @@ cloud-collect:
     password: "[a-zA-Z]\\w{5,15}"
   redis:
     activateCodePrefix: "activateCode:"
-    resetPasswordCodePrefix: "resetPassword"
+    resetPasswordCodePrefix: "resetPasswordCode:"
     expiration: 90
   data-import-export:
     path: D:/CloudCollect

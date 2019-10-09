@@ -5,12 +5,12 @@ import com.windea.demo.cloudcollect.core.enums.*
 import com.windea.demo.cloudcollect.core.exceptions.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
-import com.windea.utility.common.extensions.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
 import org.springframework.data.repository.*
 import org.springframework.stereotype.*
 import javax.transaction.*
+import kotlin.random.*
 
 @Service
 @CacheConfig(cacheNames = ["collect"])
@@ -105,7 +105,7 @@ class CollectServiceImpl(
 	}
 	
 	override fun findByRandom(): Collect {
-		val randomId = RandomExtension.range(1, collectRepository.count())
+		val randomId = Random.nextLong(collectRepository.count()) + 1
 		return collectRepository.findByIdOrNull(randomId)?.lateInit() ?: throw NotFoundException()
 	}
 	

@@ -9,13 +9,13 @@ import javax.validation.constraints.*
 @ApiModel("重置密码表单。")
 @Domain
 class ResetPasswordForm(
-	@ApiModelProperty("用户名。")
-	@field:NotEmpty(message = "{validation.User.username.NotEmpty}")
-	@field:Username(message = "{validation.User.username.Username}")
 	val username: String,
 	
 	@ApiModelProperty("密码。")
 	@field:NotEmpty(message = "{validation.User.password.NotEmpty}")
 	@field:Password(message = "{validation.User.password.Password}")
-	val password: String
+	val password: String,
+	
+	@ApiModelProperty("重置密码验证码。")
+	val resetPasswordCode: String
 ) : Serializable

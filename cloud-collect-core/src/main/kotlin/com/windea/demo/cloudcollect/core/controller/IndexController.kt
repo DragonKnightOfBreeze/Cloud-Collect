@@ -29,17 +29,17 @@ class IndexController(
 		return userService.register(user)
 	}
 	
-	@ApiOperation("激活用户。")
-	@PutMapping("/activate")
-	fun activate(@RequestParam username: String, @RequestParam activateCode: String) {
-		userService.activate(username, activateCode)
-	}
-	
 	@ApiOperation("登录用户。")
 	@PostMapping("/login")
 	@PreAuthorize("isAnonymous()")
 	fun login(@RequestBody @Validated form: LoginForm, bindingResult: BindingResult): UserDetailsVo {
 		return userService.login(form)
+	}
+	
+	@ApiOperation("激活用户。")
+	@PostMapping("/activate")
+	fun activate(@RequestBody form: ActivateForm): Boolean {
+		return userService.activate(form)
 	}
 	
 	@ApiOperation("忘记用户密码，发送重置密码邮件。")
@@ -50,9 +50,9 @@ class IndexController(
 	}
 	
 	@ApiOperation("重置用户密码。")
-	@PutMapping("/resetPassword")
-	fun resetPassword(@RequestBody @Validated form: ResetPasswordForm, bindingResult: BindingResult, @RequestParam resetPasswordCode: String) {
-		userService.resetPassword(form, resetPasswordCode)
+	@PostMapping("/resetPassword")
+	fun resetPassword(@RequestBody @Validated form: ResetPasswordForm, bindingResult: BindingResult): Boolean {
+		return userService.resetPassword(form)
 	}
 	
 	
