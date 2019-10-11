@@ -37,7 +37,7 @@ class CollectServiceImpl(
 		//从别人的收藏创建新的收藏
 		//TODO 创建日期和最后修改日期是否存在问题？
 		val newCollect = collect.copy(
-			id = null,
+			id = 0, //重置id
 			user = user
 		)
 		return collectRepository.save(newCollect)
@@ -134,8 +134,8 @@ class CollectServiceImpl(
 	}
 	
 	private fun Collect.lateInit() = this.apply {
-		praiseByUserCount = userRepository.countByPraiseToCollectId(id!!)
-		commentCount = commentRepository.countByCollectId(id!!)
+		praiseByUserCount = userRepository.countByPraiseToCollectId(id)
+		commentCount = commentRepository.countByCollectId(id)
 	}
 	
 	

@@ -16,7 +16,7 @@ data class Notice(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null,
+	val id: Long = 0,
 	
 	@ApiModelProperty("标题。")
 	@Column(nullable = false)

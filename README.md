@@ -117,9 +117,9 @@
 * 当为作为主构造函数参数的实体类的属性注上validation注解时，需要添加`@field:`前缀。
 * 使用`@Value`或`@ConfigurationProperties`时，对应的属性必须是`lateinit var`或者可空类型/存在默认值。
 * 使用`@ConfigurationProperties`时，对应的属性必须是公开的。
-* 使用Jpa时，为了让懒加载如预期工作，实体类必须是`open class`，实体类属性必须是`open var`，推荐存在无参构造。
+* 使用Jpa时，为了让懒加载如预期工作，实体类必须是`open class`，实体类属性必须是`open var`或`open var`，推荐存在无参构造。
 * Jpa不建议与`data class`和只读属性一同工作。
-* 使用Jpa时，作为id的实体类属性可为可空类型，可为不可空类型，不可空时的默认值可为-1或0。
+* 使用Jpa时，作为id的实体类属性可为可空类型，可为不可空类型，不可空时的默认值可为-1或0。也可以为`val`。
 * 使用kotlin编译器插件`spring`时，spring bean可以不显示声明为`open class`。
 * 使用kotlin编译器插件`jpa`时，实体类可以不显示声明无参构造函数。
 * `@Valid`和`@Validated`的区别：[CSDN](https://blog.csdn.net/qq_27680317/article/details/79970590)

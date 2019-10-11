@@ -17,7 +17,7 @@ data class Comment(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null,
+	val id: Long = 0,
 	
 	@ApiModelProperty("内容。")
 	@Column(nullable = false, length = 512)
@@ -27,15 +27,15 @@ data class Comment(
 	
 	@ApiModelProperty("所属收藏。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var collect: Collect,
+	val collect: Collect,
 	
 	@ApiModelProperty("发起该评论的用户。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var sponsorByUser: User,
+	val sponsorByUser: User,
 	
 	@ApiModelProperty("该评论回复的评论。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
-	var replyToComment: Comment? = null
+	val replyToComment: Comment? = null
 ) : Serializable {
 	@ApiModelProperty("创建时间。")
 	@Column

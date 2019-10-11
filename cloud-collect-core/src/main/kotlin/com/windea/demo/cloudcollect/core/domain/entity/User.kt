@@ -21,13 +21,13 @@ data class User(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null,
+	val id: Long = 0,
 	
 	@ApiModelProperty("用户名。")
 	@field:NotEmpty(message = "{validation.User.username.NotEmpty}", groups = [Create::class, Modify::class])
 	@field:Username(message = "{validation.User.username.Username}", groups = [Create::class, Modify::class])
 	@Column(unique = true, nullable = false, length = 16)
-	var username: String,
+	val username: String,
 	
 	@ApiModelProperty("密码。这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度。")
 	@JsonIgnore
@@ -40,7 +40,7 @@ data class User(
 	@field:NotEmpty(message = "{validation.User.email.NotEmpty}", groups = [Create::class, Modify::class])
 	@field:Email(message = "{validation.User.email.Email}", groups = [Create::class, Modify::class])
 	@Column(unique = true, nullable = false, length = 64)
-	var email: String,
+	val email: String,
 	
 	@ApiModelProperty("昵称。")
 	@field:NotEmpty(message = "{validation.User.nickname.NotEmpty}", groups = [Modify::class])

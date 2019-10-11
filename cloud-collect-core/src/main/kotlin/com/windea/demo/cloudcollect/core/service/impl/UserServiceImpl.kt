@@ -144,11 +144,11 @@ class UserServiceImpl(
 	}
 	
 	private fun User.lateInit() = this.apply {
-		followToUserCount = userRepository.countByFollowByUserId(id!!)
-		followByUserCount = userRepository.countByFollowToUserId(id!!)
-		collectCount = collectRepository.countByUserId(id!!)
-		commentCount = commentRepository.countBySponsorByUserId(id!!)
-		noticeCount = noticeRepository.countByUserId(id!!)
+		followToUserCount = userRepository.countByFollowByUserId(id)
+		followByUserCount = userRepository.countByFollowToUserId(id)
+		collectCount = collectRepository.countByUserId(id)
+		commentCount = commentRepository.countBySponsorByUserId(id)
+		noticeCount = noticeRepository.countByUserId(id)
 	}
 	
 	

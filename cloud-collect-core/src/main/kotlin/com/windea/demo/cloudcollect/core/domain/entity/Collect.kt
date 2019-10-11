@@ -23,7 +23,7 @@ data class Collect(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null,
+	val id: Long = 0, //NOTE 其类型可为Long，默认值推荐为0
 	
 	@ApiModelProperty("名字。")
 	@field:NotEmpty(message = "{validation.Collect.name.NotEmpty}", groups = [Create::class, Modify::class])
@@ -63,7 +63,7 @@ data class Collect(
 	
 	@ApiModelProperty("所属用户。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var user: User
+	val user: User
 ) : Serializable {
 	@ApiModelProperty("创建时间。")
 	@Column

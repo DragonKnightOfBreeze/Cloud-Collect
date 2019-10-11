@@ -62,7 +62,7 @@ class CollectCategoryServiceImpl(
 	}
 	
 	private fun CollectCategory.lateInit() = this.apply {
-		collectCount = collectRepository.countByCategoryId(this.id!!)
+		collectCount = collectRepository.countByCategoryId(this.id)
 	}
 	
 	

@@ -15,7 +15,7 @@ data class BrowsingHistory(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null,
+	val id: Long = 0,
 	
 	//不做任何级联，迫切加载
 	@ApiModelProperty("收藏。")

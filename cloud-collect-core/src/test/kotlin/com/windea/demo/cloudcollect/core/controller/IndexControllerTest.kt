@@ -22,7 +22,7 @@ class IndexControllerTest {
 	
 	@Test
 	fun test() {
-		print("hello world!!!!!")
+		print("hello world!")
 	}
 	
 	@Test

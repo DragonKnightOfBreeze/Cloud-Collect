@@ -19,7 +19,7 @@ data class CollectTag(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null,
+	val id: Long = 0,
 	
 	@ApiModelProperty("名字。")
 	@field:NotEmpty(message = "{validation.CollectTag.name.NotEmpty}", groups = [Create::class, Modify::class])
@@ -35,7 +35,7 @@ data class CollectTag(
 	
 	@ApiModelProperty("所属用户。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var user: User
+	val user: User
 ) : Serializable {
 	@ApiModelProperty("创建时间。")
 	@Column

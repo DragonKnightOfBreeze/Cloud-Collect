@@ -72,16 +72,16 @@ class DataSerializeServiceImpl(
 	)
 	
 	private fun CollectSchema.toCollect(user: User) = Collect(
-		id = collectRepository.findByNameAndUserId(name, user.id!!)?.id, //NOTE 可能是添加数据，也可能为更改
+		id = collectRepository.findByNameAndUserId(name, user.id)?.id ?: 0, //NOTE 可能是添加数据，也可能为更改
 		name = name,
 		summary = summary,
 		url = this.url,
 		logoUrl = this.logoUrl,
 		category = this.categoryName.let {
-			categoryRepository.findByNameAndUserId(it, user.id!!) ?: CollectCategory(name = name, user = user)
+			categoryRepository.findByNameAndUserId(it, user.id) ?: CollectCategory(name = name, user = user)
 		},
 		tags = tagNames.map {
-			tagRepository.findByNameAndUserId(it, user.id!!) ?: CollectTag(name = name, user = user)
+			tagRepository.findByNameAndUserId(it, user.id) ?: CollectTag(name = name, user = user)
 		}.distinctBy { it.name }.toMutableSet(),
 		type = this.type,
 		user = user

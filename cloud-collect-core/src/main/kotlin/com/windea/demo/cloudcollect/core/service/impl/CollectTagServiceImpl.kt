@@ -62,7 +62,7 @@ class CollectTagServiceImpl(
 	}
 	
 	private fun CollectTag.lateInit() = this.apply {
-		collectCount = collectRepository.countByTagId(id!!)
+		collectCount = collectRepository.countByTagId(id)
 	}
 	
 	

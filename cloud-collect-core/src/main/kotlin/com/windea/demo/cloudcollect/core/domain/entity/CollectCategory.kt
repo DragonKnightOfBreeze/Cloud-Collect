@@ -19,7 +19,7 @@ data class CollectCategory(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	var id: Long? = null,
+	val id: Long = 0,
 	
 	@ApiModelProperty("名字。")
 	@field:NotEmpty(message = "{validation.CollectCategory.name.NotEmpty}", groups = [Create::class, Modify::class])

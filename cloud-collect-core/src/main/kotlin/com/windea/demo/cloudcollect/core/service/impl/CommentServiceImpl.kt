@@ -61,7 +61,7 @@ class CommentServiceImpl(
 	}
 	
 	private fun Comment.lateInit() = this.apply {
-		replyByCommentCount = commentRepository.countByReplyToCommentId(id!!)
+		replyByCommentCount = commentRepository.countByReplyToCommentId(id)
 	}
 	
 	
