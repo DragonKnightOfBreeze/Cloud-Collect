@@ -7,7 +7,7 @@ import com.windea.demo.cloudcollect.core.repository.*
 import org.springframework.security.core.userdetails.*
 import org.springframework.stereotype.*
 
-/**Jwt用户详情的服务。用于安全验证。*/
+//用于安全验证
 @Service
 class UserDetailsServiceImpl(
 	private val userRepository: UserRepository
@@ -18,6 +18,6 @@ class UserDetailsServiceImpl(
 	
 	private fun User.toUserDetails() = UserDetailsVo(this)
 	
-	//登录方法向SecurityContext中存储的是validAuthentication，而非authentication
-	//前者不包含密码，但包含权限信息，因此不需要实现UserDetailsPasswordService
+	//NOTE 登录方法向SecurityContext中存储的是validAuthentication，而非authentication
+	//NOTE 前者不包含密码，但包含权限信息，因此不需要实现UserDetailsPasswordService
 }

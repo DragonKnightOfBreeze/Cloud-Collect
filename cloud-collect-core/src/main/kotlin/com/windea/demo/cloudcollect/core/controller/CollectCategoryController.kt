@@ -14,7 +14,6 @@ import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
-/**收藏的分类的控制器。*/
 @Api("收藏的分类")
 @RestController
 @RequestMapping("/collectCategory")
@@ -30,18 +29,18 @@ class CollectCategoryController(
 		return categoryService.create(category, user)
 	}
 	
-	@ApiOperation("删除自己的分类。")
-	@DeleteMapping("/{id}")
-	@PreAuthorize("isAuthenticated()")
-	fun delete(@PathVariable id: Long) {
-		categoryService.delete(id)
-	}
-	
 	@ApiOperation("修改自己的分类。")
 	@PutMapping("/{id}")
 	@PreAuthorize("isAuthenticated()")
 	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) category: CollectCategory, bindingResult: BindingResult) {
-		categoryService.modify(id, category)
+		categoryService.modify(category)
+	}
+	
+	@ApiOperation("删除自己的分类。")
+	@DeleteMapping("/{id}")
+	@PreAuthorize("isAuthenticated()")
+	fun deleteById(@PathVariable id: Long) {
+		categoryService.deleteById(id)
 	}
 	
 	@ApiOperation("根据id得到某一分类。")

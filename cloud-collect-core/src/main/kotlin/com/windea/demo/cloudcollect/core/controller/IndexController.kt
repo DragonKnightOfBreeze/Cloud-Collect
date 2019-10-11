@@ -13,7 +13,7 @@ import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
-/**首页的控制器。包含登录、注册等操作。*/
+//包含登录注册功能，以及随便看看功能
 @Api("首页")
 @RestController
 @RequestMapping("/")
@@ -22,13 +22,6 @@ class IndexController(
 	private val collectService: CollectService,
 	private val userService: UserService
 ) {
-	@ApiOperation("注册用户。")
-	@PostMapping("/register")
-	@PreAuthorize("isAnonymous()")
-	fun register(@RequestBody @Validated(Create::class) user: User, bindingResult: BindingResult): User {
-		return userService.register(user)
-	}
-	
 	@ApiOperation("登录用户。")
 	@PostMapping("/login")
 	@PreAuthorize("isAnonymous()")
@@ -36,23 +29,30 @@ class IndexController(
 		return userService.login(form)
 	}
 	
-	@ApiOperation("激活用户。")
-	@PostMapping("/activate")
-	fun activate(@RequestBody form: ActivateForm): Boolean {
-		return userService.activate(form)
+	@ApiOperation("注册用户。")
+	@PostMapping("/register")
+	@PreAuthorize("isAnonymous()")
+	fun register(@RequestBody @Validated(Create::class) user: User, bindingResult: BindingResult): User {
+		return userService.register(user)
 	}
 	
-	@ApiOperation("忘记用户密码，发送重置密码邮件。")
+	@ApiOperation("激活用户。")
+	@PostMapping("/activate")
+	fun activate(@RequestParam username: String, @RequestParam activateCode: String) {
+		userService.activate(username, activateCode)
+	}
+	
+	@ApiOperation("忘记用户密码。")
 	@GetMapping("/forgotPassword")
-	@PreAuthorize("isAnonymous()")
 	fun forgotPassword(@RequestParam username: String) {
 		userService.forgotPassword(username)
 	}
 	
 	@ApiOperation("重置用户密码。")
 	@PostMapping("/resetPassword")
-	fun resetPassword(@RequestBody @Validated form: ResetPasswordForm, bindingResult: BindingResult): Boolean {
-		return userService.resetPassword(form)
+	fun resetPassword(@RequestBody @Validated form: ResetPasswordForm, bindingResult: BindingResult,
+		resetPasswordCode: String) {
+		userService.resetPassword(form, resetPasswordCode)
 	}
 	
 	

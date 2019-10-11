@@ -33,7 +33,7 @@ data class Notice(
 	
 	@ApiModelProperty("所属用户。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var user: User
+	val user: User
 ) : Serializable {
 	@Column
 	@ApiModelProperty("是否已读。")

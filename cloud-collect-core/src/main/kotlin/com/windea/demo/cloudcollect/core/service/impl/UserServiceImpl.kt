@@ -7,20 +7,17 @@ import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.enums.*
 import com.windea.demo.cloudcollect.core.exceptions.*
-import com.windea.demo.cloudcollect.core.properties.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
-import org.springframework.data.redis.core.*
 import org.springframework.data.repository.*
 import org.springframework.security.authentication.*
 import org.springframework.security.core.context.*
 import org.springframework.security.crypto.password.*
 import org.springframework.stereotype.*
-import java.util.*
 import javax.transaction.*
-import kotlin.random.Random
+import kotlin.random.*
 
 @Service
 @CacheConfig(cacheNames = ["user"])
@@ -29,99 +26,67 @@ class UserServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val commentRepository: CommentRepository,
 	private val noticeRepository: NoticeRepository,
+	private val cacheService: CacheService,
 	private val passwordEncoder: PasswordEncoder,
-	private val authenticationManager: AuthenticationManager,
-	private val redisTemplate: StringRedisTemplate,
-	private val redisProperties: RedisProperties,
-	private val emailService: EmailService
+	private val authenticationManager: AuthenticationManager
 ) : UserService {
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun register(user: User): User {
-		//进行数据库操作，需要对密码进行加密
-		user.password = passwordEncoder.encode(user.password)
-		val result = userRepository.save(user)
-		
-		//将激活码存储到缓存中
-		val activateCodeKey = "${redisProperties.activateCodePrefix}${user.username}"
-		val activateCodeValue = UUID.randomUUID().toString()
-		redisTemplate.opsForValue().set(activateCodeKey, activateCodeValue, redisProperties.expiration)
-		
-		//TODO 测试时不发送激活邮件
-		//emailService.sendActivateEmail(result, activateCodeValue)
-		
-		return result
-	}
-	
 	override fun login(form: LoginForm): UserDetailsVo {
+		//验证鉴定对象，然后将其转化为UserDetailsVo后返回
 		val authentication = UsernamePasswordAuthenticationToken(form.username, form.password)
 		val validAuthentication = authenticationManager.authenticate(authentication)
 		SecurityContextHolder.getContext().authentication = validAuthentication
-		
 		return (validAuthentication.principal as UserDetailsVo)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun activate(form: ActivateForm): Boolean {
-		//冲缓存中得到激活码，如果不匹配，则直接返回
-		val activateCodeKey = "${redisProperties.activateCodePrefix}${form.username}"
-		val activateCodeValue = redisTemplate.opsForValue()[activateCodeKey]
-		if(form.activateCode != activateCodeValue) return false
+	override fun register(user: User): User {
+		//将激活码存储到缓存中
+		cacheService.setActivateCode(user.username)
 		
-		//进行数据库操作
-		val savedUser = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
-		savedUser.activateStatus = true
-		val result = userRepository.save(savedUser)
+		val newUser = user.copy(
+			password = passwordEncoder.encode(user.password) //NOTE 密码需要加密
+		)
+		return userRepository.save(newUser)
+	}
+	
+	@Transactional
+	@CacheEvict(allEntries = true)
+	override fun activate(username: String, activateCode: String) {
+		//冲缓存中得到激活码，如果不匹配，则抛出异常
+		val code = cacheService.getActivateCode(username)
+		if(activateCode != code) throw IncorrectAuthCodeException()
 		
-		//TODO 测试时不发送欢迎邮件
-		//emailService.sendHelloEmail(result)
-		
-		return true
+		val user = userRepository.findByUsername(username) ?: throw UserNotFoundException()
+		user.activateStatus = true
+		userRepository.save(user)
 	}
 	
 	override fun forgotPassword(username: String) {
 		//首先要判断用户是否存在
-		val result = userRepository.findByUsername(username) ?: throw UserNotFoundException()
+		if(!userRepository.existsByUsername(username)) throw UserNotFoundException()
 		
 		//将验证码存储到缓存中
-		val resetPasswordCodeKey = "${redisProperties.resetPasswordCodePrefix}${username}"
-		val resetPasswordCodeValue = UUID.randomUUID().toString()
-		redisTemplate.opsForValue().set(resetPasswordCodeKey, resetPasswordCodeValue, redisProperties.expiration)
-		
-		//TODO 测试时不发送重置密码邮件
-		//emailService.sendResetPasswordEmail(savedUser, resetPasswordCodeValue)
+		cacheService.setResetPasswordCode(username)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun resetPassword(form: ResetPasswordForm): Boolean {
-		//从缓存中得到激活码，如果不匹配，则直接返回null
-		val resetPasswordCodeKey = "${redisProperties.resetPasswordCodePrefix}${form.username}"
-		val resetPasswordCodeValue = redisTemplate.opsForValue()[resetPasswordCodeKey]
-		if(form.resetPasswordCode != resetPasswordCodeValue) return false
+	override fun resetPassword(form: ResetPasswordForm, resetPasswordCode: String) {
+		//从缓存中得到激活码，如果不匹配，则抛出异常
+		val code = cacheService.getResetPasswordCode(form.username)
+		if(resetPasswordCode != code) throw IncorrectAuthCodeException()
 		
-		//进行数据库操作
-		val savedUser = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
-		savedUser.password = passwordEncoder.encode(form.password)
-		val result = userRepository.save(savedUser)
-		
-		//TODO 测试时不发送重置密码成功邮件
-		//emailService.sendResetPasswordSuccessEmail(result)
-		
-		return true
+		val user = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
+		user.password = passwordEncoder.encode(form.password) //NOTE 密码需要加密
+		userRepository.save(user)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun modify(id: Long, user: User): User {
-		val savedUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		savedUser.password = passwordEncoder.encode(user.password)
-		savedUser.nickname = user.nickname
-		savedUser.introduce = user.introduce
-		savedUser.avatarUrl = user.avatarUrl
-		savedUser.backgroundUrl = user.backgroundUrl
-		return userRepository.save(savedUser)
+	override fun modify(id: Long, user: User) {
+		user.password = passwordEncoder.encode(user.password) //NOTE 密码需要加密
+		userRepository.save(user)
 	}
 	
 	@Cacheable(key = "methodName + args")

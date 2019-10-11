@@ -19,23 +19,22 @@ class CollectCategoryServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun create(category: CollectCategory, user: User): CollectCategory {
-		category.user = user
-		return categoryRepository.save(category)
+		val newCategory = category.copy(
+			user = user
+		)
+		return categoryRepository.save(newCategory)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun delete(id: Long) {
+	override fun modify(category: CollectCategory) {
+		categoryRepository.save(category)
+	}
+	
+	@Transactional
+	@CacheEvict(allEntries = true)
+	override fun deleteById(id: Long) {
 		categoryRepository.deleteById(id)
-	}
-	
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun modify(id: Long, category: CollectCategory): CollectCategory {
-		val savedCategory = categoryRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		savedCategory.name = category.name
-		savedCategory.summary = category.summary
-		return categoryRepository.save(savedCategory)
 	}
 	
 	@Cacheable(key = "methodName + args")

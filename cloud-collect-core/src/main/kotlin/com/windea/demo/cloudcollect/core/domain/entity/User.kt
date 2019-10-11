@@ -17,7 +17,7 @@ import javax.validation.constraints.*
 @Entity
 @EntityListeners(AuditingEntityListener::class)
 @UniqueUser(groups = [Create::class])
-class User(
+data class User(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

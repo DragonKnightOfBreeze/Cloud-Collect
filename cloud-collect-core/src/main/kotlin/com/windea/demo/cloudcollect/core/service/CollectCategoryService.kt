@@ -3,16 +3,15 @@ package com.windea.demo.cloudcollect.core.service
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import org.springframework.data.domain.*
 
-/**收藏的分类的服务。*/
 interface CollectCategoryService {
 	/**创建自己的分类。*/
 	fun create(category: CollectCategory, user: User): CollectCategory
 	
-	/**删除自己的分类。*/
-	fun delete(id: Long)
-	
 	/**修改自己的分类。包括名字，概述。*/
-	fun modify(id: Long, category: CollectCategory): CollectCategory
+	fun modify(category: CollectCategory)
+	
+	/**删除自己的分类。*/
+	fun deleteById(id: Long)
 	
 	/**根据id得到某一分类。*/
 	fun findById(id: Long): CollectCategory

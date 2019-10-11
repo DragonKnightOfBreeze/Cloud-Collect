@@ -3,13 +3,14 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
+import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
+import org.springframework.security.core.*
 import org.springframework.web.bind.annotation.*
 
-/**通知的控制器。*/
 @Api("通知")
 @RestController
 @RequestMapping("/notice")
@@ -17,24 +18,27 @@ import org.springframework.web.bind.annotation.*
 class NoticeController(
 	private val noticeService: NoticeService
 ) {
-	@ApiOperation("创建通知，发送给所有用户。")
-	@PostMapping("/sendToAll")
-	@PreAuthorize("hasRole('ADMIN')")
-	fun sendToAll(@RequestBody notice: Notice) {
-		noticeService.sendToAll(notice)
+	//NOTE 通知的创建交由前端
+	@ApiOperation("创建某一用户的通知。")
+	@PostMapping("/create")
+	@PreAuthorize("isAuthenticated()")
+	fun create(@RequestBody notice: Notice, authentication: Authentication) {
+		val user = (authentication.principal as UserDetailsVo).delegateUser
+		noticeService.create(notice, user)
+	}
+	
+	@ApiOperation("阅读自己的通知。")
+	@PutMapping("/{id}/read")
+	@PreAuthorize("isAuthenticated()")
+	fun read(@PathVariable id: Long, @RequestBody notice: Notice) {
+		noticeService.read(notice)
 	}
 	
 	@ApiOperation("删除自己的通知。")
 	@DeleteMapping("/{id}")
 	@PreAuthorize("isAuthenticated()")
-	fun delete(@PathVariable id: Long) {
-		noticeService.delete(id)
-	}
-	
-	@ApiOperation("阅读自己的通知。")
-	@PutMapping("/{id}/read")
-	fun read(@PathVariable id: Long) {
-		noticeService.read(id)
+	fun deleteById(@PathVariable id: Long) {
+		noticeService.deleteById(id)
 	}
 	
 	@ApiOperation("得到某一通知。")

@@ -104,6 +104,9 @@
 
 * Spring Bean定义一律使用Kotlin的表达式写法，且显示声明返回类型。
 * 转化扩展可以使用Kotlin的表达式写法。 
+* 创建实体时，尽量使用构造方法或者数据类的复制方法。
+* 修改实体时，其合法性交给前端管理。
+* 创建通知、浏览记录，发送邮件等操作交由前端主动调用。
 
 # 注意事项
 
@@ -116,6 +119,7 @@
 * 使用`@ConfigurationProperties`时，对应的属性必须是公开的。
 * 使用Jpa时，为了让懒加载如预期工作，实体类必须是`open class`，实体类属性必须是`open var`，推荐存在无参构造。
 * Jpa不建议与`data class`和只读属性一同工作。
+* 使用Jpa时，作为id的实体类属性可为可空类型，可为不可空类型，不可空时的默认值可为-1或0。
 * 使用kotlin编译器插件`spring`时，spring bean可以不显示声明为`open class`。
 * 使用kotlin编译器插件`jpa`时，实体类可以不显示声明无参构造函数。
 * `@Valid`和`@Validated`的区别：[CSDN](https://blog.csdn.net/qq_27680317/article/details/79970590)
@@ -132,7 +136,7 @@
     * Hibernate在将数据存储到数据库之前会再验证一次，使用自己的反射机制得到验证器。
     * 使用明确的验证分组，而非默认的Default，可以解决这个问题。
 * 如何启用Spring的`@CreatedTime`等审计注解：[简书](https://www.jianshu.com/p/30aef87f3171)
-    * 对应的属性可以是非空`lateinit var`。 
+    * 对应的属性可以是非空的`lateinit var`。 
 * 验证码功能的几种实现：
 	* 存储到http session中。
 	* 存储到数据库的user表中。（不推荐，待重构）
@@ -145,3 +149,6 @@
 	* 之后插件将会适用于所有注有该注解（或其元注解）的类/接口（或其子类/实现类）。
 * 关于作为请求参数传递的Pageable对象
     * 示例：`"page=0&size=10&direction=asc&sort=name,age"`
+* Jpa报错：`org.hibernate.AnnotationException: Collection has neither generic type or OneToMany.targetEntity() defined`
+    * 当实体类中存在`MutableList<T>`或`MutableSet<T>`类型的属性时，将会报如上异常。
+    * 可将其变成可空的`var`解决，可以为其添加`@JvmSuppressWildcards`注解解决。

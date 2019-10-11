@@ -15,7 +15,6 @@ import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
-/**收藏的控制器。*/
 @Api("收藏")
 @RestController
 @RequestMapping("/collect")
@@ -27,7 +26,8 @@ class CollectController(
 	@ApiOperation("创建自己的收藏。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody @Validated(Create::class) collect: Collect, bindingResult: BindingResult, authentication: Authentication): Collect {
+	fun create(@RequestBody @Validated(Create::class) collect: Collect, bindingResult: BindingResult,
+		authentication: Authentication): Collect {
 		val user = (authentication.principal as UserDetailsVo).delegateUser
 		return collectService.create(collect, user)
 	}
@@ -35,51 +35,32 @@ class CollectController(
 	@ApiOperation("从别人的收藏创建自己的收藏。")
 	@PostMapping("/createFrom")
 	@PreAuthorize("isAuthenticated()")
-	fun createFrom(@RequestParam id: Long, authentication: Authentication): Collect {
+	fun createFrom(@RequestBody collect: Collect, authentication: Authentication): Collect {
 		val user = (authentication.principal as UserDetailsVo).delegateUser
-		return collectService.createFrom(id, user)
-	}
-	
-	@ApiOperation("删除自己的收藏。")
-	@DeleteMapping("/{id}")
-	@PreAuthorize("isAuthenticated()")
-	fun delete(@PathVariable id: Long) {
-		collectService.delete(id)
+		return collectService.createFrom(collect, user)
 	}
 	
 	@ApiOperation("修改自己的收藏。")
 	@PutMapping("/{id}")
 	@PreAuthorize("isAuthenticated()")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) collect: Collect, bindingResult: BindingResult) {
-		collectService.modify(id, collect)
-	}
-	
-	@ApiOperation("修改自己的收藏的分类。")
-	@PutMapping("/{id}/category")
-	@PreAuthorize("isAuthenticated()")
-	fun modifyCategory(@PathVariable id: Long, @RequestBody category: CollectCategory) {
-		collectService.modifyCategory(id, category)
-	}
-	
-	@ApiOperation("修改自己的收藏的标签。")
-	@PutMapping("/{id}/tags")
-	@PreAuthorize("isAuthenticated()")
-	fun modifyTags(@PathVariable id: Long, @RequestBody tags: MutableSet<CollectTag>) {
-		collectService.modifyTags(id, tags)
-	}
-	
-	@ApiOperation("修改自己的收藏的类型。")
-	@PutMapping("/{id}/type")
-	@PreAuthorize("isAuthenticated()")
-	fun modifyType(@PathVariable id: Long, @RequestBody type: CollectType) {
-		collectService.modifyType(id, type)
+	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) collect: Collect,
+		bindingResult: BindingResult) {
+		collectService.modify(collect)
 	}
 	
 	@ApiOperation("点赞某一收藏。")
 	@PutMapping("/{id}/praise")
-	fun praise(@PathVariable id: Long, authentication: Authentication) {
+	@PreAuthorize("isAuthenticated()")
+	fun praise(@PathVariable id: Long, @RequestBody collect: Collect, authentication: Authentication) {
 		val user = (authentication.principal as UserDetailsVo).delegateUser
-		collectService.praise(id, user)
+		collectService.praise(collect, user)
+	}
+	
+	@ApiOperation("删除自己的收藏。")
+	@DeleteMapping("/{id}")
+	@PreAuthorize("isAuthenticated()")
+	fun deleteById(@PathVariable id: Long) {
+		collectService.deleteById(id)
 	}
 	
 	@ApiOperation("根据id得到某一收藏。")
@@ -100,10 +81,34 @@ class CollectController(
 		return collectService.findAllByNameContains(name, pageable)
 	}
 	
+	@ApiOperation("根据分类名字全局查询所有收藏。")
+	@GetMapping("/findAllByCategoryNameContains")
+	fun findAllByCategoryNameContains(@RequestParam categoryName: String, @RequestParam pageable: Pageable): Page<Collect> {
+		return collectService.findAllByCategoryNameContains(categoryName, pageable)
+	}
+	
+	@ApiOperation("根据标签名字全局查询所有收藏。")
+	@GetMapping("/findAllByTagNameContains")
+	fun findAllByTagNameContains(@RequestParam tagName: String, @RequestParam pageable: Pageable): Page<Collect> {
+		return collectService.findAllByTagNameContains(tagName, pageable)
+	}
+	
 	@ApiOperation("根据名字和用户id模糊查询所有收藏。")
 	@GetMapping("/findAllByNameContainsAndUserId")
 	fun findAllByNameContainsAndUserId(@RequestParam name: String, @RequestParam userId: Long, @RequestParam pageable: Pageable): Page<Collect> {
 		return collectService.findAllByNameContainsAndUserId(name, userId, pageable)
+	}
+	
+	@ApiOperation("根据分类名字和用户id模糊查询所有收藏。")
+	@GetMapping("/findAllByCategoryNameContainsAndUserId")
+	fun findAllByCategoryNameContainsAndUserId(@RequestParam categoryName: String, @RequestParam userId: Long, @RequestParam pageable: Pageable): Page<Collect> {
+		return collectService.findAllByCategoryNameContainsAndUserId(categoryName, userId, pageable)
+	}
+	
+	@ApiOperation("根据标签名字和用户id模糊查询所有收藏。")
+	@GetMapping("/findAllByTagNameContainsAndUserId")
+	fun findAllByTagNameContainsAndUserId(@RequestParam tagName: String, @RequestParam userId: Long, @RequestParam pageable: Pageable): Page<Collect> {
+		return collectService.findAllByTagNameContainsAndUserId(tagName, userId, pageable)
 	}
 	
 	@ApiOperation("根据分类id查询所有收藏。")

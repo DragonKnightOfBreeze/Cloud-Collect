@@ -7,10 +7,17 @@
     <inspection_tool class="AbstractMethodOverridesAbstractMethod" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="AbstractMethodOverridesConcreteMethod" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="AbstractMethodWithMissingImplementations" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="CanBeParameter" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="CanBePrimaryConstructorProperty" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="CheckEmptyScriptTag" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ComplexRedundantLet" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="ConstantConditionIf" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="Convert2MethodRef" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="Destructure" enabled="true" level="INFO" enabled_by_default="true" />
+    <inspection_tool class="DirectUseOfResultType" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="EditorConfigPartialOverride" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="EnumerationCanBeIteration" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="ExplicitThis" enabled="false" level="UNUSED ENTRY" enabled_by_default="false" />
     <inspection_tool class="ExtendsConcreteCollection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ExtendsUtilityClass" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="FunctionName" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
@@ -39,14 +46,14 @@
     <inspection_tool class="InterfaceNeverImplemented" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoreInterfacesThatOnlyDeclareConstants" value="false" />
     </inspection_tool>
-    <inspection_tool class="IntroduceWhenSubject" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="JSIgnoredPromiseFromCall" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="JSMethodCanBeStatic" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="JSUnusedGlobalSymbols" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="JSUnusedLocalSymbols" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="KotlinDoubleNegation" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="KotlinRedundantOverride" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="KotlinUnusedImport" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="LossyEncoding" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="MemberVisibilityCanBePrivate" enabled="false" level="INFO" enabled_by_default="false" />
     <inspection_tool class="NonAsciiCharacters" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="NonProtectedConstructorInAbstractClass" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="m_ignoreNonPublicClasses" value="false" />
@@ -62,18 +69,53 @@
     <inspection_tool class="NonSerializableObjectPassedToObjectStream" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="NonSerializableWithSerialVersionUIDField" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="NonSerializableWithSerializationMethods" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="NullChecksToSafeCall" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="ParameterTypePreventsOverriding" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ProblematicVarargsMethodOverride" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="RedundantCompanionReference" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantEmptyInitializerBlock" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantEnumConstructorInvocation" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantExplicitType" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantGetter" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantIf" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantLambdaArrow" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="RedundantMethodOverride" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantModalityModifier" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="RedundantModalityModifier" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantNotNullExtensionReceiverOfInline" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="RedundantRequireNotNullCall" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantReturnLabel" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantSamConstructor" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantSemicolon" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantSetter" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantSuspendModifier" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantUnitExpression" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantUnitReturnType" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantVisibilityModifier" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RedundantWith" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="Reformat" enabled="false" level="INFORMATION" enabled_by_default="false" />
+    <inspection_tool class="RemoveCurlyBracesFromTemplate" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RemoveEmptyClassBody" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RemoveEmptyParenthesesFromLambdaCall" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RemoveEmptyPrimaryConstructor" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RemoveEmptySecondaryConstructorBody" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="RemoveExplicitSuperQualifier" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="RemoveExplicitTypeArguments" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="RemoveForLoopIndices" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RemoveRedundantBackticks" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RemoveRedundantCallsOfConversionMethods" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RemoveRedundantQualifierName" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RemoveRedundantSpreadOperator" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RemoveSetterParameterType" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RemoveSingleExpressionStringTemplate" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="RemoveToStringInStringTemplate" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="ReplaceCollectionCountWithSize" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="SerialVersionUIDNotStaticFinal" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="SerializableHasSerialVersionUIDField" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoreAnonymousInnerClasses" value="false" />
       <option name="superClassString" value="java.awt.Component" />
     </inspection_tool>
+    <inspection_tool class="SimpleRedundantLet" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="SimplifyWhenWithBooleanConstantCondition" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="Since15" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="StaticInheritance" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="TypeParameterExtendsFinalClass" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -90,12 +132,13 @@
     <inspection_tool class="UnusedEquals" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="UnusedReceiverParameter" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="UnusedReturnValue" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="UnusedSymbol" enabled="false" level="UNUSED ENTRY" enabled_by_default="false" />
+    <inspection_tool class="UnusedSymbol" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="WeakerAccess" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="SUGGEST_PACKAGE_LOCAL_FOR_MEMBERS" value="true" />
       <option name="SUGGEST_PACKAGE_LOCAL_FOR_TOP_CLASSES" value="true" />
       <option name="SUGGEST_PRIVATE_FOR_INNERS" value="false" />
     </inspection_tool>
+    <inspection_tool class="WhenWithOnlyElse" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="unused" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="LOCAL_VARIABLE" value="true" />
       <option name="FIELD" value="true" />

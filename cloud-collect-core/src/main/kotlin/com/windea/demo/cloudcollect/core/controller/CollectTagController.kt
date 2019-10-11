@@ -14,7 +14,6 @@ import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
-/**收藏的标签的控制器。*/
 @Api("收藏的标签")
 @RestController
 @RequestMapping("/collectTag")
@@ -30,18 +29,18 @@ class CollectTagController(
 		return tagService.create(tag, user)
 	}
 	
-	@ApiOperation("删除自己的标签。")
-	@DeleteMapping("/{id}")
-	@PreAuthorize("isAuthenticated()")
-	fun delete(@PathVariable id: Long) {
-		tagService.delete(id)
-	}
-	
 	@ApiOperation("修改自己的标签。")
 	@PutMapping("/{id}")
 	@PreAuthorize("isAuthenticated()")
 	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) tag: CollectTag, bindingResult: BindingResult) {
-		tagService.modify(id, tag)
+		tagService.modify(tag)
+	}
+	
+	@ApiOperation("删除自己的标签。")
+	@DeleteMapping("/{id}")
+	@PreAuthorize("isAuthenticated()")
+	fun deleteById(@PathVariable id: Long) {
+		tagService.deleteById(id)
 	}
 	
 	@ApiOperation("根据id得到某一标签。")

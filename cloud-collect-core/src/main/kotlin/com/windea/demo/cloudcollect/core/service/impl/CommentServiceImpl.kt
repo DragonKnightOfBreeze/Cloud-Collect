@@ -13,29 +13,30 @@ import javax.transaction.*
 @Service
 @CacheConfig(cacheNames = ["comment"])
 class CommentServiceImpl(
-	private val commentRepository: CommentRepository,
-	private val collectRepository: CollectRepository
+	private val commentRepository: CommentRepository
 ) : CommentService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(collectId: Long, comment: Comment, sponsorByUser: User): Comment {
-		comment.collect = collectRepository.findByIdOrNull(collectId) ?: throw NotFoundException()
-		comment.sponsorByUser = sponsorByUser
-		return commentRepository.save(comment)
+	override fun create(comment: Comment, sponsorByUser: User): Comment {
+		val newComment = comment.copy(
+			sponsorByUser = sponsorByUser
+		)
+		return commentRepository.save(newComment)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun reply(collectId: Long, replyToCommentId: Long, comment: Comment, sponsorByUser: User): Comment {
-		comment.collect = collectRepository.findByIdOrNull(collectId) ?: throw NotFoundException()
-		comment.sponsorByUser = sponsorByUser
-		comment.replyToComment = commentRepository.findByIdOrNull(replyToCommentId) ?: throw NotFoundException()
-		return commentRepository.save(comment)
+	override fun reply(replyToCommentId: Long, comment: Comment, sponsorByUser: User): Comment {
+		val newComment = comment.copy(
+			replyToComment = commentRepository.findByIdOrNull(replyToCommentId) ?: throw NotFoundException(),
+			sponsorByUser = sponsorByUser
+		)
+		return commentRepository.save(newComment)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun delete(id: Long) {
+	override fun deleteById(id: Long) {
 		commentRepository.deleteById(id)
 	}
 	

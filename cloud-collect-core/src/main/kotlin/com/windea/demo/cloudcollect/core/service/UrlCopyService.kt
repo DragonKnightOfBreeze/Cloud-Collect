@@ -2,7 +2,6 @@ package com.windea.demo.cloudcollect.core.service
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
 
-/**复制链接的服务。*/
 interface UrlCopyService {
 	/**复制为Html链接。*/
 	fun copyAsHtmlUrl(collect: Collect): String

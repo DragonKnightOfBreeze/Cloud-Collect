@@ -19,35 +19,23 @@ class NoticeServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun create(notice: Notice, user: User): Notice {
-		notice.user = user
-		return noticeRepository.save(notice)
-	}
-	
-	override fun sendToAll(notice: Notice) {
-		val userList = userRepository.findAll()
-		for(user in userList) {
-			val savedNotice = Notice(
-				title = notice.title,
-				content = notice.content,
-				type = notice.type,
-				user = user
-			)
-			noticeRepository.save(savedNotice)
-		}
+		val newNotice = notice.copy(
+			user = user
+		)
+		return noticeRepository.save(newNotice)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun delete(id: Long) {
+	override fun read(notice: Notice) {
+		notice.readStatus = true
+		noticeRepository.save(notice)
+	}
+	
+	@Transactional
+	@CacheEvict(allEntries = true)
+	override fun deleteById(id: Long) {
 		noticeRepository.deleteById(id)
-	}
-	
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun read(id: Long): Notice {
-		val savedNotice = noticeRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		savedNotice.readStatus = true
-		return noticeRepository.save(savedNotice)
 	}
 	
 	@Cacheable(key = "methodName + args")

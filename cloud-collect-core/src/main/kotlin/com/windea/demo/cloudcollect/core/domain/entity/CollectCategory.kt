@@ -35,7 +35,7 @@ data class CollectCategory(
 	
 	@ApiModelProperty("所属用户。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
-	var user: User
+	val user: User
 ) : Serializable {
 	@ApiModelProperty("创建时间。")
 	@Column

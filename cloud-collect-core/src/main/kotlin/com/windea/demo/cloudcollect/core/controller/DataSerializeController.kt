@@ -10,7 +10,6 @@ import org.springframework.security.core.*
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.*
 
-/**数据持久化的控制器。*/
 @Api("数据持久化")
 @RestController
 @RequestMapping("/dataSerialize")

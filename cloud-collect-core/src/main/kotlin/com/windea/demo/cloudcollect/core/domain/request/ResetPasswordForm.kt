@@ -14,8 +14,5 @@ class ResetPasswordForm(
 	@ApiModelProperty("密码。")
 	@field:NotEmpty(message = "{validation.User.password.NotEmpty}")
 	@field:Password(message = "{validation.User.password.Password}")
-	val password: String,
-	
-	@ApiModelProperty("重置密码验证码。")
-	val resetPasswordCode: String
+	val password: String
 ) : Serializable

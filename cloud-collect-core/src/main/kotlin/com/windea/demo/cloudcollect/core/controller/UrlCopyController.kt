@@ -5,7 +5,6 @@ import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.web.bind.annotation.*
 
-/**链接复制的控制器。*/
 @Api("链接复制")
 @RestController
 @RequestMapping("/urlCopy")

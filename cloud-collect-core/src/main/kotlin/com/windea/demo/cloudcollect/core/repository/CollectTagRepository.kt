@@ -4,7 +4,6 @@ import com.windea.demo.cloudcollect.core.domain.entity.*
 import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.*
 
-/**收藏的标签的仓库。*/
 interface CollectTagRepository : JpaRepository<CollectTag, Long> {
 	fun findByNameAndUserId(name: String, userId: Long): CollectTag?
 	

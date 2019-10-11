@@ -11,7 +11,7 @@ class EmailServiceImpl(
 	private val mailSender: JavaMailSender,
 	private val mailProperties: MailProperties
 ) : EmailService {
-	override fun sendActivateEmail(user: User, activateCode: String) = mailSender.sendEmail {
+	override fun sendActivateEmail(activateCode: String, user: User) = mailSender.sendEmail {
 		val url = "http://csntportal/activate?username=${user.username}&activateCode=$activateCode"
 		
 		setFrom(mailProperties.username)
@@ -41,7 +41,7 @@ class EmailServiceImpl(
 		""".trimIndent())
 	}
 	
-	override fun sendResetPasswordEmail(user: User, resetPasswordCode: String) = mailSender.sendEmail {
+	override fun sendResetPasswordEmail(resetPasswordCode: String, user: User) = mailSender.sendEmail {
 		val url = "http://csntportal/resetPassword?username=${user.username}&resetPasswordCode=$resetPasswordCode"
 		
 		setFrom(mailProperties.username)
@@ -76,28 +76,6 @@ class EmailServiceImpl(
 		try {
 			this.send {
 				val helper = MimeMessageHelper(it, encoding)
-				helper.prepare()
-			}
-		} catch(e: Exception) {
-			e.printStackTrace()
-		}
-	}
-	
-	private fun JavaMailSender.sendEmail(multipart: Boolean, encoding: String? = null, prepare: MimeMessageHelper.() -> Unit) {
-		try {
-			this.send {
-				val helper = MimeMessageHelper(it, multipart, encoding)
-				helper.prepare()
-			}
-		} catch(e: Exception) {
-			e.printStackTrace()
-		}
-	}
-	
-	private fun JavaMailSender.sendEmail(multipartMode: Int, encoding: String? = null, prepare: MimeMessageHelper.() -> Unit) {
-		try {
-			this.send {
-				val helper = MimeMessageHelper(it, multipartMode, encoding)
 				helper.prepare()
 			}
 		} catch(e: Exception) {

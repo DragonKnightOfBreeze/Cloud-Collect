@@ -32,7 +32,9 @@ class DataSerializeServiceImpl(
 		try {
 			//根据指定数据类型读取数据，这里可以使用泛型列表，并作为具象化泛型
 			//考虑使用序列而非列表，进行自顶向下的操作，而非自前往后，需要排除重复名字的收藏
+			//NOTE 需要去除重复的数据
 			val collectSchemaList = DataSerializer.load<List<CollectSchema>>(file, dataType)
+				.distinctBy { it.name }
 			collectSchemaList.forEach {
 				//存储到数据库中，分类和标签会一并级联保存
 				collectRepository.save(it.toCollect(user))
@@ -60,18 +62,19 @@ class DataSerializeServiceImpl(
 	}
 	
 	private fun Collect.toCollectSchema() = CollectSchema(
-		name = this.name,
-		summary = this.summary,
-		url = this.url,
-		logoUrl = this.logoUrl,
-		categoryName = this.category?.name ?: "默认分类",
-		tagNames = this.tags.map { it.name },
-		type = this.type
+		name = name,
+		summary = summary,
+		url = url,
+		logoUrl = logoUrl,
+		categoryName = category?.name ?: "默认分类",
+		tagNames = tags.map { it.name },
+		type = type
 	)
 	
 	private fun CollectSchema.toCollect(user: User) = Collect(
-		name = this.name,
-		summary = this.summary,
+		id = collectRepository.findByNameAndUserId(name, user.id!!)?.id, //NOTE 可能是添加数据，也可能为更改
+		name = name,
+		summary = summary,
 		url = this.url,
 		logoUrl = this.logoUrl,
 		category = this.categoryName.let {

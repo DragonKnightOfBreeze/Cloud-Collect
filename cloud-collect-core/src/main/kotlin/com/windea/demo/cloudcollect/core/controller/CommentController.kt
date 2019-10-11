@@ -14,7 +14,6 @@ import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
-/**评论的控制器。*/
 @Api("评论")
 @RestController
 @RequestMapping("/comment")
@@ -25,26 +24,26 @@ class CommentController(
 	@ApiOperation("创建自己的评论。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestParam collectId: Long, @RequestBody @Validated(Create::class) comment: Comment,
-		bindingResult: BindingResult, authentication: Authentication): Comment {
+	fun create(@RequestBody @Validated(Create::class) comment: Comment, bindingResult: BindingResult,
+		authentication: Authentication): Comment {
 		val user = (authentication.principal as UserDetailsVo).delegateUser
-		return commentService.create(collectId, comment, user)
+		return commentService.create(comment, user)
 	}
 	
 	@ApiOperation("创建自己的评论，回复某一评论。")
 	@PostMapping("/reply")
 	@PreAuthorize("isAuthenticated()")
-	fun reply(@RequestParam collectId: Long, @RequestParam replyToCommentId: Long, @RequestBody @Validated(Create::class) comment: Comment,
+	fun reply(@RequestParam replyToCommentId: Long, @RequestBody @Validated(Create::class) comment: Comment,
 		bindingResult: BindingResult, authentication: Authentication): Comment {
 		val user = (authentication.principal as UserDetailsVo).delegateUser
-		return commentService.reply(collectId, replyToCommentId, comment, user)
+		return commentService.reply(replyToCommentId, comment, user)
 	}
 	
 	@ApiOperation("删除自己的评论。")
 	@DeleteMapping("/{id}")
 	@PreAuthorize("isAuthenticated()")
-	fun delete(@PathVariable id: Long) {
-		commentService.delete(id)
+	fun deleteById(@PathVariable id: Long) {
+		commentService.deleteById(id)
 	}
 	
 	@ApiOperation("根据id得到某一评论。")

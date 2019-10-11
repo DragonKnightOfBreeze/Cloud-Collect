@@ -3,16 +3,15 @@ package com.windea.demo.cloudcollect.core.service
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import org.springframework.data.domain.*
 
-/**收藏的标签的服务。*/
 interface CollectTagService {
 	/**创建自己的标签。*/
 	fun create(tag: CollectTag, user: User): CollectTag
 	
-	/**删除自己的标签。*/
-	fun delete(id: Long)
-	
 	/**修改自己的标签。包括名字，概述*/
-	fun modify(id: Long, tag: CollectTag): CollectTag
+	fun modify(tag: CollectTag)
+	
+	/**删除自己的标签。*/
+	fun deleteById(id: Long)
 	
 	/**根据id得到某一标签。*/
 	fun findById(id: Long): CollectTag

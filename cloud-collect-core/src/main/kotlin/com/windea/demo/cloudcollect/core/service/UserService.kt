@@ -6,25 +6,24 @@ import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.enums.*
 import org.springframework.data.domain.*
 
-/**用户的服务。登录、重置密码等功能委托给`UserDetailsService`。*/
 interface UserService {
-	/**通过邮箱注册用户。密码需要加密。*/
-	fun register(user: User): User
-	
-	/**通过用户名&密码登录用户。*/
+	/**登录用户。*/
 	fun login(form: LoginForm): UserDetailsVo
 	
-	/**激活用户。*/
-	fun activate(form: ActivateForm): Boolean
+	/**注册用户。*/
+	fun register(user: User): User
 	
-	/**忘记用户密码，发送重置密码邮件。*/
+	/**激活用户。*/
+	fun activate(username: String, activateCode: String)
+	
+	/**忘记用户密码。*/
 	fun forgotPassword(username: String)
 	
-	/**重置用户密码。密码需要加密。*/
-	fun resetPassword(form: ResetPasswordForm): Boolean
+	/**重置用户密码。*/
+	fun resetPassword(form: ResetPasswordForm, resetPasswordCode: String)
 	
-	/**更新用户信息。密码需要加密。*/
-	fun modify(id: Long, user: User): User
+	/**更新用户信息。*/
+	fun modify(id: Long, user: User)
 	
 	/**根据id得到用户。*/
 	fun findById(id: Long): User

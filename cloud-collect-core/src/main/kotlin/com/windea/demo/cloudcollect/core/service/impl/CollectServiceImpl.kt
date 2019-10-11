@@ -22,81 +22,44 @@ class CollectServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun create(collect: Collect, user: User): Collect {
-		collect.user = user
-		return collectRepository.save(collect)
+		val newCollect = collect.copy(
+			user = user
+		)
+		return collectRepository.save(newCollect)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun createFrom(id: Long, user: User): Collect {
+	override fun createFrom(collect: Collect, user: User): Collect {
 		//点赞别人的收藏
-		praise(id, user)
+		praise(collect, user)
 		
 		//从别人的收藏创建新的收藏
-		val collect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		val savedCollect = Collect(
-			name = collect.name,
-			summary = collect.summary,
-			url = collect.url,
-			logoUrl = collect.logoUrl,
-			category = collect.category,
-			tags = collect.tags,
-			type = collect.type,
-			user = collect.user
+		//TODO 创建日期和最后修改日期是否存在问题？
+		val newCollect = collect.copy(
+			id = null,
+			user = user
 		)
-		return collectRepository.save(savedCollect)
+		return collectRepository.save(newCollect)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun delete(id: Long) {
+	override fun modify(collect: Collect) {
+		collectRepository.save(collect)
+	}
+	
+	@Transactional
+	@CacheEvict(allEntries = true)
+	override fun praise(collect: Collect, user: User) {
+		collect.praiseByUserList += user
+		collectRepository.save(collect)
+	}
+	
+	@Transactional
+	@CacheEvict(allEntries = true)
+	override fun deleteById(id: Long) {
 		collectRepository.deleteById(id)
-	}
-	
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun modify(id: Long, collect: Collect): Collect {
-		val savedCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		savedCollect.name = collect.name
-		savedCollect.summary = collect.summary
-		savedCollect.url = collect.url
-		savedCollect.logoUrl = collect.logoUrl
-		savedCollect.category = collect.category
-		savedCollect.tags = collect.tags
-		savedCollect.type = collect.type
-		return collectRepository.save(savedCollect)
-	}
-	
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun modifyCategory(id: Long, category: CollectCategory): Collect {
-		val savedCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		savedCollect.category = category
-		return collectRepository.save(savedCollect)
-	}
-	
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun modifyTags(id: Long, tags: MutableSet<CollectTag>): Collect {
-		val savedCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		savedCollect.tags = tags
-		return collectRepository.save(savedCollect)
-	}
-	
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun modifyType(id: Long, type: CollectType): Collect {
-		val savedCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		savedCollect.type = type
-		return collectRepository.save(savedCollect)
-	}
-	
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun praise(id: Long, user: User): Collect {
-		val savedCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		savedCollect.praiseByUserList += user
-		return collectRepository.save(savedCollect)
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -120,8 +83,30 @@ class CollectServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
+	override fun findAllByCategoryNameContains(categoryName: String, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByCategoryNameContains(categoryName, pageable).map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByTagNameContains(tagName: String, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByTagNameContains(tagName, pageable).map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
 	override fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByCategoryNameContainsAndUserId(categoryName: String, userId: Long,
+		pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByCategoryNameContainsAndUserId(categoryName, userId, pageable)
+			.map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByTagNameContainsAndUserId(tagName: String, userId: Long, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByTagNameContainsAndUserId(tagName, userId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")

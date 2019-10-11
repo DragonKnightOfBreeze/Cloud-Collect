@@ -12,7 +12,6 @@ import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
-/**用户的控制器。*/
 @Api("用户")
 @RestController
 @RequestMapping("/user")
