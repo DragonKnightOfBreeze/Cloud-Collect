@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.repository
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.enums.*
+import com.windea.demo.cloudcollect.core.enums.*
 import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.*
 
@@ -14,23 +14,25 @@ interface UserRepository : JpaRepository<User, Long> {
 	
 	fun findAllByRole(role: Role, pageable: Pageable): Page<User>
 	
-	@Query("from User u, in (u.followToUserList) fu where fu.id=:followToUserId")
+	@Query("from User u, in (u.followToUserList) fu where fu.id=?1")
 	fun findAllByFollowToUserId(followToUserId: Long, pageable: Pageable): Page<User>
 	
-	@Query("select count(u) from User u, in (u.followToUserList) fu where fu.id=:followToUserId")
-	fun countByFollowToUserId(followToUserId: Long): Long
-	
-	@Query("from User u, in (u.followByUserList) fu where fu.id=:followByUserId")
+	@Query("from User u, in (u.followByUserList) fu where fu.id=?1")
 	fun findAllByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User>
 	
-	@Query("select count(u) from User u, in (u.followByUserList) fu where fu.id=:followByUserId")
-	fun countByFollowByUserId(followByUserId: Long): Long
-	
-	@Query("from User u, in(u.praiseToCollectList) c where c.id=:praiseToCollectId")
+	@Query("from User u, in(u.praiseToCollectList) c where c.id=?1")
 	fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User>
 	
-	@Query("select count(u) from User u, in(u.praiseToCollectList) c where c.id=:praiseToCollectId")
+	@Query("select count(u) from User u, in (u.followByUserList) fu where fu.id=?1")
+	fun countByFollowByUserId(followByUserId: Long): Long
+	
+	@Query("select count(u) from User u, in (u.followToUserList) fu where fu.id=?1")
+	fun countByFollowToUserId(followToUserId: Long): Long
+	
+	@Query("select count(u) from User u, in(u.praiseToCollectList) c where c.id=?1")
 	fun countByPraiseToCollectId(praiseToCollectId: Long): Long
+	
+	fun existsByUsername(username: String): Boolean
 	
 	fun existsByUsernameOrEmail(username: String, email: String): Boolean
 }

@@ -5,6 +5,7 @@ package com.windea.demo.cloudcollect.core.controller
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.service.*
+import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
@@ -13,7 +14,6 @@ import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
-/**收藏的标签的控制器。*/
 @Api("收藏的标签")
 @RestController
 @RequestMapping("/collectTag")
@@ -24,23 +24,23 @@ class CollectTagController(
 	@ApiOperation("创建自己的标签。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody @Validated tag: CollectTag, bindingResult: BindingResult, authentication: Authentication): CollectTag {
-		val user = (authentication.principal as JwtUserDetails).delegateUser
+	fun create(@RequestBody @Validated(Create::class) tag: CollectTag, bindingResult: BindingResult, authentication: Authentication): CollectTag {
+		val user = (authentication.principal as UserDetailsVo).delegateUser
 		return tagService.create(tag, user)
-	}
-	
-	@ApiOperation("删除自己的标签。")
-	@DeleteMapping("/{id}")
-	@PreAuthorize("hasPermission(#id, 'CollectTag', 'delete')")
-	fun delete(@PathVariable id: Long) {
-		tagService.delete(id)
 	}
 	
 	@ApiOperation("修改自己的标签。")
 	@PutMapping("/{id}")
-	@PreAuthorize("hasPermission(#id, 'CollectTag', 'write')")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated tag: CollectTag, bindingResult: BindingResult) {
-		tagService.modify(id, tag)
+	@PreAuthorize("isAuthenticated()")
+	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) tag: CollectTag, bindingResult: BindingResult) {
+		tagService.modify(tag)
+	}
+	
+	@ApiOperation("删除自己的标签。")
+	@DeleteMapping("/{id}")
+	@PreAuthorize("isAuthenticated()")
+	fun deleteById(@PathVariable id: Long) {
+		tagService.deleteById(id)
 	}
 	
 	@ApiOperation("根据id得到某一标签。")

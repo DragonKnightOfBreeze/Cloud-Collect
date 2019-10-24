@@ -3,15 +3,15 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.enums.*
+import com.windea.demo.cloudcollect.core.enums.*
 import com.windea.demo.cloudcollect.core.service.*
+import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
-/**用户的控制器。*/
 @Api("用户")
 @RestController
 @RequestMapping("/user")
@@ -23,7 +23,7 @@ class UserController(
 	
 	@ApiOperation("更新用户信息。")
 	@PutMapping("/{id}")
-	fun update(@PathVariable id: Long, @RequestBody @Validated user: User, bindingResult: BindingResult) {
+	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) user: User, bindingResult: BindingResult) {
 		userService.modify(id, user)
 	}
 	

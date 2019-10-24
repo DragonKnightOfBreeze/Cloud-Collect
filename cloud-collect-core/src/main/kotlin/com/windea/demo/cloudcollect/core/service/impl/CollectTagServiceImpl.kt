@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.service.impl
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.exception.*
+import com.windea.demo.cloudcollect.core.exceptions.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
 import org.springframework.cache.annotation.*
@@ -19,23 +19,22 @@ class CollectTagServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun create(tag: CollectTag, user: User): CollectTag {
-		tag.user = user
-		return tagRepository.save(tag)
+		val newTag = tag.copy(
+			user = user
+		)
+		return tagRepository.save(newTag)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun delete(id: Long) {
+	override fun modify(tag: CollectTag) {
+		tagRepository.save(tag)
+	}
+	
+	@Transactional
+	@CacheEvict(allEntries = true)
+	override fun deleteById(id: Long) {
 		tagRepository.deleteById(id)
-	}
-	
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun modify(id: Long, tag: CollectTag): CollectTag {
-		val savedTag = tagRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		savedTag.name = tag.name
-		savedTag.summary = tag.summary
-		return tagRepository.save(savedTag)
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -63,7 +62,7 @@ class CollectTagServiceImpl(
 	}
 	
 	private fun CollectTag.lateInit() = this.apply {
-		collectCount = collectRepository.countByTagId(id!!)
+		collectCount = collectRepository.countByTagId(id)
 	}
 	
 	

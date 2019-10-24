@@ -1,8 +1,7 @@
 package com.windea.demo.cloudcollect.core.controller
 
-import com.windea.commons.kotlin.extension.*
-import com.windea.demo.cloudcollect.core.domain.request.*
-import com.windea.utility.common.enums.*
+import com.windea.demo.cloudcollect.core.domain.entity.*
+import org.codehaus.jackson.map.*
 import org.junit.*
 import org.junit.runner.*
 import org.springframework.beans.factory.annotation.*
@@ -23,7 +22,7 @@ class IndexControllerTest {
 	
 	@Test
 	fun test() {
-		print("hello world!!!!!")
+		print("hello world!")
 	}
 	
 	@Test
@@ -32,9 +31,14 @@ class IndexControllerTest {
 	
 	@Test
 	fun registerByEmail() {
-		val form = EmailRegisterForm("微风的龙骑士", "Windea", "dk_breeze@qq.com", "BreezesLanding")
-			.serialize(DataType.Json)
-		mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON_UTF8).content(form))
+		val form = User(
+			nickname = "微风的龙骑士",
+			username = "Windea",
+			email = "dk_breeze@qq.com",
+			password = "BreezesLanding"
+		)
+		val formJson = ObjectMapper().writeValueAsString(form)
+		mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON_UTF8).content(formJson))
 			.andExpect(status().isOk)
 			.andDo(print())
 	}

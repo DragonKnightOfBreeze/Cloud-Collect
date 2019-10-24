@@ -64,6 +64,13 @@
     * [X] 对控制层的一些完善。
     * [X] 添加noarg注解，防止json序列化时出错。属性仍然可为val。
     * [X] 将EmailService重新注入到service层。消除User中的不必要的activateCode等属性。
-    * [ ] DELAY 将`modify`方法重命名为`update`方法，前者应用于前端修改表单&模态框？？？
-    * [ ] DELAY 更加严格地限定实体类属性的类型和读写性？？？
-    * [ ] DELAY 更新依赖的kotlin-utility。
+    * [X] DELAY 更加严格地限定实体类属性的类型和读写性。
+    * [X] 修复验证分组的bug。
+    * [X] ~~DELAY 更新依赖的kotlin-utility。~~
+* 0.2.9
+    * [X] 整理代码。
+    * [X] 重构代码。
+    * [X] 摆脱自定义依赖（`kotlin-utility`）。
+    * [X] 增强搜索功能（尚未整合`QueryDsl`之类），补充缺失的控制器。
+    * [X] 将实体类的id属性的类型改为Long（默认值为0）。
+    * [X] 更新前端目录，建立组件文件、路由。

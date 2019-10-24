@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExportableFileTemplateSettings">
+    <j2ee_templates>
+      <template name="Jpa JoinColumn Annotation.kt" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Kotlin Entity.kt" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Kotlin Equals Method.kt" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Kotlin HashCode Method.kt" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Kotlin Property.kt" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Kotlin Relation Dependent Property.kt" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Kotlin Relation Owner Property.kt" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Kotlin ToString Method.kt" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="orm_2_0.xml" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="persistence_2_0.xml" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Persistent Embeddable Class 3.java" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Persistent Entity Class 3.java" reformat="true" live-template-enabled="true" enabled="true" />
+    </j2ee_templates>
+  </component>
+</project>

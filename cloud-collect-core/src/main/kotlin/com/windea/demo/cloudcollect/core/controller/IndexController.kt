@@ -6,13 +6,14 @@ import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.service.*
+import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.security.access.prepost.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
-/**首页的控制器。包含登录、注册等操作。*/
+//包含登录注册功能，以及随便看看功能
 @Api("首页")
 @RestController
 @RequestMapping("/")
@@ -21,36 +22,36 @@ class IndexController(
 	private val collectService: CollectService,
 	private val userService: UserService
 ) {
-	@ApiOperation("通过邮箱注册用户。返回值中包含激活码。")
-	@PostMapping("/register", "/registerByEmail")
+	@ApiOperation("登录用户。")
+	@PostMapping("/login")
 	@PreAuthorize("isAnonymous()")
-	fun registerByEmail(@RequestBody @Validated form: EmailRegisterForm, bindingResult: BindingResult): User {
-		return userService.registerByEmail(form)
+	fun login(@RequestBody @Validated form: LoginForm, bindingResult: BindingResult): UserDetailsVo {
+		return userService.login(form)
+	}
+	
+	@ApiOperation("注册用户。")
+	@PostMapping("/register")
+	@PreAuthorize("isAnonymous()")
+	fun register(@RequestBody @Validated(Create::class) user: User, bindingResult: BindingResult): User {
+		return userService.register(user)
 	}
 	
 	@ApiOperation("激活用户。")
-	@PutMapping("/activate")
+	@PostMapping("/activate")
 	fun activate(@RequestParam username: String, @RequestParam activateCode: String) {
 		userService.activate(username, activateCode)
 	}
 	
-	@ApiOperation("通过用户名&密码登录用户。")
-	@PostMapping("/login", "/loginByUsernameAndPassword")
-	@PreAuthorize("isAnonymous()")
-	fun loginByUsernameAndPassword(@RequestBody @Validated form: UsernamePasswordLoginForm, bindingResult: BindingResult): JwtUserDetails {
-		return userService.loginByUsernameAndPassword(form)
-	}
-	
-	@ApiOperation("忘记用户密码，发送重置密码邮件。返回值中包含忘记密码验证码。")
-	@PostMapping("/forgotPassword")
-	@PreAuthorize("isAnonymous()")
+	@ApiOperation("忘记用户密码。")
+	@GetMapping("/forgotPassword")
 	fun forgotPassword(@RequestParam username: String) {
 		userService.forgotPassword(username)
 	}
 	
 	@ApiOperation("重置用户密码。")
-	@PutMapping("/resetPassword")
-	fun resetPassword(@Validated @RequestBody form: ResetPasswordForm, bindingResult: BindingResult, @RequestParam resetPasswordCode: String) {
+	@PostMapping("/resetPassword")
+	fun resetPassword(@RequestBody @Validated form: ResetPasswordForm, bindingResult: BindingResult,
+		resetPasswordCode: String) {
 		userService.resetPassword(form, resetPasswordCode)
 	}
 	

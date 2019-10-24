@@ -13,14 +13,12 @@ import springfox.documentation.swagger2.annotations.*
 @EnableSwagger2
 class Swagger2Configuration {
 	@Bean
-	open fun createRestApi(): Docket {
-		return Docket(DocumentationType.SWAGGER_2)
-			.apiInfo(apiInfo())
-			.select()
-			.apis(RequestHandlerSelectors.basePackage("com.windea.demo.cloudcollect.core.controller"))
-			.paths(PathSelectors.any())
-			.build()
-	}
+	open fun createRestApi(): Docket = Docket(DocumentationType.SWAGGER_2)
+		.apiInfo(apiInfo())
+		.select()
+		.apis(RequestHandlerSelectors.basePackage("com.windea.demo.cloudcollect.core.controller"))
+		.paths(PathSelectors.any())
+		.build()
 	
 	private fun apiInfo(): ApiInfo {
 		return ApiInfoBuilder()

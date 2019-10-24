@@ -1,24 +1,23 @@
+@file:Suppress("DuplicatedCode", "UNUSED_VARIABLE")
+
 package com.windea.demo.cloudcollect.core.service.impl
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.enums.*
 import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.domain.response.*
-import com.windea.demo.cloudcollect.core.exception.*
-import com.windea.demo.cloudcollect.core.properties.*
+import com.windea.demo.cloudcollect.core.enums.*
+import com.windea.demo.cloudcollect.core.exceptions.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
-import com.windea.utility.common.extensions.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
-import org.springframework.data.redis.core.*
 import org.springframework.data.repository.*
 import org.springframework.security.authentication.*
 import org.springframework.security.core.context.*
 import org.springframework.security.crypto.password.*
 import org.springframework.stereotype.*
-import java.util.*
 import javax.transaction.*
+import kotlin.random.*
 
 @Service
 @CacheConfig(cacheNames = ["user"])
@@ -27,103 +26,67 @@ class UserServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val commentRepository: CommentRepository,
 	private val noticeRepository: NoticeRepository,
+	private val cacheService: CacheService,
 	private val passwordEncoder: PasswordEncoder,
-	private val authenticationManager: AuthenticationManager,
-	private val redisTemplate: StringRedisTemplate,
-	private val redisProperties: RedisProperties,
-	private val emailService: EmailService,
-	private val configProperties: ConfigProperties
+	private val authenticationManager: AuthenticationManager
 ) : UserService {
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun registerByEmail(form: EmailRegisterForm): User {
-		//将激活码存储到缓存中，同时也暂时存储到User对象中
-		val activateCodeKey = "${redisProperties.activateCodePrefix}${form.username}"
-		val activateCodeValue = UUID.randomUUID().toString()
-		redisTemplate.opsForValue().set(activateCodeKey, activateCodeValue, redisProperties.expiration)
-		
-		val savedUser = User(
-			nickname = form.nickname,
-			username = form.username,
-			email = form.email,
-			password = passwordEncoder.encode(form.password)
-		)
-		return userRepository.save(savedUser).also {
-			//如果需要发送邮件，则发送激活邮件
-			if(configProperties.requireActivate && configProperties.sendEmail) emailService.sendActivateEmail(it, activateCodeValue)
-			
-			//如果不要求激活，则立即激活当前用户
-			if(!configProperties.requireActivate) activate(it.username, activateCodeValue)
-		}
-	}
-	
-	@Transactional
-	@CacheEvict(allEntries = true)
-	override fun activate(username: String, activateCode: String): User? {
-		//冲缓存中得到激活码，如果不匹配，则直接返回null
-		val activateCodeKey = "${redisProperties.activateCodePrefix}${username}"
-		val activateCodeValue = redisTemplate.opsForValue()[activateCodeKey]
-		if(activateCode != activateCodeValue) return null
-		
-		//进行数据库操作
-		val savedUser = userRepository.findByUsername(username) ?: throw UserNotFoundException()
-		savedUser.activateStatus = true
-		return userRepository.save(savedUser).also {
-			//如果需要发送邮件，则发送欢迎邮件
-			if(configProperties.sendEmail) emailService.sendHelloEmail(it)
-		}
-	}
-	
-	override fun loginByUsernameAndPassword(form: UsernamePasswordLoginForm): JwtUserDetails {
+	override fun login(form: LoginForm): UserDetailsVo {
+		//验证鉴定对象，然后将其转化为UserDetailsVo后返回
 		val authentication = UsernamePasswordAuthenticationToken(form.username, form.password)
 		val validAuthentication = authenticationManager.authenticate(authentication)
 		SecurityContextHolder.getContext().authentication = validAuthentication
-		
-		return (validAuthentication.principal as JwtUserDetails)
+		return (validAuthentication.principal as UserDetailsVo)
 	}
 	
-	override fun forgotPassword(username: String): User {
+	@Transactional
+	@CacheEvict(allEntries = true)
+	override fun register(user: User): User {
+		//将激活码存储到缓存中
+		cacheService.setActivateCode(user.username)
+		
+		val newUser = user.copy(
+			password = passwordEncoder.encode(user.password) //NOTE 密码需要加密
+		)
+		return userRepository.save(newUser)
+	}
+	
+	@Transactional
+	@CacheEvict(allEntries = true)
+	override fun activate(username: String, activateCode: String) {
+		//冲缓存中得到激活码，如果不匹配，则抛出异常
+		val code = cacheService.getActivateCode(username)
+		if(activateCode != code) throw IncorrectAuthCodeException()
+		
+		val user = userRepository.findByUsername(username) ?: throw UserNotFoundException()
+		user.activateStatus = true
+		userRepository.save(user)
+	}
+	
+	override fun forgotPassword(username: String) {
 		//首先要判断用户是否存在
-		val savedUser = userRepository.findByUsername(username) ?: throw UserNotFoundException()
+		if(!userRepository.existsByUsername(username)) throw UserNotFoundException()
 		
-		//将验证码存储到缓存中，同时也暂时存储到User对象中
-		val resetPasswordCodeKey = "${redisProperties.resetPasswordPrefix}${username}"
-		val resetPasswordCodeValue = UUID.randomUUID().toString()
-		redisTemplate.opsForValue().set(resetPasswordCodeKey, resetPasswordCodeValue, redisProperties.expiration)
-		
-		return userRepository.save(savedUser).also {
-			//如果需要发送邮件，则发送重置密码邮件
-			if(configProperties.sendEmail) emailService.sendResetPasswordEmail(it, resetPasswordCodeValue)
-		}
+		//将验证码存储到缓存中
+		cacheService.setResetPasswordCode(username)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun resetPassword(form: ResetPasswordForm, resetPasswordCode: String): User? {
-		//从缓存中得到激活码，如果不匹配，则直接返回null
-		val resetPasswordCodeKey = "${redisProperties.resetPasswordPrefix}${form.username}"
-		val resetPasswordCodeValue = redisTemplate.opsForValue()[resetPasswordCodeKey]
-		if(resetPasswordCode != resetPasswordCodeValue) return null
+	override fun resetPassword(form: ResetPasswordForm, resetPasswordCode: String) {
+		//从缓存中得到激活码，如果不匹配，则抛出异常
+		val code = cacheService.getResetPasswordCode(form.username)
+		if(resetPasswordCode != code) throw IncorrectAuthCodeException()
 		
-		//进行数据库操作
-		val savedUser = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
-		savedUser.password = passwordEncoder.encode(form.password)
-		return userRepository.save(savedUser).also {
-			//如果需要发送邮件，则发送重置密码成功邮件
-			if(configProperties.sendEmail) emailService.sendResetPasswordSuccessEmail(it)
-		}
+		val user = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
+		user.password = passwordEncoder.encode(form.password) //NOTE 密码需要加密
+		userRepository.save(user)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun modify(id: Long, user: User): User {
-		val savedUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		savedUser.password = passwordEncoder.encode(user.password)
-		savedUser.nickname = user.nickname
-		savedUser.introduce = user.introduce
-		savedUser.avatarUrl = user.avatarUrl
-		savedUser.backgroundUrl = user.backgroundUrl
-		return userRepository.save(savedUser)
+	override fun modify(id: Long, user: User) {
+		user.password = passwordEncoder.encode(user.password) //NOTE 密码需要加密
+		userRepository.save(user)
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -142,7 +105,7 @@ class UserServiceImpl(
 	}
 	
 	override fun findByRandom(): User {
-		val randomId = RandomExtension.range(1, userRepository.count())
+		val randomId = Random.nextLong(userRepository.count()) + 1
 		return userRepository.findByIdOrNull(randomId)?.lateInit() ?: throw NotFoundException()
 	}
 	
@@ -181,11 +144,11 @@ class UserServiceImpl(
 	}
 	
 	private fun User.lateInit() = this.apply {
-		followToUserCount = userRepository.countByFollowByUserId(id!!)
-		followByUserCount = userRepository.countByFollowToUserId(id!!)
-		collectCount = collectRepository.countByUserId(id!!)
-		commentCount = commentRepository.countBySponsorByUserId(id!!)
-		noticeCount = noticeRepository.countByUserId(id!!)
+		followToUserCount = userRepository.countByFollowByUserId(id)
+		followByUserCount = userRepository.countByFollowToUserId(id)
+		collectCount = collectRepository.countByUserId(id)
+		commentCount = commentRepository.countBySponsorByUserId(id)
+		noticeCount = noticeRepository.countByUserId(id)
 	}
 	
 	
