@@ -22,14 +22,14 @@ data class CollectTag(
 	val id: Long = 0,
 	
 	@ApiModelProperty("名字。")
-	@field:NotEmpty(message = "{validation.CollectTag.name.NotEmpty}", groups = [Create::class, Modify::class])
-	@field:Size(min = 1, max = 64, message = "{validation.CollectTag.name.Size}", groups = [Create::class, Modify::class])
+	@get:NotEmpty(message = "{validation.CollectTag.name.NotEmpty}", groups = [Create::class, Modify::class])
+	@get:Size(min = 1, max = 64, message = "{validation.CollectTag.name.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false, length = 64)
 	var name: String,
 	
 	@ApiModelProperty("概述。")
-	@field:NotEmpty(message = "{validation.CollectTag.summary.NotEmpty}", groups = [Create::class, Modify::class])
-	@field:Size(min = 1, max = 255, message = "{validation.CollectTag.summary.Size}", groups = [Create::class, Modify::class])
+	@get:NotEmpty(message = "{validation.CollectTag.summary.NotEmpty}", groups = [Create::class, Modify::class])
+	@get:Size(min = 1, max = 255, message = "{validation.CollectTag.summary.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false)
 	var summary: String = "",
 	

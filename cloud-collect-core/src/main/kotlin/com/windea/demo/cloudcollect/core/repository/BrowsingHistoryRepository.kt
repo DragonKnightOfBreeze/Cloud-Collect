@@ -5,6 +5,8 @@ import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.*
 
 interface BrowsingHistoryRepository : JpaRepository<BrowsingHistory, Long> {
+	fun deleteByCollectIdAndUserId(collectId: Long, userId: Long)
+	
 	fun deleteAllByUserId(userId: Long)
 	
 	//NOTE 需要按id倒序排序显示

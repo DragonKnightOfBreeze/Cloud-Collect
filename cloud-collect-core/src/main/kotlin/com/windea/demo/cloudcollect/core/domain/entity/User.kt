@@ -24,34 +24,34 @@ data class User(
 	val id: Long = 0,
 	
 	@ApiModelProperty("用户名。")
-	@field:NotEmpty(message = "{validation.User.username.NotEmpty}", groups = [Create::class, Modify::class])
-	@field:Username(message = "{validation.User.username.Username}", groups = [Create::class, Modify::class])
+	@get:NotEmpty(message = "{validation.User.username.NotEmpty}", groups = [Create::class, Modify::class])
+	@get:Username(message = "{validation.User.username.Username}", groups = [Create::class, Modify::class])
 	@Column(unique = true, nullable = false, length = 16)
 	val username: String,
 	
 	@ApiModelProperty("密码。这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度。")
 	@JsonIgnore
-	@field:NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class, Modify::class])
-	@field:Password(message = "{validation.User.password.Password}", groups = [Create::class, Modify::class])
+	@get:NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class, Modify::class])
+	@get:Password(message = "{validation.User.password.Password}", groups = [Create::class, Modify::class])
 	@Column(nullable = false)
 	var password: String,
 	
 	@ApiModelProperty("邮箱。")
-	@field:NotEmpty(message = "{validation.User.email.NotEmpty}", groups = [Create::class, Modify::class])
-	@field:Email(message = "{validation.User.email.Email}", groups = [Create::class, Modify::class])
+	@get:NotEmpty(message = "{validation.User.email.NotEmpty}", groups = [Create::class, Modify::class])
+	@get:Email(message = "{validation.User.email.Email}", groups = [Create::class, Modify::class])
 	@Column(unique = true, nullable = false, length = 64)
 	val email: String,
 	
 	@ApiModelProperty("昵称。")
-	@field:NotEmpty(message = "{validation.User.nickname.NotEmpty}", groups = [Modify::class])
-	@field:Size(min = 1, max = 64, message = "{validation.User.nickname.Size}", groups = [Modify::class])
+	@get:NotEmpty(message = "{validation.User.nickname.NotEmpty}", groups = [Modify::class])
+	@get:Size(min = 1, max = 64, message = "{validation.User.nickname.Size}", groups = [Modify::class])
 	@Column(nullable = false, length = 64)
 	var nickname: String = username,
 	
 	@ApiModelProperty("简介。")
 	@Column(nullable = false)
-	@field:NotEmpty(message = "{validation.User.introduce.NotEmpty}", groups = [Modify::class])
-	@field:Size(min = 1, max = 255, message = "{validation.User.introduce.Size}", groups = [Modify::class])
+	@get:NotEmpty(message = "{validation.User.introduce.NotEmpty}", groups = [Modify::class])
+	@get:Size(min = 1, max = 255, message = "{validation.User.introduce.Size}", groups = [Modify::class])
 	var introduce: String = "这家伙很懒，什么也没留下。",
 	
 	@ApiModelProperty("头像地址。")

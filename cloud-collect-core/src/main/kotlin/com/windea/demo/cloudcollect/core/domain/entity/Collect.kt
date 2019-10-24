@@ -26,14 +26,14 @@ data class Collect(
 	val id: Long = 0, //NOTE 其类型可为Long，默认值推荐为0
 	
 	@ApiModelProperty("名字。")
-	@field:NotEmpty(message = "{validation.Collect.name.NotEmpty}", groups = [Create::class, Modify::class])
-	@field:Size(min = 1, max = 64, message = "{validation.Collect.name.Size}", groups = [Create::class, Modify::class])
+	@get:NotEmpty(message = "{validation.Collect.name.NotEmpty}", groups = [Create::class, Modify::class])
+	@get:Size(min = 1, max = 64, message = "{validation.Collect.name.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false, length = 64)
 	var name: String,
 	
 	@ApiModelProperty("概述。")
-	@field:NotEmpty(message = "{validation.Collect.summary.NotEmpty}", groups = [Create::class, Modify::class])
-	@field:Size(min = 1, max = 255, message = "{validation.Collect.summary.Size}", groups = [Create::class, Modify::class])
+	@get:NotEmpty(message = "{validation.Collect.summary.NotEmpty}", groups = [Create::class, Modify::class])
+	@get:Size(min = 1, max = 255, message = "{validation.Collect.summary.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false)
 	var summary: String = "",
 	
@@ -47,12 +47,12 @@ data class Collect(
 	
 	@ApiModelProperty("收藏的分类。")
 	@ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
-	@field:Valid
+	@get:Valid
 	var category: CollectCategory? = null,
 	
 	@ApiModelProperty("收藏的标签。")
 	@ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
-	@field:Valid
+	@get:Valid
 	@JvmSuppressWildcards //NOTE 防止Jpa报错
 	var tags: Set<CollectTag> = setOf(),
 	

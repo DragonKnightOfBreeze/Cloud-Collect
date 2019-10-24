@@ -13,6 +13,9 @@ class BrowsingHistoryServiceImpl(
 ) : BrowsingHistoryService {
 	@Transactional
 	override fun create(history: BrowsingHistory, user: User): BrowsingHistory {
+		//首先要删除之前的相同收藏的浏览记录
+		historyRepository.deleteByCollectIdAndUserId(history.collect.id, user.id)
+		
 		val newHistory = history.copy(
 			user = user
 		)
