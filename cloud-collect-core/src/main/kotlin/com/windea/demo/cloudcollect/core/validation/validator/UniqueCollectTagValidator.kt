@@ -12,7 +12,7 @@ open class UniqueCollectTagValidator : ConstraintValidator<UniqueCollectTag, Col
 	
 	override fun isValid(value: CollectTag, context: ConstraintValidatorContext): Boolean {
 		val name = value.name
-		val userId = value.user.id ?: return false
+		val userId = value.user.id
 		return !tagRepository.existsByNameAndUserId(name, userId)
 	}
 }

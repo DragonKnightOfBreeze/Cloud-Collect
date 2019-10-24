@@ -12,7 +12,7 @@ open class UniqueCollectValidator : ConstraintValidator<UniqueCollect, Collect> 
 	
 	override fun isValid(value: Collect, context: ConstraintValidatorContext): Boolean {
 		val name = value.name
-		val userId = value.user.id ?: return false
+		val userId = value.user.id
 		return !collectRepository.existsByNameAndUserId(name, userId)
 	}
 }

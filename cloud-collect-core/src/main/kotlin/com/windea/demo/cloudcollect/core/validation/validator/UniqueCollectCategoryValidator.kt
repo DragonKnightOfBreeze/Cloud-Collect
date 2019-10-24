@@ -12,7 +12,7 @@ open class UniqueCollectCategoryValidator : ConstraintValidator<UniqueCollectCat
 	
 	override fun isValid(value: CollectCategory, context: ConstraintValidatorContext): Boolean {
 		val name = value.name
-		val userId = value.user.id ?: return false
+		val userId = value.user.id
 		return !categoryRepository.existsByNameAndUserId(name, userId)
 	}
 }
