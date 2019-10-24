@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.*
 @EnableSwagger2
 class Swagger2Configuration {
 	@Bean
-	open fun createRestApi(): Docket = Docket(DocumentationType.SWAGGER_2)
+	fun createRestApi(): Docket = Docket(DocumentationType.SWAGGER_2)
 		.apiInfo(apiInfo())
 		.select()
 		.apis(RequestHandlerSelectors.basePackage("com.windea.demo.cloudcollect.core.controller"))
@@ -27,7 +27,7 @@ class Swagger2Configuration {
 			.contact(contact())
 			.license("MIT License")
 			.licenseUrl("https://github.com/DragonKnightOfBreeze/Cloud-Collect/blob/master/LICENSE")
-			.version("0.2.7")
+			.version("0.2.9")
 			.build()
 	}
 	
@@ -39,6 +39,6 @@ class Swagger2Configuration {
 			"dk_breeze@qq.com"
 		)
 	}
-
-	//TODO 添加关于Spring Security的配置
+	
+	//DELAY 添加关于Spring Security的配置
 }
