@@ -27,10 +27,10 @@ object DataSerializer {
 	
 	@PublishedApi
 	internal fun DataType.toMapper() = when(this) {
-		DataType.Json -> json
-		DataType.Yaml -> yaml
-		DataType.Xml -> xml
-		DataType.Properties -> properties
+		DataType.JSON -> json
+		DataType.YAML -> yaml
+		DataType.XML -> xml
+		DataType.PROPERTIES -> properties
 	}
 	
 	@PublishedApi
