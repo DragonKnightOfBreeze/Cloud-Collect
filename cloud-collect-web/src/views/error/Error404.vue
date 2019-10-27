@@ -1,19 +1,19 @@
 <template>
-  <error-page>
+  <error>
     <template v-slot:title>页面未找到</template>
 
     <i class="el-icon-warning"></i>
     这片领域尚未开拓……
     <i class="el-icon-warning"></i>
-  </error-page>
+  </error>
 </template>
 
 <script lang="ts">
-  import ErrorPage from "@/components/error/ErrorPage.vue"
+  import Error from "@/components/error/Error.vue"
   import {Component, Vue} from "vue-property-decorator"
 
   @Component({
-    components: {ErrorPage}
+    components: {Error}
   })
   export default class Error404 extends Vue {
   }

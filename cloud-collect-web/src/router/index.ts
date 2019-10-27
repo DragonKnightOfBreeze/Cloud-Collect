@@ -4,7 +4,7 @@ import VueRouter from "vue-router"
 const About = () => import(/* webpackChunkName: "about" */ "@/views/about/About.vue")
 const Collect = () => import(/* webpackChunkName: "collect" */ "@/views/collect/Collect.vue")
 const CollectDetail = () => import(/* webpackChunkName: "collectDetail" */ "@/views/collect/CollectDetail.vue")
-const Comment = () => import(/* webpackChunkName: "comment" */ "@/views/comment/Collect.vue")
+const Comment = () => import(/* webpackChunkName: "comment" */ "@/views/comment/Comment.vue")
 const History = () => import(/* webpackChunkName: "history" */ "@/views/history/History.vue")
 const Home = () => import(/* webpackChunkName: "home" */  "@/views/home/Home.vue")
 const Notice = () => import(/* webpackChunkName: "notice" */ "@/views/notice/Notice.vue")

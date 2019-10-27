@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-
+    <router-view></router-view>
   </div>
 </template>
 
@@ -13,6 +13,9 @@
 </script>
 
 <style>
+  /*导入公共的样式*/
+  @import "../public/css/global.css";
+
   #app {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

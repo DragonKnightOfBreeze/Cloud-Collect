@@ -1,19 +1,20 @@
 <template>
-  <error-page>
+  <!--话说这里的语言注入到底是怎么定位的……-->
+  <error>
     <template v-slot:title>权限错误</template>
 
     <i class="el-icon-warning"></i>
     这片领域不属于你……
     <i class="el-icon-warning"></i>
-  </error-page>
+  </error>
 </template>
 
 <script lang="ts">
-  import ErrorPage from "@/components/error/ErrorPage.vue"
+  import Error from "@/components/error/Error.vue"
   import {Component, Vue} from "vue-property-decorator"
 
   @Component({
-    components: {ErrorPage}
+    components: {Error}
   })
   export default class Error403 extends Vue {
   }

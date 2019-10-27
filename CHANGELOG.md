@@ -79,6 +79,7 @@
     * [X] 使用`vue-class-component`和`vue-property-decorator`。
     * [X] 建立目录、创建文件。
     * [X] 完成路由的配置。
+    * [X] 完成错误页的编写。
     * [ ] 完成对应后台数据类的前台类型封装。
     * [ ] 完成基础的axios的配置。即新的axios实例、baseUrl配置
         * ［搁置］请求的鉴权处理器，添加token到请求头。
