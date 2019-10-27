@@ -42,10 +42,11 @@
 
 # 前端
 
-* Html & Scss & Typescript
+* Html & Css & Typescript
 * Vue 前端核心框架
-* Vue-router, Vuex, ... 扩展Vue的功能
-* Weex 用于网页端页面和移动端页面
+* Vue-router, Vuex 扩展Vue的功能
+* Element 用于网页端页面和移动端页面
+* Axios 用于发送http请求
 * Npm 用于前端依赖和目录管理
 	
 ## 后台
@@ -55,9 +56,9 @@
 * Spring+Spring Mvc+Spring Data Jpa 核心框架
 * Redis 用于缓存
 * Swagger 用于编写api文档
-* ~~Lombok 便于实体类编写~~
 * Maven 用于后台依赖和目录管理
 * Spring Security 认证和授权框架
+* ~~Lombok 便于实体类编写~~
 * ~~［可能］Elastic Search 搜索引擎~~
 
 # 主要功能

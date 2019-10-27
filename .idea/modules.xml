@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/cloud-collect-frontend/cloud-collect-frontend.iml" filepath="$PROJECT_DIR$/cloud-collect-frontend/cloud-collect-frontend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cloud-collect-web/cloud-collect-web.iml" filepath="$PROJECT_DIR$/cloud-collect-web/cloud-collect-web.iml" />
     </modules>
   </component>
 </project>
