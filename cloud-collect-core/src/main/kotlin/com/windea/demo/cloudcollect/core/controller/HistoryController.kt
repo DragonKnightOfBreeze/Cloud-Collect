@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.*
 
 @Api("浏览记录")
 @RestController
-@RequestMapping("/browsingHistory")
+@RequestMapping("/History")
 @CrossOrigin
-class BrowsingHistoryController(
-	private val historyService: BrowsingHistoryService
+class HistoryController(
+	private val historyService: HistoryService
 ) {
 	//NOTE 浏览记录的创建交由前端
 	@ApiOperation("创建浏览记录。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody history: BrowsingHistory, authentication: Authentication): BrowsingHistory {
+	fun create(@RequestBody history: History, authentication: Authentication): History {
 		val user = (authentication.principal as UserDetailsVo).delegateUser
 		return historyService.create(history, user)
 	}
@@ -41,7 +41,7 @@ class BrowsingHistoryController(
 	
 	@ApiOperation("得到某一用户的所有浏览记录。")
 	@GetMapping("/findAllByUserId")
-	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<BrowsingHistory> {
+	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<History> {
 		return historyService.findAllByUserId(userId, pageable)
 	}
 }

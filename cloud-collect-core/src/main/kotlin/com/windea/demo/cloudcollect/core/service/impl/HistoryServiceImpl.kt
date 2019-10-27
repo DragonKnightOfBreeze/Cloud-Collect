@@ -8,11 +8,11 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
-class BrowsingHistoryServiceImpl(
-	private val historyRepository: BrowsingHistoryRepository
-) : BrowsingHistoryService {
+class HistoryServiceImpl(
+	private val historyRepository: HistoryRepository
+) : HistoryService {
 	@Transactional
-	override fun create(history: BrowsingHistory, user: User): BrowsingHistory {
+	override fun create(history: History, user: User): History {
 		//首先要删除之前的相同收藏的浏览记录
 		historyRepository.deleteByCollectIdAndUserId(history.collect.id, user.id)
 		
@@ -32,7 +32,7 @@ class BrowsingHistoryServiceImpl(
 		historyRepository.deleteAllByUserId(userId)
 	}
 	
-	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<BrowsingHistory> {
+	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<History> {
 		return historyRepository.findAllByUserIdOrderByIdDesc(userId, pageable)
 	}
 }

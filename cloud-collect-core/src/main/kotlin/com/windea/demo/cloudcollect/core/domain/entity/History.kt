@@ -11,7 +11,7 @@ import javax.persistence.Id
 @ApiModel("浏览记录。")
 @Entity
 @EntityListeners(AuditingEntityListener::class)
-data class BrowsingHistory(
+data class History(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ data class BrowsingHistory(
 	@CreatedDate
 	lateinit var createdTime: LocalDateTime
 	
-	override fun equals(other: Any?) = other === this || (other is BrowsingHistory && other.id == id)
+	override fun equals(other: Any?) = other === this || (other is History && other.id == id)
 	
 	override fun hashCode() = id.hashCode()
 }
