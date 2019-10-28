@@ -74,7 +74,7 @@ server:
     basedir: target/tomcat
   servlet:
     # 指定服务器的内容根路径
-    context-path: /cloud-collect/api
+    context-path: /cloudCollect/api
 
 cloud-collect:
   security:

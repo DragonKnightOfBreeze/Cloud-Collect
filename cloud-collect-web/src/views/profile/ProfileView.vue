@@ -6,7 +6,7 @@
   import {Component, Vue} from "vue-property-decorator"
 
   @Component
-  export default class Comment extends Vue {
+  export default class ProfileView extends Vue {
   }
 </script>
 

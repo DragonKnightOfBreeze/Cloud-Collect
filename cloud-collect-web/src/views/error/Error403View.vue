@@ -1,9 +1,10 @@
 <template>
+  <!--话说这里的语言注入到底是怎么定位的……-->
   <error>
-    <template v-slot:title>功能未实现</template>
+    <template v-slot:title>权限错误</template>
 
     <i class="el-icon-warning"></i>
-    这片领域有待发掘……
+    这片领域不属于你……
     <i class="el-icon-warning"></i>
   </error>
 </template>
@@ -15,7 +16,7 @@
   @Component({
     components: {Error}
   })
-  export default class Error501 extends Vue {
+  export default class Error403View extends Vue {
   }
 </script>
 

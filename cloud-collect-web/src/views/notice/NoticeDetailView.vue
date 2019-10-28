@@ -6,7 +6,7 @@
   import {Component, Vue} from "vue-property-decorator"
 
   @Component
-  export default class History extends Vue {
+  export default class NoticeDetailView extends Vue {
   }
 </script>
 

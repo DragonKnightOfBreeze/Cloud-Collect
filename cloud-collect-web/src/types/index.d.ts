@@ -2,71 +2,71 @@
 
 //NOTE 这里不能直接使用Collect作为接口名，因为与组件名重复了，是否可考虑使用ICollect？
 
-export interface CollectData {
+export interface Collect {
   id: number
   name: string
   summary: string
   url: string
   logoUrl: string
-  category: CollectCategoryData
-  tags: CollectTagData[]
+  category: CollectCategory
+  tags: CollectTag[]
   type: CollectType
-  user: UserData
+  user: User
   createdTime: string
   lastModifiedTime: string
-  praiseByUserList: UserData[] | null
+  praiseByUserList: User[] | null
   praiseByUserCount: number
   commentCount: number
 }
 
-export interface CollectCategoryData {
+export interface CollectCategory {
   id: number
   name: string
   summary: string
-  user: UserData
+  user: User
   createdTime: string
   lastModifiedTime: string
   collectCount: number
 }
 
-export interface CollectTagData {
+export interface CollectTag {
   id: number
   name: string
   summary: string
-  user: UserData
+  user: User
   createdTime: string
   lastModifiedTime: string
   collectCount: number
 }
 
-export interface CommentData {
+export interface Comment {
   id: number
   content: string
-  collect: CollectData
-  sponsorByUser: UserData
-  replyToComment: CommentData | null
+  collect: Collect
+  sponsorByUser: User
+  replyToComment: Comment | null
   createdTime: string
   replyByCommentCount: number
 }
 
-export interface HistoryData {
+export interface History {
   id: number
-  collect: CollectData
-  user: UserData
+  collect: Collect
+  user: User
   createdTime: string
 }
 
-export interface NoticeData {
+export interface Notice {
   id: number
   title: string
   content: string
   type: NoticeType
-  user: UserData
+  user: User
   readStatus: boolean
   createdTime: string
 }
 
-export interface UserData {
+export interface User {
   id: number
   username: string
   password: string
@@ -79,9 +79,9 @@ export interface UserData {
   activateStatus: boolean
   registerTime: string
   updateTime: string
-  followToUserList: UserData[] | null
-  followByUserList: UserData[] | null
-  praiseToCollectList: CollectData[] | null
+  followToUserList: User[] | null
+  followByUserList: User[] | null
+  praiseToCollectList: Collect[] | null
   followToUserCount: number
   followByUserCount: number
   collectCount: number
@@ -104,7 +104,7 @@ export interface ResetPasswordForm {
 //REGION response
 
 export interface UserDetailsVo extends UserDetails {
-  delegateUser: UserData
+  delegateUser: User
 }
 
 //REGION enums
@@ -157,6 +157,13 @@ export interface Sort {
   empty: boolean;
   sorted: boolean;
   unsorted: boolean;
+}
+
+//for @PageableDefault pageable:Pageable
+export interface PageableParam {
+  page?: number //default: 0
+  size?: number //default: 20
+  sort?: string //expression: propName1, propName2, direction?
 }
 
 //org.springframework.data.domain.Pageable

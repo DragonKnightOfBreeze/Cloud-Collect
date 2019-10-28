@@ -54,20 +54,20 @@ class CommentController(
 	
 	@ApiOperation("得到所有评论。")
 	@GetMapping("/findAll")
-	fun findAll(@RequestParam pageable: Pageable): Page<Comment> {
+	fun findAll(@PageableDefault pageable: Pageable): Page<Comment> {
 		return commentService.findAll(pageable)
 	}
 	
 	@ApiOperation("根据收藏id查询所有评论。")
 	@GetMapping("/findAllByCollectId")
-	fun findAllByCollectId(@RequestParam collectId: Long, @RequestParam pageable: Pageable): Page<Comment> {
+	fun findAllByCollectId(@RequestParam collectId: Long, @PageableDefault pageable: Pageable): Page<Comment> {
 		return commentService.findAllByCollectId(collectId, pageable)
 	}
 	
 	
 	@ApiOperation("得到回复某一评论的所有评论。")
 	@GetMapping("/{id}/replyByCommentPage")
-	fun getReplyByCommentPage(@PathVariable id: Long, @RequestParam pageable: Pageable): Page<Comment> {
+	fun getReplyByCommentPage(@PathVariable id: Long, @PageableDefault pageable: Pageable): Page<Comment> {
 		return commentService.getReplyByCommentPage(id, pageable)
 	}
 }

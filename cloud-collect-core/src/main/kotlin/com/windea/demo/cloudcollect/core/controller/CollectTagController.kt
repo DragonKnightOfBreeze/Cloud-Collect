@@ -51,19 +51,19 @@ class CollectTagController(
 	
 	@ApiOperation("得到所有标签。")
 	@GetMapping("/findAll")
-	fun findAll(@RequestParam pageable: Pageable): Page<CollectTag> {
+	fun findAll(@PageableDefault pageable: Pageable): Page<CollectTag> {
 		return tagService.findAll(pageable)
 	}
 	
 	@ApiOperation("根据用户id查询所有标签。")
 	@GetMapping("/findAllByUserId")
-	fun findAllByUserId(@RequestParam userId: Long, @RequestParam pageable: Pageable): Page<CollectTag> {
+	fun findAllByUserId(@RequestParam userId: Long, @PageableDefault pageable: Pageable): Page<CollectTag> {
 		return tagService.findAllByUserId(userId, pageable)
 	}
 	
 	@ApiOperation("根据名字和用户id模糊查询所有标签。")
 	@GetMapping("/findAllByNameContainsAndUserId")
-	fun findAllByNameContainsAndUserId(@RequestParam name: String, @RequestParam userId: Long, @RequestParam pageable: Pageable): Page<CollectTag> {
+	fun findAllByNameContainsAndUserId(@RequestParam name: String, @RequestParam userId: Long, @PageableDefault pageable: Pageable): Page<CollectTag> {
 		return tagService.findAllByNameContainsAndUserId(name, userId, pageable)
 	}
 	

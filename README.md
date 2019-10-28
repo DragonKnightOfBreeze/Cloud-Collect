@@ -150,6 +150,8 @@
 	* 之后插件将会适用于所有注有该注解（或其元注解）的类/接口（或其子类/实现类）。
 * 关于作为请求参数传递的Pageable对象
     * 示例：`"page=0&size=10&direction=asc&sort=name,age"`
+    * 返回值示例：`{"sort":{"unsorted":true,"sorted":false,"empty":true},"offset":0,"pageNumber":0,"pageSize":10,"paged":true,"unpaged":false}`
+    * Controller的方法中的pageable参数不要添加`@RequestParam`注解，推荐添加`@PageableDefault`注解
 * Jpa报错：`org.hibernate.AnnotationException: Collection has neither generic type or OneToMany.targetEntity() defined`
     * 当实体类中存在`MutableList<T>`或`MutableSet<T>`类型的属性时，将会报如上异常。
     * 可将其变成可空的`var`解决，可以为其添加`@JvmSuppressWildcards`注解解决。

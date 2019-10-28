@@ -1,9 +1,9 @@
 <template>
   <error>
-    <template v-slot:title>内部错误</template>
+    <template v-slot:title>功能未实现</template>
 
     <i class="el-icon-warning"></i>
-    这片领域崩坏了……
+    这片领域有待发掘……
     <i class="el-icon-warning"></i>
   </error>
 </template>
@@ -15,7 +15,7 @@
   @Component({
     components: {Error}
   })
-  export default class Error500 extends Vue {
+  export default class Error501View extends Vue {
   }
 </script>
 

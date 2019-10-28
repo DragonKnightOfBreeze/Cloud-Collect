@@ -14,9 +14,9 @@
   <artifactId>cloud-collect</artifactId>
   <version>0.2.9</version>
 
-  <name>Cloud Collect</name>
+  <name>Cloud CollectView</name>
   <description>毕业设计项目：云收藏的设计与实现。</description>
-  <url>https://github.com/DragonKnightOfBreeze/Cloud-Collect</url>
+  <url>https://github.com/DragonKnightOfBreeze/Cloud-CollectView</url>
 
   <modules>
     <module>cloud-collect-core</module>

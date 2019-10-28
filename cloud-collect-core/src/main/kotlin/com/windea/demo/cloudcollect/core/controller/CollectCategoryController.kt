@@ -51,19 +51,19 @@ class CollectCategoryController(
 	
 	@ApiOperation("得到所有分类。")
 	@GetMapping("/findAll")
-	fun findAll(@RequestParam pageable: Pageable): Page<CollectCategory> {
+	fun findAll(@PageableDefault pageable: Pageable): Page<CollectCategory> {
 		return categoryService.findAll(pageable)
 	}
 	
 	@ApiOperation("根据用户id查询所有分类。")
 	@GetMapping("/findAllByUserId")
-	fun findAllByUserId(@RequestParam userId: Long, @RequestParam pageable: Pageable): Page<CollectCategory> {
+	fun findAllByUserId(@RequestParam userId: Long, @PageableDefault pageable: Pageable): Page<CollectCategory> {
 		return categoryService.findAllByUserId(userId, pageable)
 	}
 	
 	@ApiOperation("根据名字和用户id模糊查询所有分类。")
 	@GetMapping("/findAllByNameContainsAndUserId")
-	fun findAllByNameContainsAndUserId(@RequestParam userId: Long, @RequestParam name: String, @RequestParam pageable: Pageable): Page<CollectCategory> {
+	fun findAllByNameContainsAndUserId(@RequestParam userId: Long, @RequestParam name: String, @PageableDefault pageable: Pageable): Page<CollectCategory> {
 		return categoryService.findAllByNameContainsAndUserId(userId, name, pageable)
 	}
 	

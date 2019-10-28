@@ -49,19 +49,19 @@ class NoticeController(
 	
 	@ApiOperation("得到所有通知。")
 	@GetMapping("/findAll")
-	fun findAll(@RequestParam pageable: Pageable): Page<Notice> {
+	fun findAll(@PageableDefault pageable: Pageable): Page<Notice> {
 		return noticeService.findAll(pageable)
 	}
 	
 	@ApiOperation("查询某一用户的所有通知。")
 	@GetMapping("/findAllByUserId")
-	fun findAllByUserId(@RequestParam userId: Long, @RequestParam pageable: Pageable): Page<Notice> {
+	fun findAllByUserId(@RequestParam userId: Long, @PageableDefault pageable: Pageable): Page<Notice> {
 		return noticeService.findAllByUserId(userId, pageable)
 	}
 	
 	@ApiOperation("查询某一用户的所有已读/未读通知。")
 	@GetMapping("/findAllByUserIdAndRead")
-	fun findAllByUserIdAndRead(@RequestParam userId: Long, @RequestParam readStatus: Boolean, @RequestParam pageable: Pageable): Page<Notice> {
+	fun findAllByUserIdAndRead(@RequestParam userId: Long, @RequestParam readStatus: Boolean, @PageableDefault pageable: Pageable): Page<Notice> {
 		return noticeService.findAllByUserIdAndRead(userId, readStatus, pageable)
 	}
 }

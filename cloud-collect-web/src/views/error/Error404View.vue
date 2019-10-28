@@ -15,7 +15,7 @@
   @Component({
     components: {Error}
   })
-  export default class Error404 extends Vue {
+  export default class Error404View extends Vue {
   }
 </script>
 

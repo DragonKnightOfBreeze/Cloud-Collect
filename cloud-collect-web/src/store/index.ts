@@ -1,4 +1,4 @@
-import {ObjectError, UserData} from "@/types"
+import {ObjectError, User} from "@/types"
 import Vue from "vue"
 import Vuex from "vuex"
 
@@ -27,7 +27,7 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    setCurrentUser(state, currentUser: UserData) {
+    setCurrentUser(state, currentUser: User) {
       state._currentUser = currentUser as any
     },
     addValidationErrors(state, validationErrors: ObjectError[]) {

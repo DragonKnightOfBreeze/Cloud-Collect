@@ -1,10 +1,9 @@
 <template>
-  <!--话说这里的语言注入到底是怎么定位的……-->
   <error>
-    <template v-slot:title>权限错误</template>
+    <template v-slot:title>内部错误</template>
 
     <i class="el-icon-warning"></i>
-    这片领域不属于你……
+    这片领域崩坏了……
     <i class="el-icon-warning"></i>
   </error>
 </template>
@@ -16,7 +15,7 @@
   @Component({
     components: {Error}
   })
-  export default class Error403 extends Vue {
+  export default class Error500View extends Vue {
   }
 </script>
 

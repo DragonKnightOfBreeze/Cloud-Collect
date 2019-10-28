@@ -6,7 +6,7 @@
   import {Component, Vue} from "vue-property-decorator"
 
   @Component
-  export default class CollectDetail extends Vue {
+  export default class CollectView extends Vue {
   }
 </script>
 
