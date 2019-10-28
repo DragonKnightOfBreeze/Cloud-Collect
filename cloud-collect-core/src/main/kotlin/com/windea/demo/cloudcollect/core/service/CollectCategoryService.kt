@@ -5,9 +5,9 @@ import org.springframework.data.domain.*
 
 interface CollectCategoryService {
 	/**创建自己的分类。*/
-	fun create(category: CollectCategory, user: User): CollectCategory
+	fun create(category: CollectCategory, user: User)
 	
-	/**修改自己的分类。包括名字，概述。*/
+	/**修改自己的分类。*/
 	fun modify(category: CollectCategory)
 	
 	/**删除自己的分类。*/

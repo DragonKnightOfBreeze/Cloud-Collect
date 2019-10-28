@@ -5,6 +5,7 @@ package com.windea.demo.cloudcollect.core.controller
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.enums.*
+import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
@@ -28,17 +29,15 @@ class CollectController(
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Validated(Create::class) collect: Collect, bindingResult: BindingResult,
-		authentication: Authentication): Collect {
-		val user = (authentication.principal as UserDetailsVo).delegateUser
-		return collectService.create(collect, user)
+		authentication: Authentication) {
+		collectService.create(collect, authentication.toUser())
 	}
 	
 	@ApiOperation("从别人的收藏创建自己的收藏。")
 	@PostMapping("/createFrom")
 	@PreAuthorize("isAuthenticated()")
-	fun createFrom(@RequestBody collect: Collect, authentication: Authentication): Collect {
-		val user = (authentication.principal as UserDetailsVo).delegateUser
-		return collectService.createFrom(collect, user)
+	fun createFrom(@RequestBody collect: Collect, authentication: Authentication) {
+		collectService.createFrom(collect, authentication.toUser())
 	}
 	
 	@ApiOperation("修改自己的收藏。")

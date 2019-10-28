@@ -3,7 +3,7 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.response.*
+import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
@@ -25,9 +25,9 @@ class CollectTagController(
 	@ApiOperation("创建自己的标签。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody @Validated(Create::class) tag: CollectTag, bindingResult: BindingResult, authentication: Authentication): CollectTag {
-		val user = (authentication.principal as UserDetailsVo).delegateUser
-		return tagService.create(tag, user)
+	fun create(@RequestBody @Validated(Create::class) tag: CollectTag, bindingResult: BindingResult,
+		authentication: Authentication) {
+		tagService.create(tag, authentication.toUser())
 	}
 	
 	@ApiOperation("修改自己的标签。")

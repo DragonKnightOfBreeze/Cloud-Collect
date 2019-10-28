@@ -5,7 +5,7 @@ import org.springframework.data.domain.*
 
 interface CollectTagService {
 	/**创建自己的标签。*/
-	fun create(tag: CollectTag, user: User): CollectTag
+	fun create(tag: CollectTag, user: User)
 	
 	/**修改自己的标签。包括名字，概述*/
 	fun modify(tag: CollectTag)

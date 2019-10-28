@@ -3,7 +3,7 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.response.*
+import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
@@ -23,9 +23,8 @@ class NoticeController(
 	@ApiOperation("创建某一用户的通知。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody notice: Notice, authentication: Authentication): Notice {
-		val user = (authentication.principal as UserDetailsVo).delegateUser
-		return noticeService.create(notice, user)
+	fun create(@RequestBody notice: Notice, authentication: Authentication) {
+		noticeService.create(notice, authentication.toUser())
 	}
 	
 	@ApiOperation("阅读自己的通知。")

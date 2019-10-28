@@ -89,11 +89,13 @@
     * [X] 将controller层方法中的pageable参数的注解改为`@PageableDefault`。
     * [X] 适用`@ConstructorBinding`。 
     * [X] 完成http请求方法的封装，对应后台的controller层。
+    * [X] 重构后台代码，仅让find方法拥有返回值。
+    * [X] 完成组件目录的创建，基本完成组件以外的前端代码的编写。
     * [ ] 完成基本的组件页面。
     * [ ] 完成基本的组件代码并传入数据。
     * [ ] 配置一些css样式。
 
-## TODO `
+## TODO
 
 * [ ] 后台测试（加入模拟数据）。
 * [ ] 前端测试（对接前台）。

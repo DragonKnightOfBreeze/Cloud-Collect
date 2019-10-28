@@ -21,26 +21,25 @@ class CollectServiceImpl(
 ) : CollectService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(collect: Collect, user: User): Collect {
+	override fun create(collect: Collect, user: User) {
 		val newCollect = collect.copy(
 			user = user
 		)
-		return collectRepository.save(newCollect)
+		collectRepository.save(newCollect)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun createFrom(collect: Collect, user: User): Collect {
+	override fun createFrom(collect: Collect, user: User) {
 		//点赞别人的收藏
 		praise(collect, user)
 		
-		//从别人的收藏创建新的收藏
-		//TODO 创建日期和最后修改日期是否存在问题？
+		//从别人的收藏创建新的收藏，需要重置id
 		val newCollect = collect.copy(
-			id = 0, //重置id
+			id = 0,
 			user = user
 		)
-		return collectRepository.save(newCollect)
+		collectRepository.save(newCollect)
 	}
 	
 	@Transactional

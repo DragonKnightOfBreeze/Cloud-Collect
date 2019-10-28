@@ -18,11 +18,11 @@ class CollectTagServiceImpl(
 ) : CollectTagService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(tag: CollectTag, user: User): CollectTag {
+	override fun create(tag: CollectTag, user: User) {
 		val newTag = tag.copy(
 			user = user
 		)
-		return tagRepository.save(newTag)
+		tagRepository.save(newTag)
 	}
 	
 	@Transactional

@@ -5,7 +5,7 @@ import org.springframework.data.domain.*
 
 interface NoticeService {
 	/**创建某一用户的通知。*/
-	fun create(notice: Notice, user: User): Notice
+	fun create(notice: Notice, user: User)
 	
 	/**阅读自己的通知。*/
 	fun read(notice: Notice)

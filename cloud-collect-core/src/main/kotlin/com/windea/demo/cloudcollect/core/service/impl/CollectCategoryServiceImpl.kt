@@ -18,11 +18,11 @@ class CollectCategoryServiceImpl(
 ) : CollectCategoryService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(category: CollectCategory, user: User): CollectCategory {
+	override fun create(category: CollectCategory, user: User) {
 		val newCategory = category.copy(
 			user = user
 		)
-		return categoryRepository.save(newCategory)
+		categoryRepository.save(newCategory)
 	}
 	
 	@Transactional

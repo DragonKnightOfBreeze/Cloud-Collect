@@ -3,7 +3,7 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.response.*
+import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
@@ -25,15 +25,16 @@ class CollectCategoryController(
 	@ApiOperation("创建自己的分类。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody @Validated(Create::class) category: CollectCategory, bindingResult: BindingResult, authentication: Authentication): CollectCategory {
-		val user = (authentication.principal as UserDetailsVo).delegateUser
-		return categoryService.create(category, user)
+	fun create(@RequestBody @Validated(Create::class) category: CollectCategory, bindingResult: BindingResult,
+		authentication: Authentication) {
+		categoryService.create(category, authentication.toUser())
 	}
 	
 	@ApiOperation("修改自己的分类。")
 	@PutMapping("/{id}")
 	@PreAuthorize("isAuthenticated()")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) category: CollectCategory, bindingResult: BindingResult) {
+	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) category: CollectCategory,
+		bindingResult: BindingResult) {
 		categoryService.modify(category)
 	}
 	

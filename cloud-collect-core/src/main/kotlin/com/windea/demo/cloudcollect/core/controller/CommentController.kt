@@ -3,7 +3,7 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.response.*
+import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
@@ -26,18 +26,16 @@ class CommentController(
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Validated(Create::class) comment: Comment, bindingResult: BindingResult,
-		authentication: Authentication): Comment {
-		val user = (authentication.principal as UserDetailsVo).delegateUser
-		return commentService.create(comment, user)
+		authentication: Authentication) {
+		commentService.create(comment, authentication.toUser())
 	}
 	
 	@ApiOperation("创建自己的评论，回复某一评论。")
 	@PostMapping("/reply")
 	@PreAuthorize("isAuthenticated()")
 	fun reply(@RequestParam replyToCommentId: Long, @RequestBody @Validated(Create::class) comment: Comment,
-		bindingResult: BindingResult, authentication: Authentication): Comment {
-		val user = (authentication.principal as UserDetailsVo).delegateUser
-		return commentService.reply(replyToCommentId, comment, user)
+		bindingResult: BindingResult, authentication: Authentication) {
+		commentService.reply(replyToCommentId, comment, authentication.toUser())
 	}
 	
 	@ApiOperation("删除自己的评论。")

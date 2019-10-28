@@ -5,10 +5,10 @@ import org.springframework.data.domain.*
 
 interface CommentService {
 	/**创建自己的评论。*/
-	fun create(comment: Comment, sponsorByUser: User): Comment
+	fun create(comment: Comment, sponsorByUser: User)
 	
 	/**创建自己的评论，回复某一评论。*/
-	fun reply(replyToCommentId: Long, comment: Comment, sponsorByUser: User): Comment
+	fun reply(replyToCommentId: Long, comment: Comment, sponsorByUser: User)
 	
 	/**删除自己的评论。*/
 	fun deleteById(id: Long)

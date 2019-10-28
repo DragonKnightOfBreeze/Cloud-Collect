@@ -6,10 +6,10 @@ import org.springframework.data.domain.*
 
 interface CollectService {
 	/**创建自己的收藏。*/
-	fun create(collect: Collect, user: User): Collect
+	fun create(collect: Collect, user: User)
 	
 	/**从别人的收藏创建自己的收藏。默认点赞原始收藏。*/
-	fun createFrom(collect: Collect, user: User): Collect
+	fun createFrom(collect: Collect, user: User)
 	
 	/**修改自己的收藏。包括名字，概述，分类，标签，类型。*/
 	fun modify(collect: Collect)

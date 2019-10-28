@@ -1,22 +1,24 @@
 import Vue from "vue"
 import VueRouter, {RouteConfig} from "vue-router"
 
-const AboutView = () => import(/* webpackChunkName: "about" */ "@/views/about/AboutView.vue")
-const CollectView = () => import(/* webpackChunkName: "collect" */ "@/views/collect/CollectView.vue")
-const CollectDetailView = () => import(/* webpackChunkName: "collectDetail" */ "@/views/collect/CollectDetailView.vue")
-const CommentView = () => import(/* webpackChunkName: "comment" */ "@/views/comment/CommentView.vue")
-const HistoryView = () => import(/* webpackChunkName: "history" */ "@/views/history/HistoryView.vue")
-const HomeView = () => import(/* webpackChunkName: "home" */  "@/views/home/HomeView.vue")
-const NoticeView = () => import(/* webpackChunkName: "notice" */ "@/views/notice/NoticeView.vue")
-const NoticeDetailView = () => import(/* webpackChunkName: "noticeDetail" */ "@/views/notice/NoticeDetailView.vue")
-const ProfileView = () => import(/* webpackChunkName: "profile" */ "@/views/profile/ProfileView.vue")
-const SearchView = () => import(/* webpackChunkName: "search" */ "@/views/search/SearchView.vue")
-const UserView = () => import(/* webpackChunkName: "user" */ "@/views/user/UserView.vue")
-const UserDetailView = () => import(/* webpackChunkName: "userDetail" */ "@/views/user/UserDetailView.vue")
-const Error403View = () => import(/* webpackChunkName: "error403" */ "@/views/error/Error403View.vue")
-const Error404View = () => import(/* webpackChunkName: "error404" */ "@/views/error/Error404View.vue")
-const Error500View = () => import(/* webpackChunkName: "error500" */ "@/views/error/Error500View.vue")
-const Error501View = () => import(/* webpackChunkName: "error501" */ "@/views/error/Error501View.vue")
+const AboutView = () => import("@/views/about/AboutView.vue")
+const CollectView = () => import("@/views/collect/CollectView.vue")
+const CollectDetailView = () => import( "@/views/collect/CollectDetailView.vue")
+const PraiseByUserView = () => import("@/views/collect/PraiseByUserView.vue")
+const HistoryView = () => import( "@/views/history/HistoryView.vue")
+const HomeView = () => import(  "@/views/home/HomeView.vue")
+const NoticeView = () => import("@/views/notice/NoticeView.vue")
+const NoticeDetailView = () => import( "@/views/notice/NoticeDetailView.vue")
+const ProfileView = () => import( "@/views/profile/ProfileView.vue")
+const FollowByUserView = () => import("@/views/profile/FollowByUserView.vue")
+const FollowToUserView = () => import("@/views/profile/FollowToUserView.vue")
+const SearchView = () => import( "@/views/search/SearchView.vue")
+const ActivateSuccessView = () => import( "@/views/success/ActivateSuccessView.vue")
+const ResetPasswordSuccessView = () => import( "@/views/success/ResetPasswordSuccessView.vue")
+const Error403View = () => import("@/views/error/Error403View.vue")
+const Error404View = () => import("@/views/error/Error404View.vue")
+const Error500View = () => import("@/views/error/Error500View.vue")
+const Error501View = () => import("@/views/error/Error501View.vue")
 
 Vue.use(VueRouter)
 
@@ -38,9 +40,9 @@ const routes: RouteConfig[] = [
     name: "collectDetail",
     component: CollectDetailView
   }, {
-    path: "/comment",
-    name: "comment",
-    component: CommentView
+    path: "/collect/:id/praiseByUser",
+    name: "praiseByUser",
+    component: PraiseByUserView
   }, {
     path: "/history",
     name: "history",
@@ -54,21 +56,29 @@ const routes: RouteConfig[] = [
     name: "noticeDetail",
     component: NoticeDetailView
   }, {
-    path: "/profile",
+    path: "/profile/:id",
     name: "profile",
     component: ProfileView
+  }, {
+    path: "/profile/:id/followByUser",
+    name: "followByUser",
+    component: FollowByUserView
+  }, {
+    path: "/profile/:id/followToUser",
+    name: "followToUser",
+    component: FollowToUserView
   }, {
     path: "/search",
     name: "search",
     component: SearchView
   }, {
-    path: "/user",
-    name: "user",
-    component: UserView
+    path: "/success/activate",
+    name: "activateSuccess",
+    component: ActivateSuccessView
   }, {
-    path: "/user/:id",
-    name: "userDetail",
-    component: UserDetailView
+    path: "/success/resetPassword",
+    name: "resetPasswordSuccess",
+    component: ResetPasswordSuccessView
   }, {
     path: "/error/403",
     name: "error403",

@@ -1,19 +1,29 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <NavBar v-show="isShowNavBar"></NavBar>
+    <div id="layout">
+      <router-view></router-view>
+    </div>
+    <Footer v-show="isShowFooter"></Footer>
   </div>
 </template>
 
 <script lang="ts">
+  import Footer from "@/components/Footer.vue"
+  import NavBar from "@/components/NavBar.vue"
   import {Component, Vue} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    components: {NavBar, Footer}
+  })
   export default class App extends Vue {
+    private isShowNavBar = true
+    private isShowFooter = true
   }
 </script>
 
 <style>
-  /*导入公共的样式*/
+  /*导入公共样式*/
   @import "../public/css/global.css";
 
   #app {

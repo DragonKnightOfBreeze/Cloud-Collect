@@ -17,21 +17,21 @@ class CommentServiceImpl(
 ) : CommentService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(comment: Comment, sponsorByUser: User): Comment {
+	override fun create(comment: Comment, sponsorByUser: User) {
 		val newComment = comment.copy(
 			sponsorByUser = sponsorByUser
 		)
-		return commentRepository.save(newComment)
+		commentRepository.save(newComment)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun reply(replyToCommentId: Long, comment: Comment, sponsorByUser: User): Comment {
+	override fun reply(replyToCommentId: Long, comment: Comment, sponsorByUser: User) {
 		val newComment = comment.copy(
 			replyToComment = commentRepository.findByIdOrNull(replyToCommentId) ?: throw NotFoundException(),
 			sponsorByUser = sponsorByUser
 		)
-		return commentRepository.save(newComment)
+		commentRepository.save(newComment)
 	}
 	
 	@Transactional

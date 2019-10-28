@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.response.*
+import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
@@ -20,9 +20,8 @@ class HistoryController(
 	@ApiOperation("创建浏览记录。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody history: History, authentication: Authentication): History {
-		val user = (authentication.principal as UserDetailsVo).delegateUser
-		return historyService.create(history, user)
+	fun create(@RequestBody history: History, authentication: Authentication) {
+		historyService.create(history, authentication.toUser())
 	}
 	
 	@ApiOperation("删除一条浏览记录。")
