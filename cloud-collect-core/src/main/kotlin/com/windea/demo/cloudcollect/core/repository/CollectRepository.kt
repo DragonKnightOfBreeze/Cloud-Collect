@@ -47,4 +47,6 @@ interface CollectRepository : JpaRepository<Collect, Long> {
 	fun countByPraiseByUserId(praiseByUserId: Long): Long
 	
 	fun existsByNameAndUserId(name: String, userId: Long): Boolean
+	
+	fun existByIdAndPraiseByUserListContains(id: Long, praiseByUser: User): Boolean
 }

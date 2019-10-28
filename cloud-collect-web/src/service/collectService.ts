@@ -78,6 +78,10 @@ export async function findAllByUserId(userId: number, pageableParam: PageablePar
 }
 
 
+export async function isPraised(id: number) {
+  return await http.get<boolean>(`${collectUrl}/${id}/isPraised`)
+}
+
 export async function getPraiseByUserPage(id: number, pageableParam: PageableParam) {
   const params = {...pageableParam}
   return await http.get<Page<User>>(`${collectUrl}/${id}/praiseByUserPage`)

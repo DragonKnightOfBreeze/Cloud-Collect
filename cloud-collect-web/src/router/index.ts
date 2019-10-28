@@ -80,6 +80,9 @@ const routes: RouteConfig[] = [
     name: "resetPasswordSuccess",
     component: ResetPasswordSuccessView
   }, {
+    path: "/error",
+    redirect: "/error/500"
+  }, {
     path: "/error/403",
     name: "error403",
     component: Error403View

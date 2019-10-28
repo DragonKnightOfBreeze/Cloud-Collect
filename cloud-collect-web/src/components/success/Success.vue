@@ -1,5 +1,5 @@
 <template>
-  <div class="cc-success align-center">
+  <div class="cc-success align-center color-success">
     <h1 class="cc-success-title">
       <slot name="title"></slot>
     </h1>

@@ -63,6 +63,9 @@ interface CollectService {
 	fun existsByNameAndUserId(name: String, userId: Long): Boolean
 	
 	
+	/**判断指定用户是否已点赞指定收藏。*/
+	fun isPraised(id: Long, user: User): Boolean
+	
 	/**得到该收藏的所有点赞用户。*/
 	fun getPraiseByUserPage(id: Long, pageable: Pageable): Page<User>
 	

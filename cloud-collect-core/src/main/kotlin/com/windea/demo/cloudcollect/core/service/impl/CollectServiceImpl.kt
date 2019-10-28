@@ -138,6 +138,10 @@ class CollectServiceImpl(
 	}
 	
 	
+	override fun isPraised(id: Long, user: User): Boolean {
+		return userRepository.existsByIdAndFollowByUserListContains(id, user)
+	}
+	
 	@Cacheable(key = "methodName + args")
 	override fun getPraiseByUserPage(id: Long, pageable: Pageable): Page<User> {
 		return userRepository.findAllByPraiseToCollectId(id, pageable)

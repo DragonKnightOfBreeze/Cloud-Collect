@@ -4,11 +4,13 @@ package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.enums.*
+import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.data.web.*
+import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
@@ -64,6 +66,12 @@ class UserController(
 		return userService.findAllByRole(role, pageable)
 	}
 	
+	
+	@ApiOperation("判断指定用户是否已关注指定用户。")
+	@GetMapping("/{id}/isFollowed")
+	fun isFollowed(@PathVariable id: Long, authentication: Authentication): Boolean {
+		return userService.isFollowed(id, authentication.toUser())
+	}
 	
 	@ApiOperation("得到该用户的所有关注用户。")
 	@GetMapping("/{id}/followToUserPage")

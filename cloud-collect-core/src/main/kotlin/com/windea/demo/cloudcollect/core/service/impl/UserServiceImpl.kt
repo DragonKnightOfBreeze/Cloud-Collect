@@ -152,6 +152,10 @@ class UserServiceImpl(
 	}
 	
 	
+	override fun isFollowed(id: Long, user: User): Boolean {
+		return userRepository.existsByIdAndFollowByUserListContains(id, user)
+	}
+	
 	@Cacheable(key = "methodName + args")
 	override fun getFollowToUserPage(id: Long, pageable: Pageable): Page<User> {
 		return userRepository.findAllByFollowByUserId(id, pageable)

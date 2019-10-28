@@ -59,6 +59,9 @@ interface UserService {
 	fun existsByUsernameOrEmail(username: String, email: String): Boolean
 	
 	
+	/**判断指定用户是否已关注指定用户。*/
+	fun isFollowed(id: Long, user: User): Boolean
+	
 	/**得到该用户的所有关注用户。*/
 	fun getFollowToUserPage(id: Long, pageable: Pageable): Page<User>
 	

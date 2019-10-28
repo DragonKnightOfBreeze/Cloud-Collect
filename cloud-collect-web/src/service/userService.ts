@@ -35,6 +35,10 @@ export async function findAllByRole(role: Role, pageableParam: PageableParam) {
 }
 
 
+export async function isFollowed(id: number) {
+  return await http.get<boolean>(`${userUrl}/${id}/isFollowed`)
+}
+
 export async function getFollowToUserPage(id: number, pageableParam: PageableParam) {
   const params = {...pageableParam}
   return await http.get<Page<User>>(`${userUrl}/${id}/followToUserPage`, {params})

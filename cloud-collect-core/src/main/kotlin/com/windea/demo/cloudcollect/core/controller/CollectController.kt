@@ -136,6 +136,12 @@ class CollectController(
 	}
 	
 	
+	@ApiOperation("判断指定用户是否已点赞指定收藏。")
+	@GetMapping("/{id}/isPraised")
+	fun isPraised(@PathVariable id: Long, authentication: Authentication): Boolean {
+		return collectService.isPraised(id, authentication.toUser())
+	}
+	
 	@ApiOperation("得到该收藏的所有点赞用户。")
 	@GetMapping("/{id}/praiseByUserPage")
 	fun getPraiseByUserPage(@PathVariable id: Long, @PageableDefault pageable: Pageable): Page<User> {
