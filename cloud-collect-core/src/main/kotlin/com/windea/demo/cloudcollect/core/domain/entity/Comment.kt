@@ -23,7 +23,7 @@ data class Comment(
 	@Column(nullable = false, length = 512)
 	@get:NotEmpty(message = "{validation.CollectComment.content.NotEmpty}", groups = [Create::class])
 	@get:Size(min = 1, max = 512, message = "{validation.CollectComment.content.Size}", groups = [Create::class])
-	val content: String = "",
+	val content: String,
 	
 	@ApiModelProperty("所属收藏。")
 	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)

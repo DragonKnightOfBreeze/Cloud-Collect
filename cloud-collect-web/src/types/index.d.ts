@@ -3,90 +3,90 @@
 //NOTE 这里不能直接使用Collect作为接口名，因为与组件名重复了，是否可考虑使用ICollect？
 
 export interface Collect {
-  id: number
+  id?: number
   name: string
   summary: string
   url: string
   logoUrl: string
-  category: CollectCategory
-  tags: CollectTag[]
-  type: CollectType
-  user: User
-  createdTime: string
-  lastModifiedTime: string
-  praiseByUserList: User[] | null
-  praiseByUserCount: number
-  commentCount: number
+  category?: CollectCategory
+  tags?: CollectTag[]
+  type?: CollectType
+  user?: User
+  createdTime?: string
+  lastModifiedTime?: string
+  praiseByUserList?: User[] | null
+  praiseByUserCount?: number
+  commentCount?: number
 }
 
 export interface CollectCategory {
-  id: number
+  id?: number
   name: string
   summary: string
-  user: User
-  createdTime: string
-  lastModifiedTime: string
-  collectCount: number
+  user?: User
+  createdTime?: string
+  lastModifiedTime?: string
+  collectCount?: number
 }
 
 export interface CollectTag {
-  id: number
+  id?: number
   name: string
   summary: string
-  user: User
-  createdTime: string
-  lastModifiedTime: string
-  collectCount: number
+  user?: User
+  createdTime?: string
+  lastModifiedTime?: string
+  collectCount?: number
 }
 
 export interface Comment {
-  id: number
+  id?: number
   content: string
   collect: Collect
-  sponsorByUser: User
-  replyToComment: Comment | null
-  createdTime: string
-  replyByCommentCount: number
+  sponsorByUser?: User
+  replyToComment?: Comment
+  createdTime?: string
+  replyByCommentCount?: number
 }
 
 export interface History {
-  id: number
+  id?: number
   collect: Collect
-  user: User
-  createdTime: string
+  user?: User
+  createdTime?: string
 }
 
 export interface Notice {
-  id: number
+  id?: number
   title: string
   content: string
   type: NoticeType
-  user: User
-  readStatus: boolean
-  createdTime: string
+  user?: User
+  readStatus?: boolean
+  createdTime?: string
 }
 
 export interface User {
-  id: number
+  id?: number
   username: string
   password: string
   email: string
   nickname: string
-  introduce: string
-  avatarUrl: string
-  backgroundUrl: string
-  role: Role
-  activateStatus: boolean
-  registerTime: string
-  updateTime: string
-  followToUserList: User[] | null
-  followByUserList: User[] | null
-  praiseToCollectList: Collect[] | null
-  followToUserCount: number
-  followByUserCount: number
-  collectCount: number
-  commentCount: number
-  noticeCount: number
+  introduce?: string
+  avatarUrl?: string
+  backgroundUrl?: string
+  role?: Role
+  activateStatus?: boolean
+  registerTime?: string
+  updateTime?: string
+  followToUserList?: User[]
+  followByUserList?: User[]
+  praiseToCollectList?: Collect[]
+  followToUserCount?: number
+  followByUserCount?: number
+  collectCount?: number
+  commentCount?: number
+  noticeCount?: number
 }
 
 //REGION request
@@ -119,7 +119,7 @@ export type NoticeType = "SYSTEM" | "ACCOUNT" | "HELLO"
 
 export type Role = "NORMAL" | "ADMIN"
 
-//REGION external
+//REGION SpringBoot
 
 //org.springframework.security.core.userdetails.UserDetails
 export interface UserDetails {
@@ -192,4 +192,17 @@ export interface ObjectError {
   codes: string[] | null;
   arguments: object[] | null;
   defaultMessage: string | null;
+}
+
+//REGION Kotlin Stdlib
+
+export interface Pair<A, B> {
+  first: A
+  second: B
+}
+
+export interface Triple<A, B, C> {
+  first: A
+  second: B
+  third: C
 }

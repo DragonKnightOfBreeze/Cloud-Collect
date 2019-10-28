@@ -1,5 +1,6 @@
 package com.windea.demo.cloudcollect.core
 
+import com.fasterxml.jackson.databind.*
 import com.windea.demo.cloudcollect.core.properties.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
@@ -16,5 +17,12 @@ class Tests {
 		//不需要@EnableConfigurationProperties和@ConfigurationPropertiesScan
 		//SpringBoot就会自动注册这个properties数据类为bean
 		println(dataSerializeProperties)
+	}
+	
+	@Test
+	fun test2() {
+		//jackson可以将Pair转化为json
+		val pair = "1" to "2"
+		println(ObjectMapper().writeValueAsString(pair))
 	}
 }

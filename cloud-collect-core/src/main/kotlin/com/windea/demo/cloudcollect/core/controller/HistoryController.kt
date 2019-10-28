@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 
 @Api("浏览记录")
 @RestController
-@RequestMapping("/History")
+@RequestMapping("/history")
 @CrossOrigin
 class HistoryController(
 	private val historyService: HistoryService

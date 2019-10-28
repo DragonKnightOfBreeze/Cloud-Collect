@@ -39,11 +39,11 @@ data class Collect(
 	
 	@ApiModelProperty("链接地址。")
 	@Column(nullable = false, length = 512)
-	var url: String = "",
+	var url: String,
 	
 	@ApiModelProperty("标志地址。")
 	@Column(nullable = false, length = 512)
-	var logoUrl: String = "",
+	var logoUrl: String,
 	
 	@ApiModelProperty("收藏的分类。")
 	@ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)

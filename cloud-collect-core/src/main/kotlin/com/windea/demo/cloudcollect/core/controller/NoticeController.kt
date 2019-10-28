@@ -23,9 +23,9 @@ class NoticeController(
 	@ApiOperation("创建某一用户的通知。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody notice: Notice, authentication: Authentication) {
+	fun create(@RequestBody notice: Notice, authentication: Authentication): Notice {
 		val user = (authentication.principal as UserDetailsVo).delegateUser
-		noticeService.create(notice, user)
+		return noticeService.create(notice, user)
 	}
 	
 	@ApiOperation("阅读自己的通知。")

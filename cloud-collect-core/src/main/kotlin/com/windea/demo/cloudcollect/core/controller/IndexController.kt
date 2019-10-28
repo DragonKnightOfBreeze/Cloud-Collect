@@ -43,7 +43,7 @@ class IndexController(
 	}
 	
 	@ApiOperation("忘记用户密码。")
-	@GetMapping("/forgotPassword")
+	@PostMapping("/forgotPassword")
 	fun forgotPassword(@RequestParam username: String) {
 		userService.forgotPassword(username)
 	}
@@ -51,7 +51,7 @@ class IndexController(
 	@ApiOperation("重置用户密码。")
 	@PostMapping("/resetPassword")
 	fun resetPassword(@RequestBody @Validated form: ResetPasswordForm, bindingResult: BindingResult,
-		resetPasswordCode: String) {
+		@RequestParam resetPasswordCode: String) {
 		userService.resetPassword(form, resetPasswordCode)
 	}
 	

@@ -88,12 +88,12 @@
         * 响应的错误处理器，400则返回且存储参数验证消息，得到之后需要用splice清空，401则登出且重定向到登录页。
     * [X] 将controller层方法中的pageable参数的注解改为`@PageableDefault`。
     * [X] 适用`@ConstructorBinding`。 
-    * [ ] 完成http请求方法的封装，对应后台的controller层。
+    * [X] 完成http请求方法的封装，对应后台的controller层。
     * [ ] 完成基本的组件页面。
     * [ ] 完成基本的组件代码并传入数据。
     * [ ] 配置一些css样式。
 
-## TODO
+## TODO `
 
 * [ ] 后台测试（加入模拟数据）。
 * [ ] 前端测试（对接前台）。

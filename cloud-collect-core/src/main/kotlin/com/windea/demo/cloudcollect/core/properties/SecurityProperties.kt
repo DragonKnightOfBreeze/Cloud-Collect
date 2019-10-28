@@ -9,4 +9,4 @@ data class SecurityProperties(
 	val secret: String,
 	val clientId: String,
 	val resourceId: String
-}
+)

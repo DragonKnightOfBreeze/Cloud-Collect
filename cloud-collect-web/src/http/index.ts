@@ -29,9 +29,11 @@ http.interceptors.response.use(value => {
     const status = error.response.status
     switch (status) {
       case 400:
-        //假设为参数验证的错误
-        const validationErrors = error.response.data.validationErrors as ObjectError[]
-        store.commit("addValidationErrors", validationErrors)
+        //如果为参数验证的错误
+        if (error.response.data.validationErrors) {
+          const validationErrors = error.response.data.validationErrors as ObjectError[]
+          store.commit("addValidationErrors", validationErrors)
+        }
         break
       case 401:
         //要求用户登录
@@ -48,10 +50,11 @@ http.interceptors.response.use(value => {
         break
       case 501:
         router.push("/error/501")
+        break
+      default:
+        router.push("/error/500")
+        break
     }
-  } else {
-    //发生其他错误时则转到error500页面
-    router.push("/error/500")
   }
   return Promise.reject(error)
 })
