@@ -86,8 +86,9 @@
     * [X] 完成基础的axios的配置。即新的axios实例、baseUrl配置
         * ［搁置］请求的鉴权处理器，添加token到请求头。
         * 响应的错误处理器，400则返回且存储参数验证消息，得到之后需要用splice清空，401则登出且重定向到登录页。
+    * [X] 将controller层方法中的pageable参数的注解改为`@PageableDefault`。
+    * [X] 适用`@ConstructorBinding`。 
     * [ ] 完成http请求方法的封装，对应后台的controller层。
-    * [ ] 将controller层方法中的pageable参数的注解改为`@PageableDefault`。
     * [ ] 完成基本的组件页面。
     * [ ] 完成基本的组件代码并传入数据。
     * [ ] 配置一些css样式。

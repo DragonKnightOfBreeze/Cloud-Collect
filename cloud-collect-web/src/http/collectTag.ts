@@ -34,6 +34,7 @@ export async function findAllByNameContainsAndUserId(userId: number, name: strin
   return await http.get<Page<CollectTag>>(`${collectTag}/findAllByNameContainsAndUserId`, {params})
 }
 
+
 export async function getCollectPage(id: number, pageable: PageableParam) {
   const params = {...pageable}
   return await http.get<Page<Collect>>(`${collectTag}/${id}/collectPage`, {params})

@@ -7,6 +7,7 @@ import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
+import org.springframework.data.web.*
 import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.web.bind.annotation.*

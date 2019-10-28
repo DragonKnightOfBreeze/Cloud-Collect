@@ -8,6 +8,7 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
+import org.springframework.data.web.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*

@@ -1,13 +1,10 @@
 package com.windea.demo.cloudcollect.core.repository
 
 import com.windea.demo.cloudcollect.core.domain.*
-import org.junit.runner.*
+import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.boot.test.context.*
-import org.springframework.test.context.junit4.*
-import kotlin.test.*
 
-@RunWith(SpringRunner::class)
 @SpringBootTest
 class FooRepositoryTest {
 	@Autowired private lateinit var fooRepository: FooRepository

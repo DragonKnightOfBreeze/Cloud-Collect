@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.extensions
 
 import com.windea.demo.cloudcollect.core.enums.*
-import org.junit.*
+import org.junit.jupiter.api.*
 
 class DataSerializerTest {
 	@Test //不考虑泛型的情况下，能够正常工作

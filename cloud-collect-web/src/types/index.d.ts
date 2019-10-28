@@ -152,14 +152,7 @@ export interface Page<T> {
   pageable: Pageable;
 }
 
-//org.springframework.data.domain.Sort
-export interface Sort {
-  empty: boolean;
-  sorted: boolean;
-  unsorted: boolean;
-}
-
-//for @PageableDefault pageable:Pageable
+//for param `@PageableDefault pageable: Pageable`
 export interface PageableParam {
   page?: number //default: 0
   size?: number //default: 20
@@ -175,6 +168,15 @@ export interface Pageable {
   offset: number;
   sort: Sort;
 }
+
+//org.springframework.data.domain.Sort
+export interface Sort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
+export type Direction = "ASC" | "DESC"
 
 //org.springframework.validation.FieldError
 export interface FieldError extends ObjectError {
