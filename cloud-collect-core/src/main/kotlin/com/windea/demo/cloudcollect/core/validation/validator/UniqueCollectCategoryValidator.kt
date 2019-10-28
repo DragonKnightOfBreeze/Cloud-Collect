@@ -11,8 +11,6 @@ open class UniqueCollectCategoryValidator : ConstraintValidator<UniqueCollectCat
 	@Autowired private lateinit var categoryRepository: CollectCategoryRepository
 	
 	override fun isValid(value: CollectCategory, context: ConstraintValidatorContext): Boolean {
-		val name = value.name
-		val userId = value.user.id
-		return !categoryRepository.existsByNameAndUserId(name, userId)
+		return !categoryRepository.existsByNameAndUser(value.name, value.user)
 	}
 }

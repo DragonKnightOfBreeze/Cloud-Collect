@@ -13,5 +13,5 @@ interface CollectTagRepository : JpaRepository<CollectTag, Long> {
 	
 	fun countByUserId(userId: Long): Long
 	
-	fun existsByNameAndUserId(name: String, userId: Long): Boolean
+	fun existsByNameAndUser(name: String, user: User): Boolean
 }

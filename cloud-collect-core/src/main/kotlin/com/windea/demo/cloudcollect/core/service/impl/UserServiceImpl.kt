@@ -126,17 +126,17 @@ class UserServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByFollowToUserId(followToUserId: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByFollowToUserId(followToUserId, pageable).map { it.lateInit() }
+		return userRepository.findAllByFollowToUserListId(followToUserId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByFollowByUserId(followByUserId, pageable).map { it.lateInit() }
+		return userRepository.findAllByFollowByUserListId(followByUserId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByPraiseToCollectId(praiseToCollectId, pageable).map { it.lateInit() }
+		return userRepository.findAllByPraiseToCollectListId(praiseToCollectId, pageable).map { it.lateInit() }
 	}
 	
 	override fun existsByUsernameOrEmail(username: String, email: String): Boolean {
@@ -144,8 +144,8 @@ class UserServiceImpl(
 	}
 	
 	private fun User.lateInit() = this.apply {
-		followToUserCount = userRepository.countByFollowByUserId(id)
-		followByUserCount = userRepository.countByFollowToUserId(id)
+		followToUserCount = userRepository.countByFollowByUserListId(id)
+		followByUserCount = userRepository.countByFollowToUserListId(id)
 		collectCount = collectRepository.countByUserId(id)
 		commentCount = commentRepository.countBySponsorByUserId(id)
 		noticeCount = noticeRepository.countByUserId(id)
@@ -153,17 +153,17 @@ class UserServiceImpl(
 	
 	
 	override fun isFollowed(id: Long, user: User): Boolean {
-		return userRepository.existsByIdAndFollowByUserListContains(id, user)
+		return userRepository.existsByIdAndFollowByUserList(id, user)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun getFollowToUserPage(id: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByFollowByUserId(id, pageable)
+		return userRepository.findAllByFollowByUserListId(id, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun getFollowByUserPage(id: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByFollowToUserId(id, pageable)
+		return userRepository.findAllByFollowToUserListId(id, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")

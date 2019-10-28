@@ -88,7 +88,7 @@ class CollectServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByTagNameContains(tagName: String, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByTagNameContains(tagName, pageable).map { it.lateInit() }
+		return collectRepository.findAllByTagsNameContains(tagName, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -105,7 +105,7 @@ class CollectServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByTagNameContainsAndUserId(tagName: String, userId: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByTagNameContainsAndUserId(tagName, userId, pageable).map { it.lateInit() }
+		return collectRepository.findAllByTagsNameContainsAndUserId(tagName, userId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -115,7 +115,7 @@ class CollectServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByTagId(tagId: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByTagId(tagId, pageable).map { it.lateInit() }
+		return collectRepository.findAllByTagsId(tagId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -128,23 +128,23 @@ class CollectServiceImpl(
 		return collectRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
-	override fun existsByNameAndUserId(name: String, userId: Long): Boolean {
-		return collectRepository.existsByNameAndUserId(name, userId)
+	override fun existsByNameAndUser(name: String, user: User): Boolean {
+		return collectRepository.existsByNameAndUser(name, user)
 	}
 	
 	private fun Collect.lateInit() = this.apply {
-		praiseByUserCount = userRepository.countByPraiseToCollectId(id)
+		praiseByUserCount = userRepository.countByPraiseToCollectListId(id)
 		commentCount = commentRepository.countByCollectId(id)
 	}
 	
 	
 	override fun isPraised(id: Long, user: User): Boolean {
-		return userRepository.existsByIdAndFollowByUserListContains(id, user)
+		return collectRepository.existsByIdAndPraiseByUserList(id, user)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun getPraiseByUserPage(id: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByPraiseToCollectId(id, pageable)
+		return userRepository.findAllByPraiseToCollectListId(id, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")

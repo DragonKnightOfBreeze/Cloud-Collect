@@ -57,8 +57,8 @@ class CollectCategoryServiceImpl(
 		return categoryRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
-	override fun existsByNameAndUserId(name: String, userId: Long): Boolean {
-		return categoryRepository.existsByNameAndUserId(name, userId)
+	override fun existsByNameAndUser(name: String, user: User): Boolean {
+		return categoryRepository.existsByNameAndUser(name, user)
 	}
 	
 	private fun CollectCategory.lateInit() = this.apply {

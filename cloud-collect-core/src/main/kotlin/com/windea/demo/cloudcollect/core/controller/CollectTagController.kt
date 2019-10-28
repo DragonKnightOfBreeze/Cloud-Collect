@@ -8,7 +8,6 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
-import org.springframework.data.web.*
 import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
@@ -52,19 +51,20 @@ class CollectTagController(
 	
 	@ApiOperation("得到所有标签。")
 	@GetMapping("/findAll")
-	fun findAll(@PageableDefault pageable: Pageable): Page<CollectTag> {
+	fun findAll(pageable: Pageable): Page<CollectTag> {
 		return tagService.findAll(pageable)
 	}
 	
 	@ApiOperation("根据用户id查询所有标签。")
 	@GetMapping("/findAllByUserId")
-	fun findAllByUserId(@RequestParam userId: Long, @PageableDefault pageable: Pageable): Page<CollectTag> {
+	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<CollectTag> {
 		return tagService.findAllByUserId(userId, pageable)
 	}
 	
 	@ApiOperation("根据名字和用户id模糊查询所有标签。")
 	@GetMapping("/findAllByNameContainsAndUserId")
-	fun findAllByNameContainsAndUserId(@RequestParam name: String, @RequestParam userId: Long, @PageableDefault pageable: Pageable): Page<CollectTag> {
+	fun findAllByNameContainsAndUserId(@RequestParam name: String, @RequestParam userId: Long,
+		pageable: Pageable): Page<CollectTag> {
 		return tagService.findAllByNameContainsAndUserId(name, userId, pageable)
 	}
 	

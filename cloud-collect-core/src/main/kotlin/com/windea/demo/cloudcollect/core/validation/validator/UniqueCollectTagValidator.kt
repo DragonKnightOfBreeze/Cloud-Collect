@@ -11,8 +11,6 @@ open class UniqueCollectTagValidator : ConstraintValidator<UniqueCollectTag, Col
 	@Autowired private lateinit var tagRepository: CollectTagRepository
 	
 	override fun isValid(value: CollectTag, context: ConstraintValidatorContext): Boolean {
-		val name = value.name
-		val userId = value.user.id
-		return !tagRepository.existsByNameAndUserId(name, userId)
+		return !tagRepository.existsByNameAndUser(value.name, value.user)
 	}
 }

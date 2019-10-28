@@ -7,7 +7,6 @@ import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
-import org.springframework.data.web.*
 import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.web.bind.annotation.*
@@ -49,19 +48,20 @@ class NoticeController(
 	
 	@ApiOperation("得到所有通知。")
 	@GetMapping("/findAll")
-	fun findAll(@PageableDefault pageable: Pageable): Page<Notice> {
+	fun findAll(pageable: Pageable): Page<Notice> {
 		return noticeService.findAll(pageable)
 	}
 	
 	@ApiOperation("查询某一用户的所有通知。")
 	@GetMapping("/findAllByUserId")
-	fun findAllByUserId(@RequestParam userId: Long, @PageableDefault pageable: Pageable): Page<Notice> {
+	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<Notice> {
 		return noticeService.findAllByUserId(userId, pageable)
 	}
 	
 	@ApiOperation("查询某一用户的所有已读/未读通知。")
 	@GetMapping("/findAllByUserIdAndRead")
-	fun findAllByUserIdAndRead(@RequestParam userId: Long, @RequestParam readStatus: Boolean, @PageableDefault pageable: Pageable): Page<Notice> {
+	fun findAllByUserIdAndRead(@RequestParam userId: Long, @RequestParam readStatus: Boolean,
+		pageable: Pageable): Page<Notice> {
 		return noticeService.findAllByUserIdAndRead(userId, readStatus, pageable)
 	}
 }

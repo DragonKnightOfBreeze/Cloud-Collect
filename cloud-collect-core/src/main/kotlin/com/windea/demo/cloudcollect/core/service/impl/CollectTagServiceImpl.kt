@@ -57,17 +57,17 @@ class CollectTagServiceImpl(
 		return tagRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
-	override fun existsByNameAndUserId(name: String, userId: Long): Boolean {
-		return tagRepository.existsByNameAndUserId(name, userId)
+	override fun existsByNameAndUser(name: String, user: User): Boolean {
+		return tagRepository.existsByNameAndUser(name, user)
 	}
 	
 	private fun CollectTag.lateInit() = this.apply {
-		collectCount = collectRepository.countByTagId(id)
+		collectCount = collectRepository.countByTagsId(id)
 	}
 	
 	
 	@Cacheable(key = "methodName + args")
 	override fun getCollectPage(id: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByTagId(id, pageable)
+		return collectRepository.findAllByTagsId(id, pageable)
 	}
 }

@@ -26,7 +26,7 @@ interface CollectCategoryService {
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectCategory>
 	
 	/**检查某一分类是否已存在。*/
-	fun existsByNameAndUserId(name: String, userId: Long): Boolean
+	fun existsByNameAndUser(name: String, user: User): Boolean
 	
 	
 	/**得到该分类的所有收藏。*/

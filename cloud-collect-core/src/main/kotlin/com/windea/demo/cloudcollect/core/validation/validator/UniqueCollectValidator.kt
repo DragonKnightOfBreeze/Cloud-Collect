@@ -11,8 +11,6 @@ open class UniqueCollectValidator : ConstraintValidator<UniqueCollect, Collect> 
 	@Autowired private lateinit var collectRepository: CollectRepository
 	
 	override fun isValid(value: Collect, context: ConstraintValidatorContext): Boolean {
-		val name = value.name
-		val userId = value.user.id
-		return !collectRepository.existsByNameAndUserId(name, userId)
+		return !collectRepository.existsByNameAndUser(value.name, value.user)
 	}
 }

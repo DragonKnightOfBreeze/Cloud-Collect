@@ -26,7 +26,7 @@ interface CollectTagService {
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectTag>
 	
 	/**检查某一标签是否已存在。*/
-	fun existsByNameAndUserId(name: String, userId: Long): Boolean
+	fun existsByNameAndUser(name: String, user: User): Boolean
 	
 	
 	/**得到该标签的所有收藏。*/

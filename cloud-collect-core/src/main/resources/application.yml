@@ -31,6 +31,8 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+    # 防止懒加载出错
+    open-in-view: true
   jackson:
     serialization:
       # 防止json序列化时出错，非常重要！

@@ -8,7 +8,6 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
-import org.springframework.data.web.*
 import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
@@ -53,19 +52,20 @@ class CollectCategoryController(
 	
 	@ApiOperation("得到所有分类。")
 	@GetMapping("/findAll")
-	fun findAll(@PageableDefault pageable: Pageable): Page<CollectCategory> {
+	fun findAll(pageable: Pageable): Page<CollectCategory> {
 		return categoryService.findAll(pageable)
 	}
 	
 	@ApiOperation("根据用户id查询所有分类。")
 	@GetMapping("/findAllByUserId")
-	fun findAllByUserId(@RequestParam userId: Long, @PageableDefault pageable: Pageable): Page<CollectCategory> {
+	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<CollectCategory> {
 		return categoryService.findAllByUserId(userId, pageable)
 	}
 	
 	@ApiOperation("根据名字和用户id模糊查询所有分类。")
 	@GetMapping("/findAllByNameContainsAndUserId")
-	fun findAllByNameContainsAndUserId(@RequestParam userId: Long, @RequestParam name: String, @PageableDefault pageable: Pageable): Page<CollectCategory> {
+	fun findAllByNameContainsAndUserId(@RequestParam userId: Long, @RequestParam name: String,
+		pageable: Pageable): Page<CollectCategory> {
 		return categoryService.findAllByNameContainsAndUserId(userId, name, pageable)
 	}
 	
