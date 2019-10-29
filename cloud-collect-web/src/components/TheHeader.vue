@@ -94,16 +94,14 @@
       return currentUser
     }
 
-    mounted() {
-      this.routeChange(this.$route, this.$route)
-    }
-
-    //DONE 监听当前路由，更改activeNavIndex。
-    //NOTE 这里只能监听当前路由，不能使用beforeRouteUpdate回调
+    //DONE 监听当前路由，更改activeIndex。
+    //NOTE 这里只能监听当前路由，不能使用beforeRouteUpdate回调。
+    //NOTE 这个方法不需要在mounted()等钩子函数中主动调用。
     @Watch("$route")
     private routeChange(value: Route, oldValue: Route) {
       for (let navItem of this.navItemList) {
         if (navItem.path === value.path) {
+          console.log(`更改当前导航索引：${navItem.index}。`)
           this.activeIndex = navItem.index
           break
         }

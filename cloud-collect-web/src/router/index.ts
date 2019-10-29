@@ -102,6 +102,9 @@ const routes: RouteConfig[] = [
     path: "/error/501",
     name: "error501",
     component: Error501View
+  }, {
+    path: "*",
+    component: Error404View
   }
 ]
 

@@ -30,10 +30,6 @@
     private showHeader = true
     private showFooter = true
 
-    mounted() {
-      this.routeChange(this.$route, this.$route)
-    }
-
     //当为错误页和成功页时隐藏首页头部和尾部
     @Watch("$route")
     private routeChange(value: Route, oldValue: Route) {
