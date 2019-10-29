@@ -160,7 +160,7 @@
     * 示例：`"page=0&size=10&sort=name,age"`, `"page=0&size=10&sort=name,age,DESC"`。
     * Controller的方法中的pageable参数不要添加`@RequestParam`注解，可以添加`@PageableDefault`注解，默认不需要添加。
 * Jpa报错：`org.hibernate.AnnotationException: Collection has neither generic type or OneToMany.targetEntity() defined`
-    * 当实体类中存在`MutableList<T>`或`MutableSet<T>`类型的属性时，将会报如上异常。
+    * 当实体类中存在`List<T>`或`Set<T>`类型的属性时，将会报如上异常。
     * 可将其变成可空的`var`解决，也可以为其添加`@JvmSuppressWildcards`注解解决。
 * 一些特殊但合法的Jpa方法声明：
     * `findByFooListContains(foo: Foo): List<Bar>`
