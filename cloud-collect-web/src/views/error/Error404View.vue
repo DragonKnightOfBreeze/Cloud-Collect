@@ -1,11 +1,11 @@
 <template>
-  <error>
+  <Error>
     <template v-slot:title>页面未找到</template>
 
-    <i class="el-icon-warning"></i>
+    <ElIcon name="warning"/>
     这片领域尚未开拓……
-    <i class="el-icon-warning"></i>
-  </error>
+    <ElIcon name="warning"/>
+  </Error>
 </template>
 
 <script lang="ts">

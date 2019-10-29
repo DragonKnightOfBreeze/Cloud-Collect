@@ -1,11 +1,11 @@
 <template>
-  <error>
+  <Error>
     <template v-slot:title>功能未实现</template>
 
-    <i class="el-icon-warning"></i>
+    <ElIcon name="warning"/>
     这片领域有待发掘……
-    <i class="el-icon-warning"></i>
-  </error>
+    <ElIcon name="warning"/>
+  </Error>
 </template>
 
 <script lang="ts">

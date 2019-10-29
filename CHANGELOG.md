@@ -94,6 +94,7 @@
     * [X] 实现`isFollowed`和`isPraised`方法。
     * [X] 去除`@PageableDefault`注解。
     * [X] 去除`@Query`注解，某些Jpa方法声明虽然IDE会警告，但的确是合法的。
+    * [X] 完成首页的Header和Footer。
     * [ ] 完成基本的组件页面。
     * [ ] 完成基本的组件代码并传入数据。
     * [ ] 配置一些css样式。

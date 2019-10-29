@@ -1,9 +1,9 @@
 <template>
-  <success>
+  <Success>
     <template v-slot:title>重置密码成功</template>
 
     你的密码已重置。
-  </success>
+  </Success>
 </template>
 
 <script lang="ts">

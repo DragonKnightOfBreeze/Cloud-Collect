@@ -56,6 +56,10 @@ const routes: RouteConfig[] = [
     name: "noticeDetail",
     component: NoticeDetailView
   }, {
+    path: "/profile",
+    name: "currentProfile",
+    component: ProfileView
+  }, {
     path: "/profile/:id",
     name: "profile",
     component: ProfileView

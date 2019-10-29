@@ -1,9 +1,9 @@
 <template>
-  <success>
+  <Success>
     <template v-slot:title>激活成功</template>
 
     你的账户已激活。
-  </success>
+  </Success>
 </template>
 
 <script lang="ts">

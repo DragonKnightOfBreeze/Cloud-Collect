@@ -1,0 +1,24 @@
+<template>
+  <div id="app-footer">
+    <ElIcon name="lollipop"></ElIcon>
+    云收藏 ©2019 Created by DragonKnightOfBreeze
+    <ElIcon name="lollipop"></ElIcon>
+  </div>
+</template>
+
+<script lang="ts">
+  import {Component, Vue} from "vue-property-decorator"
+
+  @Component
+  export default class TheFooter extends Vue {
+  }
+</script>
+
+<style scoped>
+  #app-footer {
+    text-align: center;
+    font-weight: bold;
+    line-height: 60px;
+
+  }
+</style>

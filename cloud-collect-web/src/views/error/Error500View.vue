@@ -1,11 +1,11 @@
 <template>
-  <error>
+  <Error>
     <template v-slot:title>内部错误</template>
 
-    <i class="el-icon-warning"></i>
+    <ElIcon name="warning"/>
     这片领域崩坏了……
-    <i class="el-icon-warning"></i>
-  </error>
+    <ElIcon name="warning"/>
+  </Error>
 </template>
 
 <script lang="ts">

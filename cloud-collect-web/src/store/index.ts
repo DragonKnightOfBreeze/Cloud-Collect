@@ -15,11 +15,11 @@ export default new Vuex.Store({
     _validationErrors: []
   },
   getters: {
-    currentUser(state) {
+    currentUser(state): User | null {
       //TODO 可能需要用到cookie或者storage
-      return state._currentUser
+      return state._currentUser as User | null
     },
-    validationErrors(state) {
+    validationErrors(state): ObjectError[] {
       const result = state._validationErrors
       //每次读取错误列表时，需要同时清空所有数据
       state._validationErrors = []

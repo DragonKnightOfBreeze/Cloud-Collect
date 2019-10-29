@@ -12,7 +12,7 @@ Vue.config.productionTip = false
 Vue.prototype.$http = http
 
 //需要手动挂载路由的钩子函数
-// https://www.npmjs.com/package/vue-class-component#adding-custom-hooks
+//https://www.npmjs.com/package/vue-class-component#adding-custom-hooks
 Component.registerHooks([
   "beforeRouteEnter",
   "beforeRouteLeave",

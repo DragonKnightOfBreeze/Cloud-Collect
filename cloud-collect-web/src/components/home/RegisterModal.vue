@@ -3,10 +3,17 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from "vue-property-decorator"
+  import {Component, Emit, Prop, Vue} from "vue-property-decorator"
 
   @Component
   export default class RegisterModal extends Vue {
+    @Prop({default: false}) visible!: boolean
+
+    @Emit()
+    close(): boolean {
+      //TODO
+      return false
+    }
   }
 </script>
 

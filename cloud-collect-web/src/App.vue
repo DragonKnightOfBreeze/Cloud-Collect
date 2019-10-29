@@ -1,30 +1,39 @@
 <template>
   <div id="app">
-    <NavBar v-show="isShowNavBar"></NavBar>
-    <div id="layout">
-      <router-view></router-view>
-    </div>
-    <Footer v-show="isShowFooter"></Footer>
+    <!--NOTE 不指定direction的话，就会出现奇怪的问题-->
+    <ElContainer direction="vertical">
+      <ElHeader>
+        <!--Header-->
+        <TheHeader></TheHeader>
+      </ElHeader>
+
+      <ElMain>
+        <!--Main-->
+        <router-view></router-view>
+      </ElMain>
+
+      <ElFooter>
+        <!--Footer-->
+        <TheFooter></TheFooter>
+      </ElFooter>
+    </ElContainer>
   </div>
 </template>
 
 <script lang="ts">
-  import Footer from "@/components/Footer.vue"
-  import NavBar from "@/components/NavBar.vue"
+  import TheFooter from "@/components/TheFooter.vue"
+  import TheHeader from "@/components/TheHeader.vue"
   import {Component, Vue} from "vue-property-decorator"
 
   @Component({
-    components: {NavBar, Footer}
+    components: {TheHeader, TheFooter}
   })
   export default class App extends Vue {
-    private isShowNavBar = true
-    private isShowFooter = true
   }
 </script>
 
 <style>
-  /*导入公共样式*/
-  @import "../public/css/global.css";
+  @import "assets/css/global.css";
 
   #app {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -34,7 +43,7 @@
     color: #2c3e50;
     width: 1200px;
     margin: 0 auto;
-    padding-top: 61px;
+    padding-top: 60px;
   }
   img {
     vertical-align: bottom;

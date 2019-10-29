@@ -49,7 +49,7 @@
     <inspection_tool class="JSIgnoredPromiseFromCall" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="JSMethodCanBeStatic" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="JSUnusedGlobalSymbols" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
-    <inspection_tool class="JSUnusedLocalSymbols" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
+    <inspection_tool class="JSUnusedLocalSymbols" enabled="false" level="UNUSED ENTRY" enabled_by_default="false" />
     <inspection_tool class="JpaObjectClassSignatureInspection" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="KotlinDoubleNegation" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="KotlinRedundantOverride" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
