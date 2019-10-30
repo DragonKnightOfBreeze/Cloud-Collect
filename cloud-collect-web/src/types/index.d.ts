@@ -162,9 +162,9 @@ export interface Page<T> {
 
 //for param `@PageableDefault pageable: Pageable`
 export interface PageableParam {
-  page?: number //default: 0
-  size?: number //default: 20
-  sort?: string[] //expression: propName1, propName2, direction?
+  page: number //default: 0
+  size: number //default: 20
+  sort: string[] //expression: propName1, propName2, direction?
 }
 
 //org.springframework.data.domain.Pageable
