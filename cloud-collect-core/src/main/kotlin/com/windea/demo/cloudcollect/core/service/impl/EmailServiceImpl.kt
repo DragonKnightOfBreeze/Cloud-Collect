@@ -11,19 +11,19 @@ class EmailServiceImpl(
 	private val mailSender: JavaMailSender,
 	private val mailProperties: MailProperties
 ) : EmailService {
-	override fun sendActivateEmail(activateCode: String, user: User) = mailSender.sendEmail {
-		val url = "http://csntportal/activate?username=${user.username}&activateCode=$activateCode"
+	override fun sendActivateEmail(user: User, activateCode: String) = mailSender.sendEmail {
+		val url = "http://activate?username=${user.username}&activateCode=$activateCode"
 		
 		setFrom(mailProperties.username)
 		setTo(user.email)
 		setSubject("云收藏：激活你的用户")
 		setText("""
-		<html lang="zh">
-		  <h1>云收藏：激活你的用户</h1>
-		  <p>
-		    请点击<a href="$url">此地址</a>激活您的账户。
-		  </p>
-		</html>
+			<html lang="zh">
+			  <h1>云收藏：激活你的用户</h1>
+			  <p>
+			    请点击<a href="$url">此地址</a>激活您的账户。
+			  </p>
+			</html>
 		""".trimIndent())
 	}
 	
@@ -41,8 +41,8 @@ class EmailServiceImpl(
 		""".trimIndent())
 	}
 	
-	override fun sendResetPasswordEmail(resetPasswordCode: String, user: User) = mailSender.sendEmail {
-		val url = "http://csntportal/resetPassword?username=${user.username}&resetPasswordCode=$resetPasswordCode"
+	override fun sendResetPasswordEmail(user: User, resetPasswordCode: String) = mailSender.sendEmail {
+		val url = "http://resetPassword?username=${user.username}&resetPasswordCode=$resetPasswordCode"
 		
 		setFrom(mailProperties.username)
 		setTo(user.email)

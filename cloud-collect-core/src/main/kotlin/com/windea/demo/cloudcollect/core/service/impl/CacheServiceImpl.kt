@@ -16,10 +16,11 @@ class CacheServiceImpl(
 		return redisTemplate.opsForValue()[key]
 	}
 	
-	override fun setActivateCode(username: String) {
+	override fun setActivateCode(username: String): String {
 		val key = "${redisProperties.activateCodePrefix}${username}"
 		val value = UUID.randomUUID().toString()
 		redisTemplate.opsForValue().set(key, value, redisProperties.expiration)
+		return value
 	}
 	
 	override fun getResetPasswordCode(username: String): String? {
@@ -27,9 +28,10 @@ class CacheServiceImpl(
 		return redisTemplate.opsForValue()[key]
 	}
 	
-	override fun setResetPasswordCode(username: String) {
+	override fun setResetPasswordCode(username: String): String {
 		val key = "${redisProperties.resetPasswordCodePrefix}${username}"
 		val value = UUID.randomUUID().toString()
 		redisTemplate.opsForValue().set(key, value, redisProperties.expiration)
+		return value
 	}
 }

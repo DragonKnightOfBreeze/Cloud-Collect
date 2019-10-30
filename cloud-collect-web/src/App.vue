@@ -30,9 +30,13 @@
     private showHeader = true
     private showFooter = true
 
-    //当为错误页和成功页时隐藏首页头部和尾部
     @Watch("$route")
-    private routeChange(value: Route, oldValue: Route) {
+    onRouteChange(value: Route, oldValue: Route) {
+      this.changeShowHeaderAndFooter(value, oldValue)
+    }
+
+    //DONE 当为错误页和成功页时隐藏首页头部和尾部
+    private changeShowHeaderAndFooter(value: Route, oldValue: Route) {
       if (value.path.startsWith("/error") || value.path.startsWith("/success")) {
         console.log("隐藏页面首部和尾部。")
         this.showHeader = false
@@ -59,6 +63,6 @@
     padding-top: 60px;
   }
   img {
-    vertical-align: bottom;
+    vertical-align: center;
   }
 </style>

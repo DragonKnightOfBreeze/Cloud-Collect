@@ -17,7 +17,7 @@ interface UserService {
 	fun activate(username: String, activateCode: String)
 	
 	/**忘记用户密码。*/
-	fun forgotPassword(username: String)
+	fun forgotPassword(email: String)
 	
 	/**重置用户密码。*/
 	fun resetPassword(form: ResetPasswordForm, resetPasswordCode: String)

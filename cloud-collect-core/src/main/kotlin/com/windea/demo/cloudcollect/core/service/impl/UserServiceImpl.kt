@@ -1,4 +1,4 @@
-@file:Suppress("DuplicatedCode", "UNUSED_VARIABLE")
+@file:Suppress("DuplicatedCode", "UNUSED_VARIABLE", "ControlFlowWithEmptyBody")
 
 package com.windea.demo.cloudcollect.core.service.impl
 
@@ -27,6 +27,7 @@ class UserServiceImpl(
 	private val commentRepository: CommentRepository,
 	private val noticeRepository: NoticeRepository,
 	private val cacheService: CacheService,
+	private val emailService: EmailService,
 	private val passwordEncoder: PasswordEncoder,
 	private val authenticationManager: AuthenticationManager
 ) : UserService {
@@ -42,12 +43,15 @@ class UserServiceImpl(
 	@CacheEvict(allEntries = true)
 	override fun register(user: User): User {
 		//将激活码存储到缓存中
-		cacheService.setActivateCode(user.username)
+		val activateCode = cacheService.setActivateCode(user.username)
 		
 		val newUser = user.copy(
 			password = passwordEncoder.encode(user.password) //NOTE 密码需要加密
 		)
-		return userRepository.save(newUser)
+		return userRepository.save(newUser).also {
+			//发送邮件
+			//emailService.sendActivateEmail(it,activateCode)
+		}
 	}
 	
 	@Transactional
@@ -59,15 +63,21 @@ class UserServiceImpl(
 		
 		val user = userRepository.findByUsername(username) ?: throw UserNotFoundException()
 		user.activateStatus = true
-		userRepository.save(user)
+		userRepository.save(user).also {
+			//发送邮件
+			//emailService.sendHelloEmail(it)
+		}
 	}
 	
-	override fun forgotPassword(username: String) {
+	override fun forgotPassword(email: String) {
 		//首先要判断用户是否存在
-		if(!userRepository.existsByUsername(username)) throw UserNotFoundException()
-		
+		val user = userRepository.findByEmail(email) ?: throw UserNotFoundException()
+		val username = user.username
 		//将验证码存储到缓存中
-		cacheService.setResetPasswordCode(username)
+		val resetPasswordCode = cacheService.setResetPasswordCode(username)
+		
+		//发送邮件
+		//emailService.sendResetPasswordEmail(user,resetPasswordCode)
 	}
 	
 	@Transactional
@@ -79,7 +89,10 @@ class UserServiceImpl(
 		
 		val user = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
 		user.password = passwordEncoder.encode(form.password) //NOTE 密码需要加密
-		userRepository.save(user)
+		userRepository.save(user).also {
+			//发送邮件
+			//emailService.sendResetPasswordSuccessEmail(it)
+		}
 	}
 	
 	@Transactional

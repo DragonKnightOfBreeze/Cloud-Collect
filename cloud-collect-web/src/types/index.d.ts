@@ -6,6 +6,10 @@ export interface NavItem {
   name: string
 }
 
+export type CommandType = "profile" | "collect" | "logout"
+
+export type DialogType = "login" | "register"
+
 //REGION Backend
 
 //NOTE 这里不能直接使用Collect作为接口名，因为与组件名重复了，是否可考虑使用ICollect？

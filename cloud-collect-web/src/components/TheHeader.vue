@@ -1,16 +1,16 @@
 <template>
   <div id="app-header">
     <!--导航栏-->
-    <ElRow id="app-navbar" :gutter="20">
+    <ElRow id="app-navbar" type="flex" align="center" justify="center" :gutter="20">
       <!--导航头部-->
-      <ElCol id="app-navbar-header" :span="4">
+      <ElCol :span="4">
         <router-link to="/">
           <!--NOTE 使用ElImage会找不到图片-->
           <img id="app-logo" src="../assets/logo.png" alt="云收藏"/>
         </router-link>
       </ElCol>
       <!--导航内容，到各个分页-->
-      <ElCol id="app-navbar-content" :span="16">
+      <ElCol :span="12">
         <ElMenu mode="horizontal"
                 :router="true"
                 :default-active="activeIndex"
@@ -24,11 +24,15 @@
         </ElMenu>
       </ElCol>
       <!--导航侧边栏，显示用户信息，或者登录注册按钮-->
-      <ElCol id="app-navbar-side" :span="4">
+      <ElCol :span="2">
+        <template v-if="currentUser">
+          <ElAvatar id="app-user-avatar" fit="fill" :src="currentUser.avatarUrl"/>
+        </template>
+      </ElCol>
+      <ElCol :span="6">
         <!--用户信息，点击跳转到档案页，点击下拉项跳转到对应页-->
         <template v-if="currentUser">
           <ElDropdown split-button type="primary" @click="handleCommand('profile')" @command="handleCommand">
-            <ElAvatar size="small" :src="currentUser.avatarUrl"/>
             {{currentUser.nickname}}
             <ElDropdownMenu slot="dropdown">
               <ElDropdownItem command="profile">我的资料</ElDropdownItem>
@@ -40,31 +44,30 @@
         <!--登录注册按钮-->
         <template v-else>
           <ElButtonGroup>
-            <ElButton size="small" type="primary" @click="handleOpenModal('login')">登录</ElButton>
-            <ElButton size="small" type="info" @click="handleOpenModal('register')">注册</ElButton>
+            <ElButton size="small" type="primary" @click="handleOpenDialog('login')">登录</ElButton>
+            <ElButton size="small" type="info" @click="handleOpenDialog('register')">注册</ElButton>
           </ElButtonGroup>
         </template>
       </ElCol>
     </ElRow>
-    <!--模态框-->
-    <div id="app-modal" v-show="showModal">
-      <LoginModal :visible="modalType==='login'" @close="handleCloseModal"></LoginModal>
-      <RegisterModal :visible="modalType==='register'" @close="handleCloseModal"></RegisterModal>
-      <ResetPasswordModal :visible="modalType==='resetPassword'" @close="handleCloseModal"></ResetPasswordModal>
-    </div>
+
+    <!--对话框-->
+    <template>
+      <LoginDialog v-if="dialogType==='login'" :dialog-type.sync="dialogType"></LoginDialog>
+      <RegisterDialog v-if="dialogType==='register'" :dialog-type.sync="dialogType"></RegisterDialog>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
-  import LoginModal from "@/components/home/LoginModal.vue"
-  import RegisterModal from "@/components/home/RegisterModal.vue"
-  import ResetPasswordModal from "@/components/home/ResetPasswordModal.vue"
-  import {NavItem, User} from "@/types"
+  import LoginDialog from "@/components/home/LoginDialog.vue"
+  import RegisterDialog from "@/components/home/RegisterDialog.vue"
+  import {CommandType, DialogType, NavItem, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
   @Component({
-    components: {ResetPasswordModal, RegisterModal, LoginModal}
+    components: {RegisterDialog, LoginDialog}
   })
   export default class TheHeader extends Vue {
     private activeIndex = "0"
@@ -76,15 +79,14 @@
       {index: "4", path: "/search", name: "搜索"},
       {index: "5", path: "/about", name: "关于"}
     ]
-    private showModal = false
-    private modalType = ""
+    private dialogType: DialogType | null = null
 
     //DONE 得到当前用户信息
     get currentUser(): User | null {
       let currentUser = null
       //尝试从storage中得到当前用户信息，并提交到store
-      if (window.sessionStorage.currentUser) {
-        currentUser = JSON.parse(window.sessionStorage.currentUser) as User
+      if (window.sessionStorage["currentUser"]) {
+        currentUser = JSON.parse(window.sessionStorage["currentUser"]) as User
         this.$store.commit("setCurrentUser", currentUser)
       }
       //尝试从store中得到当前用户信息
@@ -94,23 +96,34 @@
       return currentUser
     }
 
-    //DONE 监听当前路由，更改activeIndex。
     //NOTE 这里只能监听当前路由，不能使用beforeRouteUpdate回调。
     //NOTE 这个方法不需要在mounted()等钩子函数中主动调用。
     @Watch("$route")
-    private routeChange(value: Route, oldValue: Route) {
+    onRouteChange(value: Route, oldValue: Route) {
+      this.changeActiveIndex(value, oldValue)
+      this.changeOperation(value, oldValue)
+    }
+
+    //DONE 监听当前路由，更改activeIndex。
+    private changeActiveIndex(value: Route, oldValue: Route) {
       for (let navItem of this.navItemList) {
-        if (navItem.path === value.path) {
-          console.log(`更改当前导航索引：${navItem.index}。`)
+        if (navItem.path == value.path) {
+          console.log(`更改当前导航索引：${navItem.index}`)
           this.activeIndex = navItem.index
           break
         }
       }
     }
 
-    //导航跳转
-    handleOpenView(path: string) {
-      this.$router.push(path)
+    //DONE 监听当前路由，得到查询参数operation，尝试进行相应的操作
+    private changeOperation(value: Route, oldValue: Route) {
+      const operation = value.query["operation"]
+      console.log(`更改当前操作：${operation}`)
+      if (operation == "login" || operation == "register") {
+        this.handleOpenDialog(operation)
+      } else if (operation == "logout") {
+        this.handleLogout()
+      }
     }
 
     //切换当前导航
@@ -119,41 +132,44 @@
     }
 
     //处理下拉菜单项的命令
-    handleCommand(command: string) {
-      if (command === "logout") {
+    handleCommand(command: CommandType) {
+      console.log(`执行下拉菜单命令：${command}`)
+      if (command == "profile" && this.currentUser != null && this.currentUser.id) {
+        this.$router.push(`/profile/${this.currentUser.id}`)
+      } else if (command == "collect") {
+        this.$router.push("/collect")
+      } else if (command == "logout") {
         this.handleLogout()
-      } else {
-        this.handleOpenView(`/${command}`)
       }
     }
 
-    //打开模态框，点击对应按钮时调用
-    handleOpenModal(modalType: string) {
-      this.showModal = true
-      this.modalType = modalType
-    }
-
-    //关闭模态框，在模态框的回调事件中调用
-    handleCloseModal(value: boolean) {
-      this.showModal = value
+    //打开对话框，点击对应按钮时调用
+    handleOpenDialog(dialogType: DialogType) {
+      console.log(`打开对话框：${dialogType}`)
+      this.dialogType = dialogType
     }
 
     //注销用户
     handleLogout() {
-      window.sessionStorage.currentUser = null
+      console.log("注销用户")
+      window.sessionStorage["currentUser"] = null
       this.$store.commit("setCurrentUser", null)
     }
   }
 </script>
 
 <style scoped>
-  #app-header {
-    text-align: center;
-    font-weight: bold;
-    line-height: 60px;
+  #app-navbar {
+    height: 61px;
+    line-height: 61px;
   }
   #app-logo {
-    height: 50px;
-    margin: 0;
+    height: 51px;
+    line-height: 51px;
+    vertical-align: middle;
+  }
+  #app-user-avatar {
+    line-height: 51px;
+    vertical-align: middle;
   }
 </style>

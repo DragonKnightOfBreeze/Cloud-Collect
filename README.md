@@ -119,6 +119,11 @@
 
 # 注意事项
 
+* 如何使文字水平中心对齐：
+    * `line-height: 51px;text-align: center;`
+* 如何使文字和图片垂直中心对齐：
+    * `line-height: 51px;vertical-align: middle;`
+
 ## 后台
 
 * Spring Boot会对某些bean进行自动配置。例如，Converter、Formatter。

@@ -7,6 +7,8 @@ const CollectDetailView = () => import( "@/views/collect/CollectDetailView.vue")
 const PraiseByUserView = () => import("@/views/collect/PraiseByUserView.vue")
 const HistoryView = () => import( "@/views/history/HistoryView.vue")
 const HomeView = () => import(  "@/views/home/HomeView.vue")
+const ActivateView = () => import("@/views/home/ActivateView.vue")
+const ResetPasswordView = () => import("@/views/home/ResetPasswordView.vue")
 const NoticeView = () => import("@/views/notice/NoticeView.vue")
 const NoticeDetailView = () => import( "@/views/notice/NoticeDetailView.vue")
 const ProfileView = () => import( "@/views/profile/ProfileView.vue")
@@ -22,11 +24,33 @@ const Error501View = () => import("@/views/error/Error501View.vue")
 
 Vue.use(VueRouter)
 
+//DONE 添加重定向到404的路由
+//DONE 添加重定向到首页并进行对应操作的路由
 const routes: RouteConfig[] = [
   {
     path: "/",
     name: "home",
     component: HomeView
+  }, {
+    path: "/home",
+    redirect: "/"
+  }, {
+    path: "/login",
+    redirect: {path: "./", query: {operation: "login"}}
+  }, {
+    path: "/register",
+    redirect: {path: "./", query: {operation: "register"}}
+  }, {
+    path: "/logout",
+    redirect: {path: "./", query: {operation: "logout"}}
+  }, {
+    path: "/activate",
+    name: "activate",
+    component: ActivateView
+  }, {
+    path: "/resetPassword",
+    name: "resetPassword",
+    component: ResetPasswordView
   }, {
     path: "/about",
     name: "about",

@@ -46,6 +46,7 @@
     <inspection_tool class="InterfaceNeverImplemented" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoreInterfacesThatOnlyDeclareConstants" value="false" />
     </inspection_tool>
+    <inspection_tool class="JSCheckFunctionSignatures" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="JSIgnoredPromiseFromCall" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="JSMethodCanBeStatic" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="JSUnusedGlobalSymbols" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />

@@ -4,19 +4,25 @@ import {History, Page, PageableParam} from "@/types"
 const historyUrl = "/history"
 
 export async function create(history: History) {
-  return await http.post(`${historyUrl}/create`, history)
+  await http.post(`${historyUrl}/create`, history)
 }
 
 export async function deleteById(id: number) {
-  return await http.delete(`${historyUrl}/${id}`)
+  await http.delete(`${historyUrl}/${id}`)
+}
+
+export async function findById(id: number) {
+  const response = await http.get<History>(`${historyUrl}/${id}`)
+  return response.data
 }
 
 export async function deleteAllByUserId(userId: number) {
   const params = {userId}
-  return await http.delete(`${historyUrl}/deleteAllByUserId`, {params})
+  await http.delete(`${historyUrl}/deleteAllByUserId`, {params})
 }
 
 export async function findAllByUserId(userId: number, pageableParam: PageableParam) {
   const params = {userId, ...pageableParam}
-  return await http.get<Page<History>>(`${historyUrl}/findAllByUserId`, {params})
+  const response = await http.get<Page<History>>(`${historyUrl}/findAllByUserId`, {params})
+  return response.data
 }
