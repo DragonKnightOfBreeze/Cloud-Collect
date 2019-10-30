@@ -1,7 +1,9 @@
-@file:Suppress("DuplicatedCode", "UNUSED_VARIABLE", "ControlFlowWithEmptyBody")
+@file:Suppress("DuplicatedCode", "UNUSED_VARIABLE", "ControlFlowWithEmptyBody", "ConstantConditionIf")
 
 package com.windea.demo.cloudcollect.core.service.impl
 
+import com.windea.demo.cloudcollect.core.GlobalConfig.requireActivation
+import com.windea.demo.cloudcollect.core.GlobalConfig.sendEmail
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.domain.response.*
@@ -41,17 +43,20 @@ class UserServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun register(user: User): User {
+	override fun register(user: User) {
+		//当配置为不要求你激活时，直接激活对应的用户
+		if(!requireActivation) user.activateStatus = true
+		
 		//将激活码存储到缓存中
 		val activateCode = cacheService.setActivateCode(user.username)
 		
 		val newUser = user.copy(
 			password = passwordEncoder.encode(user.password) //NOTE 密码需要加密
 		)
-		return userRepository.save(newUser).also {
-			//发送邮件
-			//emailService.sendActivateEmail(it,activateCode)
-		}
+		userRepository.save(newUser)
+		
+		//当配置为要求发送邮件时，发送邮件
+		if(sendEmail) emailService.sendActivateEmail(user, activateCode)
 	}
 	
 	@Transactional
@@ -63,10 +68,10 @@ class UserServiceImpl(
 		
 		val user = userRepository.findByUsername(username) ?: throw UserNotFoundException()
 		user.activateStatus = true
-		userRepository.save(user).also {
-			//发送邮件
-			//emailService.sendHelloEmail(it)
-		}
+		userRepository.save(user)
+		
+		//当配置为要求发送邮件时，发送邮件
+		if(sendEmail) emailService.sendHelloEmail(user)
 	}
 	
 	override fun forgotPassword(email: String) {
@@ -76,8 +81,8 @@ class UserServiceImpl(
 		//将验证码存储到缓存中
 		val resetPasswordCode = cacheService.setResetPasswordCode(username)
 		
-		//发送邮件
-		//emailService.sendResetPasswordEmail(user,resetPasswordCode)
+		//当配置为要求发送邮件时，发送邮件
+		if(sendEmail) emailService.sendResetPasswordEmail(user, resetPasswordCode)
 	}
 	
 	@Transactional
@@ -89,10 +94,10 @@ class UserServiceImpl(
 		
 		val user = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
 		user.password = passwordEncoder.encode(form.password) //NOTE 密码需要加密
-		userRepository.save(user).also {
-			//发送邮件
-			//emailService.sendResetPasswordSuccessEmail(it)
-		}
+		userRepository.save(user)
+		
+		//当配置为要求发送邮件时，发送邮件
+		if(sendEmail) emailService.sendResetPasswordSuccessEmail(user)
 	}
 	
 	@Transactional

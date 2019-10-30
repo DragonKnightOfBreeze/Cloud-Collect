@@ -32,8 +32,8 @@ class IndexController(
 	@ApiOperation("注册用户。")
 	@PostMapping("/register")
 	@PreAuthorize("isAnonymous()")
-	fun register(@RequestBody @Validated(Create::class) user: User, bindingResult: BindingResult): User {
-		return userService.register(user)
+	fun register(@RequestBody @Validated(Create::class) user: User, bindingResult: BindingResult) {
+		userService.register(user)
 	}
 	
 	@ApiOperation("激活用户。")

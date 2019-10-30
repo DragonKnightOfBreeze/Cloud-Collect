@@ -11,7 +11,7 @@ interface UserService {
 	fun login(form: LoginForm): UserDetailsVo
 	
 	/**注册用户。*/
-	fun register(user: User): User
+	fun register(user: User)
 	
 	/**激活用户。*/
 	fun activate(username: String, activateCode: String)

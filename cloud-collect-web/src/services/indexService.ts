@@ -9,26 +9,22 @@ export async function login(form: LoginForm) {
 }
 
 export async function register(user: User) {
-  const response = await http.post<User>("/register", user)
-  return response.data
+  await http.post("/register", user)
 }
 
 export async function activate(username: string, activateCode: string) {
   const params = {username, activateCode}
-  const response = await http.post("/activate", undefined, {params})
-  return response.data
+  await http.post("/activate", undefined, {params})
 }
 
 export async function forgotPassword(email: string) {
   const params = {email}
-  const response = await http.post("/forgotPassword", undefined, {params})
-  return response.data
+  await http.post("/forgotPassword", undefined, {params})
 }
 
 export async function resetPassword(form: ResetPasswordForm, resetPasswordCode: string) {
   const params = {resetPasswordCode}
-  const response = await http.post("/resetPassword", form, {params})
-  return response.data
+  await http.post("/resetPassword", form, {params})
 }
 
 
