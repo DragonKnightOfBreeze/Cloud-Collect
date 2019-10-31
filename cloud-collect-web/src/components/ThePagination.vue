@@ -23,8 +23,8 @@
     //NOTE 因为要在子组件中改变这个prop，所以需要设为同步的
     //NOTE pageableParam是计算属性的名字，pageable是prop以及父组件data的名字
     @PropSync("pageable") pageableParam!: PageableParam
-
     @Prop() totalPages!: number
+
     @Prop({default: [10, 20, 30, 40, 50]}) pageSizes!: number[]
 
     handlePrevClick() {

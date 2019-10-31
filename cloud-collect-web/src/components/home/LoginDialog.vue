@@ -15,7 +15,7 @@
       </ElFormItem>
     </ElForm>
 
-    <ForgotPasswordDialog :visible="forgotPasswordDialogVisible"></ForgotPasswordDialog>
+    <ForgotPasswordDialog :visible.sync="forgotPasswordDialogVisible"></ForgotPasswordDialog>
 
     <!--提交按钮-->
     <template v-slot:footer>
@@ -35,7 +35,8 @@
     components: {ForgotPasswordDialog}
   })
   export default class LoginDialog extends Vue {
-    @PropSync("dialogType") syncDialogType: DialogType | null //NOTE 需要配合.sync修饰符使用
+    //NOTE 需要配合.sync修饰符使用，添加到父组件的对应位置
+    @PropSync("dialogType") syncDialogType!: DialogType | null
 
     private buttonLoading = false
     private formLabelWidth = "120px"

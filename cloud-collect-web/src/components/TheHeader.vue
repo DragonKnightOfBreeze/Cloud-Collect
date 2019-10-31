@@ -11,15 +11,10 @@
       </ElCol>
       <!--导航内容，到各个分页-->
       <ElCol :span="12">
-        <ElMenu mode="horizontal"
-                :router="true"
-                :default-active="activeIndex"
-                @select="handleSelect">
-          <ElMenuItem v-for="navItem in navItemList"
-                      :key="navItem.index"
-                      :route="navItem.path"
-                      :index="navItem.index">
-            {{navItem.name}}
+        <ElMenu mode="horizontal" :router="true" :default-active="activeIndex" @select="handleSelect">
+          <ElMenuItem v-for="item in menuItemList" :key="item.index"
+                      :route="item.path" :index="item.index">
+            {{item.name}}
           </ElMenuItem>
         </ElMenu>
       </ElCol>
@@ -32,12 +27,13 @@
       <ElCol :span="6">
         <!--用户信息，点击跳转到档案页，点击下拉项跳转到对应页-->
         <template v-if="currentUser">
-          <ElDropdown split-button type="primary" @click="handleCommand('profile')" @command="handleCommand">
+          <ElDropdown split-button type="primary" @click="handleGoProfile" @command="handleProfileCommand">
             {{currentUser.nickname}}
             <ElDropdownMenu slot="dropdown">
-              <ElDropdownItem command="profile">我的资料</ElDropdownItem>
-              <ElDropdownItem command="collect">我的收藏</ElDropdownItem>
-              <ElDropdownItem command="logout">注销</ElDropdownItem>
+              <ElDropdownItem v-for="item in dropdownItemList" :key="item.command"
+                              :command="item.command">
+                {{item.name}}
+              </ElDropdownItem>
             </ElDropdownMenu>
           </ElDropdown>
         </template>
@@ -62,7 +58,7 @@
 <script lang="ts">
   import LoginDialog from "@/components/home/LoginDialog.vue"
   import RegisterDialog from "@/components/home/RegisterDialog.vue"
-  import {CommandType, DialogType, NavItem, User} from "@/types"
+  import {DialogType, DropDownItem, MenuItem, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -71,13 +67,19 @@
   })
   export default class TheHeader extends Vue {
     private activeIndex = "0"
-    private navItemList: NavItem[] = [
+    private menuItemList: MenuItem[] = [
       {index: "0", path: "/", name: "首页"},
-      {index: "1", path: "/collect", name: "收藏"},
-      {index: "2", path: "/history", name: "浏览历史"},
-      {index: "3", path: "/notice", name: "通知"},
-      {index: "4", path: "/search", name: "搜索"},
-      {index: "5", path: "/about", name: "关于"}
+      {index: "1", path: "/collects", name: "收藏"},
+      {index: "2", path: "/profile", name: "档案"},
+      {index: "3", path: "/search", name: "搜索"},
+      {index: "4", path: "/about", name: "关于"}
+    ]
+    private dropdownItemList: DropDownItem[] = [
+      {command: "collects", name: "我的收藏"},
+      {command: "categories", name: "我的分类"},
+      {command: "history", name: "浏览记录"},
+      {command: "notices", name: "系统通知"},
+      {command: "logout", name: "注销"}
     ]
     private dialogType: DialogType | null = null
 
@@ -106,7 +108,7 @@
 
     //DONE 监听当前路由，更改activeIndex。
     private changeActiveIndex(value: Route, oldValue: Route) {
-      for (let navItem of this.navItemList) {
+      for (let navItem of this.menuItemList) {
         if (navItem.path == value.path) {
           console.log(`更改当前导航索引：${navItem.index}`)
           this.activeIndex = navItem.index
@@ -131,15 +133,22 @@
       this.activeIndex = index
     }
 
-    //处理下拉菜单项的命令
-    handleCommand(command: CommandType) {
-      console.log(`执行下拉菜单命令：${command}`)
-      if (command == "profile" && this.currentUser != null && this.currentUser.id) {
+    handleGoProfile() {
+      if (this.currentUser != null && this.currentUser.id != null) {
+        console.log("转到档案页")
         this.$router.push(`/profile/${this.currentUser.id}`)
-      } else if (command == "collect") {
-        this.$router.push("/collect")
-      } else if (command == "logout") {
-        this.handleLogout()
+      }
+    }
+
+    handleProfileCommand(command: string) {
+      if (this.currentUser != null && this.currentUser.id != null) {
+        //如果命令为logout，则注销用户
+        if (command == "logout") {
+          this.handleLogout()
+        }
+
+        console.log(`执行档案命令：${command}`)
+        this.$router.push(`/profile/${this.currentUser.id}/${command}`)
       }
     }
 

@@ -1,27 +1,31 @@
 <template>
-  <ElDialog center width="30%" title="忘记密码？" :visible.sync="visible" append-to-body>
+  <!--TODO 前端表单验证-->
+  <ElDialog center append-to-body width="30%" title="忘记密码？" :visible="syncVisible" @close="handleClose">
     <ElForm inline>
       <ElFormItem>
-        <ElInput type="email" v-model="email" placeholder="请输入你的邮箱。"></ElInput>
+        <ElInput type="email" v-model="email" placeholder="你的邮箱"></ElInput>
       </ElFormItem>
-      <ElButton type="success" @click="handleForgotPassword">发送重置密码邮件</ElButton>
+      <ElFormItem>
+        <ElButton type="success" @click="handleForgotPassword">发送邮件</ElButton>
+      </ElFormItem>
     </ElForm>
 
-    <template v-slot:footer>
-      我们将向你的邮箱发送一条邮件，以重置你的密码。
-    </template>
+    <ElText color="info">我们将向你的邮箱发送一条邮件，以重置你的密码。</ElText>
   </ElDialog>
 </template>
 
 <script lang="ts">
+  import ElText from "@/components/public/ElText.vue"
   import * as indexService from "@/services/indexService"
-  import {Component, Prop, Vue} from "vue-property-decorator"
+  import {Component, PropSync, Vue} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    components: {ElText}
+  })
   export default class ForgotPasswordDialog extends Vue {
-    @Prop() visible!: boolean
+    @PropSync("visible") syncVisible!: boolean
 
-    private email: string
+    private email: string = ""
 
     async handleForgotPassword() {
       try {
@@ -35,7 +39,7 @@
     }
 
     handleClose() {
-      this.visible = false
+      this.syncVisible = false
     }
   }
 </script>

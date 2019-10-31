@@ -58,7 +58,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: left;
     color: #2c3e50;
-    width: 1200px;
+    width: 1000px;
     margin: 0 auto;
     padding-top: 60px;
   }

@@ -24,7 +24,7 @@
       </ElFormItem>
     </ElForm>
 
-    <ForgotPasswordDialog :visible="forgotPasswordDialogVisible"></ForgotPasswordDialog>
+    <ForgotPasswordDialog :visible.sync="forgotPasswordDialogVisible"></ForgotPasswordDialog>
 
     <!--提交按钮-->
     <template v-slot:footer>

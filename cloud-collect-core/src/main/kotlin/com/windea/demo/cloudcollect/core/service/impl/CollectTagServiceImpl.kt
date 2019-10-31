@@ -48,6 +48,11 @@ class CollectTagServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
+	override fun findAllByNameContains(name: String, pageable: Pageable): Page<CollectTag> {
+		return tagRepository.findAllByNameContains(name, pageable).map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
 	override fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<CollectTag> {
 		return tagRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
 	}

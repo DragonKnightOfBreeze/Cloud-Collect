@@ -19,6 +19,9 @@ interface CollectCategoryService {
 	/**得到所有分类。*/
 	fun findAll(pageable: Pageable): Page<CollectCategory>
 	
+	/**根据名字模糊查询所有分类。*/
+	fun findAllByNameContains(name: String, pageable: Pageable): Page<CollectCategory>
+	
 	/**根据名字和用户id模糊查询所有分类。*/
 	fun findAllByNameContainsAndUserId(userId: Long, name: String, pageable: Pageable): Page<CollectCategory>
 	

@@ -56,6 +56,12 @@ class CollectCategoryController(
 		return categoryService.findAll(pageable)
 	}
 	
+	@ApiOperation("根据名字模糊查询所有分类。")
+	@GetMapping("/findAllByNameContains")
+	fun findAllByNameContains(@RequestParam name: String, pageable: Pageable): Page<CollectCategory> {
+		return categoryService.findAllByNameContains(name, pageable)
+	}
+	
 	@ApiOperation("根据用户id查询所有分类。")
 	@GetMapping("/findAllByUserId")
 	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<CollectCategory> {

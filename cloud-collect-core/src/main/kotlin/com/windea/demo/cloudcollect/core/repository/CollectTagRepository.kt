@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.*
 interface CollectTagRepository : JpaRepository<CollectTag, Long> {
 	fun findByNameAndUserId(name: String, userId: Long): CollectTag?
 	
+	fun findAllByNameContains(name: String, pageable: Pageable): Page<CollectTag>
+	
 	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<CollectTag>
 	
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectTag>

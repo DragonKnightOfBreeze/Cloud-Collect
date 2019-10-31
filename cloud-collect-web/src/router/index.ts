@@ -75,7 +75,7 @@ const routes: RouteConfig[] = [
     ]
   },
   {
-    path: "profile",
+    path: "/profile",
     component: Profile,
     children: [
       {path: "", component: ProfileOverview},

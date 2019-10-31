@@ -1,12 +1,15 @@
 //REGION Frontend
 
-export interface NavItem {
+export interface MenuItem {
   index: string
   path: string
   name: string
 }
 
-export type CommandType = "profile" | "collect" | "logout"
+export interface DropDownItem {
+  command: string
+  name: string
+}
 
 export type DialogType = "login" | "register"
 

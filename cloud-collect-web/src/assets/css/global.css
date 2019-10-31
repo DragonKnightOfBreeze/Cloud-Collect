@@ -8,6 +8,10 @@
   text-align: right;
 }
 
+.color-brand {
+  color: #409EFF;
+}
+
 .color-success {
   color: #67C23A;
 }
@@ -21,6 +25,9 @@
   color: #909399;
 }
 
+.bg-color-brand {
+  background-color: #409EFF;
+}
 .bg-color-success {
   background-color: #67C23A;
 }

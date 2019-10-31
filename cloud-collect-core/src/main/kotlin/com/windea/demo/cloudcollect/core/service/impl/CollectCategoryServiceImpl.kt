@@ -48,6 +48,11 @@ class CollectCategoryServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
+	override fun findAllByNameContains(name: String, pageable: Pageable): Page<CollectCategory> {
+		return categoryRepository.findAllByNameContains(name, pageable).map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
 	override fun findAllByNameContainsAndUserId(userId: Long, name: String, pageable: Pageable): Page<CollectCategory> {
 		return categoryRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
 	}

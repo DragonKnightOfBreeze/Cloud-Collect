@@ -19,6 +19,9 @@ interface CollectTagService {
 	/**得到所有标签。*/
 	fun findAll(pageable: Pageable): Page<CollectTag>
 	
+	/**得到所有分类。*/
+	fun findAllByNameContains(name: String, pageable: Pageable): Page<CollectTag>
+	
 	/**根据名字和用户id模糊查询所有标签。*/
 	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<CollectTag>
 	

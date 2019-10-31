@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts">
-  import Error from "@/components/error/Error.vue"
+  import ErrorPage from "@/components/error/ErrorPage.vue"
   import {Component, Vue} from "vue-property-decorator"
 
   @Component({
-    components: {Error}
+    components: {Error: ErrorPage}
   })
   export default class Error403 extends Vue {
   }

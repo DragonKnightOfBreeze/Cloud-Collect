@@ -55,6 +55,12 @@ class CollectTagController(
 		return tagService.findAll(pageable)
 	}
 	
+	@ApiOperation("根据名字模糊查询所有分类。")
+	@GetMapping("/findAllByNameContains")
+	fun findAllByNameContains(@RequestParam name: String, pageable: Pageable): Page<CollectTag> {
+		return tagService.findAllByNameContains(name, pageable)
+	}
+	
 	@ApiOperation("根据用户id查询所有标签。")
 	@GetMapping("/findAllByUserId")
 	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<CollectTag> {

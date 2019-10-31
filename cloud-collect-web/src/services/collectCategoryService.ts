@@ -26,6 +26,12 @@ export async function findAll(pageableParam: PageableParam) {
   return response.data
 }
 
+export async function findAllByNameContains(name: string, pageableParam: PageableParam) {
+  const params = {name, ...pageableParam}
+  const response = await http.get<Page<CollectCategory>>(`${collectCategoryUrl}/findAllByNameContains`, {params})
+  return response.data
+}
+
 export async function findAllByUserId(userId: number, pageableParam: PageableParam) {
   const params = {userId, ...pageableParam}
   const response = await http.get<Page<CollectCategory>>(`${collectCategoryUrl}/findAllByUserId`, {params})

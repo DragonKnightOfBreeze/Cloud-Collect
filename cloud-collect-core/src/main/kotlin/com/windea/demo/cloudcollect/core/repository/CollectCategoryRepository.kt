@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.*
 interface CollectCategoryRepository : JpaRepository<CollectCategory, Long> {
 	fun findByNameAndUserId(name: String, userId: Long): CollectCategory?
 	
+	fun findAllByNameContains(name: String, pageable: Pageable): Page<CollectCategory>
+	
 	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<CollectCategory>
 	
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectCategory>

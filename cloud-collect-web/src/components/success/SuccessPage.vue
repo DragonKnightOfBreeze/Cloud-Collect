@@ -1,10 +1,10 @@
 <template>
-  <div class="cc-success align-center color-success">
-    <h1 class="cc-success-title">
+  <div class="app-success align-center color-success">
+    <h2 class="app-success-title">
       <slot name="title"></slot>
-    </h1>
-    <el-divider></el-divider>
-    <p class="cc-success-text">
+    </h2>
+    <ElDivider/>
+    <p class="app-success-text">
       <slot name="default"></slot>
     </p>
     <el-link href="/">回到首页</el-link>
