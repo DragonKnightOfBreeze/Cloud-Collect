@@ -48,13 +48,13 @@ data class Collect(
 	@ApiModelProperty("收藏的分类。")
 	@ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
 	@get:Valid
-	var category: CollectCategory? = null,
+	var category: Category? = null,
 	
 	@ApiModelProperty("收藏的标签。")
 	@ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
 	@get:Valid
 	@JvmSuppressWildcards //NOTE 防止Jpa报错
-	var tags: Set<CollectTag> = setOf(),
+	var tags: Set<Tag> = setOf(),
 	
 	@ApiModelProperty("收藏的类型。")
 	@Column(nullable = false)

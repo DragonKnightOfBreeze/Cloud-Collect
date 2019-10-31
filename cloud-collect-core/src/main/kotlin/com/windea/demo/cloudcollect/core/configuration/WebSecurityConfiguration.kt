@@ -30,8 +30,8 @@ class WebSecurityConfiguration(
 		//配置路径权限规则
 		http.authorizeRequests()
 			.antMatchers(
-				"/collectCategory/**",
-				"/collectTag/**",
+				"/category/**",
+				"/tag/**",
 				"/comment/**",
 				"/notice/**",
 				"/user/**"

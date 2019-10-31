@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.*
 import javax.validation.*
 
 /**唯一收藏分类的校验器。*/
-open class UniqueCollectCategoryValidator : ConstraintValidator<UniqueCollectCategory, CollectCategory> {
-	@Autowired private lateinit var categoryRepository: CollectCategoryRepository
+open class UniqueCategoryValidator : ConstraintValidator<UniqueCategory, Category> {
+	@Autowired private lateinit var categoryRepository: CategoryRepository
 	
-	override fun isValid(value: CollectCategory, context: ConstraintValidatorContext): Boolean {
+	override fun isValid(value: Category, context: ConstraintValidatorContext): Boolean {
 		return !categoryRepository.existsByNameAndUser(value.name, value.user)
 	}
 }

@@ -18,8 +18,8 @@ import java.nio.file.*
 @CacheConfig(cacheNames = ["collect"])
 class DataSerializeServiceImpl(
 	private val collectRepository: CollectRepository,
-	private val categoryRepository: CollectCategoryRepository,
-	private val tagRepository: CollectTagRepository,
+	private val categoryRepository: CategoryRepository,
+	private val tagRepository: TagRepository,
 	private val dataSerializeProperties: DataSerializeProperties
 ) : DataSerializeService {
 	override fun importData(dataType: DataType, multipartFile: MultipartFile, user: User) {
@@ -78,10 +78,10 @@ class DataSerializeServiceImpl(
 		url = this.url,
 		logoUrl = this.logoUrl,
 		category = this.categoryName.let {
-			categoryRepository.findByNameAndUserId(it, user.id) ?: CollectCategory(name = name, user = user)
+			categoryRepository.findByNameAndUserId(it, user.id) ?: Category(name = name, user = user)
 		},
 		tags = tagNames.map {
-			tagRepository.findByNameAndUserId(it, user.id) ?: CollectTag(name = name, user = user)
+			tagRepository.findByNameAndUserId(it, user.id) ?: Tag(name = name, user = user)
 		}.distinctBy { it.name }.toMutableSet(),
 		type = this.type,
 		user = user

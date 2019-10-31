@@ -11,14 +11,14 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
-@CacheConfig(cacheNames = ["collectTag"])
-class CollectTagServiceImpl(
+@CacheConfig(cacheNames = ["tag"])
+class TagServiceImpl(
 	private val collectRepository: CollectRepository,
-	private val tagRepository: CollectTagRepository
-) : CollectTagService {
+	private val tagRepository: TagRepository
+) : TagService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(tag: CollectTag, user: User) {
+	override fun create(tag: Tag, user: User) {
 		val newTag = tag.copy(
 			user = user
 		)
@@ -27,7 +27,7 @@ class CollectTagServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun modify(tag: CollectTag) {
+	override fun modify(tag: Tag) {
 		tagRepository.save(tag)
 	}
 	
@@ -38,27 +38,27 @@ class CollectTagServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findById(id: Long): CollectTag {
+	override fun findById(id: Long): Tag {
 		return tagRepository.findByIdOrNull(id)?.lateInit() ?: throw NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAll(pageable: Pageable): Page<CollectTag> {
+	override fun findAll(pageable: Pageable): Page<Tag> {
 		return tagRepository.findAll(pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByNameContains(name: String, pageable: Pageable): Page<CollectTag> {
+	override fun findAllByNameContains(name: String, pageable: Pageable): Page<Tag> {
 		return tagRepository.findAllByNameContains(name, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<CollectTag> {
+	override fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<Tag> {
 		return tagRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectTag> {
+	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Tag> {
 		return tagRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
@@ -66,7 +66,7 @@ class CollectTagServiceImpl(
 		return tagRepository.existsByNameAndUser(name, user)
 	}
 	
-	private fun CollectTag.lateInit() = this.apply {
+	private fun Tag.lateInit() = this.apply {
 		collectCount = collectRepository.countByTagsId(id)
 	}
 	

@@ -31,8 +31,8 @@
 
 <script lang="ts">
   import ThePagination from "@/components/ThePagination.vue"
-  import * as tagService from "@/services/collectTagService"
-  import {CollectTag, Page, PageableParam} from "@/types"
+  import * as tagService from "@/services/tagService"
+  import {Page, PageableParam, Tag} from "@/types"
   import {Component, Vue} from "vue-property-decorator"
 
   @Component({
@@ -41,7 +41,7 @@
   export default class TagOverview extends Vue {
     private searchTerm: string
     private searchPageableParam: PageableParam = {page: 0, size: 20, sort: []}
-    private searchResultPage: Page<CollectTag> | null = null
+    private searchResultPage: Page<Tag> | null = null
 
     get isSearchResultNotEmpty() {
       return this.searchResultPage && !this.searchResultPage.empty

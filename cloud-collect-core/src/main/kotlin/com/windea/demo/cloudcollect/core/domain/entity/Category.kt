@@ -14,22 +14,22 @@ import javax.validation.constraints.*
 @ApiModel("收藏的分类。一个收藏可以有多个分类。")
 @Entity
 @EntityListeners(AuditingEntityListener::class)
-@UniqueCollectCategory(groups = [Create::class])
-data class CollectCategory(
+@UniqueCategory(groups = [Create::class])
+data class Category(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long = 0,
 	
 	@ApiModelProperty("名字。")
-	@get:NotEmpty(message = "{validation.CollectCategory.name.NotEmpty}", groups = [Create::class, Modify::class])
-	@get:Size(min = 1, max = 64, message = "{validation.CollectCategory.name.Size}", groups = [Create::class, Modify::class])
+	@get:NotEmpty(message = "{validation.Category.name.NotEmpty}", groups = [Create::class, Modify::class])
+	@get:Size(min = 1, max = 64, message = "{validation.Category.name.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false, length = 64)
 	var name: String,
 	
 	@ApiModelProperty("概述。")
-	@get:NotEmpty(message = "{validation.CollectCategory.summary.NotEmpty}", groups = [Create::class, Modify::class])
-	@get:Size(min = 1, max = 255, message = "{validation.CollectCategory.summary.Size}", groups = [Create::class, Modify::class])
+	@get:NotEmpty(message = "{validation.Category.summary.NotEmpty}", groups = [Create::class, Modify::class])
+	@get:Size(min = 1, max = 255, message = "{validation.Category.summary.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false)
 	var summary: String = "",
 	
@@ -52,7 +52,7 @@ data class CollectCategory(
 	var collectCount: Long = 0
 	
 	
-	override fun equals(other: Any?) = other === this || (other is CollectCategory && other.id == id)
+	override fun equals(other: Any?) = other === this || (other is Category && other.id == id)
 	
 	override fun hashCode() = id.hashCode()
 }

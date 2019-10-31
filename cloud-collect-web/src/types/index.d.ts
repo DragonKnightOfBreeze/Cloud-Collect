@@ -23,8 +23,8 @@ export interface Collect {
   summary: string
   url: string
   logoUrl: string
-  category?: CollectCategory
-  tags?: CollectTag[]
+  category?: Category
+  tags?: Tag[]
   type?: CollectType
   user?: User
   createdTime?: string
@@ -34,7 +34,7 @@ export interface Collect {
   commentCount?: number
 }
 
-export interface CollectCategory {
+export interface Category {
   id?: number
   name: string
   summary: string
@@ -44,7 +44,7 @@ export interface CollectCategory {
   collectCount?: number
 }
 
-export interface CollectTag {
+export interface Tag {
   id?: number
   name: string
   summary: string

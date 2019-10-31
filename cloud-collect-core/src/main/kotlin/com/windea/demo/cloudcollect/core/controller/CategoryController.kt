@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.*
 
 @Api("收藏的分类")
 @RestController
-@RequestMapping("/collectCategory")
+@RequestMapping("/category")
 @CrossOrigin
-class CollectCategoryController(
-	private val categoryService: CollectCategoryService
+class CategoryController(
+	private val categoryService: CategoryService
 ) {
 	@ApiOperation("创建自己的分类。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody @Validated(Create::class) category: CollectCategory, bindingResult: BindingResult,
+	fun create(@RequestBody @Validated(Create::class) category: Category, bindingResult: BindingResult,
 		authentication: Authentication) {
 		categoryService.create(category, authentication.toUser())
 	}
@@ -32,7 +32,7 @@ class CollectCategoryController(
 	@ApiOperation("修改自己的分类。")
 	@PutMapping("/{id}")
 	@PreAuthorize("isAuthenticated()")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) category: CollectCategory,
+	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) category: Category,
 		bindingResult: BindingResult) {
 		categoryService.modify(category)
 	}
@@ -46,32 +46,32 @@ class CollectCategoryController(
 	
 	@ApiOperation("根据id得到某一分类。")
 	@GetMapping("/{id}")
-	fun findById(@PathVariable id: Long): CollectCategory {
+	fun findById(@PathVariable id: Long): Category {
 		return categoryService.findById(id)
 	}
 	
 	@ApiOperation("得到所有分类。")
 	@GetMapping("/findAll")
-	fun findAll(pageable: Pageable): Page<CollectCategory> {
+	fun findAll(pageable: Pageable): Page<Category> {
 		return categoryService.findAll(pageable)
 	}
 	
 	@ApiOperation("根据名字模糊查询所有分类。")
 	@GetMapping("/findAllByNameContains")
-	fun findAllByNameContains(@RequestParam name: String, pageable: Pageable): Page<CollectCategory> {
+	fun findAllByNameContains(@RequestParam name: String, pageable: Pageable): Page<Category> {
 		return categoryService.findAllByNameContains(name, pageable)
 	}
 	
 	@ApiOperation("根据用户id查询所有分类。")
 	@GetMapping("/findAllByUserId")
-	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<CollectCategory> {
+	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<Category> {
 		return categoryService.findAllByUserId(userId, pageable)
 	}
 	
 	@ApiOperation("根据名字和用户id模糊查询所有分类。")
 	@GetMapping("/findAllByNameContainsAndUserId")
 	fun findAllByNameContainsAndUserId(@RequestParam userId: Long, @RequestParam name: String,
-		pageable: Pageable): Page<CollectCategory> {
+		pageable: Pageable): Page<Category> {
 		return categoryService.findAllByNameContainsAndUserId(userId, name, pageable)
 	}
 	

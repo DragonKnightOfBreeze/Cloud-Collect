@@ -11,14 +11,14 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
-@CacheConfig(cacheNames = ["collectCategory"])
-class CollectCategoryServiceImpl(
+@CacheConfig(cacheNames = ["category"])
+class CategoryServiceImpl(
 	private val collectRepository: CollectRepository,
-	private val categoryRepository: CollectCategoryRepository
-) : CollectCategoryService {
+	private val categoryRepository: CategoryRepository
+) : CategoryService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(category: CollectCategory, user: User) {
+	override fun create(category: Category, user: User) {
 		val newCategory = category.copy(
 			user = user
 		)
@@ -27,7 +27,7 @@ class CollectCategoryServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun modify(category: CollectCategory) {
+	override fun modify(category: Category) {
 		categoryRepository.save(category)
 	}
 	
@@ -38,27 +38,27 @@ class CollectCategoryServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findById(id: Long): CollectCategory {
+	override fun findById(id: Long): Category {
 		return categoryRepository.findByIdOrNull(id)?.lateInit() ?: throw NotFoundException()
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAll(pageable: Pageable): Page<CollectCategory> {
+	override fun findAll(pageable: Pageable): Page<Category> {
 		return categoryRepository.findAll(pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByNameContains(name: String, pageable: Pageable): Page<CollectCategory> {
+	override fun findAllByNameContains(name: String, pageable: Pageable): Page<Category> {
 		return categoryRepository.findAllByNameContains(name, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByNameContainsAndUserId(userId: Long, name: String, pageable: Pageable): Page<CollectCategory> {
+	override fun findAllByNameContainsAndUserId(userId: Long, name: String, pageable: Pageable): Page<Category> {
 		return categoryRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<CollectCategory> {
+	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Category> {
 		return categoryRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
@@ -66,7 +66,7 @@ class CollectCategoryServiceImpl(
 		return categoryRepository.existsByNameAndUser(name, user)
 	}
 	
-	private fun CollectCategory.lateInit() = this.apply {
+	private fun Category.lateInit() = this.apply {
 		collectCount = collectRepository.countByCategoryId(this.id)
 	}
 	

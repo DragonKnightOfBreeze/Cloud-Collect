@@ -25,8 +25,8 @@ class ResourceServerConfiguration(
 			.authorizeRequests()
 			.antMatchers(
 				"/collect/**",
-				"/collectCategory/**",
-				"/collectTag/**",
+				"/category/**",
+				"/tag/**",
 				"/comment/**",
 				"/createAndSendToAll/**",
 				"/user/**"

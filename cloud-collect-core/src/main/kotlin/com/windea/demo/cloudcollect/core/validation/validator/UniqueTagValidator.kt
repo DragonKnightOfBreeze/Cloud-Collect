@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.*
 import javax.validation.*
 
 /**唯一收藏标签的校验器。*/
-open class UniqueCollectTagValidator : ConstraintValidator<UniqueCollectTag, CollectTag> {
-	@Autowired private lateinit var tagRepository: CollectTagRepository
+open class UniqueTagValidator : ConstraintValidator<UniqueTag, Tag> {
+	@Autowired private lateinit var tagRepository: TagRepository
 	
-	override fun isValid(value: CollectTag, context: ConstraintValidatorContext): Boolean {
+	override fun isValid(value: Tag, context: ConstraintValidatorContext): Boolean {
 		return !tagRepository.existsByNameAndUser(value.name, value.user)
 	}
 }

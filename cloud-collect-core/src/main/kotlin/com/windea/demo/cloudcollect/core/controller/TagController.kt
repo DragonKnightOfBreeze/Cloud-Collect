@@ -3,6 +3,7 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
+import com.windea.demo.cloudcollect.core.domain.entity.Tag
 import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
@@ -16,15 +17,15 @@ import org.springframework.web.bind.annotation.*
 
 @Api("收藏的标签")
 @RestController
-@RequestMapping("/collectTag")
+@RequestMapping("/tag")
 @CrossOrigin
-class CollectTagController(
-	private val tagService: CollectTagService
+class TagController(
+	private val tagService: TagService
 ) {
 	@ApiOperation("创建自己的标签。")
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody @Validated(Create::class) tag: CollectTag, bindingResult: BindingResult,
+	fun create(@RequestBody @Validated(Create::class) tag: Tag, bindingResult: BindingResult,
 		authentication: Authentication) {
 		tagService.create(tag, authentication.toUser())
 	}
@@ -32,7 +33,7 @@ class CollectTagController(
 	@ApiOperation("修改自己的标签。")
 	@PutMapping("/{id}")
 	@PreAuthorize("isAuthenticated()")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) tag: CollectTag, bindingResult: BindingResult) {
+	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) tag: Tag, bindingResult: BindingResult) {
 		tagService.modify(tag)
 	}
 	
@@ -45,32 +46,32 @@ class CollectTagController(
 	
 	@ApiOperation("根据id得到某一标签。")
 	@GetMapping("/{id}")
-	fun findById(@PathVariable id: Long): CollectTag {
+	fun findById(@PathVariable id: Long): Tag {
 		return tagService.findById(id)
 	}
 	
 	@ApiOperation("得到所有标签。")
 	@GetMapping("/findAll")
-	fun findAll(pageable: Pageable): Page<CollectTag> {
+	fun findAll(pageable: Pageable): Page<Tag> {
 		return tagService.findAll(pageable)
 	}
 	
 	@ApiOperation("根据名字模糊查询所有分类。")
 	@GetMapping("/findAllByNameContains")
-	fun findAllByNameContains(@RequestParam name: String, pageable: Pageable): Page<CollectTag> {
+	fun findAllByNameContains(@RequestParam name: String, pageable: Pageable): Page<Tag> {
 		return tagService.findAllByNameContains(name, pageable)
 	}
 	
 	@ApiOperation("根据用户id查询所有标签。")
 	@GetMapping("/findAllByUserId")
-	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<CollectTag> {
+	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<Tag> {
 		return tagService.findAllByUserId(userId, pageable)
 	}
 	
 	@ApiOperation("根据名字和用户id模糊查询所有标签。")
 	@GetMapping("/findAllByNameContainsAndUserId")
 	fun findAllByNameContainsAndUserId(@RequestParam name: String, @RequestParam userId: Long,
-		pageable: Pageable): Page<CollectTag> {
+		pageable: Pageable): Page<Tag> {
 		return tagService.findAllByNameContainsAndUserId(name, userId, pageable)
 	}
 	
