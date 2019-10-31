@@ -1,6 +1,6 @@
 <template>
   <ElPagination
-      layout="total, sizes, prev, pager, next, jumper"
+      :layout="layout"
       :current-page="syncPageableParam.page"
       :page-size="syncPageableParam.size"
       :total="totalPages"
@@ -16,8 +16,7 @@
   import {PageableParam} from "@/types"
   import {Component, Prop, PropSync, Vue} from "vue-property-decorator"
 
-  //NOTE 父组件发送页面切换请求，调用changePage方法，改变查询参数
-  //NOTE 父组件再监听查询参数，切换显示的分页
+  //NOTE 接收分页参数和总页数，同步并在父组件中监听分页参数，当改变时再次发送查询请求，即可完成分页跳转功能
   @Component
   export default class ThePagination extends Vue {
     //NOTE 因为要在子组件中改变这个prop，所以需要设为同步的
@@ -26,6 +25,7 @@
     @PropSync("pageableParam") syncPageableParam!: PageableParam
     @Prop() totalPages!: number
 
+    @Prop({default: "total, sizes, prev, pager, next, jumper"}) layout!: string
     @Prop({default: [10, 20, 30, 40, 50]}) pageSizes!: number[]
 
     handlePrevClick() {
