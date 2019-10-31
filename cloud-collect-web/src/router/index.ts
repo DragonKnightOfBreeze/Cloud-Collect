@@ -1,134 +1,149 @@
 import Vue from "vue"
 import VueRouter, {RouteConfig} from "vue-router"
 
-const AboutView = () => import("@/views/about/AboutView.vue")
-const CollectView = () => import("@/views/collect/CollectView.vue")
-const CollectDetailView = () => import( "@/views/collect/CollectDetailView.vue")
-const PraiseByUserView = () => import("@/views/collect/PraiseByUserView.vue")
-const HistoryView = () => import( "@/views/history/HistoryView.vue")
-const HomeView = () => import(  "@/views/home/HomeView.vue")
-const ActivateView = () => import("@/views/home/ActivateView.vue")
-const ResetPasswordView = () => import("@/views/home/ResetPasswordView.vue")
-const NoticeView = () => import("@/views/notice/NoticeView.vue")
-const NoticeDetailView = () => import( "@/views/notice/NoticeDetailView.vue")
-const ProfileView = () => import( "@/views/profile/ProfileView.vue")
-const FollowByUserView = () => import("@/views/profile/FollowByUserView.vue")
-const FollowToUserView = () => import("@/views/profile/FollowToUserView.vue")
-const SearchView = () => import( "@/views/search/SearchView.vue")
-const ActivateSuccessView = () => import( "@/views/success/ActivateSuccessView.vue")
-const ResetPasswordSuccessView = () => import( "@/views/success/ResetPasswordSuccessView.vue")
-const Error403View = () => import("@/views/error/Error403View.vue")
-const Error404View = () => import("@/views/error/Error404View.vue")
-const Error500View = () => import("@/views/error/Error500View.vue")
-const Error501View = () => import("@/views/error/Error501View.vue")
+const Home = () => import(  "@/views/Home.vue")
+const Collects = () => import("@/views/Collects.vue")
+const CollectOverview = () => import("@/views/collects/CollectOverview.vue")
+const CollectDetail = () => import("@/views/collects/CollectDetail.vue")
+const CollectDetailOverview = () => import("@/views/collects/collectDetail/CollectDetailOverview.vue")
+const CollectDetailStargazers = () => import("@/views/collects/collectDetail/CollectDetailStargazers.vue")
+const Profile = () => import("@/views/Profile.vue")
+const ProfileOverview = () => import("@/views/profile/ProfileOverview.vue")
+const ProfileDetail = () => import("@/views/profile/ProfileDetail.vue")
+const ProfileDetailOverview = () => import("@/views/profile/profileDetail/ProfileDetailOverview.vue")
+const ProfileDetailCollects = () => import("@/views/profile/profileDetail/ProfileDetailCollects.vue")
+const ProfileDetailCategories = () => import("@/views/profile/profileDetail/ProfileDetailCategories.vue")
+const ProfileDetailHistory = () => import("@/views/profile/profileDetail/ProfileDetailHistory.vue")
+const ProfileDetailNotices = () => import("@/views/profile/profileDetail/ProfileDetailNotices.vue")
+const ProfileDetailStars = () => import("@/views/profile/profileDetail/ProfileDetailStars.vue")
+const ProfileDetailFollowers = () => import("@/views/profile/profileDetail/ProfileDetailFollowers.vue")
+const ProfileDetailFollowing = () => import("@/views/profile/profileDetail/ProfileDetailFollowing.vue")
+const Search = () => import( "@/views/Search.vue")
+const About = () => import("@/views/About.vue")
+
+const Categories = () => import("@/views/Categories.vue")
+const CategoryOverview = () => import("@/views/categories/CategoryOverview.vue")
+const CategoryDetail = () => import("@/views/categories/CategoryDetail.vue")
+const Tags = () => import("@/views/Tags.vue")
+const TagOverview = () => import("@/views/tags/TagOverview.vue")
+const TagDetail = () => import("@/views/tags/TagDetail.vue")
+const Activate = () => import("@/views/Activate.vue")
+const ResetPassword = () => import("@/views/ResetPassword.vue")
+const Success = () => import("@/views/Success.vue")
+const ActiveSuccess = () => import( "@/views/success/ActivateSuccess.vue")
+const ResetPasswordSuccess = () => import( "@/views/success/ResetPasswordSuccess.vue")
+const Error = () => import("@/views/Error.vue")
+const Error403 = () => import("@/views/error/Error403.vue")
+const Error404 = () => import("@/views/error/Error404.vue")
+const Error500 = () => import("@/views/error/Error500.vue")
+const Error501 = () => import("@/views/error/Error501.vue")
 
 Vue.use(VueRouter)
 
-//DONE 添加重定向到404的路由
 //DONE 添加重定向到首页并进行对应操作的路由
+//DONE 添加重定向到404的路由
 const routes: RouteConfig[] = [
   {
     path: "/",
-    name: "home",
-    component: HomeView
-  }, {
-    path: "/home",
-    redirect: "/"
-  }, {
+    component: Home
+  },
+  {
     path: "/login",
     redirect: {path: "./", query: {operation: "login"}}
-  }, {
+  },
+  {
     path: "/register",
     redirect: {path: "./", query: {operation: "register"}}
-  }, {
+  },
+  {
     path: "/logout",
     redirect: {path: "./", query: {operation: "logout"}}
-  }, {
-    path: "/activate",
-    name: "activate",
-    component: ActivateView
-  }, {
-    path: "/resetPassword",
-    name: "resetPassword",
-    component: ResetPasswordView
-  }, {
-    path: "/about",
-    name: "about",
-    component: AboutView
-  }, {
-    path: "/collect",
-    name: "collect",
-    component: CollectView
-  }, {
-    path: "/collect/:id",
-    name: "collectDetail",
-    component: CollectDetailView
-  }, {
-    path: "/collect/:id/praiseByUser",
-    name: "praiseByUser",
-    component: PraiseByUserView
-  }, {
-    path: "/history",
-    name: "history",
-    component: HistoryView
-  }, {
-    path: "/notice",
-    name: "notice",
-    component: NoticeView
-  }, {
-    path: "/notice/:id",
-    name: "noticeDetail",
-    component: NoticeDetailView
-  }, {
-    path: "/profile",
-    name: "currentProfile",
-    component: ProfileView
-  }, {
-    path: "/profile/:id",
-    name: "profile",
-    component: ProfileView
-  }, {
-    path: "/profile/:id/followByUser",
-    name: "followByUser",
-    component: FollowByUserView
-  }, {
-    path: "/profile/:id/followToUser",
-    name: "followToUser",
-    component: FollowToUserView
-  }, {
+  },
+  {
+    path: "/collects",
+    component: Collects,
+    children: [
+      {path: "", component: CollectOverview},
+      {
+        path: ":id",
+        component: CollectDetail,
+        children: [
+          {path: "", component: CollectDetailOverview},
+          {path: "stargazers", component: CollectDetailStargazers}
+        ]
+      }
+    ]
+  },
+  {
+    path: "profile",
+    component: Profile,
+    children: [
+      {path: "", component: ProfileOverview},
+      {
+        path: ":id",
+        component: ProfileDetail,
+        children: [
+          {path: "", component: ProfileDetailOverview},
+          {path: "collects", component: ProfileDetailCollects},
+          {path: "categories", component: ProfileDetailCategories},
+          {path: "history", component: ProfileDetailHistory},
+          {path: "notices", component: ProfileDetailNotices},
+          {path: "stars", component: ProfileDetailStars},
+          {path: "followers", component: ProfileDetailFollowers},
+          {path: "following", component: ProfileDetailFollowing}
+        ]
+      }
+    ]
+  },
+  {
     path: "/search",
-    name: "search",
-    component: SearchView
-  }, {
-    path: "/success/activate",
-    name: "activateSuccess",
-    component: ActivateSuccessView
-  }, {
-    path: "/success/resetPassword",
-    name: "resetPasswordSuccess",
-    component: ResetPasswordSuccessView
-  }, {
+    component: Search
+  },
+  {
+    path: "/about",
+    component: About
+  },
+  {
+    path: "/categories",
+    component: Categories,
+    children: [
+      {path: "", component: CategoryOverview},
+      {path: ":id", component: CategoryDetail}
+    ]
+  },
+  {
+    path: "/tags",
+    component: Tags,
+    children: [
+      {path: "", component: TagOverview},
+      {path: ":id", component: TagDetail}
+    ]
+  },
+  {
+    path: "/activate",
+    component: Activate
+  },
+  {
+    path: "/resetPassword",
+    component: ResetPassword
+  },
+  {
+    path: "/success",
+    component: Success,
+    children: [
+      {path: "activate", component: ActiveSuccess},
+      {path: "resetPassword", component: ResetPasswordSuccess}
+    ]
+  },
+  {
     path: "/error",
-    redirect: "/error/500"
-  }, {
-    path: "/error/403",
-    name: "error403",
-    component: Error403View
-  }, {
-    path: "/error/404",
-    name: "error404",
-    component: Error404View
-  }, {
-    path: "/error/500",
-    name: "error500",
-    component: Error500View
-  }, {
-    path: "/error/501",
-    name: "error501",
-    component: Error501View
-  }, {
-    path: "*",
-    component: Error404View
+    component: Error,
+    children: [
+      {path: "403", component: Error403},
+      {path: "404", component: Error404},
+      {path: "500", component: Error500},
+      {path: "501", component: Error501}
+    ]
   }
 ]
 
