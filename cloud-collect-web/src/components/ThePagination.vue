@@ -1,8 +1,8 @@
 <template>
   <ElPagination
       layout="total, sizes, prev, pager, next, jumper"
-      :current-page="pageableParam.page"
-      :page-size="pageableParam.size"
+      :current-page="syncPageableParam.page"
+      :page-size="syncPageableParam.size"
       :total="totalPages"
       :page-sizes="pageSizes"
       @prev-click="handlePrevClick"
@@ -22,44 +22,26 @@
   export default class ThePagination extends Vue {
     //NOTE 因为要在子组件中改变这个prop，所以需要设为同步的
     //NOTE pageableParam是计算属性的名字，pageable是prop以及父组件data的名字
-    @PropSync("pageable") pageableParam!: PageableParam
+    //NOTE 父组件的对应data需要添加.sync修饰符
+    @PropSync("pageableParam") syncPageableParam!: PageableParam
     @Prop() totalPages!: number
 
     @Prop({default: [10, 20, 30, 40, 50]}) pageSizes!: number[]
 
     handlePrevClick() {
-      this.pageableParam.page--
-      this.changePage()
+      this.syncPageableParam.page--
     }
 
     handleNextClick() {
-      this.pageableParam.page++
-      this.changePage()
+      this.syncPageableParam.page++
     }
 
     handleCurrentChange(value: number) {
-      this.pageableParam.page = value
-      this.changePage()
+      this.syncPageableParam.page = value
     }
 
     handleSizeChange(value: number) {
-      this.pageableParam.size = value
-      this.changePage()
-    }
-
-    //TODO 调用这个方法
-    handleSortChange(value: string[]) {
-      this.pageableParam.sort = value
-      this.changePage()
-    }
-
-    private changePage() {
-      const params = {
-        page: this.pageableParam.page.toString(),
-        size: this.pageableParam.size.toString(),
-        sort: this.pageableParam.sort
-      }
-      this.$router.push({path: "./", query: {...params}})
+      this.syncPageableParam.size = value
     }
   }
 </script>

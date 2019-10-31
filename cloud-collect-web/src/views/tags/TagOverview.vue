@@ -12,19 +12,19 @@
         <ElInput v-model="searchTerm" placeholder="关键字"></ElInput>
       </ElFormItem>
       <ElFormItem>
-        <ElButton type="primary" @click="onSearchTagByName">
+        <ElButton type="primary" @click="handleSearchTagByName">
           <ElIcon name="search"/>
         </ElButton>
       </ElFormItem>
     </ElForm>
 
-    <!--TODO-->
-    <template v-if="isSearchResultNotEmpty">
-      <ElCard>
+    <!--TODO 第一行标题显示标签的名字（文字链接）、创建时间、更新时间、收藏数量（+徽章）。第二行显示标签的概述（默认色）。-->
+    <template v-if="searchResultIsNotEmpty">
+      <ElCard v-for="tag in searchResult" :key="tag.id">
 
       </ElCard>
 
-      <ElPagination></ElPagination>
+      <ThePagination :pageable-param.sync="searchPageableParam" :total-pages="searchResultPage.totalPages"/>
     </template>
   </div>
 </template>
@@ -33,7 +33,7 @@
   import ThePagination from "@/components/ThePagination.vue"
   import * as tagService from "@/services/tagService"
   import {Page, PageableParam, Tag} from "@/types"
-  import {Component, Vue} from "vue-property-decorator"
+  import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
     components: {ThePagination}
@@ -43,11 +43,23 @@
     private searchPageableParam: PageableParam = {page: 0, size: 20, sort: []}
     private searchResultPage: Page<Tag> | null = null
 
-    get isSearchResultNotEmpty() {
-      return this.searchResultPage && !this.searchResultPage.empty
+    //DONE 当用户提交查询且查询结果不为空时，才显示结果列表
+    get searchResultIsNotEmpty() {
+      return this.searchResultPage && !this.searchResultPage.empty || false
     }
 
-    async onSearchTagByName() {
+    //DONE 为了便于IDEA进行类型推断
+    get searchResult() {
+      return this.searchResultPage && this.searchResultPage.content || []
+    }
+
+    //DONE 当分页参数发生变化时，重新加载数据
+    @Watch("searchPageableParam")
+    private onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+      this.handleSearchTagByName()
+    }
+
+    async handleSearchTagByName() {
       try {
         this.searchResultPage = await tagService.findAllByNameContains(this.searchTerm, this.searchPageableParam)
       } catch (e) {
