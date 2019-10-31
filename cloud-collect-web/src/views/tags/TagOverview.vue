@@ -43,14 +43,14 @@
     private searchPageableParam: PageableParam = {page: 0, size: 20, sort: []}
     private searchResultPage: Page<Tag> | null = null
 
-    //DONE 当用户提交查询且查询结果不为空时，才显示结果列表
-    get searchResultIsNotEmpty() {
-      return this.searchResultPage && !this.searchResultPage.empty || false
-    }
-
     //DONE 为了便于IDEA进行类型推断
     get searchResult() {
       return this.searchResultPage && this.searchResultPage.content || []
+    }
+
+    //DONE 当用户提交查询且查询结果不为空时，才显示结果列表
+    get searchResultIsNotEmpty() {
+      return this.searchResultPage && !this.searchResultPage.empty || false
     }
 
     //DONE 当分页参数发生变化时，重新加载数据
