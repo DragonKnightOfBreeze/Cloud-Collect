@@ -1,19 +1,19 @@
 <template>
-  <Error>
+  <ElContentPage color="warn" align="center">
     <template v-slot:title>功能未实现</template>
 
     <ElIcon name="warning"/>
     这片领域有待发掘……
     <ElIcon name="warning"/>
-  </Error>
+  </ElContentPage>
 </template>
 
 <script lang="ts">
-  import ErrorPage from "@/components/error/ErrorPage.vue"
+  import ElContentPage from "@/components/public/ElContentPage.vue"
   import {Component, Vue} from "vue-property-decorator"
 
   @Component({
-    components: {Error: ErrorPage}
+    components: {ElContentPage}
   })
   export default class Error501 extends Vue {
   }

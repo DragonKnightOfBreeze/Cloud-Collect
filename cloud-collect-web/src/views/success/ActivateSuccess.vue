@@ -1,17 +1,17 @@
 <template>
-  <SuccessPage>
+  <ElContentPage color="success" align="center">
     <template v-slot:title>激活成功</template>
 
     你的账户已激活。
-  </SuccessPage>
+  </ElContentPage>
 </template>
 
 <script lang="ts">
-  import SuccessPage from "@/components/success/SuccessPage.vue"
+  import ElContentPage from "@/components/public/ElContentPage.vue"
   import {Component, Vue} from "vue-property-decorator"
 
   @Component({
-    components: {SuccessPage}
+    components: {ElContentPage}
   })
   export default class ActiveSuccess extends Vue {
   }

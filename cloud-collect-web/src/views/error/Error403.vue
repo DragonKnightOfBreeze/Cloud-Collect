@@ -1,19 +1,19 @@
 <template>
-  <Error>
+  <ElContentPage color="warn" align="center">
     <template v-slot:title>权限错误</template>
 
     <ElIcon name="warning"/>
     这片领域不属于你……
     <ElIcon name="warning"/>
-  </Error>
+  </ElContentPage>
 </template>
 
 <script lang="ts">
-  import ErrorPage from "@/components/error/ErrorPage.vue"
+  import ElContentPage from "@/components/public/ElContentPage.vue"
   import {Component, Vue} from "vue-property-decorator"
 
   @Component({
-    components: {Error: ErrorPage}
+    components: {ElContentPage}
   })
   export default class Error403 extends Vue {
   }

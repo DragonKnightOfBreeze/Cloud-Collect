@@ -1,17 +1,26 @@
 <template>
-  <span :class="cssClass">
-    <slot></slot>
-  </span>
+  <div :class="cssClass">
+    <h2>
+      <slot name="title"></slot>
+    </h2>
+    <ElDivider/>
+    <p>
+      <slot name="default"></slot>
+    </p>
+    <ElLink href="/" v-if="showHomeLink">回到首页</ElLink>
+  </div>
 </template>
 
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component
-  export default class ElText extends Vue {
+  export default class ElContentPage extends Vue {
     @Prop({required: false}) color!: string
     @Prop({required: false}) bgColor!: string
     @Prop({required: false}) align!: string
+
+    @Prop({default: true}) showHomeLink!: boolean
 
     get cssClass() {
       return [

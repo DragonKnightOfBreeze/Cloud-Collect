@@ -7,7 +7,7 @@
     <p class="app-success-text">
       <slot name="default"></slot>
     </p>
-    <el-link href="/">回到首页</el-link>
+    <ElLink href="/">回到首页</ElLink>
   </div>
 </template>
 
