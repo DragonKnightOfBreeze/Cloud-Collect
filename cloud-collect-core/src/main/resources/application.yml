@@ -92,6 +92,6 @@ cloud-collect:
   data-serialize:
     path: D:/CloudCollect
     file-name: dataSchema
-logging:
-  level:
-    org.springframework: debug
+#logging:
+#  level:
+#    org.springframework: debug

@@ -101,7 +101,7 @@ class MockData(
 	fun addNewTagToCollect() {
 		val user = userRepository.findByIdOrNull(1)!!
 		collectRepository.saveAndFlush(Collect(0, "CollectName???", "CollectSummary???", "???", "???",
-			category = Category(0, "Category123132", user = user),
+			category = categoryRepository.findByIdOrNull(3)!!,
 			tags = setOf(
 				tagRepository.findByIdOrNull(2)!!
 			),

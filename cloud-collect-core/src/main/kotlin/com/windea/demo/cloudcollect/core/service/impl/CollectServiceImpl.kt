@@ -62,7 +62,6 @@ class CollectServiceImpl(
 	override fun praise(id: Long, user: User) {
 		val rawCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		rawCollect.praiseByUserList += user
-		
 	}
 	
 	@Transactional

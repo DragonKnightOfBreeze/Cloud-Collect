@@ -2,16 +2,17 @@ package com.windea.demo.cloudcollect.core
 
 import com.windea.demo.cloudcollect.core.domain.*
 import com.windea.demo.cloudcollect.core.repository.*
+import com.windea.demo.cloudcollect.core.service.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.boot.test.context.*
 import org.springframework.data.repository.*
-import javax.transaction.*
 
 @SpringBootTest
 class JpaTest(
 	@Autowired private val fooRepository: FooRepository,
-	@Autowired private val barRepository: BarRepository
+	@Autowired private val barRepository: BarRepository,
+	@Autowired private val barService: BarService
 ) {
 	@Test //TESTED
 	fun saveCascade1() {
@@ -95,70 +96,66 @@ class JpaTest(
 	}
 	
 	
-	@Test //NO SESSION
-	fun updateCascadeLazy1() {
-		val bar = barRepository.findByIdOrNull(1)!!
-		bar.lazyFooList += fooRepository.findByIdOrNull(1)!!
-		bar.lazyFooList += fooRepository.findByIdOrNull(2)!!
-		barRepository.save(bar)
-	}
+	//@Test //NO SESSION
+	//fun updateCascadeLazy1() {
+	//	val bar = barRepository.findByIdOrNull(1)!!
+	//	bar.lazyFooList += fooRepository.findByIdOrNull(1)!!
+	//	bar.lazyFooList += fooRepository.findByIdOrNull(2)!!
+	//	barRepository.save(bar)
+	//}
 	
-	@Test //NO SESSION
-	fun updateCascadeLazy2() {
-		val bar = barRepository.findByIdOrNull(1)!!
-		bar.lazyFooList += Foo(2, "Foo2")
-		bar.lazyFooList += Foo(4, "Foo4")
-		barRepository.save(bar)
-	}
+	//@Test //NO SESSION
+	//fun updateCascadeLazy2() {
+	//	val bar = barRepository.findByIdOrNull(1)!!
+	//	bar.lazyFooList += Foo(2, "Foo2")
+	//	bar.lazyFooList += Foo(4, "Foo4")
+	//	barRepository.save(bar)
+	//}
 	
 	@Test //TESTED
 	fun findFooByLazy() {
-		val bar = barRepository.findByLazyFooListId(1)
-		println(bar)
+		val barList = barRepository.findByLazyFooListId(1)
+		println(barList.isNotEmpty())
 	}
 	
-	@Test
-	fun getLazyFooList() {
-		val bar = barRepository.findByIdOrNull(1)!!
-		val lazyFooList = bar.lazyFooList.subList(0, 2)
-		println(lazyFooList)
-	}
+	//@Test //NO SESSION
+	//fun getLazyFooList() {
+	//	val bar = barRepository.findByIdOrNull(1)!!
+	//	val lazyFooList = bar.lazyFooList.subList(0, 2)
+	//	println(lazyFooList)
+	//}
 	
 	@Test
-	@Transactional
 	fun updateCascadeLazy1Tx() {
-		val bar = barRepository.findByIdOrNull(1)!!
-		bar.lazyFooList += fooRepository.findByIdOrNull(1)!!
-		bar.lazyFooList += fooRepository.findByIdOrNull(2)!!
-		println(bar.lazyFooList)
-		barRepository.saveAndFlush(bar)
-		
-		val result = barRepository.findByLazyFooListId(1)
-		println(result)
+		//val bar = barRepository.findByIdOrNull(1)!!
+		//bar.lazyFooList += fooRepository.findByIdOrNull(1)!!
+		//bar.lazyFooList += fooRepository.findByIdOrNull(2)!!
+		//println(bar.lazyFooList)
+		//barRepository.save(bar)
+		barService.updateCascadeLazy1Tx()
+		val barList = barRepository.findByLazyFooListId(1)
+		println(barList.isNotEmpty())
 	}
 	
 	@Test
-	@Transactional
 	fun updateCascadeLazy2Tx() {
-		val bar = barRepository.findByIdOrNull(1)!!
-		bar.lazyFooList += Foo(2, "Foo2")
-		bar.lazyFooList += Foo(3, "Foo3")
-		println(bar.lazyFooList)
-		barRepository.saveAndFlush(bar)
+		barService.updateCascadeLazy2Tx()
+		val barList = barRepository.findByLazyFooListId(2)
+		println(barList.isNotEmpty())
 	}
 	
-	@Test //TESTED
-	@Transactional
-	fun findFooByLazyTx() {
-		val bar = barRepository.findByLazyFooListId(1)
-		println(bar)
-	}
-	
-	@Test
-	@Transactional
-	fun getLazyFooListTx() {
-		val bar = barRepository.findByIdOrNull(1)!!
-		val lazyFooList = bar.lazyFooList.subList(0, 2)
-		println(lazyFooList)
-	}
+	//@Test //TESTED
+	//@Transactional
+	//fun findFooByLazyTx() {
+	//	val bar = barRepository.findByLazyFooListId(1)
+	//	println(bar)
+	//}
+	//
+	//@Test
+	//@Transactional
+	//fun getLazyFooListTx() {
+	//	val bar = barRepository.findByIdOrNull(1)!!
+	//	val lazyFooList = bar.lazyFooList.subList(0, 2)
+	//	println(lazyFooList)
+	//}
 }
