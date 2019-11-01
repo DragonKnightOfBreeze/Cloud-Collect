@@ -20,7 +20,8 @@ class UserDetailsVo(
 	}
 	
 	override fun getAuthorities(): Collection<GrantedAuthority> {
-		return AuthorityUtils.createAuthorityList(delegateUser.role.toString())
+		//NOTE 这里使用name而非toString，因为后者可能为中文
+		return AuthorityUtils.createAuthorityList(delegateUser.role.name)
 	}
 	
 	override fun isAccountNonExpired(): Boolean {
