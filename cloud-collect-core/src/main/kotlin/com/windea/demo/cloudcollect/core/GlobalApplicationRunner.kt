@@ -6,6 +6,10 @@ import org.springframework.stereotype.*
 @Component
 class GlobalApplicationRunner : ApplicationRunner {
 	override fun run(args: ApplicationArguments?) {
-		println("===CLOUND COLLECT===")
+		println("""
+			=============================
+			CLOUD COLLECT
+			==============================
+		""".trimIndent())
 	}
 }
