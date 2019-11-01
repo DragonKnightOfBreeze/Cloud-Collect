@@ -10,7 +10,6 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
-import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
@@ -26,7 +25,6 @@ class CollectController(
 ) {
 	@ApiOperation("创建自己的收藏。")
 	@PostMapping("/create")
-	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Validated(Create::class) collect: Collect, bindingResult: BindingResult,
 		authentication: Authentication) {
 		collectService.create(collect, authentication.toUser())
@@ -34,30 +32,26 @@ class CollectController(
 	
 	@ApiOperation("从别人的收藏创建自己的收藏。")
 	@PostMapping("/createFrom")
-	@PreAuthorize("isAuthenticated()")
 	fun createFrom(@RequestBody collect: Collect, authentication: Authentication) {
 		collectService.createFrom(collect, authentication.toUser())
 	}
 	
 	@ApiOperation("修改自己的收藏。")
 	@PutMapping("/{id}")
-	@PreAuthorize("isAuthenticated()")
 	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) collect: Collect,
 		bindingResult: BindingResult) {
-		collectService.modify(collect)
+		collectService.modify(id, collect)
 	}
 	
 	@ApiOperation("点赞某一收藏。")
 	@PutMapping("/{id}/praise")
-	@PreAuthorize("isAuthenticated()")
-	fun praise(@PathVariable id: Long, @RequestBody collect: Collect, authentication: Authentication) {
+	fun praise(@PathVariable id: Long, authentication: Authentication) {
 		val user = (authentication.principal as UserDetailsVo).delegateUser
-		collectService.praise(collect, user)
+		collectService.praise(id, user)
 	}
 	
 	@ApiOperation("删除自己的收藏。")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("isAuthenticated()")
 	fun deleteById(@PathVariable id: Long) {
 		collectService.deleteById(id)
 	}

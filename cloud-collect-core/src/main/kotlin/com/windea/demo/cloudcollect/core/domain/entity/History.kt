@@ -19,16 +19,17 @@ data class History(
 	
 	//不做任何级联，迫切加载
 	@ApiModelProperty("收藏。")
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@ManyToOne
 	val collect: Collect,
 	
 	@ApiModelProperty("用户。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	@ManyToOne
 	val user: User
 ) : Serializable {
+	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
-	lateinit var createdTime: LocalDateTime
+	var createdTime: LocalDateTime? = null
 	
 	override fun equals(other: Any?) = other === this || (other is History && other.id == id)
 	

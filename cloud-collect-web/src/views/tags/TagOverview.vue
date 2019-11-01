@@ -18,25 +18,36 @@
       </ElFormItem>
     </ElForm>
 
+    <!--TODO 提取组件-->
     <!--TODO 第一行标题显示标签的名字（文字链接）、创建时间、更新时间、收藏数量（+徽章）。第二行显示标签的概述（默认色）。-->
-    <template v-if="searchResultIsNotEmpty">
+    <ElCardGroup v-if="searchResultIsNotEmpty">
       <ElCard v-for="tag in searchResult" :key="tag.id">
-
+        <ElRow>
+          <ElCol :span="6"><ElLink type="primary">{{tag.name}}</ElLink></ElCol>
+          <ElCol :span="6">创建时间：{{tag.createdTime}}</ElCol>
+          <ElCol :span="6">修改时间：{{tag.lastModifiedTime}}</ElCol>
+          <ElCol :span="4" :offset="2">收藏数量<ElBadge :value="tag.collectCount"></ElBadge></ElCol>
+        </ElRow>
+        <ElText>
+          {{tag.summary}}
+        </ElText>
       </ElCard>
 
       <ThePagination :pageable-param.sync="searchPageableParam" :total-pages="searchResultPage.totalPages"/>
-    </template>
+    </ElCardGroup>
   </div>
 </template>
 
 <script lang="ts">
+  import ElCardGroup from "@/components/public/ElCardGroup.vue"
+  import ElText from "@/components/public/ElText.vue"
   import ThePagination from "@/components/ThePagination.vue"
   import * as tagService from "@/services/tagService"
   import {Page, PageableParam, Tag} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {ThePagination}
+    components: {ElText, ElCardGroup, ThePagination}
   })
   export default class TagOverview extends Vue {
     private searchTerm: string

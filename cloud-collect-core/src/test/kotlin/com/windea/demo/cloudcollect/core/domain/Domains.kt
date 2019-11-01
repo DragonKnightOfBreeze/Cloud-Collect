@@ -13,6 +13,14 @@ data class Foo(
 data class Bar(
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long = 0,
-	@OneToMany(fetch = FetchType.EAGER)
-	val fooList: MutableList<Foo> = mutableListOf()
+	@OneToOne
+	//@OneToOne(cascade = [CascadeType.PERSIST])
+	//@OneToOne(cascade = [CascadeType.MERGE])
+	var foo: Foo? = null,
+	@ManyToMany(fetch = FetchType.EAGER)
+	//@ManyToMany(fetch = FetchType.EAGER,cascade = [CascadeType.PERSIST])
+	//@ManyToMany(fetch = FetchType.EAGER,cascade = [CascadeType.MERGE])
+	val fooList: MutableList<Foo> = mutableListOf(),
+	@ManyToMany
+	val lazyFooList: MutableList<Foo> = mutableListOf()
 )

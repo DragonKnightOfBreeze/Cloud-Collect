@@ -32,17 +32,17 @@ data class Notice(
 	val type: NoticeType = NoticeType.SYSTEM,
 	
 	@ApiModelProperty("所属用户。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	@ManyToOne
 	val user: User
 ) : Serializable {
-	@Column
+	@Column(nullable = false)
 	@ApiModelProperty("是否已读。")
 	var readStatus: Boolean = false
 	
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
-	lateinit var createdTime: LocalDateTime
+	var createdTime: LocalDateTime? = null
 	
 	override fun equals(other: Any?) = other === this || (other is Notice && other.id == id)
 	

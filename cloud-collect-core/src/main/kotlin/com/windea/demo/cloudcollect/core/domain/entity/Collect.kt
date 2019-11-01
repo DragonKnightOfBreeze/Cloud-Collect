@@ -46,12 +46,12 @@ data class Collect(
 	var logoUrl: String,
 	
 	@ApiModelProperty("收藏的分类。")
-	@ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
+	@ManyToOne
 	@get:Valid
 	var category: Category? = null,
 	
 	@ApiModelProperty("收藏的标签。")
-	@ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@get:Valid
 	@JvmSuppressWildcards //NOTE 防止Jpa报错
 	var tags: Set<Tag> = setOf(),
@@ -62,22 +62,22 @@ data class Collect(
 	var type: CollectType = CollectType.NONE,
 	
 	@ApiModelProperty("所属用户。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	@ManyToOne
 	val user: User
 ) : Serializable {
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
-	lateinit var createdTime: LocalDateTime
+	var createdTime: LocalDateTime? = null
 	
 	@ApiModelProperty("最后更新时间。")
 	@Column
 	@LastModifiedDate
-	lateinit var lastModifiedTime: LocalDateTime
+	var lastModifiedTime: LocalDateTime? = null
 	
 	@ApiModelProperty("点赞该收藏的用户列表。懒加载。")
 	@JsonIgnore
-	@ManyToMany(cascade = [CascadeType.MERGE], mappedBy = "praiseToCollectList")
+	@ManyToMany(mappedBy = "praiseToCollectList")
 	val praiseByUserList: MutableList<User> = mutableListOf()
 	
 	@ApiModelProperty("点赞用户数量。")

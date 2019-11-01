@@ -7,7 +7,6 @@ import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
-import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.web.bind.annotation.*
 
@@ -21,21 +20,18 @@ class NoticeController(
 	//NOTE 通知的创建交由前端
 	@ApiOperation("创建某一用户的通知。")
 	@PostMapping("/create")
-	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody notice: Notice, authentication: Authentication) {
 		noticeService.create(notice, authentication.toUser())
 	}
 	
 	@ApiOperation("阅读自己的通知。")
 	@PutMapping("/{id}/read")
-	@PreAuthorize("isAuthenticated()")
 	fun read(@PathVariable id: Long, @RequestBody notice: Notice) {
 		noticeService.read(notice)
 	}
 	
 	@ApiOperation("删除自己的通知。")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("isAuthenticated()")
 	fun deleteById(@PathVariable id: Long) {
 		noticeService.deleteById(id)
 	}

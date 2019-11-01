@@ -31,8 +31,8 @@ class CollectServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun createFrom(collect: Collect, user: User) {
-		//点赞别人的收藏
-		praise(collect, user)
+		//首先要点赞别人的收藏
+		praise(collect.id, user)
 		
 		//从别人的收藏创建新的收藏，需要重置id
 		val newCollect = collect.copy(
@@ -44,15 +44,25 @@ class CollectServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun modify(collect: Collect) {
-		collectRepository.save(collect)
+	override fun modify(id: Long, collect: Collect) {
+		val rawCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
+		rawCollect.apply {
+			name = collect.name
+			summary = collect.summary
+			url = collect.url
+			logoUrl = collect.logoUrl
+			category = collect.category
+			tags = collect.tags
+			type = collect.type
+		}
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun praise(collect: Collect, user: User) {
-		collect.praiseByUserList += user
-		collectRepository.save(collect)
+	override fun praise(id: Long, user: User) {
+		val rawCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
+		rawCollect.praiseByUserList += user
+		
 	}
 	
 	@Transactional

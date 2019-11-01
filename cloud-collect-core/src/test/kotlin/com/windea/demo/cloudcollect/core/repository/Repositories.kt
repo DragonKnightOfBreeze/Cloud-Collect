@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.*
 interface FooRepository : JpaRepository<Foo, Long>
 
 interface BarRepository : JpaRepository<Bar, Long> {
+	fun findByLazyFooListId(id: Long): List<Bar>
+	
 	fun existsByFooList(foo: Foo): Boolean
 	
 	fun existsByFooListContains(foo: Foo): Boolean

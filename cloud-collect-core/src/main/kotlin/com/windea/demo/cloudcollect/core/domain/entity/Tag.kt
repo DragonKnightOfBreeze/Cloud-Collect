@@ -34,7 +34,7 @@ data class Tag(
 	var summary: String = "",
 	
 	@ApiModelProperty("所属用户。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	@ManyToOne
 	val user: User
 ) : Serializable {
 	@ApiModelProperty("创建时间。")

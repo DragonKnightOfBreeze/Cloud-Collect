@@ -15,8 +15,8 @@ export async function modify(id: number, collect: Collect) {
   await http.put(`${collectUrl}/${id}`, collect)
 }
 
-export async function praise(id: number, collect: Collect) {
-  await http.put(`${collectUrl}/${id}/praise`, collect)
+export async function praise(id: number) {
+  await http.put(`${collectUrl}/${id}/praise`)
 }
 
 export async function deleteById(id: number) {

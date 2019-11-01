@@ -2,7 +2,7 @@
   <div id="app">
     <!--NOTE 不指定direction的话，就会出现奇怪的问题-->
     <ElContainer direction="vertical">
-      <ElHeader v-show="showHeader">
+      <ElHeader v-show="showHeader" style="position: fixed">
         <TheHeader></TheHeader>
       </ElHeader>
 

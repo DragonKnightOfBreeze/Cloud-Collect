@@ -1,0 +1,8 @@
+```json
+{
+    "username": "Windea",
+    "password": "BreezesLanding",
+    "nickname": "微风的龙骑士",
+    "email": "dk_breeze@gmail.com",
+}
+```

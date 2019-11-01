@@ -25,6 +25,9 @@ interface UserService {
 	/**更新用户信息。*/
 	fun modify(id: Long, user: User)
 	
+	/**关注用户。*/
+	fun focus(id: Long, user: User)
+	
 	/**根据id得到用户。*/
 	fun findById(id: Long): User
 	

@@ -1,6 +1,7 @@
 package com.windea.demo.cloudcollect.core.domain.entity
 
 import com.fasterxml.jackson.annotation.*
+import com.windea.demo.cloudcollect.core.GlobalConfig.requireActivation
 import com.windea.demo.cloudcollect.core.enums.*
 import com.windea.demo.cloudcollect.core.validation.annotation.*
 import com.windea.demo.cloudcollect.core.validation.group.*
@@ -30,7 +31,6 @@ data class User(
 	val username: String,
 	
 	@ApiModelProperty("密码。这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度。")
-	@JsonIgnore
 	@get:NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class, Modify::class])
 	@get:Password(message = "{validation.User.password.Password}", groups = [Create::class, Modify::class])
 	@Column(nullable = false)
@@ -67,33 +67,34 @@ data class User(
 	@Enumerated(EnumType.STRING)
 	val role: Role = Role.NORMAL
 ) : Serializable {
+	//当配置为不要求你激活时，直接激活对应的用户
 	@ApiModelProperty("是否已激活。")
-	@Column
-	var activateStatus: Boolean = false
+	@Column(nullable = false)
+	var activateStatus: Boolean = !requireActivation
 	
 	@ApiModelProperty("注册时间。")
 	@Column
 	@CreatedDate
-	lateinit var registerTime: LocalDateTime
+	var registerTime: LocalDateTime? = null
 	
 	@ApiModelProperty("资料更新时间。")
 	@Column
 	@LastModifiedDate
-	lateinit var updateTime: LocalDateTime
+	var updateTime: LocalDateTime? = null
 	
 	@ApiModelProperty("用户的关注用户列表。懒加载。")
 	@JsonIgnore
-	@ManyToMany(cascade = [CascadeType.MERGE])
+	@ManyToMany
 	val followToUserList: MutableList<User> = mutableListOf()
 	
 	@ApiModelProperty("该用户的粉丝用户列表。懒加载。")
 	@JsonIgnore
-	@ManyToMany(cascade = [CascadeType.MERGE], mappedBy = "followToUserList")
+	@ManyToMany(mappedBy = "followToUserList")
 	val followByUserList: MutableList<User> = mutableListOf()
 	
 	@ApiModelProperty("该用户点赞的收藏列表。懒加载。")
 	@JsonIgnore
-	@ManyToMany(cascade = [CascadeType.MERGE])
+	@ManyToMany
 	val praiseToCollectList: MutableList<Collect> = mutableListOf()
 	
 	@ApiModelProperty("关注用户数量。")

@@ -8,7 +8,6 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
-import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
@@ -23,7 +22,6 @@ class CommentController(
 ) {
 	@ApiOperation("创建自己的评论。")
 	@PostMapping("/create")
-	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Validated(Create::class) comment: Comment, bindingResult: BindingResult,
 		authentication: Authentication) {
 		commentService.create(comment, authentication.toUser())
@@ -31,7 +29,6 @@ class CommentController(
 	
 	@ApiOperation("创建自己的评论，回复某一评论。")
 	@PostMapping("/reply")
-	@PreAuthorize("isAuthenticated()")
 	fun reply(@RequestParam replyToCommentId: Long, @RequestBody @Validated(Create::class) comment: Comment,
 		bindingResult: BindingResult, authentication: Authentication) {
 		commentService.reply(replyToCommentId, comment, authentication.toUser())
@@ -39,7 +36,6 @@ class CommentController(
 	
 	@ApiOperation("删除自己的评论。")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("isAuthenticated()")
 	fun deleteById(@PathVariable id: Long) {
 		commentService.deleteById(id)
 	}

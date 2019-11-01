@@ -3,14 +3,12 @@ package com.windea.demo.cloudcollect.core.configuration
 import org.hibernate.validator.*
 import org.springframework.context.annotation.*
 import org.springframework.context.support.*
-import org.springframework.data.jpa.repository.config.*
 import org.springframework.validation.*
 import org.springframework.validation.beanvalidation.*
 import org.springframework.web.servlet.config.annotation.*
 
 /**Web的配置类。*/
 @Configuration
-@EnableJpaAuditing
 class WebConfiguration : WebMvcConfigurer {
 	//添加跨域请求映射。默认为空。
 	override fun addCorsMappings(registry: CorsRegistry) {
@@ -32,4 +30,5 @@ class WebConfiguration : WebMvcConfigurer {
 		setProviderClass(HibernateValidator::class.java)
 		setValidationMessageSource(messageSource())
 	}
+	
 }

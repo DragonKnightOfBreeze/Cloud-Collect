@@ -27,8 +27,12 @@ class CategoryServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun modify(category: Category) {
-		categoryRepository.save(category)
+	override fun modify(id: Long, category: Category) {
+		val rawCategory = categoryRepository.findByIdOrNull(id) ?: throw NotFoundException()
+		rawCategory.apply {
+			name = category.name
+			summary = category.summary
+		}
 	}
 	
 	@Transactional

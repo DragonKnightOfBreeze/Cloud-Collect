@@ -8,7 +8,7 @@ interface CategoryService {
 	fun create(category: Category, user: User)
 	
 	/**修改自己的分类。*/
-	fun modify(category: Category)
+	fun modify(id: Long, category: Category)
 	
 	/**删除自己的分类。*/
 	fun deleteById(id: Long)

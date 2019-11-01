@@ -26,21 +26,21 @@ data class Comment(
 	val content: String,
 	
 	@ApiModelProperty("所属收藏。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	@ManyToOne
 	val collect: Collect,
 	
 	@ApiModelProperty("发起该评论的用户。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	@ManyToOne
 	val sponsorByUser: User,
 	
 	@ApiModelProperty("该评论回复的评论。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
+	@ManyToOne
 	val replyToComment: Comment? = null
 ) : Serializable {
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
-	lateinit var createdTime: LocalDateTime
+	var createdTime: LocalDateTime? = null
 	
 	@ApiModelProperty("回复此评论的评论数量。")
 	@Transient

@@ -41,7 +41,7 @@
     }
 
     //DONE 得到对应的查询参数，如果不存在，则认为是非法的访问
-    getParams() {
+    private getParams() {
       if (!this.$route.query["username"] || !this.$route.query["resetPasswordCode"]) {
         console.warn("权限错误")
         this.$router.push("/")

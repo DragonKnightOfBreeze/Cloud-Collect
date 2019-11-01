@@ -1,16 +1,13 @@
 package com.windea.demo.cloudcollect.core.controller
 
+import com.fasterxml.jackson.databind.*
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import org.codehaus.jackson.map.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.boot.test.autoconfigure.web.servlet.*
 import org.springframework.boot.test.context.*
 import org.springframework.http.*
 import org.springframework.test.web.servlet.*
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers.*
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,9 +32,14 @@ class IndexControllerTest {
 			password = "BreezesLanding"
 		)
 		val formJson = ObjectMapper().writeValueAsString(form)
-		mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(formJson))
-			.andExpect(status().isOk)
-			.andDo(print())
+		mockMvc.post("/register") {
+			content = formJson
+			contentType = MediaType.APPLICATION_JSON
+		}.andExpect {
+			status { isOk }
+		}.andDo {
+			print()
+		}
 	}
 	
 	@Test

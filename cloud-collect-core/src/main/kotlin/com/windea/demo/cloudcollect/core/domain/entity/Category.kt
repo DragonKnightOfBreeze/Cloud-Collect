@@ -34,18 +34,18 @@ data class Category(
 	var summary: String = "",
 	
 	@ApiModelProperty("所属用户。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	@ManyToOne
 	val user: User
 ) : Serializable {
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
-	lateinit var createdTime: LocalDateTime
+	var createdTime: LocalDateTime? = null
 	
 	@ApiModelProperty("最后更新时间。")
 	@Column
 	@LastModifiedDate
-	lateinit var lastModifiedTime: LocalDateTime
+	var lastModifiedTime: LocalDateTime? = null
 	
 	@ApiModelProperty("收藏数量。")
 	@Transient

@@ -31,7 +31,6 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-    # 防止懒加载出错
     open-in-view: true
   jackson:
     serialization:
@@ -93,3 +92,6 @@ cloud-collect:
   data-serialize:
     path: D:/CloudCollect
     file-name: dataSchema
+logging:
+  level:
+    org.springframework: debug

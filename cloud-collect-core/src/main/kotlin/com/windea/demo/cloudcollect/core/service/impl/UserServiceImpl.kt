@@ -2,7 +2,6 @@
 
 package com.windea.demo.cloudcollect.core.service.impl
 
-import com.windea.demo.cloudcollect.core.GlobalConfig.requireActivation
 import com.windea.demo.cloudcollect.core.GlobalConfig.sendEmail
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.request.*
@@ -44,9 +43,6 @@ class UserServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun register(user: User) {
-		//当配置为不要求你激活时，直接激活对应的用户
-		if(!requireActivation) user.activateStatus = true
-		
 		//将激活码存储到缓存中
 		val activateCode = cacheService.setActivateCode(user.username)
 		
@@ -54,7 +50,6 @@ class UserServiceImpl(
 			password = passwordEncoder.encode(user.password) //NOTE 密码需要加密
 		)
 		userRepository.save(newUser)
-		
 		//当配置为要求发送邮件时，发送邮件
 		if(sendEmail) emailService.sendActivateEmail(user, activateCode)
 	}
@@ -66,23 +61,22 @@ class UserServiceImpl(
 		val code = cacheService.getActivateCode(username)
 		if(activateCode != code) throw IncorrectAuthCodeException()
 		
-		val user = userRepository.findByUsername(username) ?: throw UserNotFoundException()
-		user.activateStatus = true
-		userRepository.save(user)
+		val rawUser = userRepository.findByUsername(username) ?: throw UserNotFoundException()
+		rawUser.activateStatus = true
 		
 		//当配置为要求发送邮件时，发送邮件
-		if(sendEmail) emailService.sendHelloEmail(user)
+		if(sendEmail) emailService.sendHelloEmail(rawUser)
 	}
 	
 	override fun forgotPassword(email: String) {
 		//首先要判断用户是否存在
-		val user = userRepository.findByEmail(email) ?: throw UserNotFoundException()
-		val username = user.username
+		val rawUser = userRepository.findByEmail(email) ?: throw UserNotFoundException()
+		val username = rawUser.username
 		//将验证码存储到缓存中
 		val resetPasswordCode = cacheService.setResetPasswordCode(username)
 		
 		//当配置为要求发送邮件时，发送邮件
-		if(sendEmail) emailService.sendResetPasswordEmail(user, resetPasswordCode)
+		if(sendEmail) emailService.sendResetPasswordEmail(rawUser, resetPasswordCode)
 	}
 	
 	@Transactional
@@ -92,19 +86,34 @@ class UserServiceImpl(
 		val code = cacheService.getResetPasswordCode(form.username)
 		if(resetPasswordCode != code) throw IncorrectAuthCodeException()
 		
-		val user = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
-		user.password = passwordEncoder.encode(form.password) //NOTE 密码需要加密
-		userRepository.save(user)
+		val rawUser = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
+		rawUser.password = passwordEncoder.encode(form.password) //NOTE 密码需要加密
 		
 		//当配置为要求发送邮件时，发送邮件
-		if(sendEmail) emailService.sendResetPasswordSuccessEmail(user)
+		if(sendEmail) emailService.sendResetPasswordSuccessEmail(rawUser)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun modify(id: Long, user: User) {
-		user.password = passwordEncoder.encode(user.password) //NOTE 密码需要加密
-		userRepository.save(user)
+		val rawUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException()
+		rawUser.apply {
+			password = passwordEncoder.encode(user.password) //NOTE 密码需要加密
+			nickname = user.nickname
+			introduce = user.introduce
+			avatarUrl = user.avatarUrl
+			backgroundUrl = user.backgroundUrl
+		}
+	}
+	
+	@Transactional
+	@CacheEvict(allEntries = true)
+	override fun focus(id: Long, user: User) {
+		//用户不能关注自身
+		if(id == user.id) return
+		
+		val rawUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException()
+		rawUser.followByUserList += user
 	}
 	
 	@Cacheable(key = "methodName + args")

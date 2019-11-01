@@ -27,8 +27,12 @@ class TagServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun modify(tag: Tag) {
-		tagRepository.save(tag)
+	override fun modify(id: Long, tag: Tag) {
+		val rawTag = tagRepository.findByIdOrNull(id) ?: throw NotFoundException()
+		rawTag.apply {
+			name = tag.name
+			summary = tag.summary
+		}
 	}
 	
 	@Transactional

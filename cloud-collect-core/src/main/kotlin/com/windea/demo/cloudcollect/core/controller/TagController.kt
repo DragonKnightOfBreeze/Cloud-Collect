@@ -9,7 +9,6 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
-import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
@@ -24,7 +23,6 @@ class TagController(
 ) {
 	@ApiOperation("创建自己的标签。")
 	@PostMapping("/create")
-	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Validated(Create::class) tag: Tag, bindingResult: BindingResult,
 		authentication: Authentication) {
 		tagService.create(tag, authentication.toUser())
@@ -32,14 +30,12 @@ class TagController(
 	
 	@ApiOperation("修改自己的标签。")
 	@PutMapping("/{id}")
-	@PreAuthorize("isAuthenticated()")
 	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) tag: Tag, bindingResult: BindingResult) {
-		tagService.modify(tag)
+		tagService.modify(id, tag)
 	}
 	
 	@ApiOperation("删除自己的标签。")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("isAuthenticated()")
 	fun deleteById(@PathVariable id: Long) {
 		tagService.deleteById(id)
 	}

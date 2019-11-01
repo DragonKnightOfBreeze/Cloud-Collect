@@ -8,7 +8,7 @@ interface TagService {
 	fun create(tag: Tag, user: User)
 	
 	/**修改自己的标签。包括名字，概述*/
-	fun modify(tag: Tag)
+	fun modify(id: Long, tag: Tag)
 	
 	/**删除自己的标签。*/
 	fun deleteById(id: Long)

@@ -1,7 +1,7 @@
 <template>
-  <span :class="cssClass">
+  <div :class="cssClass">
     <slot></slot>
-  </span>
+  </div>
 </template>
 
 <script lang="ts">
