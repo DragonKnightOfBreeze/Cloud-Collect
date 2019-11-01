@@ -1,5 +1,7 @@
 package com.windea.demo.cloudcollect.core.domain.entity
 
+import com.fasterxml.jackson.annotation.*
+import com.windea.demo.cloudcollect.core.GlobalConfig.dateFormat
 import com.windea.demo.cloudcollect.core.enums.*
 import io.swagger.annotations.*
 import org.springframework.data.annotation.*
@@ -42,6 +44,7 @@ data class Notice(
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
+	@JsonFormat(pattern = dateFormat)
 	var createdTime: LocalDateTime? = null
 	
 	override fun equals(other: Any?) = other === this || (other is Notice && other.id == id)

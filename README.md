@@ -153,6 +153,7 @@
     * 在实体类上添加`@EntityListeners(AuditingEntityListener::class)`
     * 在配置类上添加`@EnableJpaAuditing`
     * 对应的属性不能是`lateinit var`，否则jackson会出错。必须是可空的`var`，不能是`val`。
+    * 对于这些时间属性，可以加上自定义的格式化注解`@JsonFormat`。注意不能作为元注解，不要使用`@DateTimeFormat`。
 * 验证码功能的几种实现：
 	* 存储到http session中。
 	* 存储到数据库的user表中。（不推荐，待重构）
@@ -201,3 +202,5 @@
         * 当更新懒加载的集合级联属性时，需要为对应的数据库操作方法添加任意`@Transactional`注解。且该方法仅用于数据库操作。
         * 可以使用`@JvmSuppressWildcards var List`，也可以使用`val MutableList`。
         * 当查询时，如果是直接访问实体类的集合级联属性，则需要添加事务注解。如果是调用自定义的持久层方法，则不需要。
+* 关于Swagger：
+    * Swagger界面的默认地址映射是`/swagger-ui.html`。

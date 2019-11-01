@@ -33,7 +33,8 @@
         </ElText>
       </ElCard>
 
-      <ThePagination :pageable-param.sync="searchPageableParam" :total-pages="searchResultPage.totalPages"/>
+      <ThePagination :pageable-param.sync="searchPageableParam" :total-pages="searchResultPage.totalPages"
+                     :total-elements="searchResultPage.totalElements"/>
     </ElCardGroup>
   </div>
 </template>

@@ -3,7 +3,8 @@
       :layout="layout"
       :current-page="syncPageableParam.page"
       :page-size="syncPageableParam.size"
-      :total="totalPages"
+      :page-count="totalPages"
+      :total="totalElements"
       :page-sizes="pageSizes"
       @prev-click="handlePrevClick"
       @next-click="handleNextClick"
@@ -24,6 +25,7 @@
     //NOTE 父组件的对应data需要添加.sync修饰符
     @PropSync("pageableParam") syncPageableParam!: PageableParam
     @Prop() totalPages!: number
+    @Prop() totalElements!: number
 
     @Prop({default: "total, sizes, prev, pager, next, jumper"}) layout!: string
     @Prop({default: [10, 20, 30, 40, 50]}) pageSizes!: number[]

@@ -1,5 +1,7 @@
 package com.windea.demo.cloudcollect.core.domain.entity
 
+import com.fasterxml.jackson.annotation.*
+import com.windea.demo.cloudcollect.core.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.annotation.*
@@ -40,6 +42,7 @@ data class Comment(
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
+	@JsonFormat(pattern = GlobalConfig.dateFormat)
 	var createdTime: LocalDateTime? = null
 	
 	@ApiModelProperty("回复此评论的评论数量。")

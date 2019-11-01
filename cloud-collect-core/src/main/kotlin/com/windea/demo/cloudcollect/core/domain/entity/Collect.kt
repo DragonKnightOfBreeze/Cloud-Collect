@@ -1,6 +1,7 @@
 package com.windea.demo.cloudcollect.core.domain.entity
 
 import com.fasterxml.jackson.annotation.*
+import com.windea.demo.cloudcollect.core.*
 import com.windea.demo.cloudcollect.core.enums.*
 import com.windea.demo.cloudcollect.core.validation.annotation.*
 import com.windea.demo.cloudcollect.core.validation.group.*
@@ -68,11 +69,13 @@ data class Collect(
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
+	@JsonFormat(pattern = GlobalConfig.dateFormat)
 	var createdTime: LocalDateTime? = null
 	
 	@ApiModelProperty("最后更新时间。")
 	@Column
 	@LastModifiedDate
+	@JsonFormat(pattern = GlobalConfig.dateFormat)
 	var lastModifiedTime: LocalDateTime? = null
 	
 	@ApiModelProperty("点赞该收藏的用户列表。懒加载。")

@@ -34,3 +34,8 @@ Vue.filter("enumText", (value: string, type: string) => {
     return ""
   }
 })
+
+//NOTE 在后台使用@JsonFormat格式化时间
+//Vue.filter("dateTime",(value:string,type:string)=>{
+//  return value
+//})
