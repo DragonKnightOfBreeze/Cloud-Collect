@@ -30,7 +30,7 @@
   import EditTagDialog from "@/components/dialog/EditTagDialog.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ElText from "@/components/public/ElText.vue"
-  import ThePagination from "@/components/ThePagination.vue"
+  import ThePagination from "@/components/root/ThePagination.vue"
   import * as tagService from "@/services/tagService"
   import {Collect, Page, PageableParam, Tag, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"

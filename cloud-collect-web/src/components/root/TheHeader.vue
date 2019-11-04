@@ -6,7 +6,7 @@
       <ElCol :span="4">
         <router-link to="/">
           <!--NOTE 使用ElImage会找不到图片-->
-          <img id="app-logo" src="../assets/logo.png" alt="云收藏"/>
+          <img id="app-logo" src="../../assets/logo.png" alt="云收藏"/>
         </router-link>
       </ElCol>
       <!--导航内容，到各个分页-->

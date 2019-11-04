@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts">
-  import TheFooter from "@/components/TheFooter.vue"
-  import TheHeader from "@/components/TheHeader.vue"
+  import TheFooter from "@/components/root/TheFooter.vue"
+  import TheHeader from "@/components/root/TheHeader.vue"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 

@@ -9,7 +9,7 @@
           <ElLink type="primary" :href="'/collects/'+collect.id">{{collect.name}}</ElLink>
         </ElCol>
         <ElCol :span="4" :offset="6">
-          <ElLink :href="collect.url">源地址</ElLink>
+          <ElLink :href="collect.url">链接</ElLink>
         </ElCol>
       </ElRow>
     </template>
@@ -28,11 +28,14 @@
     <ElRow class="app-meta">
       <ElCol :span="6">
         分类：
-        {{collect.category | categoryName}}
+        <ElLink type="info" v-if="collect.category" :href="'/categories/'+collect.id">{{collect.category.name}}</ElLink>
+        <ElLink type="info" disabled v-else>未分类</ElLink>
       </ElCol>
       <ElCol :span="18">
         标签：
-        <ElTag size="small" v-for="tag in collect.tags" :key="tag.id">{{tag.name}}</ElTag>
+        <ElTag size="small" v-for="tag in collect.tags" :key="tag.id">
+          <ElLink type="info" :href="'/tags/'+tag.id">{{tag.name}}</ElLink>
+        </ElTag>
       </ElCol>
     </ElRow>
     <ElText class="app-summary">

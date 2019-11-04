@@ -1,12 +1,12 @@
 <template>
-  <!--TODO-->
+
 </template>
 
 <script lang="ts">
   import {Component, Vue} from "vue-property-decorator"
 
   @Component
-  export default class CollectOverview extends Vue {
+  export default class EditCategoryDialog extends Vue {
   }
 </script>
 
