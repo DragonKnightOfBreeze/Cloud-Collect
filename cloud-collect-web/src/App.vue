@@ -2,7 +2,7 @@
   <div id="app">
     <!--NOTE 不指定direction的话，就会出现奇怪的问题-->
     <ElContainer direction="vertical">
-      <ElHeader v-show="showHeader" style="position: fixed">
+      <ElHeader v-show="showHeader">
         <TheHeader></TheHeader>
       </ElHeader>
 
@@ -60,9 +60,17 @@
     color: #2c3e50;
     width: 1000px;
     margin: 0 auto;
-    padding-top: 60px;
   }
   img {
     vertical-align: center;
+  }
+
+  .app-meta {
+    font-size: 12px;
+    line-height: 18px;
+    color: #909399;
+  }
+  .app-summary {
+    margin: 10px 0;
   }
 </style>

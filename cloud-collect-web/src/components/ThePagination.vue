@@ -1,15 +1,15 @@
 <template>
-  <ElPagination
-      :layout="layout"
-      :current-page="syncPageableParam.page"
-      :page-size="syncPageableParam.size"
-      :page-count="totalPages"
-      :total="totalElements"
-      :page-sizes="pageSizes"
-      @prev-click="handlePrevClick"
-      @next-click="handleNextClick"
-      @current-change="handleCurrentChange"
-      @size-change="handleSizeChange">
+  <ElPagination class="app-pagination align-center"
+                :layout="layout"
+                :current-page="syncPageableParam.page+1"
+                :page-size="syncPageableParam.size"
+                :page-count="totalPages"
+                :total="totalElements"
+                :page-sizes="pageSizes"
+                @prev-click="handlePrevClick"
+                @next-click="handleNextClick"
+                @current-change="handleCurrentChange"
+                @size-change="handleSizeChange">
   </ElPagination>
 </template>
 
@@ -28,26 +28,34 @@
     @Prop() totalElements!: number
 
     @Prop({default: "total, sizes, prev, pager, next, jumper"}) layout!: string
-    @Prop({default: [10, 20, 30, 40, 50]}) pageSizes!: number[]
+    @Prop({default: () => [10, 20, 30, 40, 50]}) pageSizes!: number[]
+
+    //NOTE Vue监听器监听不到数组内部的变化，为什么？
 
     handlePrevClick() {
       this.syncPageableParam.page--
+      this.syncPageableParam = {...this.syncPageableParam}
     }
 
     handleNextClick() {
       this.syncPageableParam.page++
+      this.syncPageableParam = {...this.syncPageableParam}
     }
 
     handleCurrentChange(value: number) {
-      this.syncPageableParam.page = value
+      this.syncPageableParam.page = value - 1 //page是从0开始的
+      this.syncPageableParam = {...this.syncPageableParam}
     }
 
     handleSizeChange(value: number) {
-      this.syncPageableParam.size = value
+      this.syncPageableParam.size = value //size在SpringBoot里面默认为20
+      this.syncPageableParam = {...this.syncPageableParam}
     }
   }
 </script>
 
 <style scoped>
-
+  .app-pagination {
+    margin: 5px 5px;
+  }
 </style>

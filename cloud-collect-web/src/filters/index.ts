@@ -1,3 +1,4 @@
+import {Category, Tag} from "@/types"
 import Vue from "vue"
 
 const enumText: { [enumName: string]: { [enumConst: string]: string } } = {
@@ -39,3 +40,17 @@ Vue.filter("enumText", (value: string, type: string) => {
 //Vue.filter("dateTime",(value:string,type:string)=>{
 //  return value
 //})
+
+Vue.filter("categoryName", (value: Category): string => {
+  return value && value.name || "未分类"
+})
+
+Vue.filter("tagNames", (value: Tag[]): string[] => {
+  const limit = 4
+  const names = value.map(tag => tag.name)
+  if (names.length <= limit) {
+    return names
+  } else {
+    return names.slice(0, limit - 1).concat("...")
+  }
+})

@@ -119,10 +119,16 @@
 
 # 注意事项
 
+## 前端
+
 * 如何使文字水平中心对齐：
     * `line-height: 51px;text-align: center;`
 * 如何使文字和图片垂直中心对齐：
     * `line-height: 51px;vertical-align: middle;`
+* 关于vue响应式的问题：
+    * 默认情况下，vue监听不到对象和数组内部的变化（包括添加、删除、修改？）
+    * 必要时，需要使用`Vue.set`和`Array.splice`方法
+    * vue的监听器不会监听到对象和数组内部的变化
 
 ## 后台
 

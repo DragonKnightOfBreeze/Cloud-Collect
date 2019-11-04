@@ -5,7 +5,7 @@ import axios from "axios"
 
 //不要直接使用axios，使用新的实例
 const http = axios.create({
-  baseURL: "/cloudCollect/api",
+  baseURL: "http://localhost:8080/cloudCollect/api",
   timeout: 36000
 })
 
@@ -13,15 +13,15 @@ const http = axios.create({
 
 http.interceptors.request.use(value => {
   //TODO 可能需要设置额外的请求头
-  console.log("Request success.")
+  console.log(`Request success:`, value)
   return value
 }, error => {
-  console.error("Request error: ", error)
+  console.error("Request error:", error)
   Promise.reject(error)
 })
 
 http.interceptors.response.use(value => {
-  console.log("Response success.")
+  console.log("Response success:", value)
   return value
 }, error => {
   //error: {request} | {response} | {message}

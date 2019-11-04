@@ -74,7 +74,7 @@ class CategoryController(
 	
 	@ApiOperation("得到该分类的所有收藏。")
 	@GetMapping("/{id}/collectPage")
-	fun getCollectPage(@PathVariable id: Long, @PathVariable pageable: Pageable): Page<Collect> {
+	fun getCollectPage(@PathVariable id: Long, pageable: Pageable): Page<Collect> {
 		return categoryService.getCollectPage(id, pageable)
 	}
 }

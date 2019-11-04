@@ -74,7 +74,7 @@ class TagController(
 	
 	@ApiOperation("得到某一标签的所有收藏。")
 	@GetMapping("/{id}/collectPage")
-	fun getCollectPage(@PathVariable id: Long, @PathVariable pageable: Pageable): Page<Collect> {
+	fun getCollectPage(@PathVariable id: Long, pageable: Pageable): Page<Collect> {
 		return tagService.getCollectPage(id, pageable)
 	}
 }

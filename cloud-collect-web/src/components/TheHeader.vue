@@ -169,8 +169,12 @@
 
 <style scoped>
   #app-navbar {
+    position: fixed;
+    width: 1000px;
     height: 61px;
     line-height: 61px;
+    z-index: 1000;
+    background-color: #fff;
   }
   #app-logo {
     height: 51px;

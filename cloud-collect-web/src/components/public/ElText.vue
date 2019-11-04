@@ -1,5 +1,5 @@
 <template>
-  <div :class="cssClass">
+  <div class="el-text" :class="cssClass">
     <slot></slot>
   </div>
 </template>
