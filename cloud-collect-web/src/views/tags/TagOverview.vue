@@ -31,9 +31,9 @@
 </template>
 
 <script lang="ts">
+  import TagOverviewCard from "@/components/card/TagOverviewCard.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ElText from "@/components/public/ElText.vue"
-  import TagOverviewCard from "@/components/tags/TagOverviewCard.vue"
   import ThePagination from "@/components/ThePagination.vue"
   import * as tagService from "@/services/tagService"
   import {Page, PageableParam, Tag} from "@/types"
@@ -72,7 +72,7 @@
       try {
         this.searchPage = await tagService.findAllByNameContains(this.searchTerm, this.searchPageableParam)
       } catch (e) {
-        this.$message("查询失败！")
+        this.$message.warning("查询失败！")
       }
     }
   }

@@ -65,12 +65,29 @@
     vertical-align: center;
   }
 
+  .el-card {
+    margin: 10px 10px;
+  }
+  .el-tag {
+    margin: 0 5px
+  }
+
+  .app-item-list {
+    padding: 10px 0;
+  }
   .app-meta {
+    font-size: 14px;
+    line-height: 24px;
+    color: #909399;
+    padding: 3px 0;
+  }
+  .app-meta-small {
     font-size: 12px;
     line-height: 18px;
     color: #909399;
+    padding: 3px 0;
   }
   .app-summary {
-    margin: 10px 0;
+    padding: 15px 0;
   }
 </style>

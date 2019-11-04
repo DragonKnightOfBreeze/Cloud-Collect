@@ -56,8 +56,8 @@
 </template>
 
 <script lang="ts">
-  import LoginDialog from "@/components/home/LoginDialog.vue"
-  import RegisterDialog from "@/components/home/RegisterDialog.vue"
+  import LoginDialog from "@/components/dialog/LoginDialog.vue"
+  import RegisterDialog from "@/components/dialog/RegisterDialog.vue"
   import {DialogType, DropDownItem, MenuItem, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"

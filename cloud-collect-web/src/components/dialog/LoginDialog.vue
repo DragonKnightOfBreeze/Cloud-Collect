@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-  import ForgotPasswordDialog from "@/components/home/ForgotPasswordDialog.vue"
+  import ForgotPasswordDialog from "@/components/dialog/ForgotPasswordDialog.vue"
   import * as indexService from "@/services/indexService"
   import {DialogType, LoginForm, User} from "@/types"
   import {Component, PropSync, Vue} from "vue-property-decorator"

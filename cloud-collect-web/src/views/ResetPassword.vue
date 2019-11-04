@@ -46,7 +46,6 @@
         console.warn("权限错误")
         this.$router.push("/")
       }
-
       this.form.username = this.$route.query["username"].toString()
       this.resetPasswordCode = this.$route.query["resetPasswordCode"].toString()
     }
