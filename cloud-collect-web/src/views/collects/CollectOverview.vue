@@ -6,30 +6,38 @@
       <div>收藏和管理你所钟情的网页和文章！</div>
     </div>
     <ElDivider/>
-    <ElForm inline class="align-center">
-      <ElFormItem label="搜索选定的收藏">
-        <ElInput v-model="searchTerm1" placeholder="关键字"></ElInput>
-      </ElFormItem>
-      <ElFormItem>
-        <ElButton type="primary" @click="searchCollectByName"><ElIcon name="search"/></ElButton>
-      </ElFormItem>
-    </ElForm>
-    <ElForm inline class="align-center">
-      <ElFormItem label="根据分类搜索选定的收藏">
-        <ElInput v-model="searchTerm2" placeholder="关键字"></ElInput>
-      </ElFormItem>
-      <ElFormItem>
-        <ElButton type="primary" @click="searchCollectByCategoryName"><ElIcon name="search"/></ElButton>
-      </ElFormItem>
-    </ElForm>
-    <ElForm inline class="align-center">
-      <ElFormItem label="根据标签搜索选定的收藏">
-        <ElInput v-model="searchTerm3" placeholder="关键字"></ElInput>
-      </ElFormItem>
-      <ElFormItem>
-        <ElButton type="primary" @click="searchCollectByTagName"><ElIcon name="search"/></ElButton>
-      </ElFormItem>
-    </ElForm>
+    <ElRow>
+      <ElCol :span="8">
+        <ElForm inline class="align-center">
+          <ElFormItem>
+            <ElInput v-model="searchTerm1" placeholder="按名字搜索"></ElInput>
+          </ElFormItem>
+          <ElFormItem>
+            <ElButton type="primary" @click="searchCollectByName"><ElIcon name="search"/></ElButton>
+          </ElFormItem>
+        </ElForm>
+      </ElCol>
+      <ElCol :span="8">
+        <ElForm inline class="align-center">
+          <ElFormItem>
+            <ElInput v-model="searchTerm2" placeholder="按分类搜索"></ElInput>
+          </ElFormItem>
+          <ElFormItem>
+            <ElButton type="primary" @click="searchCollectByCategoryName"><ElIcon name="search"/></ElButton>
+          </ElFormItem>
+        </ElForm>
+      </ElCol>
+      <ElCol :span="8">
+        <ElForm inline class="align-center">
+          <ElFormItem>
+            <ElInput v-model="searchTerm3" placeholder="按标签搜索"></ElInput>
+          </ElFormItem>
+          <ElFormItem>
+            <ElButton type="primary" @click="searchCollectByTagName"><ElIcon name="search"/></ElButton>
+          </ElFormItem>
+        </ElForm>
+      </ElCol>
+    </ElRow>
 
     <ElCardGroup v-if="showSearchResult">
       <CollectOverviewCard v-for="collect in searchList" :key="collect.id"
