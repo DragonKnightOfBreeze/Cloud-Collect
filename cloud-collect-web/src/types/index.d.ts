@@ -13,9 +13,9 @@ export interface DropDownItem {
 
 export type DialogType = "login" | "register"
 
-//REGION Backend
+export type CollectSearchType = "name" | "categoryName" | "tagName";
 
-//NOTE 这里不能直接使用Collect作为接口名，因为与组件名重复了，是否可考虑使用ICollect？
+//REGION Backend
 
 export interface Collect {
   id?: number
@@ -124,15 +124,15 @@ export interface UserDetailsVo extends UserDetails {
 
 //REGION enums
 
-export type CollectPrivacy = "PUBLIC" | "PRIVATE"
+export enum CollectPrivacy {public = "PUBLIC", private = "PRIVATE"}
 
-export type CollectType = "NONE" | "LOVE" | "IMPORT" | "TODO" | "DELAY"
+export enum CollectType {none = "NONE", love = "LOVE", import = "IMPORT", todo = "TODO", delay = "DELAY"}
 
-export type DataType = "JSON" | "YAML" | "XML" | "PROPERTIES"
+export enum NoticeType {system = "SYSTEM", account = "ACCOUNT", hello = "HELLO"}
 
-export type NoticeType = "SYSTEM" | "ACCOUNT" | "HELLO"
+export enum Role {normal = "NORMAL", admin = "ADMIN"}
 
-export type Role = "NORMAL" | "ADMIN"
+export enum DataType {json = "JSON", yaml = "YAML", xml = "XML", properties = "PROPERTIES"}
 
 //REGION SpringBoot
 

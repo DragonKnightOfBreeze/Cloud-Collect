@@ -31,7 +31,7 @@ Vue.filter("enumText", (value: string, type: string) => {
   try {
     return enumText[type][value]
   } catch (e) {
-    console.warn("枚举值或枚举类型不正确。")
+    console.error("枚举值或枚举类型不正确。")
     return ""
   }
 })

@@ -46,7 +46,7 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import * as collectService from "@/services/collectService"
-  import {Page, PageableParam, Tag} from "@/types"
+  import {CollectSearchType, Page, PageableParam, Tag} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
@@ -56,7 +56,7 @@
     private searchTerm1: string = ""
     private searchTerm2: string = ""
     private searchTerm3: string = ""
-    private searchType: "name" | "categoryName" | "tagName" = "name"
+    private searchType: CollectSearchType = "name"
     private searchPageableParam: PageableParam = {page: 0, size: 20, sort: []}
     private searchPage: Page<Tag> | null = null
 
