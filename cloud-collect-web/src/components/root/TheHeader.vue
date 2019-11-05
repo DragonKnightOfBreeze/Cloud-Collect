@@ -24,7 +24,7 @@
           <ElAvatar id="app-user-avatar" fit="fill" :src="currentUser.avatarUrl"/>
         </template>
       </ElCol>
-      <ElCol :span="6">
+      <ElCol :span="6" class="align-right">
         <!--用户信息，点击跳转到档案页，点击下拉项跳转到对应页-->
         <template v-if="currentUser">
           <ElDropdown split-button type="primary" @click="handleGoProfile" @command="handleProfileCommand">
@@ -120,6 +120,8 @@
     //DONE 监听当前路由，得到查询参数operation，尝试进行相应的操作
     private changeOperation(value: Route, oldValue: Route) {
       const operation = value.query["operation"]
+      if (!operation) return
+
       console.log(`更改当前操作：${operation}`)
       if (operation == "login" || operation == "register") {
         this.handleOpenDialog(operation)
