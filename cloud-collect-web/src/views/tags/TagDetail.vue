@@ -3,9 +3,10 @@
     <h3 class="align-center">标签详情</h3>
     <ElDivider/>
     <TagDetailCard :tag="tag"/>
-    <ElButtonGroup class="align-center">
-      <ElButton type="success" v-show="isCurrentUser" @click="handleEdit">编辑</ElButton>
-      <ElButton type="danger" v-show="isCurrentUser" @click="handleDelete">删除</ElButton>
+
+    <ElButtonGroup class="align-center" v-show="isCurrentUser">
+      <ElButton type="success" @click="handleEdit">编辑</ElButton>
+      <ElButton type="danger" @click="handleDelete">删除</ElButton>
     </ElButtonGroup>
 
     <EditTagDialog :visible.sync="editDialogVisible" @submit="handleSubmit"/>
@@ -29,7 +30,6 @@
   import TagDetailCard from "@/components/card/TagDetailCard.vue"
   import EditTagDialog from "@/components/dialog/EditTagDialog.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
-  import ElText from "@/components/public/ElText.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import * as tagService from "@/services/tagService"
   import {Collect, Page, PageableParam, Tag, User} from "@/types"
@@ -37,7 +37,7 @@
   import {Route} from "vue-router"
 
   @Component({
-    components: {EditTagDialog, CollectOverviewCard, TagDetailCard, ElCardGroup, ThePagination, ElText}
+    components: {EditTagDialog, CollectOverviewCard, TagDetailCard, ElCardGroup, ThePagination}
   })
   export default class TagDetail extends Vue {
     private tag: Tag | null = null
@@ -128,8 +128,5 @@
 </script>
 
 <style scoped>
-  .float-right {
-    float: right;
-    padding: 3px 0;
-  }
+
 </style>

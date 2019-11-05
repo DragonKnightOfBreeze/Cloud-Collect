@@ -67,7 +67,7 @@
         this.$message.success("登录成功！")
         this.handleClose()
       } catch (e) {
-        this.$message.warning("登录失败！请重新填写登录信息。")
+        this.$message.warning("登录失败！用户名或密码错误！")
       }
     }
 

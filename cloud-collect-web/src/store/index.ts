@@ -12,7 +12,9 @@ export default new Vuex.Store({
     //当前用户
     _currentUser: null,
     //参数校验的错误列表
-    _validationErrors: []
+    _validationErrors: [],
+    //参数校验的首条消息
+    _validationMessage: ""
   },
   getters: {
     currentUser(state): User | null {
@@ -24,14 +26,23 @@ export default new Vuex.Store({
       //每次读取错误列表时，需要同时清空所有数据
       state._validationErrors = []
       return result
+    },
+    validationMessage(state): string {
+      const result = state._validationMessage
+      //每次读取时需要清空消息
+      state._validationMessage = ""
+      return result
     }
   },
   mutations: {
     setCurrentUser(state, currentUser: User) {
       state._currentUser = currentUser as any
     },
-    addValidationErrors(state, validationErrors: ObjectError[]) {
+    setValidationErrors(state, validationErrors: ObjectError[]) {
       state._validationErrors.push(...validationErrors as [])
+    },
+    setValidationMessage(state, validationMessage: string) {
+      state._validationMessage = validationMessage
     }
   },
   actions: {},

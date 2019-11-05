@@ -68,7 +68,8 @@
         this.$message.success("注册成功，请登录！")
         this.handleLogin()
       } catch (e) {
-        this.$message.warning("注册失败！请重新填写注册信息。")
+        const validationMessage = this.$store.getters.validationMessage
+        this.$message.warning(`注册失败！${validationMessage}`)
       }
     }
 

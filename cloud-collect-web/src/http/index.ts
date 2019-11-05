@@ -30,9 +30,14 @@ http.interceptors.response.use(value => {
     switch (status) {
       case 400:
         //如果为参数验证的错误
-        if (error.response.data.validationErrors) {
-          const validationErrors = error.response.data.validationErrors as ObjectError[]
-          store.commit("addValidationErrors", validationErrors)
+        //if (error.response.data.validationErrors) {
+        //  const validationErrors = error.response.data.validationErrors as ObjectError[]
+        //  store.commit("setValidationErrors", validationErrors)
+        //}
+        //这里只取最先一条消息
+        if (error.response.data.valitationErrors) {
+          const validationMessage = (error.response.data.validationErrors as ObjectError[])[0].defaultMessage
+          store.commit("setValidationMessage", validationMessage)
         }
         break
       case 401:

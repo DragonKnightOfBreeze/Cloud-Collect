@@ -3,12 +3,12 @@
     <h3 class="align-center">标签一览</h3>
     <ElDivider/>
     <div class="align-center">
-      <div>标签用于为收藏添加额外的说明信息，进行额外的归类。</div>
+      <div>标签可为收藏添加额外的说明信息。</div>
       <div>一个收藏可以附带多个标签。</div>
     </div>
     <ElDivider/>
     <ElForm inline class="align-center">
-      <ElFormItem label="搜索选定的标签：">
+      <ElFormItem label="搜索选定的标签">
         <ElInput v-model="searchTerm" placeholder="关键字"></ElInput>
       </ElFormItem>
       <ElFormItem>
@@ -18,7 +18,7 @@
       </ElFormItem>
     </ElForm>
 
-    <!--TODO 提取组件-->
+    <!--DONE 提取组件-->
     <!--DONE 第一行标题显示标签的名字（文字链接）、创建时间、更新时间、收藏数量（+徽章）。第二行显示标签的概述（默认色）。-->
     <ElCardGroup v-if="showSearchResult">
       <TagOverviewCard v-for="tag in searchList" :key="tag.id"
@@ -33,14 +33,13 @@
 <script lang="ts">
   import TagOverviewCard from "@/components/card/TagOverviewCard.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
-  import ElText from "@/components/public/ElText.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import * as tagService from "@/services/tagService"
   import {Page, PageableParam, Tag} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {TagOverviewCard, ElText, ElCardGroup, ThePagination}
+    components: {TagOverviewCard, ElCardGroup, ThePagination}
   })
   export default class TagOverview extends Vue {
     private searchTerm: string = ""

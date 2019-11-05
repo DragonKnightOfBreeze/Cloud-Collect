@@ -1,5 +1,5 @@
 <template>
-  <ElDialog title="编辑标签" :visible="syncVisible" @close="handleClose">
+  <ElDialog title="编辑标签" center :visible="syncVisible" @close="handleClose">
     <ElForm>
       <ElFormItem label="名字" :label-width="formLabelWidth">
         <ElInput v-model="tag.name"></ElInput>
@@ -34,7 +34,8 @@
         this.$message.success("编辑成功！")
         this.handleClose()
       } catch (e) {
-        this.$message.warning("编辑失败！")
+        const validationMessage = this.$store.getters.validationMessage
+        this.$message.warning(`编辑失败！${validationMessage}`)
       }
     }
 
