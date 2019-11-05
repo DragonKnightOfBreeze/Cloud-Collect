@@ -1,20 +1,24 @@
 <template>
   <div>
-    <h3 class="align-center">分类一览</h3>
+    <ElPageHeader title="返回首页" content="分类总览" @back="handleGoBack"></ElPageHeader>
     <ElDivider/>
-    <div class="align-center">
+    <div>
       <div>分类可为收藏进行唯一的归类。</div>
       <div>一个收藏只能属于一个分类。</div>
     </div>
     <ElDivider/>
-    <ElForm inline class="align-center">
-      <ElFormItem label="搜索选定的分类">
-        <ElInput v-model="searchTerm" placeholder="关键字"></ElInput>
-      </ElFormItem>
-      <ElFormItem>
-        <ElButton type="primary" @click="searchCategoryByName"><ElIcon name="search"/></ElButton>
-      </ElFormItem>
-    </ElForm>
+    <ElRow>
+      <ElCol :span="8">
+        <ElForm inline class="align-center">
+          <ElFormItem>
+            <ElInput v-model="searchTerm" placeholder="按名字搜索"></ElInput>
+          </ElFormItem>
+          <ElFormItem>
+            <ElButton type="primary" @click="searchCategoryByName"><ElIcon name="search"/></ElButton>
+          </ElFormItem>
+        </ElForm>
+      </ElCol>
+    </ElRow>
 
     <ElCardGroup v-if="showSearchResult">
       <CategoryOverviewCard v-for="category in searchList" :key="category.id"
@@ -59,6 +63,10 @@
     onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.searchCategoryByName()
+    }
+
+    handleGoBack() {
+      this.$router.push("/")
     }
 
     async searchCategoryByName() {

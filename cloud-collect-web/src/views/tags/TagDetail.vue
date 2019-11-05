@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="align-center">标签详情</h3>
+    <ElPageHeader title="返回总览页面" content="标签详情" @back="handleGoBack"></ElPageHeader>
     <ElDivider/>
     <TagDetailCard :tag="tag"/>
 
@@ -102,6 +102,10 @@
     //DONE 当用户编辑标签并提交更改成功后，需要从后台重新得到标签数据
     handleSubmit() {
       this.getTag()
+    }
+
+    handleGoBack() {
+      this.$router.push("/tags")
     }
 
     private async getTag() {

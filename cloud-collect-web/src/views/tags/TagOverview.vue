@@ -1,20 +1,24 @@
 <template>
   <div>
-    <h3 class="align-center">标签一览</h3>
+    <ElPageHeader title="返回首页" content="标签总览" @back="handleGoBack"></ElPageHeader>
     <ElDivider/>
-    <div class="align-center">
+    <div>
       <div>标签可为收藏添加额外的说明信息。</div>
       <div>一个收藏可以附带多个标签。</div>
     </div>
     <ElDivider/>
-    <ElForm inline class="align-center">
-      <ElFormItem label="搜索选定的标签">
-        <ElInput v-model="searchTerm" placeholder="关键字"></ElInput>
-      </ElFormItem>
-      <ElFormItem>
-        <ElButton type="primary" @click="searchTagByName"><ElIcon name="search"/></ElButton>
-      </ElFormItem>
-    </ElForm>
+    <ElRow>
+      <ElCol :span="8">
+        <ElForm inline class="align-center">
+          <ElFormItem>
+            <ElInput v-model="searchTerm" placeholder="按名字搜索"></ElInput>
+          </ElFormItem>
+          <ElFormItem>
+            <ElButton type="primary" @click="searchTagByName"><ElIcon name="search"/></ElButton>
+          </ElFormItem>
+        </ElForm>
+      </ElCol>
+    </ElRow>
 
     <ElCardGroup v-if="showSearchResult">
       <TagOverviewCard v-for="tag in searchList" :key="tag.id"
@@ -55,6 +59,10 @@
     onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.searchTagByName()
+    }
+
+    handleGoBack() {
+      this.$router.push("/")
     }
 
     async searchTagByName() {

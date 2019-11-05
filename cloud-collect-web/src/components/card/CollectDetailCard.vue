@@ -3,10 +3,12 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from "vue-property-decorator"
+  import {Collect} from "@/types"
+  import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component
   export default class CollectDetailCard extends Vue {
+    @Prop() collect!: Collect
   }
 </script>
 

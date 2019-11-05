@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h3 class="align-center">收藏一览</h3>
+    <ElPageHeader title="返回首页" content="收藏总览" @back="handleGoBack"></ElPageHeader>
     <ElDivider/>
-    <div class="align-center">
+    <div>
       <div>收藏和管理你所钟情的网页和文章！</div>
     </div>
     <ElDivider/>
@@ -72,6 +72,10 @@
     onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.searchCollect()
+    }
+
+    handleGoBack() {
+      this.$router.push("/")
     }
 
     searchCollect() {

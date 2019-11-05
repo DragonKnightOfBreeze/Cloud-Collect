@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="align-center">分类详情</h3>
+    <ElPageHeader title="返回总览页面" content="分类详情" @back="handleGoBack"></ElPageHeader>
     <ElDivider/>
     <CategoryDetailCard :category="category"/>
 
@@ -38,7 +38,7 @@ import {Route} from "vue-router"
 @Component({
   components: {EditCategoryDialog, CollectOverviewCard, CategoryDetailCard, ElCardGroup, ThePagination}
 })
-  export default class CategoryDetail extends Vue {
+export default class CategoryDetail extends Vue {
   private category: Category | null = null
   private activeNames = []
   private collectPageableParam: PageableParam = {page: 0, size: 20, sort: []}
@@ -90,7 +90,7 @@ import {Route} from "vue-router"
 
   async handleDelete() {
     try {
-      await this.$confirm("此操作将永久删除该标签, 是否继续?", {type: "warning"})
+      await this.$confirm("此操作将永久删除该分类, 是否继续?", {type: "warning"})
       await this.deleteCategory()
       await this.$router.push(`/profile/${this.currentUser!.id}`)
     } catch (e) {
@@ -98,21 +98,17 @@ import {Route} from "vue-router"
     }
   }
 
-  //DONE 当用户编辑标签并提交更改成功后，需要从后台重新得到标签数据
+  //当用户编辑标签并提交更改成功后，需要从后台重新得到标签数据
   handleSubmit() {
     this.getCategory()
   }
 
-  private async getCategory() {
-    this.category = await categoryService.findById(this.categoryId)
+  handleGoBack() {
+    this.$router.push("/categories")
   }
 
-  private async getCollectPage() {
-    try {
-      this.collectPage = await categoryService.getCollectPage(this.categoryId, this.collectPageableParam)
-    } catch (e) {
-      this.$message("查询失败!")
-    }
+  private async getCategory() {
+    this.category = await categoryService.findById(this.categoryId)
   }
 
   private async deleteCategory() {
@@ -123,7 +119,15 @@ import {Route} from "vue-router"
       this.$message.warning("删除失败！")
     }
   }
+
+  private async getCollectPage() {
+    try {
+      this.collectPage = await categoryService.getCollectPage(this.categoryId, this.collectPageableParam)
+    } catch (e) {
+      this.$message("查询失败!")
+    }
   }
+}
 </script>
 
 <style scoped>
