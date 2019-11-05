@@ -11,6 +11,7 @@ import java.io.*
 import java.time.*
 import javax.persistence.*
 import javax.persistence.Id
+import javax.persistence.Transient
 import javax.validation.constraints.*
 
 @ApiModel("收藏的分类。一个收藏可以有多个分类。")

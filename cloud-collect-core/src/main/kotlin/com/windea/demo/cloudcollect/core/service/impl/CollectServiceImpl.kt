@@ -66,6 +66,13 @@ class CollectServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
+	override fun unpraise(id: Long, user: User) {
+		val rawCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
+		rawCollect.praiseByUserList -= user
+	}
+	
+	@Transactional
+	@CacheEvict(allEntries = true)
 	override fun deleteById(id: Long) {
 		collectRepository.deleteById(id)
 	}
@@ -145,7 +152,6 @@ class CollectServiceImpl(
 		praiseByUserCount = userRepository.countByPraiseToCollectListId(id)
 		commentCount = commentRepository.countByCollectId(id)
 	}
-	
 	
 	override fun isPraised(id: Long, user: User): Boolean {
 		return collectRepository.existsByIdAndPraiseByUserList(id, user)

@@ -75,9 +75,9 @@ class MockData(
 	fun addCascadeMockData() {
 		val user = userRepository.findByIdOrNull(1)!!
 		val user1 = userRepository.findByIdOrNull(5)!!
-		userService.focus(3, user)
-		userService.focus(6, user)
-		userService.focus(1, user1)
+		userService.follow(3, user)
+		userService.follow(6, user)
+		userService.follow(1, user1)
 		
 		val a = userRepository.findAllByFollowByUserListId(1, Pageable.unpaged())
 		println(a.content)

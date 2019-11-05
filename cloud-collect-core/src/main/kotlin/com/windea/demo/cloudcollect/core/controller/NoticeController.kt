@@ -18,46 +18,27 @@ class NoticeController(
 	private val noticeService: NoticeService
 ) {
 	//NOTE 通知的创建交由前端
-	@ApiOperation("创建某一用户的通知。")
+	@ApiOperation("创建一条通知。")
 	@PostMapping("/create")
 	fun create(@RequestBody notice: Notice, authentication: Authentication) {
 		noticeService.create(notice, authentication.toUser())
 	}
 	
-	@ApiOperation("阅读自己的通知。")
-	@PutMapping("/{id}/read")
-	fun read(@PathVariable id: Long, @RequestBody notice: Notice) {
-		noticeService.read(notice)
-	}
-	
-	@ApiOperation("删除自己的通知。")
+	@ApiOperation("删除一条通知。")
 	@DeleteMapping("/{id}")
 	fun deleteById(@PathVariable id: Long) {
 		noticeService.deleteById(id)
 	}
 	
-	@ApiOperation("得到某一通知。")
-	@GetMapping("/{id}")
-	fun findById(@PathVariable id: Long): Notice {
-		return noticeService.findById(id)
+	@ApiOperation("删除某一用户的所有浏览记录。")
+	@DeleteMapping("/deleteAllByUserId")
+	fun deleteAllByUserId(@RequestParam userId: Long) {
+		noticeService.deleteAllByUserId(userId)
 	}
 	
-	@ApiOperation("得到所有通知。")
-	@GetMapping("/findAll")
-	fun findAll(pageable: Pageable): Page<Notice> {
-		return noticeService.findAll(pageable)
-	}
-	
-	@ApiOperation("查询某一用户的所有通知。")
+	@ApiOperation("得到某一用户的所有通知。")
 	@GetMapping("/findAllByUserId")
 	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<Notice> {
 		return noticeService.findAllByUserId(userId, pageable)
-	}
-	
-	@ApiOperation("查询某一用户的所有已读/未读通知。")
-	@GetMapping("/findAllByUserIdAndRead")
-	fun findAllByUserIdAndRead(@RequestParam userId: Long, @RequestParam readStatus: Boolean,
-		pageable: Pageable): Page<Notice> {
-		return noticeService.findAllByUserIdAndRead(userId, readStatus, pageable)
 	}
 }

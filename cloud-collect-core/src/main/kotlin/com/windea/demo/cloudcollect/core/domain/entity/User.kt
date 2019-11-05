@@ -13,6 +13,7 @@ import java.io.*
 import java.time.*
 import javax.persistence.*
 import javax.persistence.Id
+import javax.persistence.Transient
 import javax.validation.constraints.*
 
 @ApiModel("用户。")
@@ -108,13 +109,13 @@ data class User(
 	@Transient
 	var followByUserCount: Long = 0
 	
+	@ApiModelProperty("点赞收藏数量。")
+	@Transient
+	var praiseToCollectCount: Long = 0
+	
 	@ApiModelProperty("收藏数量。")
 	@Transient
 	var collectCount: Long = 0
-	
-	@ApiModelProperty("评论数量。")
-	@Transient
-	var commentCount: Long = 0
 	
 	@ApiModelProperty("通知数量。")
 	@Transient

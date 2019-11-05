@@ -5,11 +5,10 @@ import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.*
 
 interface NoticeRepository : JpaRepository<Notice, Long> {
-	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Notice>
+	fun deleteAllByUserId(userId: Long)
 	
-	fun findAllByUserIdAndReadStatus(userId: Long, readStatus: Boolean, pageable: Pageable): Page<Notice>
+	//NOTE 需要按id倒序排序显示
+	fun findAllByUserIdOrderByIdDesc(userId: Long, pageable: Pageable): Page<Notice>
 	
 	fun countByUserId(userId: Long): Long
-	
-	fun countByUserIdAndReadStatus(userId: Long, readStatus: Boolean): Long
 }

@@ -4,7 +4,7 @@ import com.windea.demo.cloudcollect.core.domain.entity.*
 import org.springframework.data.domain.*
 
 interface HistoryService {
-	/**创建浏览记录。*/
+	/**创建一条浏览记录。*/
 	fun create(history: History, user: User)
 	
 	/**删除一条浏览记录。*/

@@ -9,6 +9,6 @@ interface HistoryRepository : JpaRepository<History, Long> {
 	
 	fun deleteAllByUserId(userId: Long)
 	
-	//需要按id倒序排序显示
+	//NOTE 需要按id倒序排序显示
 	fun findAllByUserIdOrderByIdDesc(userId: Long, pageable: Pageable): Page<History>
 }

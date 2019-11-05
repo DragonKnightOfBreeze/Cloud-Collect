@@ -10,6 +10,7 @@ import java.io.*
 import java.time.*
 import javax.persistence.*
 import javax.persistence.Id
+import javax.persistence.Transient
 import javax.validation.constraints.*
 
 @ApiModel("评论。一个收藏可以带有多条评论。")

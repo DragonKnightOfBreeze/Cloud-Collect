@@ -27,7 +27,6 @@ export async function resetPassword(form: ResetPasswordForm, resetPasswordCode: 
   await http.post("/resetPassword", form, {params})
 }
 
-
 export async function lookAroundCollect() {
   const response = await http.get<Collect>("/lookAroundCollect")
   return response.data

@@ -25,8 +25,11 @@ interface UserService {
 	/**更新用户信息。*/
 	fun modify(id: Long, user: User)
 	
-	/**关注用户。*/
-	fun focus(id: Long, user: User)
+	/**关注某一用户。*/
+	fun follow(id: Long, user: User)
+	
+	/**取消关注某一用户。*/
+	fun unfollow(id: Long, user: User)
 	
 	/**根据id得到用户。*/
 	fun findById(id: Long): User
@@ -61,22 +64,24 @@ interface UserService {
 	/**检查某一用户是否已存在。*/
 	fun existsByUsernameOrEmail(username: String, email: String): Boolean
 	
-	
 	/**判断指定用户是否已关注指定用户。*/
 	fun isFollowed(id: Long, user: User): Boolean
+	
+	/**得到该用户的所有收藏。*/
+	fun getCollectPage(id: Long, pageable: Pageable): Page<Collect>
+	
+	/**得到该用户点赞的所有收藏。*/
+	fun getPraiseToCollectPage(id: Long, pageable: Pageable): Page<Collect>
+	
+	/**得到该用户的所有浏览记录。*/
+	fun getHistoryPage(id: Long, pageable: Pageable): Page<History>
+	
+	/**得到该用户的所有通知。*/
+	fun getNoticePage(id: Long, pageable: Pageable): Page<Notice>
 	
 	/**得到该用户的所有关注用户。*/
 	fun getFollowToUserPage(id: Long, pageable: Pageable): Page<User>
 	
 	/**得到该用户的所有粉丝用户。*/
 	fun getFollowByUserPage(id: Long, pageable: Pageable): Page<User>
-	
-	/**得到该用户的所有收藏。*/
-	fun getCollectPage(id: Long, pageable: Pageable): Page<Collect>
-	
-	/**得到该用户的所有评论。*/
-	fun getCommentPage(id: Long, pageable: Pageable): Page<Comment>
-	
-	/**得到该用户的所有通知。*/
-	fun getNoticePage(id: Long, pageable: Pageable): Page<Notice>
 }

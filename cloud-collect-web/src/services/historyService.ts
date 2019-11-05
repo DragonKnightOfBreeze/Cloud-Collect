@@ -11,11 +11,6 @@ export async function deleteById(id: number) {
   await http.delete(`${historyUrl}/${id}`)
 }
 
-export async function findById(id: number) {
-  const response = await http.get<History>(`${historyUrl}/${id}`)
-  return response.data
-}
-
 export async function deleteAllByUserId(userId: number) {
   const params = {userId}
   await http.delete(`${historyUrl}/deleteAllByUserId`, {params})

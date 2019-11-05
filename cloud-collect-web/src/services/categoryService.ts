@@ -44,7 +44,6 @@ export async function findAllByNameContainsAndUserId(userId: number, name: strin
   return response.data
 }
 
-
 export async function getCollectPage(id: number, pageableParam: PageableParam) {
   const params = {...pageableParam}
   const response = await http.get<Page<Collect>>(`${categoryUrl}/${id}/collectPage`, {params})

@@ -3,7 +3,6 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.enums.*
 import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
@@ -46,8 +45,13 @@ class CollectController(
 	@ApiOperation("点赞某一收藏。")
 	@PutMapping("/{id}/praise")
 	fun praise(@PathVariable id: Long, authentication: Authentication) {
-		val user = (authentication.principal as UserDetailsVo).delegateUser
-		collectService.praise(id, user)
+		collectService.praise(id, authentication.toUser())
+	}
+	
+	@ApiOperation("取消点赞某一收藏。")
+	@PutMapping("/{id}/unpraise")
+	fun unpraise(@PathVariable id: Long, authentication: Authentication) {
+		collectService.unpraise(id, authentication.toUser())
 	}
 	
 	@ApiOperation("删除自己的收藏。")

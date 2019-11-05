@@ -16,7 +16,7 @@ class HistoryController(
 	private val historyService: HistoryService
 ) {
 	//NOTE 浏览记录的创建交由前端
-	@ApiOperation("创建浏览记录。")
+	@ApiOperation("创建一条浏览记录。")
 	@PostMapping("/create")
 	fun create(@RequestBody history: History, authentication: Authentication) {
 		historyService.create(history, authentication.toUser())
@@ -25,13 +25,13 @@ class HistoryController(
 	@ApiOperation("删除一条浏览记录。")
 	@DeleteMapping("/{id}")
 	fun deleteById(@PathVariable id: Long) {
-		return historyService.deleteById(id)
+		historyService.deleteById(id)
 	}
 	
 	@ApiOperation("删除某一用户的所有浏览记录。")
 	@DeleteMapping("/deleteAllByUserId")
 	fun deleteAllByUserId(@RequestParam userId: Long) {
-		return historyService.deleteAllByUserId(userId)
+		historyService.deleteAllByUserId(userId)
 	}
 	
 	@ApiOperation("得到某一用户的所有浏览记录。")

@@ -1,10 +1,18 @@
 import http from "@/http"
-import {Page, PageableParam, Role, User} from "@/types"
+import {Collect, History, Notice, Page, PageableParam, Role, User} from "@/types"
 
 const userUrl = "/user"
 
 export async function modify(id: number, user: User) {
   await http.put(`${userUrl}/${id}`, user)
+}
+
+export async function follow(id: number) {
+  await http.put(`${userUrl}/${id}/follow`)
+}
+
+export async function unfollow(id: number) {
+  await http.put(`${userUrl}/${id}/unfollow`)
 }
 
 export async function findById(id: number) {
@@ -40,9 +48,32 @@ export async function findAllByRole(role: Role, pageableParam: PageableParam) {
   return response.data
 }
 
-
 export async function isFollowed(id: number) {
   const response = await http.get<boolean>(`${userUrl}/${id}/isFollowed`)
+  return response.data
+}
+
+export async function getCollectPage(id: number, pageableParam: PageableParam) {
+  const params = {...pageableParam}
+  const response = await http.get<Page<Collect>>(`${userUrl}/${id}/collectPage`, {params})
+  return response.data
+}
+
+export async function getPraiseToCollectPage(id: number, pageableParam: PageableParam) {
+  const params = {...pageableParam}
+  const response = await http.get<Page<Collect>>(`${userUrl}/${id}/praiseToCollectPage`, {params})
+  return response.data
+}
+
+export async function getHistoryPage(id: number, pageableParam: PageableParam) {
+  const params = {...pageableParam}
+  const response = await http.get<Page<History>>(`${userUrl}/${id}/historyPage`, {params})
+  return response.data
+}
+
+export async function getNoticePage(id: number, pageableParam: PageableParam) {
+  const params = {...pageableParam}
+  const response = await http.get<Page<Notice>>(`${userUrl}/${id}/noticePage`, {params})
   return response.data
 }
 
@@ -55,23 +86,5 @@ export async function getFollowToUserPage(id: number, pageableParam: PageablePar
 export async function getFollowByUserPage(id: number, pageableParam: PageableParam) {
   const params = {...pageableParam}
   const response = await http.get<Page<User>>(`${userUrl}/${id}/followByUserPage`, {params})
-  return response.data
-}
-
-export async function getCollectPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<User>>(`${userUrl}/${id}/collectPage`, {params})
-  return response.data
-}
-
-export async function getCommentPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<User>>(`${userUrl}/${id}/commentPage`, {params})
-  return response.data
-}
-
-export async function getNoticePage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<User>>(`${userUrl}/${id}/noticePage`, {params})
   return response.data
 }

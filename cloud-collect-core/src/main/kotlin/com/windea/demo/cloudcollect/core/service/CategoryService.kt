@@ -31,7 +31,6 @@ interface CategoryService {
 	/**检查某一分类是否已存在。*/
 	fun existsByNameAndUser(name: String, user: User): Boolean
 	
-	
 	/**得到该分类的所有收藏。*/
 	fun getCollectPage(id: Long, pageable: Pageable): Page<Collect>
 }

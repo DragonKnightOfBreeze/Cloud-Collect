@@ -17,6 +17,9 @@ interface CollectService {
 	/**点赞某一收藏。*/
 	fun praise(id: Long, user: User)
 	
+	/**取消点赞某一收藏。*/
+	fun unpraise(id: Long, user: User)
+	
 	/**删除自己的收藏。*/
 	fun deleteById(id: Long)
 	
@@ -61,7 +64,6 @@ interface CollectService {
 	
 	/**检查某一收藏是否已存在。*/
 	fun existsByNameAndUser(name: String, user: User): Boolean
-	
 	
 	/**判断指定用户是否已点赞指定收藏。*/
 	fun isPraised(id: Long, user: User): Boolean

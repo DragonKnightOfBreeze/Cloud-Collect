@@ -19,6 +19,10 @@ export async function praise(id: number) {
   await http.put(`${collectUrl}/${id}/praise`)
 }
 
+export async function unpraise(id: number) {
+  await http.put(`${collectUrl}/${id}/unpraise`)
+}
+
 export async function deleteById(id: number) {
   await http.delete(`${collectUrl}/${id}`)
 }
@@ -87,7 +91,6 @@ export async function findAllByUserId(userId: number, pageableParam: PageablePar
   const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByUserId`, {params})
   return response.data
 }
-
 
 export async function isPraised(id: number) {
   const response = await http.get<boolean>(`${collectUrl}/${id}/isPraised`)

@@ -74,7 +74,6 @@ class CategoryServiceImpl(
 		collectCount = collectRepository.countByCategoryId(this.id)
 	}
 	
-	
 	@Cacheable(key = "methodName + args")
 	override fun getCollectPage(id: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByCategoryId(id, pageable)

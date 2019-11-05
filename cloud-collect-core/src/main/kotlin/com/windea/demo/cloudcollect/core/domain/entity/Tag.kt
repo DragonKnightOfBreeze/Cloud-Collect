@@ -11,6 +11,7 @@ import java.io.*
 import java.time.*
 import javax.persistence.*
 import javax.persistence.Id
+import javax.persistence.Transient
 import javax.validation.constraints.*
 
 @ApiModel("收藏的标签。一个收藏可以带有多个标签。")

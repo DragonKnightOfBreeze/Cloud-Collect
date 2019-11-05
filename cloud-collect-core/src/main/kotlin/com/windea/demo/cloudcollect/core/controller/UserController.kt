@@ -29,6 +29,18 @@ class UserController(
 		userService.modify(id, user)
 	}
 	
+	@ApiOperation("关注某一用户。")
+	@PutMapping("/{id}/follow")
+	fun follow(@PathVariable id: Long, authentication: Authentication) {
+		userService.follow(id, authentication.toUser())
+	}
+	
+	@ApiOperation("取消关注某一用户。")
+	@PutMapping("/{id}/unfollow")
+	fun unfollow(@PathVariable id: Long, authentication: Authentication) {
+		userService.unfollow(id, authentication.toUser())
+	}
+	
 	@ApiOperation("根据id得到用户。")
 	@GetMapping("/{id}")
 	fun findById(@PathVariable id: Long): User {
@@ -72,6 +84,30 @@ class UserController(
 		return userService.isFollowed(id, authentication.toUser())
 	}
 	
+	@ApiOperation("得到该用户的所有收藏。")
+	@GetMapping("/{id}/collectPage")
+	fun getCollectPage(@PathVariable id: Long, pageable: Pageable): Page<Collect> {
+		return userService.getCollectPage(id, pageable)
+	}
+	
+	@ApiOperation("得到该用户点赞的所有收藏。")
+	@GetMapping("/{id}/praiseToCollectPage")
+	fun getPraiseToCollectPage(@PathVariable id: Long, pageable: Pageable): Page<Collect> {
+		return userService.getPraiseToCollectPage(id, pageable)
+	}
+	
+	@ApiOperation("得到该用户的所有浏览记录。")
+	@GetMapping("/{id}/historyPage")
+	fun getHistoryPage(@PathVariable id: Long, pageable: Pageable): Page<History> {
+		return userService.getHistoryPage(id, pageable)
+	}
+	
+	@ApiOperation("得到该用户的所有通知。")
+	@GetMapping("/{id}/noticePage")
+	fun getNoticePage(@PathVariable id: Long, pageable: Pageable): Page<Notice> {
+		return userService.getNoticePage(id, pageable)
+	}
+	
 	@ApiOperation("得到该用户的所有关注用户。")
 	@GetMapping("/{id}/followToUserPage")
 	fun getFollowToUserPage(@PathVariable id: Long, pageable: Pageable): Page<User> {
@@ -82,24 +118,6 @@ class UserController(
 	@GetMapping("/{id}/followByUserPage")
 	fun getFollowByUserPage(@PathVariable id: Long, pageable: Pageable): Page<User> {
 		return userService.getFollowByUserPage(id, pageable)
-	}
-	
-	@ApiOperation("得到该用户的所有收藏。")
-	@GetMapping("/{id}/collectPage")
-	fun getCollectPage(@PathVariable id: Long, pageable: Pageable): Page<Collect> {
-		return userService.getCollectPage(id, pageable)
-	}
-	
-	@ApiOperation("得到该用户的所有评论。")
-	@GetMapping("/{id}/commentPage")
-	fun getCommentPage(@PathVariable id: Long, pageable: Pageable): Page<Comment> {
-		return userService.getCommentPage(id, pageable)
-	}
-	
-	@ApiOperation("得到该用户的所有通知。")
-	@GetMapping("/{id}/noticePage")
-	fun getNoticePage(@PathVariable id: Long, pageable: Pageable): Page<Notice> {
-		return userService.getNoticePage(id, pageable)
 	}
 }
 

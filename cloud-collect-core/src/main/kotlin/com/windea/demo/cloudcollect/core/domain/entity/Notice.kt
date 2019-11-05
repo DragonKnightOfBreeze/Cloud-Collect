@@ -37,10 +37,6 @@ data class Notice(
 	@ManyToOne
 	val user: User
 ) : Serializable {
-	@Column(nullable = false)
-	@ApiModelProperty("是否已读。")
-	var readStatus: Boolean = false
-	
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate

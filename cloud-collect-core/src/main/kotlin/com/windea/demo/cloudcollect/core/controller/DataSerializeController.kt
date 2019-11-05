@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.controller
 
-import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.enums.*
+import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.http.*
@@ -19,8 +19,7 @@ class DataSerializeController(
 	@ApiOperation("从指定格式的文件导入收藏。例如：Xml、Json、Yaml。")
 	@PostMapping("/importData")
 	fun importData(@RequestParam dataType: DataType, multipartFile: MultipartFile, authentication: Authentication) {
-		val user = (authentication.principal as UserDetailsVo).delegateUser
-		dataSerializeService.importData(dataType, multipartFile, user)
+		dataSerializeService.importData(dataType, multipartFile, authentication.toUser())
 	}
 	
 	@ApiOperation("导出收藏到指定格式的文件。例如：Xml、Json、Yaml。")
