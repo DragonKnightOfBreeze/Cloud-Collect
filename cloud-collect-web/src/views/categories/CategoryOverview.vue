@@ -12,9 +12,7 @@
         <ElInput v-model="searchTerm" placeholder="关键字"></ElInput>
       </ElFormItem>
       <ElFormItem>
-        <ElButton type="primary" @click="searchCategoryByName">
-          <ElIcon name="search"/>
-        </ElButton>
+        <ElButton type="primary" @click="searchCategoryByName"><ElIcon name="search"/></ElButton>
       </ElFormItem>
     </ElForm>
 

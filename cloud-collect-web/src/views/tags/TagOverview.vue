@@ -12,14 +12,10 @@
         <ElInput v-model="searchTerm" placeholder="关键字"></ElInput>
       </ElFormItem>
       <ElFormItem>
-        <ElButton type="primary" @click="searchTagByName">
-          <ElIcon name="search"/>
-        </ElButton>
+        <ElButton type="primary" @click="searchTagByName"><ElIcon name="search"/></ElButton>
       </ElFormItem>
     </ElForm>
 
-    <!--DONE 提取组件-->
-    <!--DONE 第一行标题显示标签的名字（文字链接）、创建时间、更新时间、收藏数量（+徽章）。第二行显示标签的概述（默认色）。-->
     <ElCardGroup v-if="showSearchResult">
       <TagOverviewCard v-for="tag in searchList" :key="tag.id"
                        :tag="tag"/>
@@ -50,14 +46,8 @@
       return this.searchPage != null
     }
 
-    //DONE 为了便于IDEA进行类型推断
     get searchList() {
       return this.searchPage && this.searchPage.content || []
-    }
-
-    @Watch("searchTerm")
-    onSearchTermChange(value: string, oldValue: string) {
-      console.log(`查询参数发生了变化：`, value)
     }
 
     //DONE 当分页参数发生变化时，重新加载数据
