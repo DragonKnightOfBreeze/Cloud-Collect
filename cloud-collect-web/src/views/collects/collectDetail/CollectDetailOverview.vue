@@ -19,7 +19,8 @@
   import CollectDetailCard from "@/components/card/CollectDetailCard.vue"
   import EditCollectDialog from "@/components/dialog/EditCollectDialog.vue"
   import * as collectService from "@/services/collectService"
-  import {Collect, User} from "@/types"
+  import * as historyService from "@/services/historyService"
+  import {Collect, History, User} from "@/types"
   import {Component, Prop, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -44,11 +45,13 @@
     }
 
     created() {
+      this.addHistory()
       this.getCollect()
     }
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
+      this.addHistory()
       this.getCollect()
     }
 
@@ -73,6 +76,16 @@
 
     handleGoBack() {
       this.$router.push("/collects")
+    }
+
+    //如果当前用户存在且最后浏览的收藏不是相同的，则设置最后浏览的收藏，并向后台添加一条浏览记录
+    private async addHistory() {
+      const lastViewedCollect = this.$store.getters.lastViewedCollect as Collect | null
+      if (this.currentUser && lastViewedCollect && lastViewedCollect.id != this.collectId) {
+        this.$store.commit("setLastViewedCollect", this.collect)
+        const history: History = {collect: this.collect}
+        await historyService.create(history)
+      }
     }
 
     private async getCollect() {

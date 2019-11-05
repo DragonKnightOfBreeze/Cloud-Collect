@@ -1,4 +1,4 @@
-import {ObjectError, User} from "@/types"
+import {Collect, ObjectError, User} from "@/types"
 import Vue from "vue"
 import Vuex from "vuex"
 
@@ -11,6 +11,8 @@ export default new Vuex.Store({
   state: {
     //当前用户
     _currentUser: null,
+    //最后浏览的收藏
+    _lastViewedCollect: null,
     //参数校验的错误列表
     _validationErrors: [],
     //参数校验的首条消息
@@ -20,6 +22,9 @@ export default new Vuex.Store({
     currentUser(state): User | null {
       //TODO 可能需要用到cookie或者storage
       return state._currentUser as User | null
+    },
+    lastViewedCollect(state): Collect | null {
+      return state._lastViewedCollect as Collect | null
     },
     validationErrors(state): ObjectError[] {
       const result = state._validationErrors
@@ -37,6 +42,9 @@ export default new Vuex.Store({
   mutations: {
     setCurrentUser(state, currentUser: User) {
       state._currentUser = currentUser as any
+    },
+    setLastViewedCollect(state, lastViewedCollect: Collect) {
+      state._lastViewedCollect = lastViewedCollect as any
     },
     setValidationErrors(state, validationErrors: ObjectError[]) {
       state._validationErrors.push(...validationErrors as [])
