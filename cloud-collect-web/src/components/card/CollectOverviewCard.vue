@@ -8,8 +8,20 @@
         <ElCol :span="11">
           <ElLink type="primary" :href="'/collects/'+collect.id">{{collect.name}}</ElLink>
         </ElCol>
-        <ElCol :span="4" :offset="6">
-          <ElLink :href="collect.url">链接</ElLink>
+        <ElCol :span="3">
+          <!--TODO-->
+          <ElDropdown>
+            <ElLink type="info">复制链接<ElIcon name="arrow-down"/></ElLink>
+            <ElDropdownMenu slot="dropdown">
+            </ElDropdownMenu>
+          </ElDropdown>
+        </ElCol>
+        <ElCol :span="3">
+          <ElLink type="info" :href="collect.url">转到链接</ElLink>
+        </ElCol>
+        <ElCol :span="3">
+          <!--TODO-->
+          <ElButton type="primary">点赞</ElButton>
         </ElCol>
       </ElRow>
     </template>
@@ -55,5 +67,11 @@
 </script>
 
 <style scoped>
-
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
 </style>
