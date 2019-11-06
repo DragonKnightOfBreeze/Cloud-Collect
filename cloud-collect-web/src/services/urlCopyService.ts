@@ -1,7 +1,7 @@
 import http from "@/http"
 import {Collect, Pair} from "@/types"
 
-//NOTE 是否可考虑直接在前端实现这一功能？
+//NOTE 考虑直接在前端实现这一功能
 
 const urlCopyUrl = "/urlCopy"
 

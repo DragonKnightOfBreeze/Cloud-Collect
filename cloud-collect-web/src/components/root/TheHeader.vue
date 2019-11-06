@@ -58,6 +58,7 @@
 <script lang="ts">
   import LoginDialog from "@/components/dialog/LoginDialog.vue"
   import RegisterDialog from "@/components/dialog/RegisterDialog.vue"
+  import * as indexService from "@/services/indexService"
   import {DialogType, DropDownItem, MenuItem, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
@@ -161,10 +162,11 @@
     }
 
     //注销用户
-    handleLogout() {
+    async handleLogout() {
       console.log("注销用户")
       window.sessionStorage["currentUser"] = null
       this.$store.commit("setCurrentUser", null)
+      await indexService.logout()
     }
   }
 </script>

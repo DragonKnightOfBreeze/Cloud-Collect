@@ -54,6 +54,10 @@ class UserServiceImpl(
 		if(sendEmail) emailService.sendActivateEmail(user, activateCode)
 	}
 	
+	override fun logout() {
+		SecurityContextHolder.clearContext()
+	}
+	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun activate(username: String, activateCode: String) {

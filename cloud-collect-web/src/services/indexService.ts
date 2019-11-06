@@ -12,6 +12,10 @@ export async function register(user: User) {
   await http.post("/register", user)
 }
 
+export async function logout() {
+  await http.post("/logout")
+}
+
 export async function activate(username: string, activateCode: string) {
   const params = {username, activateCode}
   await http.post("/activate", undefined, {params})
