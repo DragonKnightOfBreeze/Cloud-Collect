@@ -25,9 +25,7 @@
         <el-card-group v-if="commentPage && !commentPage.empty">
           <comment-overview-card v-for="comment in commentPage.content" :key="comment.id" :comment="comment"
                                  @reply="handleReplyComment(comment)"/>
-
-          <the-pagination :pageable-param.sync="commentPageableParam" :total-pages="commentPage.totalPages"
-                          :total-elements="commentPage.totalElements"/>
+          <the-pagination :page="commentPage" :pageable-param.sync="commentPageableParam"/>
         </el-card-group>
         <div v-else>
           没有评论。
@@ -95,7 +93,7 @@
     }
 
     @Watch("commentPageableParam")
-    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    private onCommentPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       this.getCommentPage()
     }
 

@@ -20,12 +20,9 @@
       </ElCol>
     </ElRow>
 
-    <ElCardGroup v-if="showSearchResult">
-      <TagOverviewCard v-for="tag in searchList" :key="tag.id"
-                       :tag="tag"/>
-
-      <ThePagination :pageable-param.sync="searchPageableParam" :total-pages="searchPage.totalPages"
-                     :total-elements="searchPage.totalElements"/>
+    <ElCardGroup v-if="searchPage">
+      <TagOverviewCard v-for="tag in searchPage.content" :key="tag.id" :tag="tag"/>
+      <ThePagination :page="searchPage" :pageable-param.sync="searchPageableParam"/>
     </ElCardGroup>
   </div>
 </template>
@@ -46,15 +43,7 @@
     private searchPageableParam: PageableParam = {page: 0, size: 20, sort: []}
     private searchPage: Page<Tag> | null = null
 
-    get showSearchResult() {
-      return this.searchPage != null
-    }
-
-    get searchList() {
-      return this.searchPage && this.searchPage.content || []
-    }
-
-    //DONE 当分页参数发生变化时，重新加载数据
+    //当分页参数发生变化时，重新加载数据
     @Watch("searchPageableParam")
     onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)

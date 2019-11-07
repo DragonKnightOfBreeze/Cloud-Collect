@@ -39,12 +39,9 @@
       </ElCol>
     </ElRow>
 
-    <ElCardGroup v-if="showSearchResult">
-      <CollectOverviewCard v-for="collect in searchList" :key="collect.id"
-                           :collect="collect"/>
-
-      <ThePagination :pageable-param.sync="searchPageableParam" :total-pages="searchPage.totalPages"
-                     :total-elements="searchPage.totalElements"/>
+    <ElCardGroup v-if="searchPage">
+      <CollectOverviewCard v-for="collect in searchPage.content" :key="collect.id" :collect="collect"/>
+      <ThePagination :page="searchPage" :pageable-param.sync="searchPageableParam"/>
     </ElCardGroup>
   </div>
 </template>
@@ -67,14 +64,6 @@
     private searchType: CollectSearchType = "name"
     private searchPageableParam: PageableParam = {page: 0, size: 20, sort: []}
     private searchPage: Page<Tag> | null = null
-
-    get showSearchResult() {
-      return this.searchPage != null
-    }
-
-    get searchList() {
-      return this.searchPage && this.searchPage.content || []
-    }
 
     @Watch("searchPageableParam")
     onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {

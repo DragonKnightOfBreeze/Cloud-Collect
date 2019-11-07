@@ -20,12 +20,9 @@
       </ElCol>
     </ElRow>
 
-    <ElCardGroup v-if="showSearchResult">
-      <CategoryOverviewCard v-for="category in searchList" :key="category.id"
-                            :category="category"/>
-
-      <ThePagination :pageable-param.sync="searchPageableParam" :total-pages="searchPage.totalPages"
-                     :total-elements="searchPage.totalElements"/>
+    <ElCardGroup v-if="searchPage">
+      <CategoryOverviewCard v-for="category in searchPage.content" :key="category.id" :category="category"/>
+      <ThePagination :page="searchPage" :pageable-param.sync="searchPageableParam"/>
     </ElCardGroup>
   </div>
 </template>
@@ -45,19 +42,6 @@
     private searchTerm: string = ""
     private searchPageableParam: PageableParam = {page: 0, size: 20, sort: []}
     private searchPage: Page<Category> | null = null
-
-    get showSearchResult() {
-      return this.searchPage != null
-    }
-
-    get searchList() {
-      return this.searchPage && this.searchPage.content || []
-    }
-
-    @Watch("searchTerm")
-    onSearchTermChange(value: string, oldValue: string) {
-      console.log(`查询参数发生了变化：`, value)
-    }
 
     @Watch("searchPageableParam")
     onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {

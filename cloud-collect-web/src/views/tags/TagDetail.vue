@@ -15,9 +15,7 @@
       <ElCollapseItem name="1" title="查看相关收藏">
         <ElCardGroup v-if="collectPage && !collectPage.empty">
           <CollectOverviewCard v-for="collect in collectPage.content" :key=collect.id :collect="collect"/>
-
-          <ThePagination :pageable-param.sync="collectPageableParam" :total-pages="collectPage.totalPages"
-                         :total-elements="collectPage.totalElements"/>
+          <ThePagination :page="collectPage" :pageable-param.sync="collectPageableParam"/>
         </ElCardGroup>
         <div v-else>
           没有相关收藏。
@@ -72,7 +70,7 @@
     }
 
     @Watch("collectPageableParam")
-    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    private onCollectPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       this.getCollectPage()
     }
 

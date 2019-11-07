@@ -5,9 +5,7 @@
 
   <el-card-group>
     <user-overview-card v-for="user in praiseByUserList" :key="user.id" :user="user"/>
-
-    <the-pagination :pageable-param.sync="praiseByUserPageableParam" :total-pages="praiseByUserPage.totalPages"
-                    :total-elements="praiseByUserPage.totalElements"/>
+    <the-pagination :page="praiseByUserPage" :pageable-param.sync="praiseByUserPageableParam"/>
   </el-card-group>
 </template>
 
@@ -45,7 +43,7 @@
     }
 
     @Watch("praiseByUserPageableParam")
-    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    private onPraiseByUserPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       this.getPraiseByUserPage()
     }
 
