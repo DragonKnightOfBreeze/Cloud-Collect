@@ -20,7 +20,7 @@
         <ElInput type="email" v-model="form.email" placehold="请输入邮箱。"/>
       </ElFormItem>
       <ElFormItem>
-        <el-button type="text" @click="handleForgotPassword">忘记密码？</el-button>
+        <ElButton type="text" @click="handleForgotPassword">忘记密码？</ElButton>
       </ElFormItem>
     </ElForm>
 

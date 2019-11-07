@@ -18,7 +18,7 @@
       </ElCol>
       <ElCol :span="3">
         <ElBadge type="primary" :value="category.collectCount">
-          <el-link type="info" :href="'/categories/'+category.id">相关收藏</el-link>
+          <ElLink type="info" :href="'/categories/'+category.id">相关收藏</ElLink>
         </ElBadge>
       </ElCol>
     </ElRow>

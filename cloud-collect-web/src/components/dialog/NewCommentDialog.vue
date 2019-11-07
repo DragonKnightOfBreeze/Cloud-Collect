@@ -1,15 +1,15 @@
 <template>
-  <el-dialog center :visible="syncVisible" @close="handleClose">
-    <el-form>
-      <el-form-item>
-        <el-input type="textarea" v-model="comment.content" placeholder="请输入回复内容"
-                  maxlength="255" show-word-limit :autosize="autoSize"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleSubmit">发送</el-button>
-      </el-form-item>
-    </el-form>
-  </el-dialog>
+  <ElDialog center :visible="syncVisible" @close="handleClose">
+    <ElForm>
+      <ElFormItem>
+        <ElInput type="textarea" v-model="comment.content" placeholder="请输入回复内容"
+                 maxlength="255" show-word-limit :autosize="autoSize"></ElInput>
+      </ElFormItem>
+      <ElFormItem>
+        <ElButton type="primary" @click="handleSubmit">发送</ElButton>
+      </ElFormItem>
+    </ElForm>
+  </ElDialog>
 </template>
 
 <script lang="ts">

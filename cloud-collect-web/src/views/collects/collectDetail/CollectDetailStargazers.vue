@@ -3,10 +3,10 @@
   <ElDivider/>
   <div>查看该收藏的收藏家</div>
 
-  <el-card-group>
-    <user-overview-card v-for="user in praiseByUserList" :key="user.id" :user="user"/>
-    <the-pagination :page="praiseByUserPage" :pageable-param.sync="praiseByUserPageableParam"/>
-  </el-card-group>
+  <ElCardGroup>
+    <UserOverviewCard v-for="user in praiseByUserList" :key="user.id" :user="user"/>
+    <ThePagination :page="praiseByUserPage" :pageable-param.sync="praiseByUserPageableParam"/>
+  </ElCardGroup>
 </template>
 
 <script lang="ts">

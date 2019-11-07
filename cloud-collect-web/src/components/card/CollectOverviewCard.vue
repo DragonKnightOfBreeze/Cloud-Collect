@@ -34,12 +34,12 @@
       </ElCol>
       <ElCol :span="3">
         <ElBadge :value="collect.commentCount">
-          <el-link type="info" :href="'/collects/'+collect.id">评论</el-link>
+          <ElLink type="info" :href="'/collects/'+collect.id">评论</ElLink>
         </ElBadge>
       </ElCol>
       <ElCol :span="3">
         <ElBadge :value="collect.praiseByUserCount">
-          <el-link type="info" :href="'/collects/'+collect.id+'/stargazers'">赞</el-link>
+          <ElLink type="info" :href="'/collects/'+collect.id+'/stargazers'">赞</ElLink>
         </ElBadge>
       </ElCol>
     </ElRow>

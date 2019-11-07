@@ -1,45 +1,45 @@
 <template>
-  <el-card class="app-user-overview-card">
+  <ElCard class="app-user-overview-card">
     <template v-slot:header>
-      <el-row>
-        <el-col :span="1">
-          <el-avatar size="small" :src="user.avatarUrl"/>
-        </el-col>
-        <el-col :span="11">
-          <el-link type="primary" :href="'/profile/'+user.id">{{user.nickname}}</el-link>
-        </el-col>
-        <el-col :span="4" :offset="8">
-          <follow-button v-show="currentUser" :user="user"></follow-button>
-        </el-col>
-      </el-row>
+      <ElRow>
+        <ElCol :span="1">
+          <ElAvatar size="small" :src="user.avatarUrl"/>
+        </ElCol>
+        <ElCol :span="11">
+          <ElLink type="primary" :href="'/profile/'+user.id">{{user.nickname}}</ElLink>
+        </ElCol>
+        <ElCol :span="4" :offset="8">
+          <FollowButton v-show="currentUser" :user="user"></FollowButton>
+        </ElCol>
+      </ElRow>
     </template>
 
-    <el-row class="app-meta-small">
-      <el-col :span="6">
+    <ElRow class="app-meta-small">
+      <ElCol :span="6">
         用户名 {{user.username}}
-      </el-col>
-      <el-col :span="3">
-        <el-badge type="primary" :value="user.collectCount">
-          <el-link type="info" :href="'/profile'+user.id+'/collects'">收藏</el-link>
-        </el-badge>
-      </el-col>
-      <el-col :span="3">
-        <el-badge type="primary" :value="user.praiseToCollectList">
-          <el-link type="info" :href="'/profile'+user.id+'/stars'">喜爱</el-link>
-        </el-badge>
-      </el-col>
-      <el-col :span="3">
-        <el-badge :value="user.followToUserCount">
-          <el-link type="info" :href="'/profile/'+user.id+'/followers'">关注</el-link>
-        </el-badge>
-      </el-col>
-      <el-col :span="3">
-        <el-badge :value="user.followByUserCount">
-          <el-link type="info" :href="'/profile/'+user.id+'/following'">粉丝</el-link>
-        </el-badge>
-      </el-col>
-    </el-row>
-  </el-card>
+      </ElCol>
+      <ElCol :span="3">
+        <ElBadge type="primary" :value="user.collectCount">
+          <ElLink type="info" :href="'/profile'+user.id+'/collects'">收藏</ElLink>
+        </ElBadge>
+      </ElCol>
+      <ElCol :span="3">
+        <ElBadge type="primary" :value="user.praiseToCollectList">
+          <ElLink type="info" :href="'/profile'+user.id+'/stars'">喜爱</ElLink>
+        </ElBadge>
+      </ElCol>
+      <ElCol :span="3">
+        <ElBadge :value="user.followToUserCount">
+          <ElLink type="info" :href="'/profile/'+user.id+'/followers'">关注</ElLink>
+        </ElBadge>
+      </ElCol>
+      <ElCol :span="3">
+        <ElBadge :value="user.followByUserCount">
+          <ElLink type="info" :href="'/profile/'+user.id+'/following'">粉丝</ElLink>
+        </ElBadge>
+      </ElCol>
+    </ElRow>
+  </ElCard>
 </template>
 
 <script lang="ts">

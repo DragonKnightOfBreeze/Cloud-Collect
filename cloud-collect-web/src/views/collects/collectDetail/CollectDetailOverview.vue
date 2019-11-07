@@ -11,29 +11,29 @@
 
     <EditCollectDialog :collect="collect" :visible.sync="editDialogVisible" @submit="handleSubmit"/>
 
-    <el-collapse v-model="activeNames">
-      <el-collapse-item name="0">
+    <ElCollapse v-model="activeNames">
+      <ElCollapseItem name="0">
         <template v-slot:title>
-          <el-row>
-            <el-col :span="12">查看评论</el-col>
-            <el-col :span="4" :offset="8">
-              <el-button type="success" @click="handleNewComment">新评论</el-button>
-            </el-col>
-          </el-row>
+          <ElRow>
+            <ElCol :span="12">查看评论</ElCol>
+            <ElCol :span="4" :offset="8">
+              <ElButton type="success" @click="handleNewComment">新评论</ElButton>
+            </ElCol>
+          </ElRow>
         </template>
 
-        <el-card-group v-if="commentPage && !commentPage.empty">
-          <comment-overview-card v-for="comment in commentPage.content" :key="comment.id" :comment="comment"
+        <ElCardGroup v-if="commentPage && !commentPage.empty">
+          <CommentOverviewCard v-for="comment in commentPage.content" :key="comment.id" :comment="comment"
                                  @reply="handleReplyComment(comment)"/>
-          <the-pagination :page="commentPage" :pageable-param.sync="commentPageableParam"/>
-        </el-card-group>
+          <ThePagination :page="commentPage" :pageable-param.sync="commentPageableParam"/>
+        </ElCardGroup>
         <div v-else>
           没有评论。
         </div>
-      </el-collapse-item>
-    </el-collapse>
+      </ElCollapseItem>
+    </ElCollapse>
 
-    <new-comment-dialog :visible.sync="newCommentDialogVisible" :collect="collect" :replyToComment="replyToComment"
+    <NewCommentDialog :visible.sync="newCommentDialogVisible" :collect="collect" :replyToComment="replyToComment"
                         @submit="handleSubmitComment"/>
   </div>
 </template>

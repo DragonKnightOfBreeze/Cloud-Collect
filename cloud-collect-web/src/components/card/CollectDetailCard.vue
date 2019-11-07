@@ -21,33 +21,33 @@
     </template>
 
     <ElRow class="app-item-list">
-      <el-col :span="4">分类</el-col>
-      <el-col :span="20">
+      <ElCol :span="4">分类</ElCol>
+      <ElCol :span="20">
         <ElLink type="info" v-if="collect.category" :href="'/categories/'+collect.id">{{collect.category.name}}</ElLink>
         <ElLink type="info" disabled v-else>未分类</ElLink>
-      </el-col>
+      </ElCol>
     </ElRow>
     <ElRow class="app-item-list">
-      <el-col :span="4">标签</el-col>
-      <el-col :span="20">
+      <ElCol :span="4">标签</ElCol>
+      <ElCol :span="20">
         <ElTag v-for="tag in collect.tags" :key="tag.id">
           <ElLink type="info" :href="'/tags/'+tag.id">{{tag.name}}</ElLink>
         </ElTag>
-      </el-col>
+      </ElCol>
     </ElRow>
-    <el-row class="app-item-list">
-      <el-col :span="4">类型</el-col>
-      <el-col :span="20">
+    <ElRow class="app-item-list">
+      <ElCol :span="4">类型</ElCol>
+      <ElCol :span="20">
         <!--根据不同的收藏类型，显示不同的图标-->
         <template>
-          <el-icon v-if="collect.type === CollectType.delay" name="time"/>
-          <el-icon v-if="collect.type === CollectType.import" name="warning-outline"/>
-          <el-icon v-if="collect.type === CollectType.love" name="star-off"/>
-          <el-icon v-if="collect.type === CollectType.todo" name="edit"/>
+          <ElIcon v-if="collect.type === CollectType.delay" name="time"/>
+          <ElIcon v-if="collect.type === CollectType.import" name="warning-outline"/>
+          <ElIcon v-if="collect.type === CollectType.love" name="star-off"/>
+          <ElIcon v-if="collect.type === CollectType.todo" name="edit"/>
         </template>
         {{collect.type}}
-      </el-col>
-    </el-row>
+      </ElCol>
+    </ElRow>
     <ElRow class="app-item-list">
       <ElCol :span="4">创建者</ElCol>
       <ElCol :span="20">
@@ -60,8 +60,8 @@
       <ElCol :span="20">{{collect.createdTime}}</ElCol>
     </ElRow>
     <ElRow class="app-item-list">
-      <el-col :span="4">修改时间</el-col>
-      <el-col :span="20">{{collect.lastModifiedTime}}</el-col>
+      <ElCol :span="4">修改时间</ElCol>
+      <ElCol :span="20">{{collect.lastModifiedTime}}</ElCol>
     </ElRow>
     <ElRow class="app-item-list">
       <ElCol>{{collect.summary}}</ElCol>

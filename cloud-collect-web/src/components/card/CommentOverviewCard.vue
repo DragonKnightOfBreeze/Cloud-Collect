@@ -1,19 +1,19 @@
 <template>
-  <el-card class="app-comment-overview-card">
+  <ElCard class="app-comment-overview-card">
     <template v-slot:header>
-      <el-row>
-        <el-col :span="6">{{comment.sponsorByUser.nickname}}</el-col>
-        <el-col :span="6">{{comment.createdTime}}</el-col>
-        <el-col :span="4" :offset="8">
-          <el-button @click="handleReply">回复</el-button>
-        </el-col>
-      </el-row>
+      <ElRow>
+        <ElCol :span="6">{{comment.sponsorByUser.nickname}}</ElCol>
+        <ElCol :span="6">{{comment.createdTime}}</ElCol>
+        <ElCol :span="4" :offset="8">
+          <ElButton @click="handleReply">回复</ElButton>
+        </ElCol>
+      </ElRow>
     </template>
 
-    <el-row class="app-content">
-      <el-col>{{comment.content}}</el-col>
-    </el-row>
-  </el-card>
+    <ElRow class="app-content">
+      <ElCol>{{comment.content}}</ElCol>
+    </ElRow>
+  </ElCard>
 </template>
 
 <script lang="ts">
