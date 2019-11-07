@@ -3,9 +3,9 @@ import {Notice, Page, PageableParam} from "@/types"
 
 const noticeUrl = "/notice"
 
-export async function create(notice: Notice) {
-  await http.post(`${noticeUrl}/create`, notice)
-}
+//export async function create(notice: Notice) {
+//  await http.post(`${noticeUrl}/create`, notice)
+//}
 
 export async function deleteById(id: number) {
   await http.delete(`${noticeUrl}/${id}`)

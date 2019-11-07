@@ -25,20 +25,21 @@
     private formLabelWidth = "80px"
 
     @PropSync("visible") syncVisible!: boolean
-    @Prop() category!: Category
+    @Prop({required: true}) category!: Category
 
     @Emit("submit")
     handleSubmit() {
       try {
         categoryService.modify(this.category.id!, this.category)
         this.$message.success("编辑成功！")
-        this.handleClose()
+        this.syncVisible = false
       } catch (e) {
         const validationMessage = this.$store.getters.validationMessage
         this.$message.warning(`编辑失败！${validationMessage}`)
       }
     }
 
+    @Emit("close")
     handleClose() {
       this.syncVisible = false
     }

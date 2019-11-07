@@ -20,7 +20,7 @@ import javax.validation.constraints.*
 @Entity
 @EntityListeners(AuditingEntityListener::class)
 @UniqueUser(groups = [Create::class])
-data class User(
+data class User constructor(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ data class User(
 	val username: String,
 	
 	@ApiModelProperty("密码。这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度。")
-	@get:NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class, Modify::class])
+	@NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class, Modify::class])
 	@get:Password(message = "{validation.User.password.Password}", groups = [Create::class, Modify::class])
 	@Column(nullable = false)
 	var password: String,
@@ -51,9 +51,10 @@ data class User(
 	var nickname: String = username,
 	
 	@ApiModelProperty("简介。")
-	@Column(nullable = false)
+	@field:JsonIgnore
 	@get:NotEmpty(message = "{validation.User.introduce.NotEmpty}", groups = [Modify::class])
 	@get:Size(min = 1, max = 255, message = "{validation.User.introduce.Size}", groups = [Modify::class])
+	@Column(nullable = false)
 	var introduce: String = "这家伙很懒，什么也没留下。",
 	
 	@ApiModelProperty("头像地址。")
@@ -120,6 +121,7 @@ data class User(
 	@ApiModelProperty("通知数量。")
 	@Transient
 	var noticeCount: Long = 0
+	
 	
 	override fun equals(other: Any?) = other === this || (other is User && other.id == id)
 	

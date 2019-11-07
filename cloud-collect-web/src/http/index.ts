@@ -42,7 +42,7 @@ http.interceptors.response.use(value => {
         break
       case 401:
         //要求用户登录
-        router.push({path: "/", params: {operation: "login"}})
+        router.push({path: "/", query: {operation: "login"}})
         break
       case 403:
         router.push("/error/403")

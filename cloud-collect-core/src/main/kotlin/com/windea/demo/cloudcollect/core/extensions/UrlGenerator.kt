@@ -2,27 +2,24 @@ package com.windea.demo.cloudcollect.core.extensions
 
 /**地址的生成器。*/
 object UrlGenerator {
-	var useDoubleQuote = true
+	private const val quote = "\""
 	
 	/**根据指定参数生成Html链接。*/
 	fun generateHtmlUrl(name: String, url: String, title: String? = null): String {
-		val quote = if(useDoubleQuote) "\"" else "'"
-		val titleSnippet = title?.let { " title=$quote$title$quote" } ?: ""
+		val titleSnippet = if(title.isNullOrBlank()) "" else " title=$quote$title$quote"
 		return "<a href=$quote$url$quote$titleSnippet>$name</a>"
 	}
 	
 	/**根据指定参数生成Markdown链接。*/
 	fun generateMdUrl(name: String, url: String, title: String? = null): String {
-		val quote = if(useDoubleQuote) "\"" else "'"
-		val titleSnippet = title?.let { " $quote$title$quote" } ?: ""
+		val titleSnippet = if(title.isNullOrBlank()) "" else " $quote$title$quote"
 		return "[$name]($url$titleSnippet)"
 	}
 	
 	/**根据指定参数生成Markdown引用链接。*/
-	fun generateMdRefUrl(id: String, name: String, url: String, title: String? = null): Pair<String, String> {
-		val quote = if(useDoubleQuote) "\"" else "'"
-		val titleSnippet = title?.let { " $quote$title$quote" } ?: ""
-		return "[$name][$id]" to "[$id]: $url$titleSnippet"
+	fun generateMdRefUrl(id: String, name: String, url: String, title: String? = null): String {
+		val titleSnippet = if(title.isNullOrBlank()) "" else " $quote$title$quote"
+		return "[$name][$id]\n[$id]: $url$titleSnippet"
 	}
 	
 	/**根据指定参数生成Markdown图片链接。*/
@@ -31,7 +28,7 @@ object UrlGenerator {
 	}
 	
 	/**根据指定参数生成Markdown图片引用链接。*/
-	fun generateMdImgRefUrl(id: String, name: String, url: String, title: String? = null): Pair<String, String> {
-		return generateMdRefUrl(id, name, url, title).let { "！${it.first}" to it.second }
+	fun generateMdImgRefUrl(id: String, name: String, url: String, title: String? = null): String {
+		return generateMdRefUrl(id, name, url, title).let { "!$it" }
 	}
 }

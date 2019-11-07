@@ -10,9 +10,17 @@
         <ElLink type="info" v-if="tag.user" :href="'/profile/'+tag.user.id">{{tag.user.nickname}}</ElLink>
         <ElLink type="info" disabled v-else>未知</ElLink>
       </ElCol>
-      <ElCol :span="6">创建时间 {{tag.createdTime}}</ElCol>
-      <ElCol :span="6">修改时间 {{tag.lastModifiedTime}}</ElCol>
-      <ElCol :span="3"><ElBadge type="primary" :value="tag.collectCount">相关收藏</ElBadge></ElCol>
+      <ElCol :span="6">
+        创建时间 {{tag.createdTime}}
+      </ElCol>
+      <ElCol :span="6">
+        修改时间 {{tag.lastModifiedTime}}
+      </ElCol>
+      <ElCol :span="3">
+        <ElBadge type="primary" :value="tag.collectCount">
+          <el-link type="info" :href="'/tags/'+tag.id">相关收藏</el-link>
+        </ElBadge>
+      </ElCol>
     </ElRow>
     <ElRow class="app-summary">
       <ElCol>{{tag.summary}}</ElCol>
@@ -26,7 +34,7 @@
 
   @Component
   export default class TagOverviewCard extends Vue {
-    @Prop() tag!: Tag
+    @Prop({required: true}) tag!: Tag
   }
 </script>
 

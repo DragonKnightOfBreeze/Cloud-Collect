@@ -26,9 +26,8 @@ class CommentServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun reply(replyToCommentId: Long, comment: Comment, sponsorByUser: User) {
+	override fun reply(comment: Comment, sponsorByUser: User) {
 		val newComment = comment.copy(
-			replyToComment = commentRepository.findByIdOrNull(replyToCommentId) ?: throw NotFoundException(),
 			sponsorByUser = sponsorByUser
 		)
 		commentRepository.save(newComment)

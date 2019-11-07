@@ -15,11 +15,8 @@ class NoticeServiceImpl(
 ) : NoticeService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(notice: Notice, user: User) {
-		val newNotice = notice.copy(
-			user = user
-		)
-		noticeRepository.save(newNotice)
+	override fun create(notice: Notice) {
+		noticeRepository.save(notice)
 	}
 	
 	@Transactional

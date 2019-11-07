@@ -10,9 +10,17 @@
         <ElLink type="info" v-if="category.user" :href="'/profile/'+category.user.id">{{category.user.nickname}}</ElLink>
         <ElLink type="info" disabled v-else>未知</ElLink>
       </ElCol>
-      <ElCol :span="6">创建时间 {{category.createdTime}}</ElCol>
-      <ElCol :span="6">修改时间 {{category.lastModifiedTime}}</ElCol>
-      <ElCol :span="3"><ElBadge type="primary" :value="category.collectCount">相关收藏</ElBadge></ElCol>
+      <ElCol :span="6">
+        创建时间 {{category.createdTime}}
+      </ElCol>
+      <ElCol :span="6">
+        修改时间 {{category.lastModifiedTime}}
+      </ElCol>
+      <ElCol :span="3">
+        <ElBadge type="primary" :value="category.collectCount">
+          <el-link type="info" :href="'/categories/'+category.id">相关收藏</el-link>
+        </ElBadge>
+      </ElCol>
     </ElRow>
     <ElRow class="app-summary">
       <ElCol>{{category.summary}}</ElCol>
@@ -26,7 +34,7 @@
 
   @Component
   export default class CategoryOverviewCard extends Vue {
-    @Prop() category!: Category
+    @Prop({required: true}) category!: Category
   }
 </script>
 

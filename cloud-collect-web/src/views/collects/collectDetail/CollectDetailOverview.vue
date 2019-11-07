@@ -9,28 +9,67 @@
       <ElButton type="danger" @click="handleDelete">删除</ElButton>
     </ElButtonGroup>
 
-    <EditCollectDialog :visible.sync="editDialogVisible" @submit="handleSubmit"/>
+    <EditCollectDialog :collect="collect" :visible.sync="editDialogVisible" @submit="handleSubmit"/>
 
-    <!--TODO 评论列表-->
+    <el-collapse v-model="activeNames">
+      <el-collapse-item name="0">
+        <template v-slot:title>
+          <el-row>
+            <el-col :span="12">查看评论</el-col>
+            <el-col :span="4" :offset="8">
+              <el-button type="success" @click="handleNewComment">新评论</el-button>
+            </el-col>
+          </el-row>
+        </template>
+
+        <el-card-group v-if="commentPage && !commentPage.empty">
+          <comment-overview-card v-for="comment in commentPage.content" :key="comment.id" :comment="comment"
+                                 @reply="handleReplyComment(comment)"/>
+
+          <the-pagination :pageable-param.sync="commentPageableParam" :total-pages="commentPage.totalPages"
+                          :total-elements="commentPage.totalElements"/>
+        </el-card-group>
+        <div v-else>
+          没有评论。
+        </div>
+      </el-collapse-item>
+    </el-collapse>
+
+    <new-comment-dialog :visible.sync="newCommentDialogVisible" :collect="collect" :replyToComment="replyToComment"
+                        @submit="handleSubmitComment"/>
   </div>
 </template>
 
 <script lang="ts">
   import CollectDetailCard from "@/components/card/CollectDetailCard.vue"
+  import CommentOverviewCard from "@/components/card/CommentOverviewCard.vue"
   import EditCollectDialog from "@/components/dialog/EditCollectDialog.vue"
+  import NewCommentDialog from "@/components/dialog/NewCommentDialog.vue"
+  import ElCardGroup from "@/components/public/ElCardGroup.vue"
+  import ThePagination from "@/components/root/ThePagination.vue"
   import * as collectService from "@/services/collectService"
-  import * as historyService from "@/services/historyService"
-  import {Collect, History, User} from "@/types"
-  import {Component, Prop, Vue, Watch} from "vue-property-decorator"
+  import {Collect, Comment, Page, PageableParam, User} from "@/types"
+  import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
   @Component({
-    components: {CollectDetailCard, EditCollectDialog}
+    components: {
+      CommentOverviewCard,
+      NewCommentDialog,
+      ThePagination,
+      ElCardGroup,
+      CollectDetailCard,
+      EditCollectDialog
+    }
   })
   export default class CollectDetailOverview extends Vue {
-    @Prop() collect!: Collect
-
+    private collect!: Collect
     private editDialogVisible = false
+    private activeNames = ["0"]
+    private commentPage: Page<Comment> | null = null
+    private commentPageableParam: PageableParam = {page: 0, size: 20, sort: []}
+    private newCommentDialogVisible = false
+    private replyToComment: Comment | null = null
 
     get collectId() {
       return parseInt(this.$route.params["id"] as string)
@@ -45,18 +84,27 @@
     }
 
     created() {
-      this.addHistory()
       this.getCollect()
+      this.getCommentPage()
     }
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
-      this.addHistory()
       this.getCollect()
+      this.getCommentPage()
+    }
+
+    @Watch("commentPageableParam")
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+      this.getCommentPage()
     }
 
     handleEdit() {
       this.editDialogVisible = true
+    }
+
+    handleGoBack() {
+      this.$router.push("/collects")
     }
 
     async handleDelete() {
@@ -74,22 +122,27 @@
       this.getCollect()
     }
 
-    handleGoBack() {
-      this.$router.push("/collects")
+    handleNewComment() {
+      this.replyToComment = null
+      this.newCommentDialogVisible = true
     }
 
-    //如果当前用户存在且最后浏览的收藏不是相同的，则设置最后浏览的收藏，并向后台添加一条浏览记录
-    private async addHistory() {
-      const lastViewedCollect = this.$store.getters.lastViewedCollect as Collect | null
-      if (this.currentUser && lastViewedCollect && lastViewedCollect.id != this.collectId) {
-        this.$store.commit("setLastViewedCollect", this.collect)
-        const history: History = {collect: this.collect}
-        await historyService.create(history)
-      }
+    handleReplyComment(comment: Comment) {
+      this.replyToComment = comment
+      this.newCommentDialogVisible = true
+    }
+
+    //当新建评论后，需要刷新评论列表
+    handleSubmitComment() {
+      this.getCommentPage()
     }
 
     private async getCollect() {
       this.collect = await collectService.findById(this.collectId)
+    }
+
+    private async getCommentPage() {
+      this.commentPage = await collectService.getCommentPage(this.collectId, this.commentPageableParam)
     }
 
     private async deleteCollect() {

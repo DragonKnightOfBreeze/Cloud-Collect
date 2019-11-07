@@ -17,7 +17,4 @@ class UserDetailsServiceImpl(
 	}
 	
 	private fun User.toUserDetails() = UserDetailsVo(this)
-	
-	//NOTE 登录方法向SecurityContext中存储的是validAuthentication，而非authentication
-	//NOTE 前者不包含密码，但包含权限信息，因此不需要实现UserDetailsPasswordService
 }

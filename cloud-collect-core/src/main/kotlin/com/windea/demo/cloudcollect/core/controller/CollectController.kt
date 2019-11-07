@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/collect")
 @CrossOrigin
 class CollectController(
-	private val collectService: CollectService,
-	private val dataImportExportService: DataSerializeService
+	private val collectService: CollectService
 ) {
 	@ApiOperation("创建自己的收藏。")
 	@PostMapping("/create")

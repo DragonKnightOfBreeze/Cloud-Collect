@@ -3,9 +3,9 @@ import {History, Page, PageableParam} from "@/types"
 
 const historyUrl = "/history"
 
-export async function create(history: History) {
-  await http.post(`${historyUrl}/create`, history)
-}
+//export async function create(history: History) {
+//  await http.post(`${historyUrl}/create`, history)
+//}
 
 export async function deleteById(id: number) {
   await http.delete(`${historyUrl}/${id}`)

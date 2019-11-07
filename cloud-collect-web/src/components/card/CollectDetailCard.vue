@@ -1,14 +1,91 @@
 <template>
-  <!--TODO-->
+  <ElCard class="app-collect-detail-card">
+    <template v-slot:header>
+      <ElRow>
+        <ElCol :span="1">
+          <ElAvatar size="small" :src="collect.logoUrl"/>
+        </ElCol>
+        <ElCol :span="11">
+          {{collect.name}}
+        </ElCol>
+        <ElCol :span="3">
+          <UrlCopyDropdown :collect="collect"></UrlCopyDropdown>
+        </ElCol>
+        <ElCol :span="3">
+          <ElLink type="info" :href="collect.url">转到链接</ElLink>
+        </ElCol>
+        <ElCol :span="3">
+          <PraiseButton v-show="currentUser" :collect="collect"></PraiseButton>
+        </ElCol>
+      </ElRow>
+    </template>
+
+    <ElRow class="app-item-list">
+      <el-col :span="4">分类</el-col>
+      <el-col :span="20">
+        <ElLink type="info" v-if="collect.category" :href="'/categories/'+collect.id">{{collect.category.name}}</ElLink>
+        <ElLink type="info" disabled v-else>未分类</ElLink>
+      </el-col>
+    </ElRow>
+    <ElRow class="app-item-list">
+      <el-col :span="4">标签</el-col>
+      <el-col :span="20">
+        <ElTag v-for="tag in collect.tags" :key="tag.id">
+          <ElLink type="info" :href="'/tags/'+tag.id">{{tag.name}}</ElLink>
+        </ElTag>
+      </el-col>
+    </ElRow>
+    <el-row class="app-item-list">
+      <el-col :span="4">类型</el-col>
+      <el-col :span="20">
+        <!--根据不同的收藏类型，显示不同的图标-->
+        <template>
+          <el-icon v-if="collect.type === CollectType.delay" name="time"/>
+          <el-icon v-if="collect.type === CollectType.import" name="warning-outline"/>
+          <el-icon v-if="collect.type === CollectType.love" name="star-off"/>
+          <el-icon v-if="collect.type === CollectType.todo" name="edit"/>
+        </template>
+        {{collect.type}}
+      </el-col>
+    </el-row>
+    <ElRow class="app-item-list">
+      <ElCol :span="4">创建者</ElCol>
+      <ElCol :span="20">
+        <ElLink v-if="collect.user" :href="'/profile/'+collect.user.id">{{collect.user.nickname}}</ElLink>
+        <ElLink disabled v-else>未知</ElLink>
+      </ElCol>
+    </ElRow>
+    <ElRow class="app-item-list">
+      <ElCol :span="4">创建时间</ElCol>
+      <ElCol :span="20">{{collect.createdTime}}</ElCol>
+    </ElRow>
+    <ElRow class="app-item-list">
+      <el-col :span="4">修改时间</el-col>
+      <el-col :span="20">{{collect.lastModifiedTime}}</el-col>
+    </ElRow>
+    <ElRow class="app-item-list">
+      <ElCol>{{collect.summary}}</ElCol>
+    </ElRow>
+  </ElCard>
 </template>
 
 <script lang="ts">
-  import {Collect} from "@/types"
+  import PraiseButton from "@/components/button/PraiseButton.vue"
+  import UrlCopyDropdown from "@/components/menu/UrlCopyDropdown.vue"
+  import {Collect, CollectType, User} from "@/types"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    components: {PraiseButton, UrlCopyDropdown}
+  })
   export default class CollectDetailCard extends Vue {
-    @Prop() collect!: Collect
+    @Prop({required: true}) collect!: Collect
+
+    private CollectType = CollectType
+
+    get currentUser(): User | null {
+      return this.$store.getters.currentUser
+    }
   }
 </script>
 

@@ -1,4 +1,3 @@
-import {Category, Tag} from "@/types"
 import Vue from "vue"
 
 const enumText: { [enumName: string]: { [enumConst: string]: string } } = {
@@ -28,29 +27,28 @@ const enumText: { [enumName: string]: { [enumConst: string]: string } } = {
 //typescript中枚举不能携带属性，且toString()方法默认返回数值而非字符串
 //因此这里使用字符串字面量类型和嵌套对象来实现此功能
 Vue.filter("enumText", (value: string, type: string) => {
-  try {
-    return enumText[type][value]
-  } catch (e) {
-    console.error("枚举值或枚举类型不正确。")
-    return ""
-  }
+  return enumText[type][value]
+})
+
+Vue.filter("enumValues", (value: any) => {
+  return Object.values(value)
 })
 
 //NOTE 在后台使用@JsonFormat格式化时间
-//Vue.filter("dateTime",(value:string,type:string)=>{
+//Vue.filter("dateTime",(value:string)=>{
 //  return value
 //})
 
-Vue.filter("categoryName", (value: Category): string => {
-  return value && value.name || "未分类"
-})
+//Vue.filter("categoryName", (value: Category): string => {
+//  return value && value.name || "未分类"
+//})
 
-Vue.filter("tagNames", (value: Tag[]): string[] => {
-  const limit = 4
-  const names = value.map(tag => tag.name)
-  if (names.length <= limit) {
-    return names
-  } else {
-    return names.slice(0, limit - 1).concat("...")
-  }
-})
+//Vue.filter("tagNames", (value: Tag[]): string[] => {
+//  const limit = 4
+//  const names = value.map(tag => tag.name)
+//  if (names.length <= limit) {
+//    return names
+//  } else {
+//    return names.slice(0, limit - 1).concat("...")
+//  }
+//})

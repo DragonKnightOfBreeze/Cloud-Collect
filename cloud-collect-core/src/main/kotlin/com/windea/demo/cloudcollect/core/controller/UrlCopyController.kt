@@ -26,7 +26,7 @@ class UrlCopyController(
 	
 	@ApiOperation("复制为Markdown引用链接。")
 	@PostMapping("/copyAsMdRefUrl")
-	fun copyAsMdRefUrl(@RequestBody collect: Collect): Pair<String, String> {
+	fun copyAsMdRefUrl(@RequestBody collect: Collect): String {
 		return urlCopyService.copyAsMdRefUrl(collect)
 	}
 	
@@ -38,7 +38,7 @@ class UrlCopyController(
 	
 	@ApiOperation("复制为Markdown图片引用链接。")
 	@PostMapping("/copyAsMdImgRefUrl")
-	fun copyAsMdImgRefUrl(@RequestBody collect: Collect): Pair<String, String> {
+	fun copyAsMdImgRefUrl(@RequestBody collect: Collect): String {
 		return urlCopyService.copyAsMdImgRefUrl(collect)
 	}
 }

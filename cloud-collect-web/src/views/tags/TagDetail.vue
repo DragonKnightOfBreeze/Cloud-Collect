@@ -9,17 +9,19 @@
       <ElButton type="danger" @click="handleDelete">删除</ElButton>
     </ElButtonGroup>
 
-    <EditTagDialog :visible.sync="editDialogVisible" @submit="handleSubmit"/>
+    <EditTagDialog :tag="tag" :visible.sync="editDialogVisible" @submit="handleSubmit"/>
 
-    <ElCollapse v-model="activeNames" @change="handleChange">
+    <ElCollapse v-model="activeNames">
       <ElCollapseItem name="1" title="查看相关收藏">
-        <ElCardGroup v-if="showRelativeCollects">
-          <CollectOverviewCard v-for="collect in collectList" :key=collect.id
-                               :collect="collect"/>
+        <ElCardGroup v-if="collectPage && !collectPage.empty">
+          <CollectOverviewCard v-for="collect in collectPage.content" :key=collect.id :collect="collect"/>
 
           <ThePagination :pageable-param.sync="collectPageableParam" :total-pages="collectPage.totalPages"
                          :total-elements="collectPage.totalElements"/>
         </ElCardGroup>
+        <div v-else>
+          没有相关收藏。
+        </div>
       </ElCollapseItem>
     </ElCollapse>
   </div>
@@ -41,10 +43,10 @@
   })
   export default class TagDetail extends Vue {
     private tag: Tag | null = null
-    private activeNames = []
-    private collectPageableParam: PageableParam = {page: 0, size: 20, sort: []}
-    private collectPage: Page<Collect> | null = null
     private editDialogVisible = false
+    private activeNames = []
+    private collectPage: Page<Collect> | null = null
+    private collectPageableParam: PageableParam = {page: 0, size: 20, sort: []}
 
     get tagId() {
       return parseInt(this.$route.params["id"] as string)
@@ -58,31 +60,24 @@
       return this.currentUser && this.tag && this.tag.user && this.currentUser.id == this.tag.user.id
     }
 
-    get showRelativeCollects() {
-      return this.collectPage != null
-    }
-
-    get collectList() {
-      return this.collectPage && this.collectPage.content || []
-    }
-
     created() {
       this.getTag()
+      this.getCollectPage()
     }
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
       this.getTag()
+      this.getCollectPage()
     }
 
     @Watch("collectPageableParam")
-    private onCollectPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       this.getCollectPage()
     }
 
-    handleChange() {
-      if (this.showRelativeCollects) return //仅需加载一次
-      this.getCollectPage()
+    handleGoBack() {
+      this.$router.push("/tags")
     }
 
     handleEdit() {
@@ -99,13 +94,9 @@
       }
     }
 
-    //DONE 当用户编辑标签并提交更改成功后，需要从后台重新得到标签数据
+    //当用户编辑标签并提交更改成功后，需要从后台重新得到标签数据
     handleSubmit() {
       this.getTag()
-    }
-
-    handleGoBack() {
-      this.$router.push("/tags")
     }
 
     private async getTag() {
@@ -113,11 +104,7 @@
     }
 
     private async getCollectPage() {
-      try {
         this.collectPage = await tagService.getCollectPage(this.tagId, this.collectPageableParam)
-      } catch (e) {
-        this.$message("查询失败!")
-      }
     }
 
     private async deleteTag() {

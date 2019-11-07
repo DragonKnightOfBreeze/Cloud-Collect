@@ -5,7 +5,7 @@ import org.springframework.data.domain.*
 
 interface HistoryService {
 	/**创建一条浏览记录。*/
-	fun create(history: History, user: User)
+	fun create(history: History)
 	
 	/**删除一条浏览记录。*/
 	fun deleteById(id: Long)

@@ -8,20 +8,14 @@
         <ElCol :span="11">
           <ElLink type="primary" :href="'/collects/'+collect.id">{{collect.name}}</ElLink>
         </ElCol>
-        <ElCol :span="3">
-          <!--TODO-->
-          <ElDropdown>
-            <ElLink type="info">复制链接<ElIcon name="arrow-down"/></ElLink>
-            <ElDropdownMenu slot="dropdown">
-            </ElDropdownMenu>
-          </ElDropdown>
+        <ElCol :span="4">
+          <UrlCopyDropdown :collect="collect"></UrlCopyDropdown>
         </ElCol>
-        <ElCol :span="3">
+        <ElCol :span="4">
           <ElLink type="info" :href="collect.url">转到链接</ElLink>
         </ElCol>
-        <ElCol :span="3">
-          <!--TODO-->
-          <ElButton type="primary">点赞</ElButton>
+        <ElCol :span="4">
+          <PraiseButton v-show="currentUser" :collect="collect"></PraiseButton>
         </ElCol>
       </ElRow>
     </template>
@@ -32,10 +26,22 @@
         <ElLink type="info" v-if="collect.user" :href="'/profile/'+collect.user.id">{{collect.user.nickname}}</ElLink>
         <ElLink type="info" disabled v-else>未知</ElLink>
       </ElCol>
-      <ElCol :span="6">创建时间 {{collect.createdTime}}</ElCol>
-      <ElCol :span="6">修改时间 {{collect.lastModifiedTime}}</ElCol>
-      <ElCol :span="3"><ElBadge :value="collect.commentCount">评论</ElBadge></ElCol>
-      <ElCol :span="3"><ElBadge :value="collect.praiseByUserCount">赞</ElBadge></ElCol>
+      <ElCol :span="6">
+        创建时间 {{collect.createdTime}}
+      </ElCol>
+      <ElCol :span="6">
+        修改时间 {{collect.lastModifiedTime}}
+      </ElCol>
+      <ElCol :span="3">
+        <ElBadge :value="collect.commentCount">
+          <el-link type="info" :href="'/collects/'+collect.id">评论</el-link>
+        </ElBadge>
+      </ElCol>
+      <ElCol :span="3">
+        <ElBadge :value="collect.praiseByUserCount">
+          <el-link type="info" :href="'/collects/'+collect.id+'/stargazers'">赞</el-link>
+        </ElBadge>
+      </ElCol>
     </ElRow>
     <ElRow class="app-meta">
       <ElCol :span="6">
@@ -57,12 +63,20 @@
 </template>
 
 <script lang="ts">
-  import {Collect} from "@/types"
+  import PraiseButton from "@/components/button/PraiseButton.vue"
+  import UrlCopyDropdown from "@/components/menu/UrlCopyDropdown.vue"
+  import {Collect, User} from "@/types"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    components: {PraiseButton, UrlCopyDropdown}
+  })
   export default class CollectOverviewCard extends Vue {
-    @Prop() collect!: Collect
+    @Prop({required: true}) collect!: Collect
+
+    get currentUser(): User | null {
+      return this.$store.getters.currentUser
+    }
   }
 </script>
 

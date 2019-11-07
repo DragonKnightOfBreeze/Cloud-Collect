@@ -15,14 +15,11 @@ class HistoryServiceImpl(
 ) : HistoryService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(history: History, user: User) {
+	override fun create(history: History) {
 		//首先要删除之前的相同收藏的浏览记录
-		historyRepository.deleteByCollectIdAndUserId(history.collect.id, user.id)
+		historyRepository.deleteByCollectIdAndUserId(history.collect.id, history.user.id)
 		
-		val newHistory = history.copy(
-			user = user
-		)
-		historyRepository.save(newHistory)
+		historyRepository.save(history)
 	}
 	
 	@Transactional

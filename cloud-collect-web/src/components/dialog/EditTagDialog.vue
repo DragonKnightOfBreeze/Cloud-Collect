@@ -25,20 +25,21 @@
     private formLabelWidth = "80px"
 
     @PropSync("visible") syncVisible!: boolean
-    @Prop() tag!: Tag
+    @Prop({required: true}) tag!: Tag
 
     @Emit("submit")
     handleSubmit() {
       try {
         tagService.modify(this.tag.id!, this.tag)
         this.$message.success("编辑成功！")
-        this.handleClose()
+        this.syncVisible = false
       } catch (e) {
         const validationMessage = this.$store.getters.validationMessage
         this.$message.warning(`编辑失败！${validationMessage}`)
       }
     }
 
+    @Emit("close")
     handleClose() {
       this.syncVisible = false
     }

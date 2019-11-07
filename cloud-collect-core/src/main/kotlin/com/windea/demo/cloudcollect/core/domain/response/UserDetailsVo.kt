@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.*
 class UserDetailsVo(
 	val delegateUser: User
 ) : UserDetails {
+	
 	override fun getUsername(): String {
 		return delegateUser.username
 	}

@@ -27,11 +27,11 @@ class CommentController(
 		commentService.create(comment, authentication.toUser())
 	}
 	
-	@ApiOperation("创建自己的评论，回复某一评论。")
+	@ApiOperation("回复某一评论。")
 	@PostMapping("/reply")
-	fun reply(@RequestParam replyToCommentId: Long, @RequestBody @Validated(Create::class) comment: Comment,
-		bindingResult: BindingResult, authentication: Authentication) {
-		commentService.reply(replyToCommentId, comment, authentication.toUser())
+	fun reply(@RequestBody @Validated(Create::class) comment: Comment, bindingResult: BindingResult,
+		authentication: Authentication) {
+		commentService.reply(comment, authentication.toUser())
 	}
 	
 	@ApiOperation("删除自己的评论。")

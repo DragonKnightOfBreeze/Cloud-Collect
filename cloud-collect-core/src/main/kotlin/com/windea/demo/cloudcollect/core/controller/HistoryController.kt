@@ -1,11 +1,9 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
-import org.springframework.security.core.*
 import org.springframework.web.bind.annotation.*
 
 @Api("浏览记录")
@@ -18,8 +16,8 @@ class HistoryController(
 	//NOTE 浏览记录的创建交由前端
 	@ApiOperation("创建一条浏览记录。")
 	@PostMapping("/create")
-	fun create(@RequestBody history: History, authentication: Authentication) {
-		historyService.create(history, authentication.toUser())
+	fun create(@RequestBody history: History) {
+		historyService.create(history)
 	}
 	
 	@ApiOperation("删除一条浏览记录。")

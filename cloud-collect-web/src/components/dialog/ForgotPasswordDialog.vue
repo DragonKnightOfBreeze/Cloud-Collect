@@ -1,6 +1,6 @@
 <template>
   <!--TODO 前端表单验证-->
-  <ElDialog center append-to-body width="30%" title="忘记密码？" :visible="syncVisible" @close="handleClose">
+  <ElDialog title="忘记密码？" center append-to-body width="30%" :visible="syncVisible" @close="handleClose">
     <ElForm inline>
       <ElFormItem>
         <ElInput type="email" v-model="email" placeholder="你的邮箱"></ElInput>
@@ -32,7 +32,7 @@
         await indexService.forgotPassword(this.email)
 
         this.$message.info("邮件已发送。")
-        this.handleClose()
+        this.syncVisible = false
       } catch (e) {
         this.$message.warning("用户不存在！")
       }

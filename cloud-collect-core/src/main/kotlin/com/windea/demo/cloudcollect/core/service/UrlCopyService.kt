@@ -10,11 +10,11 @@ interface UrlCopyService {
 	fun copyAsMdUrl(collect: Collect): String
 	
 	/**复制为Markdown引用连接。*/
-	fun copyAsMdRefUrl(collect: Collect): Pair<String, String>
+	fun copyAsMdRefUrl(collect: Collect): String
 	
 	/**复制为Markdown图片链接。*/
 	fun copyAsMdImgUrl(collect: Collect): String
 	
 	/**复制为Markdown图片引用连接。*/
-	fun copyAsMdImgRefUrl(collect: Collect): Pair<String, String>
+	fun copyAsMdImgRefUrl(collect: Collect): String
 }

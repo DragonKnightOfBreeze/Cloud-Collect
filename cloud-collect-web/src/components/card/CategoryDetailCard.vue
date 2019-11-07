@@ -19,7 +19,7 @@
     </ElRow>
     <ElDivider/>
     <ElRow class="app-item-list">
-      <ElCol>{{category.summary}}</ElCol>
+      <ElCol :offset="1">{{category.summary}}</ElCol>
     </ElRow>
   </ElCard>
 </template>
@@ -30,7 +30,7 @@
 
   @Component
   export default class CategoryDetailCard extends Vue {
-    @Prop() category!: Category
+    @Prop({required: true}) category!: Category
   }
 </script>
 

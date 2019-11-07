@@ -1,5 +1,5 @@
 import http from "@/http"
-import {Collect, CollectType, Page, PageableParam, User} from "@/types"
+import {Collect, CollectType, Comment, Page, PageableParam, User} from "@/types"
 
 const collectUrl = "/collect"
 

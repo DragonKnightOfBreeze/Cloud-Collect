@@ -30,8 +30,7 @@
           <ElDropdown split-button type="primary" @click="handleGoProfile" @command="handleProfileCommand">
             {{currentUser.nickname}}
             <ElDropdownMenu slot="dropdown">
-              <ElDropdownItem v-for="item in dropdownItemList" :key="item.command"
-                              :command="item.command">
+              <ElDropdownItem v-for="item in dropdownItemList" :key="item.command" :command="item.command">
                 {{item.name}}
               </ElDropdownItem>
             </ElDropdownMenu>

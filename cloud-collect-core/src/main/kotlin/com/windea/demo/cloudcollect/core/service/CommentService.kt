@@ -8,7 +8,7 @@ interface CommentService {
 	fun create(comment: Comment, sponsorByUser: User)
 	
 	/**创建自己的评论，回复某一评论。*/
-	fun reply(replyToCommentId: Long, comment: Comment, sponsorByUser: User)
+	fun reply(comment: Comment, sponsorByUser: User)
 	
 	/**删除自己的评论。*/
 	fun deleteById(id: Long)

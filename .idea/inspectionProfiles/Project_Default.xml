@@ -13,6 +13,7 @@
     <inspection_tool class="ComplexRedundantLet" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="ConstantConditionIf" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="Convert2MethodRef" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CssUnusedSymbol" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="Destructure" enabled="true" level="INFO" enabled_by_default="true" />
     <inspection_tool class="DirectUseOfResultType" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="EditorConfigPartialOverride" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -49,6 +50,10 @@
     <inspection_tool class="JSCheckFunctionSignatures" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="JSIgnoredPromiseFromCall" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="JSMethodCanBeStatic" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="JSMismatchedCollectionQueryUpdate" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="queries" value="trace,write,forEach,length" />
+      <option name="updates" value="pop,push,shift,splice,unshift,add,insert,remove" />
+    </inspection_tool>
     <inspection_tool class="JSUnusedGlobalSymbols" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="JSUnusedLocalSymbols" enabled="false" level="UNUSED ENTRY" enabled_by_default="false" />
     <inspection_tool class="JpaObjectClassSignatureInspection" enabled="false" level="ERROR" enabled_by_default="false" />

@@ -79,7 +79,7 @@
     font-size: 14px;
     line-height: 24px;
     color: #909399;
-    padding: 3px 0;
+    padding: 5px 0;
   }
   .app-meta-small {
     font-size: 12px;
@@ -87,7 +87,12 @@
     color: #909399;
     padding: 3px 0;
   }
+  /*对应的html元素不应该是p，因为可能是markdown文本*/
   .app-summary {
+    padding: 15px 0;
+  }
+  /*对应的html元素不应该是p，因为可能是markdown文本*/
+  .app-content {
     padding: 15px 0;
   }
 </style>

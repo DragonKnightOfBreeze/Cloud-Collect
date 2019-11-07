@@ -1,4 +1,5 @@
 import Vue from "vue"
+import VueClipboard from "vue-clipboard2"
 import {Component} from "vue-property-decorator"
 import App from "./App.vue"
 import "./filters"
@@ -18,6 +19,9 @@ Component.registerHooks([
   "beforeRouteLeave",
   "beforeRouteUpdate"
 ])
+
+
+Vue.use(VueClipboard)
 
 new Vue({
   router,

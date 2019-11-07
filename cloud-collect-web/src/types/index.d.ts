@@ -29,7 +29,7 @@ export interface Collect {
   user?: User
   createdTime?: string
   lastModifiedTime?: string
-  praiseByUserList?: User[] | null
+  praiseByUserList?: User[]
   praiseByUserCount?: number
   commentCount?: number
 }
@@ -171,7 +171,7 @@ export interface Page<T> {
 export interface PageableParam {
   page: number //default: 0
   size: number //default: 20
-  sort: string[] //expression: propName1, propName2, direction?
+  sort?: string[] //expression: propName1, propName2, direction?
 }
 
 //org.springframework.data.domain.Pageable

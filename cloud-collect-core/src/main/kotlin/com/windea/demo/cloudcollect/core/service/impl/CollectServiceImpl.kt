@@ -3,11 +3,13 @@ package com.windea.demo.cloudcollect.core.service.impl
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.enums.*
 import com.windea.demo.cloudcollect.core.exceptions.*
+import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
 import org.springframework.data.repository.*
+import org.springframework.security.core.context.*
 import org.springframework.stereotype.*
 import javax.transaction.*
 import kotlin.random.*
@@ -17,7 +19,8 @@ import kotlin.random.*
 class CollectServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val commentRepository: CommentRepository,
-	private val userRepository: UserRepository
+	private val userRepository: UserRepository,
+	private val historyService: HistoryService
 ) : CollectService {
 	@Transactional
 	@CacheEvict(allEntries = true)
@@ -79,7 +82,7 @@ class CollectServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): Collect {
-		return collectRepository.findByIdOrNull(id)?.lateInit() ?: throw NotFoundException()
+		return collectRepository.findByIdOrNull(id)?.addHistory()?.lateInit() ?: throw NotFoundException()
 	}
 	
 	override fun findByRandom(): Collect {
@@ -151,6 +154,12 @@ class CollectServiceImpl(
 	private fun Collect.lateInit() = this.apply {
 		praiseByUserCount = userRepository.countByPraiseToCollectListId(id)
 		commentCount = commentRepository.countByCollectId(id)
+	}
+	
+	private fun Collect.addHistory() = this.also {
+		//尝试为当前用户添加一条浏览记录
+		val currentUser = SecurityContextHolder.getContext().authentication?.toUser()
+		if(currentUser != null) historyService.create(History(collect = it, user = currentUser))
 	}
 	
 	override fun isPraised(id: Long, user: User): Boolean {

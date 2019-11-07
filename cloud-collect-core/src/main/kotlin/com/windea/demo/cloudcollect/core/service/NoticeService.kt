@@ -5,7 +5,7 @@ import org.springframework.data.domain.*
 
 interface NoticeService {
 	/**创建一条通知。*/
-	fun create(notice: Notice, user: User)
+	fun create(notice: Notice)
 	
 	/**删除一条通知。*/
 	fun deleteById(id: Long)

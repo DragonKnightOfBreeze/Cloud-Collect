@@ -74,11 +74,14 @@
     }
 
     handleLogin() {
+      console.log("登录用户。")
       this.syncDialogType = "login"
     }
 
+    //这里返回首页
     handleClose() {
       this.syncDialogType = null
+      this.$router.push("/")
     }
   }
 </script>

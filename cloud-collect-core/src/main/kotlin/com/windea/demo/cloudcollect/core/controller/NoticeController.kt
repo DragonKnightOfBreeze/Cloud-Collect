@@ -3,11 +3,9 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
-import org.springframework.security.core.*
 import org.springframework.web.bind.annotation.*
 
 @Api("通知")
@@ -20,8 +18,8 @@ class NoticeController(
 	//NOTE 通知的创建交由前端
 	@ApiOperation("创建一条通知。")
 	@PostMapping("/create")
-	fun create(@RequestBody notice: Notice, authentication: Authentication) {
-		noticeService.create(notice, authentication.toUser())
+	fun create(@RequestBody notice: Notice) {
+		noticeService.create(notice)
 	}
 	
 	@ApiOperation("删除一条通知。")

@@ -1,5 +1,5 @@
 import http from "@/http"
-import {Page, PageableParam} from "@/types"
+import {Comment, Page, PageableParam} from "@/types"
 
 const commentUrl = "/comment"
 
@@ -7,9 +7,8 @@ export async function create(comment: Comment) {
   await http.post(`${commentUrl}/create`, comment)
 }
 
-export async function reply(replyToCommentId: number, comment: Comment) {
-  const params = {replyToCommentId}
-  await http.post(`${commentUrl}/reply`, comment, {params})
+export async function reply(comment: Comment) {
+  await http.post(`${commentUrl}/reply`, comment)
 }
 
 export async function deleteById(id: number) {

@@ -58,7 +58,6 @@ class IndexController(
 		userService.resetPassword(form, resetPasswordCode)
 	}
 	
-	
 	@ApiOperation("随便看看任一收藏。")
 	@GetMapping("/lookAroundCollect")
 	fun lookAroundCollect(): Collect {

@@ -25,7 +25,7 @@ data class Notice(
 	val title: String,
 	
 	@ApiModelProperty("内容。")
-	@Column(nullable = false, length = 512)
+	@Column(nullable = false)
 	val content: String,
 	
 	@ApiModelProperty("通知的类型。")
