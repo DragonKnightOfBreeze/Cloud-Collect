@@ -158,6 +158,16 @@ class UserServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
+	override fun findAllByUsernameContains(username: String, pageable: Pageable): Page<User> {
+		return userRepository.findAllByUsernameContains(username, pageable).map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByEmailContains(email: String, pageable: Pageable): Page<User> {
+		return userRepository.findAllByEmailContains(email, pageable).map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
 	override fun findAllByRole(role: Role, pageable: Pageable): Page<User> {
 		return userRepository.findAllByRole(role, pageable).map { it.lateInit() }
 	}

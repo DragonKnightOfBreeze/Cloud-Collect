@@ -71,12 +71,23 @@ class UserController(
 		return userService.findAllByNicknameContains(nickname, pageable)
 	}
 	
+	@ApiOperation("根据用户名全局模糊查询用户。")
+	@GetMapping("/findAllByUsernameContains")
+	fun findAllByUsernameContains(@RequestParam username: String, pageable: Pageable): Page<User> {
+		return userService.findAllByUsernameContains(username, pageable)
+	}
+	
+	@ApiOperation("根据邮箱全局模糊查询用户。")
+	@GetMapping("/findAllByEmailContains")
+	fun findAllByEmailContains(@RequestParam email: String, pageable: Pageable): Page<User> {
+		return userService.findAllByEmailContains(email, pageable)
+	}
+	
 	@ApiOperation("根据身份全局查询用户。")
 	@GetMapping("/findAllByRole")
 	fun findAllByRole(@RequestParam role: Role, pageable: Pageable): Page<User> {
 		return userService.findAllByRole(role, pageable)
 	}
-	
 	
 	@ApiOperation("判断指定用户是否已关注指定用户。")
 	@GetMapping("/{id}/isFollowed")

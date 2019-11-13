@@ -52,6 +52,12 @@ interface UserService {
 	/**根据昵称全局模糊查询用户。*/
 	fun findAllByNicknameContains(nickname: String, pageable: Pageable): Page<User>
 	
+	/**根据用户名全局模糊查询用户。*/
+	fun findAllByUsernameContains(username: String, pageable: Pageable): Page<User>
+	
+	/**根据邮箱全局模糊查询用户。*/
+	fun findAllByEmailContains(email: String, pageable: Pageable): Page<User>
+	
 	/**根据身份全局查询用户。*/
 	fun findAllByRole(role: Role, pageable: Pageable): Page<User>
 	

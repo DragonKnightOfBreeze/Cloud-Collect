@@ -6,17 +6,19 @@
       <div>搜索指定的收藏。</div>
     </div>
     <ElBlankLine/>
-    <ElInput v-model="searchTerm" placeholder="关键词">
-      <template v-slot:prepend>
-        <ElSelect v-model="searchType" :value="searchType" placeholder="请选择">
-          <ElOption v-for="option in searchOptions" :key="option.value" :label="option.label" :value="option.value"></ElOption>
-        </ElSelect>
-      </template>
+    <div class="align-center">
+      <ElInput v-model="searchTerm" placeholder="关键词">
+        <template v-slot:prepend>
+          <ElSelect v-model="searchType" :value="searchType" placeholder="请选择">
+            <ElOption v-for="option in searchOptions" :key="option.value" :label="option.label" :value="option.value"></ElOption>
+          </ElSelect>
+        </template>
 
-      <template v-slot:append>
-        <ElButton><ElIcon name="search"/></ElButton>
-      </template>
-    </ElInput>
+        <template v-slot:append>
+          <ElButton><ElIcon name="search"/></ElButton>
+        </template>
+      </ElInput>
+    </div>
 
     <ElCardGroup v-if="searchPage">
       <CollectOverviewCard v-for="collect in searchPage.content" :key="collect.id" :collect="collect"/>

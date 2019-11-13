@@ -12,6 +12,10 @@ interface UserRepository : JpaRepository<User, Long> {
 	
 	fun findAllByNicknameContains(nickname: String, pageable: Pageable): Page<User>
 	
+	fun findAllByUsernameContains(username: String, pageable: Pageable): Page<User>
+	
+	fun findAllByEmailContains(email: String, pageable: Pageable): Page<User>
+	
 	fun findAllByRole(role: Role, pageable: Pageable): Page<User>
 	
 	fun findAllByFollowToUserListId(followToUserId: Long, pageable: Pageable): Page<User>
