@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>激活你的账户</h1>
+    <h3 class="align-center">激活中……</h3>
   </div>
 </template>
 
@@ -15,9 +15,6 @@
 
     created() {
       this.getParams()
-    }
-
-    mounted() {
       this.handleActivate()
     }
 
