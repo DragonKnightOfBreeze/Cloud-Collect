@@ -19,6 +19,9 @@ const ProfileDetailStars = () => import("@/views/profile/profileDetail/ProfileDe
 const ProfileDetailFollowers = () => import("@/views/profile/profileDetail/ProfileDetailFollowers.vue")
 const ProfileDetailFollowing = () => import("@/views/profile/profileDetail/ProfileDetailFollowing.vue")
 const Search = () => import( "@/views/Search.vue")
+const SearchOverview = () => import("@/views/search/SearchOverview.vue")
+const SearchCollect = () => import("@/views/search/SearchCollect.vue")
+const SearchUser = () => import("@/views/search/SearchUser.vue")
 const About = () => import("@/views/About.vue")
 
 const Categories = () => import("@/views/Categories.vue")
@@ -97,7 +100,12 @@ const routes: RouteConfig[] = [
   },
   {
     path: "/search",
-    component: Search
+    component: Search,
+    children: [
+      {path: "", component: SearchOverview},
+      {path: "collect", component: SearchCollect},
+      {path: "user", component: SearchUser}
+    ]
   },
   {
     path: "/about",

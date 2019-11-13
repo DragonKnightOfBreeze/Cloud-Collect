@@ -11,9 +11,16 @@ export interface DropDownItem {
   name: string
 }
 
+export interface Option<T extends string> {
+  label: string
+  value: T
+}
+
 export type DialogType = "login" | "register"
 
 export type CollectSearchType = "name" | "categoryName" | "tagName";
+
+export type UserSearchType = "nickname" | "username" | "email"
 
 //REGION Backend
 
@@ -61,7 +68,7 @@ export interface Comment {
   sponsorByUser?: User
   replyToComment?: Comment
   createdTime?: string
-  replyByCommentCount?: number
+  replyToCommentCount?: number
 }
 
 export interface History {
@@ -124,15 +131,15 @@ export interface UserDetailsVo extends UserDetails {
 
 //REGION enums
 
-export enum CollectPrivacy {public = "PUBLIC", private = "PRIVATE"}
+export type CollectPrivacy = "PUBLIC" | "PRIVATE"
 
-export enum CollectType {none = "NONE", love = "LOVE", import = "IMPORT", todo = "TODO", delay = "DELAY"}
+export type CollectType = "NONE" | "LOVE" | "IMPORT" | "TODO" | "DELAY"
 
-export enum NoticeType {system = "SYSTEM", account = "ACCOUNT", hello = "HELLO"}
+export type NoticeType = "SYSTEM" | "ACCOUNT" | "HELLO"
 
-export enum Role {normal = "NORMAL", admin = "ADMIN"}
+export type Role = "NORMAL" | "ADMIN"
 
-export enum DataType {json = "JSON", yaml = "YAML", xml = "XML", properties = "PROPERTIES"}
+export type DataType = "JSON" | "YAML" | "XML" | "PROPERTIES"
 
 //REGION SpringBoot
 
@@ -210,6 +217,11 @@ export interface ObjectError {
 }
 
 //REGION Kotlin Stdlib
+
+export interface Enum<T extends string> {
+  name: T,
+  text: string
+}
 
 export interface Pair<A, B> {
   first: A

@@ -75,6 +75,13 @@
   .app-item-list {
     padding: 10px 0;
   }
+  .app-title {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 30px;
+    color: #333;
+    padding: 15px 0;
+  }
   .app-meta {
     font-size: 14px;
     line-height: 24px;
@@ -85,7 +92,7 @@
     font-size: 12px;
     line-height: 18px;
     color: #909399;
-    padding: 3px 0;
+    padding: 5px 0;
   }
   /*对应的html元素不应该是p，因为可能是markdown文本*/
   .app-summary {

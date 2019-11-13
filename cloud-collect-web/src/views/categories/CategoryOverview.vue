@@ -6,8 +6,8 @@
       <div>分类可为收藏进行唯一的归类。</div>
       <div>一个收藏只能属于一个分类。</div>
     </div>
-    <ElDivider/>
-    <ElRow>
+    <ElBlankLine/>
+    <ElRow type="flex" justify="center" align="middle">
       <ElCol :span="8">
         <ElForm inline class="align-center">
           <ElFormItem>
@@ -29,6 +29,7 @@
 
 <script lang="ts">
   import CategoryOverviewCard from "@/components/card/CategoryOverviewCard.vue"
+  import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import * as categoryService from "@/services/categoryService"
@@ -36,11 +37,11 @@
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {CategoryOverviewCard, ElCardGroup, ThePagination}
+    components: {ElBlankLine, CategoryOverviewCard, ElCardGroup, ThePagination}
   })
   export default class CategoryOverview extends Vue {
     private searchTerm: string = ""
-    private searchPageableParam: PageableParam = {page: 0, size: 20, sort: []}
+    private searchPageableParam: PageableParam = {page: 0, size: 20}
     private searchPage: Page<Category> | null = null
 
     @Watch("searchPageableParam")

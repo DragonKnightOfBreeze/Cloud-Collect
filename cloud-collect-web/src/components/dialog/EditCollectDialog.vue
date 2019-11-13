@@ -27,6 +27,7 @@
       </ElFormItem>
       <ElFormItem label="标签" :label-width="formLabelWidth">
         <!--TODO 可行的写法？-->
+        <!--TODO 允许创建新的标签-->
         <ElSelect v-model="collect.tags" :value="collect.tags" value-key="id" placeholder="请选择标签"
                   filterable remote reserve-keyword multiple clearable
                   :remote-method="searchTagByName" :loading="loadingTags">
@@ -35,10 +36,9 @@
         </ElSelect>
       </ElFormItem>
       <ElFormItem label="类型" :label-width="formLabelWidth">
-        <!--TODO 可行的写法？-->
         <ElRadioGroup v-model="collect.type">
-          <ElRadio v-for="type in CollectType" :label="type">
-            {{type | enumText("CollectType")}}
+          <ElRadio v-for="type in collectTypes" :key="type.name" :label="type.name">
+            {{type.text}}
           </ElRadio>
         </ElRadioGroup>
       </ElFormItem>
@@ -51,10 +51,11 @@
 </template>
 
 <script lang="ts">
+  import {collectTypes} from "@/enums"
   import * as categoryService from "@/services/categoryService"
   import * as collectService from "@/services/collectService"
   import * as tagService from "@/services/tagService"
-  import {Category, Collect, CollectType, PageableParam, Tag} from "@/types"
+  import {Category, Collect, PageableParam, Tag} from "@/types"
   import {Component, Emit, Prop, PropSync, Vue} from "vue-property-decorator"
 
   @Component
@@ -67,7 +68,7 @@
     private loadingCategories = false
     private tags: Tag[] = []
     private loadingTags = false
-    private CollectType = CollectType
+    private collectTypes = collectTypes
 
     private async searchCategoryByName(value: string) {
       const pageableParam: PageableParam = {page: 0, size: 100}

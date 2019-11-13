@@ -1,7 +1,7 @@
 <template>
   <!--NOTE 参照Vue官网首页的排版-->
   <div class="app-home">
-    <ElRow class="app-home-content" type="flex">
+    <ElRow class="app-home-content">
       <ElCol :span="8">
         <img class="app-home-logo" alt="Vue logo" src="../assets/logo.png">
       </ElCol>

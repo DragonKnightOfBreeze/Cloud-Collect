@@ -1,5 +1,5 @@
 import http from "@/http"
-import {Collect, History, Notice, Page, PageableParam, Role, User} from "@/types"
+import {Collect, History, Notice, Page, PageableParam, User} from "@/types"
 
 const userUrl = "/user"
 
@@ -42,9 +42,15 @@ export async function findAllByNicknameContains(nickname: string, pageableParam:
   return response.data
 }
 
-export async function findAllByRole(role: Role, pageableParam: PageableParam) {
-  const params = {role, ...pageableParam}
-  const response = await http.get<Page<User>>(`${userUrl}/findAllByRole`, {params})
+export async function findAllByUsernameContains(username: string, pageableParam: PageableParam) {
+  const params = {username, ...pageableParam}
+  const response = await http.get<Page<User>>(`${userUrl}/findAllByUsernameContains`, {params})
+  return response.data
+}
+
+export async function findAllByEmailContains(email: string, pageableParam: PageableParam) {
+  const params = {email, ...pageableParam}
+  const response = await http.get<Page<User>>(`${userUrl}/findAllByEmailContains`, {params})
   return response.data
 }
 

@@ -48,7 +48,7 @@ data class Comment(
 	
 	@ApiModelProperty("回复此评论的评论数量。")
 	@Transient
-	var replyByCommentCount: Long = 0
+	var replyToCommentCount: Long = 0
 	
 	override fun equals(other: Any?) = other === this || (other is Comment && other.id == id)
 	

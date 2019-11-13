@@ -5,8 +5,8 @@
     <div>
       <div>收藏和管理你所钟情的网页和文章！</div>
     </div>
-    <ElDivider/>
-    <ElRow>
+    <ElBlankLine/>
+    <ElRow type="flex" justify="center" align="middle">
       <ElCol :span="8">
         <ElForm inline class="align-center">
           <ElFormItem>
@@ -48,6 +48,7 @@
 
 <script lang="ts">
   import CollectOverviewCard from "@/components/card/CollectOverviewCard.vue"
+  import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import * as collectService from "@/services/collectService"
@@ -55,14 +56,14 @@
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {ThePagination, CollectOverviewCard, ElCardGroup}
+    components: {ElBlankLine, ThePagination, CollectOverviewCard, ElCardGroup}
   })
   export default class CollectOverview extends Vue {
     private searchTerm1: string = ""
     private searchTerm2: string = ""
     private searchTerm3: string = ""
     private searchType: CollectSearchType = "name"
-    private searchPageableParam: PageableParam = {page: 0, size: 20, sort: []}
+    private searchPageableParam: PageableParam = {page: 0, size: 20}
     private searchPage: Page<Tag> | null = null
 
     @Watch("searchPageableParam")

@@ -44,7 +44,7 @@
     private editDialogVisible = false
     private activeNames = []
     private collectPage: Page<Collect> | null = null
-    private collectPageableParam: PageableParam = {page: 0, size: 20, sort: []}
+    private collectPageableParam: PageableParam = {page: 0, size: 20}
 
     get categoryId() {
       return parseInt(this.$route.params["id"] as string)

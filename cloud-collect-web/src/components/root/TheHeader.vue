@@ -1,7 +1,7 @@
 <template>
   <div id="app-header">
     <!--导航栏-->
-    <ElRow id="app-navbar" type="flex" align="center" justify="center" :gutter="20">
+    <ElRow id="app-navbar" type="flex" justify="center" align="center" :gutter="20">
       <!--导航头部-->
       <ElCol :span="4">
         <router-link to="/">

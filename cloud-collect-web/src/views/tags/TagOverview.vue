@@ -6,8 +6,8 @@
       <div>标签可为收藏添加额外的说明信息。</div>
       <div>一个收藏可以附带多个标签。</div>
     </div>
-    <ElDivider/>
-    <ElRow>
+    <ElBlankLine/>
+    <ElRow type="flex" justify="center" align="middle">
       <ElCol :span="8">
         <ElForm inline class="align-center">
           <ElFormItem>
@@ -29,6 +29,7 @@
 
 <script lang="ts">
   import TagOverviewCard from "@/components/card/TagOverviewCard.vue"
+  import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import * as tagService from "@/services/tagService"
@@ -36,11 +37,11 @@
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {TagOverviewCard, ElCardGroup, ThePagination}
+    components: {ElBlankLine, TagOverviewCard, ElCardGroup, ThePagination}
   })
   export default class TagOverview extends Vue {
     private searchTerm: string = ""
-    private searchPageableParam: PageableParam = {page: 0, size: 20, sort: []}
+    private searchPageableParam: PageableParam = {page: 0, size: 20}
     private searchPage: Page<Tag> | null = null
 
     //当分页参数发生变化时，重新加载数据

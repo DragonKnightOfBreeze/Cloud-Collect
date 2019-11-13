@@ -65,7 +65,7 @@
     private editDialogVisible = false
     private activeNames = ["0"]
     private commentPage: Page<Comment> | null = null
-    private commentPageableParam: PageableParam = {page: 0, size: 20, sort: []}
+    private commentPageableParam: PageableParam = {page: 0, size: 20}
     private newCommentDialogVisible = false
     private replyToComment: Comment | null = null
 

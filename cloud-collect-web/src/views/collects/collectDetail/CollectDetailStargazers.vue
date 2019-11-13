@@ -1,12 +1,14 @@
 <template>
-  <ElPageHeader title="返回详情页面" content="收藏家" @back="handleGoBack"></ElPageHeader>
-  <ElDivider/>
-  <div>查看该收藏的收藏家</div>
+  <div>
+    <ElPageHeader title="返回详情页面" content="收藏家" @back="handleGoBack"></ElPageHeader>
+    <ElDivider/>
+    <div>查看该收藏的收藏家</div>
 
-  <ElCardGroup>
-    <UserOverviewCard v-for="user in praiseByUserList" :key="user.id" :user="user"/>
-    <ThePagination :page="praiseByUserPage" :pageable-param.sync="praiseByUserPageableParam"/>
-  </ElCardGroup>
+    <ElCardGroup>
+      <UserOverviewCard v-for="user in praiseByUserList" :key="user.id" :user="user"/>
+      <ThePagination :page="praiseByUserPage" :pageable-param.sync="praiseByUserPageableParam"/>
+    </ElCardGroup>
+  </div>
 </template>
 
 <script lang="ts">
@@ -22,7 +24,7 @@
     components: {ThePagination, UserOverviewCard, ElCardGroup}
   })
   export default class CollectDetailStargazers extends Vue {
-    private praiseByUserPageableParam: PageableParam = {page: 0, size: 20, sort: []}
+    private praiseByUserPageableParam: PageableParam = {page: 0, size: 20}
     private praiseByUserPage: Page<User> | null = null
 
     get collectId() {

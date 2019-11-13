@@ -40,12 +40,12 @@
       <ElCol :span="20">
         <!--根据不同的收藏类型，显示不同的图标-->
         <template>
-          <ElIcon v-if="collect.type === CollectType.delay" name="time"/>
-          <ElIcon v-if="collect.type === CollectType.import" name="warning-outline"/>
-          <ElIcon v-if="collect.type === CollectType.love" name="star-off"/>
-          <ElIcon v-if="collect.type === CollectType.todo" name="edit"/>
+          <ElIcon v-if="collect.type==='DELAY'" name="time"/>
+          <ElIcon v-if="collect.type==='IMPORT'" name="warning-outline"/>
+          <ElIcon v-if="collect.type==='LOVE'" name="star-off"/>
+          <ElIcon v-if="collect.type==='TODO'" name="edit"/>
         </template>
-        {{collect.type}}
+        {{collect.type | enumText(collectTypes)}}
       </ElCol>
     </ElRow>
     <ElRow class="app-item-list">
@@ -63,6 +63,7 @@
       <ElCol :span="4">修改时间</ElCol>
       <ElCol :span="20">{{collect.lastModifiedTime}}</ElCol>
     </ElRow>
+    <ElDivider/>
     <ElRow class="app-item-list">
       <ElCol>{{collect.summary}}</ElCol>
     </ElRow>
@@ -72,7 +73,8 @@
 <script lang="ts">
   import PraiseButton from "@/components/button/PraiseButton.vue"
   import UrlCopyDropdown from "@/components/menu/UrlCopyDropdown.vue"
-  import {Collect, CollectType, User} from "@/types"
+  import {collectTypes} from "@/enums"
+  import {Collect, User} from "@/types"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component({
@@ -81,7 +83,7 @@
   export default class CollectDetailCard extends Vue {
     @Prop({required: true}) collect!: Collect
 
-    private CollectType = CollectType
+    private collectTypes = collectTypes
 
     get currentUser(): User | null {
       return this.$store.getters.currentUser
