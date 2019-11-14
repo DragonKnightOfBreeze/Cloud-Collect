@@ -15,7 +15,7 @@
           <ElLink type="info" :href="collect.url">转到链接</ElLink>
         </ElCol>
         <ElCol :span="4">
-          <PraiseButton v-show="hasCurrentUser" :collect="collect"></PraiseButton>
+          <PraiseButton v-show="currentUser" :collect="collect"></PraiseButton>
         </ElCol>
       </ElRow>
     </template>
@@ -74,8 +74,8 @@
   export default class CollectOverviewCard extends Vue {
     @Prop({required: true}) collect!: Collect
 
-    get hasCurrentUser() {
-      return !!this.$store.getters.currentUser
+    get currentUser() {
+      return this.$store.getters.currentUser
     }
   }
 </script>

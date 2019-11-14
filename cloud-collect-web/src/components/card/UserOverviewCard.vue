@@ -9,7 +9,7 @@
           <ElLink type="primary" :href="'/profile/'+user.id">{{user.nickname}}</ElLink>
         </ElCol>
         <ElCol :span="4" :offset="8">
-          <FollowButton v-show="hasCurrentUser && !isCurrentUser" :user="user"></FollowButton>
+          <FollowButton v-show="currentUser && !isCurrentUser" :user="user"></FollowButton>
         </ElCol>
       </ElRow>
     </template>
@@ -61,7 +61,7 @@
   export default class UserOverviewCard extends Vue {
     @Prop({required: true}) user!: User
 
-    get hasCurrentUser() {
+    get currentUser() {
       return !!this.$store.getters.currentUser
     }
 

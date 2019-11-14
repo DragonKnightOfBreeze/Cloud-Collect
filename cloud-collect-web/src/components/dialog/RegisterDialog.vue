@@ -3,20 +3,20 @@
   <!--注册对话框-->
   <ElDialog title="注册" center :visible="syncDialogType==='register'" @close="handleClose">
     <!--注册表单-->
-    <ElForm>
-      <ElFormItem label="用户名" :label-width="formLabelWidth">
+    <ElForm label-width="120px">
+      <ElFormItem label="用户名">
         <ElInput v-model="form.username" placeholder="请输入用户名。"/>
       </ElFormItem>
-      <ElFormItem label="密码" :label-width="formLabelWidth">
+      <ElFormItem label="密码">
         <ElInput type="password" v-model="form.password" placeholder="请输入密码。"/>
       </ElFormItem>
-      <ElFormItem label="确认密码" :label-width="formLabelWidth">
+      <ElFormItem label="确认密码">
         <ElInput type="password" v-model="rePassword" placeholder="请再次输入密码。"/>
       </ElFormItem>
-      <ElFormItem label="昵称" :label-width="formLabelWidth">
+      <ElFormItem label="昵称">
         <ElInput v-model="form.nickname" placeholder="请输入昵称。"/>
       </ElFormItem>
-      <ElFormItem label="邮箱" :label-width="formLabelWidth">
+      <ElFormItem label="邮箱">
         <ElInput type="email" v-model="form.email" placehold="请输入邮箱。"/>
       </ElFormItem>
       <ElFormItem>
@@ -28,7 +28,7 @@
 
     <!--提交按钮-->
     <template v-slot:footer>
-      <ElButton type="success" :loading="buttonLoading" @click="handleRegister">注 册</ElButton>
+      <ElButton type="success" @click="handleRegister">注 册</ElButton>
       <ElButton type="primary" @click="handleLogin">登录</ElButton>
     </template>
   </ElDialog>
@@ -44,10 +44,8 @@
     components: {ForgotPasswordDialog}
   })
   export default class RegisterDialog extends Vue {
-    @PropSync("dialogType") syncDialogType: DialogType | null
+    @PropSync("dialogType", {required: true}) syncDialogType!: DialogType
 
-    private buttonLoading = false
-    private formLabelWidth = "120px"
     private forgotPasswordDialogVisible = false
     private form: User = {
       username: "",
@@ -62,6 +60,9 @@
     }
 
     async handleRegister() {
+      //要求用户输入
+      if (!this.form.username || !this.form.password || !this.rePassword || !this.form.nickname || !this.form.email) return
+
       try {
         await indexService.register(this.form)
         //如果注册成功，则弹出成功对话框，并弹出登录对话框。否则弹出错误对话框
@@ -80,7 +81,7 @@
 
     //这里返回首页
     handleClose() {
-      this.syncDialogType = null
+      this.syncDialogType = "none"
       this.$router.push("/")
     }
   }

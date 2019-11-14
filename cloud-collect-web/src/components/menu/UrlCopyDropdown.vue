@@ -1,10 +1,8 @@
 <template>
-  <ElDropdown>
-    <ElLink type="info">
-      复制链接
-      <ElIcon name="arrow-down"/>
-    </ElLink>
-    <ElDropdownMenu slot="dropdown" @command="handleCommand">
+  <ElDropdown split-button type="info" @command="handleCommand">
+    <ElLink>复制链接</ElLink>
+
+    <ElDropdownMenu v-slot:dropdown>
       <ElDropdownItem v-for="item in dropdownItemList" :key="item.command" :command="item.command">
         {{item.name}}
       </ElDropdownItem>
@@ -19,7 +17,7 @@
 
   @Component
   export default class UrlCopyDropdown extends Vue {
-    @Prop() collect!: Collect
+    @Prop({required: true}) collect!: Collect
 
     private dropdownItemList: DropDownItem[] = [
       {command: "copyUrl", name: "复制链接"},
@@ -40,12 +38,12 @@
       }
     }
 
-    async getUrl(value: string) {
+    async getUrl(type: string) {
       const collect = this.collect
-      if (value == "copyUrl") {
+      if (type == "copyUrl") {
         return collect.url
       } else {
-        return await urlCopyService.copyAsUrl(value, collect)
+        return await urlCopyService.copyAsUrl(type, collect)
       }
     }
   }

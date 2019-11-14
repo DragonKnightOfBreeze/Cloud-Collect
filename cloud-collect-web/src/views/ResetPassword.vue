@@ -3,18 +3,18 @@
     <h1>重置你的密码</h1>
 
     <!--重置密码表单-->
-    <ElForm>
-      <ElFormItem label="新的密码" :label-width="formLabelWidth">
+    <ElForm label-width="80px">
+      <ElFormItem label="新的密码">
         <ElInput type="password" v-model="form.password" placeholder="请输入新的密码。"/>
       </ElFormItem>
-      <ElFormItem label="确认新的密码" :label-width="formLabelWidth">
+      <ElFormItem label="确认密码">
         <ElInput type="password" v-model="rePassword" placeholder="请再次确认新的密码。"/>
       </ElFormItem>
     </ElForm>
 
     <!--提交按钮-->
     <template>
-      <ElButton type="success" :loading="buttonLoading" @click="handleResetPassword">重置密码</ElButton>
+      <ElButton type="success" @click="handleResetPassword">重置密码</ElButton>
       <ElButton @click="handleGoBack">返回上一页</ElButton>
     </template>
   </div>
@@ -27,8 +27,6 @@
 
   @Component
   export default class ResetPassword extends Vue {
-    private buttonLoading = false
-    private formLabelWidth = "120px"
     private form: ResetPasswordForm = {
       username: "",
       password: ""

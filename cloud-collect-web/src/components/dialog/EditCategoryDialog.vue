@@ -1,11 +1,11 @@
 <template>
   <ElDialog title="编辑分类" center :visible="syncVisible" @close="handleClose">
-    <ElForm>
-      <ElFormItem label="名字" :label-width="formLabelWidth">
-        <ElInput v-model="category.name"></ElInput>
+    <ElForm label-width="80px">
+      <ElFormItem label="名字">
+        <ElInput v-model="savedCategory.name"></ElInput>
       </ElFormItem>
-      <ElFormItem label="概述" :label-width="formLabelWidth">
-        <ElInput v-model="category.summary"></ElInput>
+      <ElFormItem label="概述">
+        <ElInput v-model="savedCategory.summary"></ElInput>
       </ElFormItem>
       <ElFormItem>
         <el-button type="primary" @click="handleSubmit">完成编辑</el-button>
@@ -22,15 +22,15 @@
 
   @Component
   export default class EditCategoryDialog extends Vue {
-    private formLabelWidth = "80px"
-
-    @PropSync("visible") syncVisible!: boolean
+    @PropSync("visible", {required: true}) syncVisible!: boolean
     @Prop({required: true}) category!: Category
 
+    private savedCategory = this.category
+
     @Emit("submit")
-    handleSubmit() {
+    async handleSubmit() {
       try {
-        categoryService.modify(this.category.id!, this.category)
+        await categoryService.modify(this.savedCategory.id!, this.savedCategory)
         this.$message.success("编辑成功！")
         this.syncVisible = false
       } catch (e) {

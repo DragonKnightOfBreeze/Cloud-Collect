@@ -23,8 +23,8 @@
     //NOTE 因为要在子组件中改变这个prop，所以需要设为同步的
     //NOTE pageableParam是计算属性的名字，pageable是prop以及父组件data的名字
     //NOTE 父组件的对应data需要添加.sync修饰符
-    @Prop() page: Page<any>
-    @PropSync("pageableParam") syncPageableParam!: PageableParam
+    @Prop({required: true}) page!: Page<any>
+    @PropSync("pageableParam", {required: true}) syncPageableParam!: PageableParam
     @Prop({default: "total, sizes, prev, pager, next, jumper"}) layout!: string
     @Prop({default: () => [10, 20, 30, 40, 50]}) pageSizes!: number[]
 

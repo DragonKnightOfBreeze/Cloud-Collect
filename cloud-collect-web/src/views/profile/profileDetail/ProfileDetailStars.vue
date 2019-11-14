@@ -42,6 +42,7 @@
 
     @Watch("praiseToCollectPageableParam")
     private onPraiseToCollectPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+      console.log(`查询分页参数发生变化：`, value)
       this.getPraiseToCollectPage()
     }
 

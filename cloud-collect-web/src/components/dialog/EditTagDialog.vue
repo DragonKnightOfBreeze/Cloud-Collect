@@ -1,11 +1,11 @@
 <template>
   <ElDialog title="编辑标签" center :visible="syncVisible" @close="handleClose">
-    <ElForm>
-      <ElFormItem label="名字" :label-width="formLabelWidth">
-        <ElInput v-model="tag.name"></ElInput>
+    <ElForm label-width="80px">
+      <ElFormItem label="名字">
+        <ElInput v-model="savedTag.name"></ElInput>
       </ElFormItem>
-      <ElFormItem label="概述" :label-width="formLabelWidth">
-        <ElInput v-model="tag.summary"></ElInput>
+      <ElFormItem label="概述">
+        <ElInput v-model="savedTag.summary"></ElInput>
       </ElFormItem>
       <ElFormItem>
         <el-button type="primary" @click="handleSubmit">完成编辑</el-button>
@@ -22,15 +22,15 @@
 
   @Component
   export default class EditTagDialog extends Vue {
-    private formLabelWidth = "80px"
-
-    @PropSync("visible") syncVisible!: boolean
+    @PropSync("visible", {required: true}) syncVisible!: boolean
     @Prop({required: true}) tag!: Tag
 
+    private savedTag = this.tag
+
     @Emit("submit")
-    handleSubmit() {
+    async handleSubmit() {
       try {
-        tagService.modify(this.tag.id!, this.tag)
+        await tagService.modify(this.savedTag.id!, this.savedTag)
         this.$message.success("编辑成功！")
         this.syncVisible = false
       } catch (e) {

@@ -9,7 +9,7 @@
         <div class="app-introduce">{{user.introduce}}</div>
       </ElCol>
       <ElCol :span="4">
-        <FollowButton v-show="hasCurrentUser && !isCurrentUser" :user="user"></FollowButton>
+        <FollowButton v-show="currentUser && !isCurrentUser" :user="user"></FollowButton>
       </ElCol>
     </ElRow>
 
@@ -51,8 +51,8 @@
       return parseInt(this.$route.params["id"] as string)
     }
 
-    get hasCurrentUser() {
-      return !!this.$store.getters.currentUser
+    get currentUser() {
+      return this.$store.getters.currentUser
     }
 
     private get isCurrentUser() {

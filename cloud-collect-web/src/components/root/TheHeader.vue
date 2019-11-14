@@ -26,9 +26,10 @@
       <ElCol :span="6" class="align-right">
         <!--用户信息，点击跳转到档案页，点击下拉项跳转到对应页-->
         <template v-if="currentUser">
-          <ElDropdown split-button type="primary" @click="handleGoProfile" @command="handleProfileCommand">
+          <ElDropdown split-button type="primary" @click="handleGoProfile" @command="handleCommand">
             {{currentUser.nickname}}
-            <ElDropdownMenu slot="dropdown">
+
+            <ElDropdownMenu v-slot:dropdown>
               <ElDropdownItem v-for="item in dropdownItemList" :key="item.command" :command="item.command">
                 {{item.name}}
               </ElDropdownItem>
@@ -80,7 +81,7 @@
       {command: "notices", name: "系统通知"},
       {command: "logout", name: "注销"}
     ]
-    private dialogType: DialogType | null = null
+    private dialogType: DialogType = "none"
 
     //DONE 得到当前用户信息
     get currentUser(): User | null {
@@ -140,16 +141,14 @@
       }
     }
 
-    handleProfileCommand(command: string) {
-      if (this.currentUser != null && this.currentUser.id != null) {
-        //如果命令为logout，则注销用户
-        if (command == "logout") {
-          this.handleLogout()
-        }
+    handleCommand(command: string) {
+      if (this.currentUser == null || this.currentUser.id == null) return
 
-        console.log(`执行档案命令：${command}`)
-        this.$router.push(`/profile/${this.currentUser.id}/${command}`)
+      if (command == "logout") {
+        this.handleLogout()
       }
+      console.log(`执行档案命令：${command}`)
+      this.$router.push(`/profile/${this.currentUser.id}/${command}`)
     }
 
     //打开对话框，点击对应按钮时调用

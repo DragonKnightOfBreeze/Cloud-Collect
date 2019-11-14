@@ -16,9 +16,9 @@
 
   @Component
   export default class ElContentPage extends Vue {
-    @Prop({required: false}) color!: string
-    @Prop({required: false}) bgColor!: string
-    @Prop({required: false}) align!: string
+    @Prop() color!: string
+    @Prop() bgColor!: string
+    @Prop() align!: string
 
     @Prop({default: true}) showHomeLink!: boolean
 

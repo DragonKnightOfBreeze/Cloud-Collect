@@ -1,24 +1,24 @@
 <template>
-  <ElDialog title="编辑收藏" center :visible="syncVisible" @close="handleClose">
+  <ElDialog title="创建收藏" center :visible="syncVisible" @close="handleClose">
     <ElForm label-width="80px">
       <ElFormItem label="名字">
-        <ElInput v-model="savedCollect.name"></ElInput>
+        <ElInput v-model="collect.name"></ElInput>
       </ElFormItem>
       <ElFormItem label="概述">
-        <ElInput v-model="savedCollect.summary"></ElInput>
+        <ElInput v-model="collect.summary"></ElInput>
       </ElFormItem>
       <ElFormItem label="地址">
-        <ElInput v-model="savedCollect.url"></ElInput>
+        <ElInput v-model="collect.url"></ElInput>
       </ElFormItem>
       <ElFormItem label="图标地址">
-        <ElInput v-model="savedCollect.logoUrl"></ElInput>
+        <ElInput v-model="collect.logoUrl"></ElInput>
       </ElFormItem>
       <ElFormItem label="分类">
         <!--TODO 可行的写法？-->
         <!--TODO 允许创建新的分类-->
         <!--NOTE value-key是相对于option的value属性而言的，将其作为this关键字-->
         <!--NOTE 当option的value属性类型为object时，必须设置select的value-key以及option的对应key属性-->
-        <ElSelect v-model="savedCollect.category" :value="savedCollect.category" value-key="id" placeholder="请选择分类"
+        <ElSelect v-model="collect.category" :value="collect.category" value-key="id" placeholder="请选择分类"
                   filterable remote reserve-keyword
                   :loading="loadingCategories" :remote-method="searchCategoryByName">
           <ElOption v-for="category in categories" :key="category.id" :label="category.name" :value="category"></ElOption>
@@ -27,22 +27,22 @@
       <ElFormItem label="标签">
         <!--TODO 可行的写法？-->
         <!--TODO 允许创建新的标签-->
-        <ElSelect v-model="savedCollect.tags" :value="savedCollect.tags" value-key="id" placeholder="请选择标签"
+        <ElSelect v-model="collect.tags" :value="collect.tags" value-key="id" placeholder="请选择标签"
                   filterable remote reserve-keyword multiple clearable
                   :loading="loadingTags" :remote-method="searchTagByName">
           <ElOption v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag"></ElOption>
         </ElSelect>
       </ElFormItem>
       <ElFormItem label="类型">
-        <ElRadioGroup v-model="savedCollect.type">
+        <ElRadioGroup v-model="collect.type">
           <ElRadio v-for="type in collectTypes" :key="type.name" :label="type.name">
             {{type.text}}
           </ElRadio>
         </ElRadioGroup>
       </ElFormItem>
       <ElFormItem>
-        <el-button type="primary" @click="handleSubmit">完成编辑</el-button>
-        <el-button type="info" @click="handleClose">取消编辑</el-button>
+        <el-button type="primary" @click="handleSubmit">完成创建</el-button>
+        <el-button type="info" @click="handleClose">取消创建</el-button>
       </ElFormItem>
     </ElForm>
   </ElDialog>
@@ -54,14 +54,21 @@
   import * as collectService from "@/services/collectService"
   import * as tagService from "@/services/tagService"
   import {Category, Collect, PageableParam, Tag} from "@/types"
-  import {Component, Emit, Prop, PropSync, Vue} from "vue-property-decorator"
+  import {Component, Emit, PropSync, Vue} from "vue-property-decorator"
 
   @Component
-  export default class EditCollectDialog extends Vue {
+  export default class NewCollectDialog extends Vue {
     @PropSync("visible", {required: true}) syncVisible!: boolean
-    @Prop({required: true}) collect!: Collect
 
-    private savedCollect = this.collect
+    private collect: Collect = {
+      name: "",
+      summary: "",
+      url: "",
+      logoUrl: "",
+      category: undefined,
+      tags: [],
+      type: "NONE"
+    }
     private categories: Category[] = []
     private loadingCategories = false
     private tags: Tag[] = []
@@ -84,13 +91,16 @@
 
     @Emit("submit")
     async handleSubmit() {
+      //不允许收藏名和地址为空
+      if (!this.collect.name || !this.collect.url) return
+
       try {
-        await collectService.modify(this.savedCollect.id!, this.savedCollect)
-        this.$message.success("编辑成功！")
+        await collectService.create(this.collect)
+        this.$message.success("创建成功！")
         this.syncVisible = false
       } catch (e) {
         const validationMessage = this.$store.getters.validationMessage
-        this.$message.warning(`编辑失败！${validationMessage}`)
+        this.$message.warning(`创建失败！${validationMessage}`)
       }
     }
 
@@ -99,7 +109,6 @@
       this.syncVisible = false
     }
   }
-
 </script>
 
 <style scoped>

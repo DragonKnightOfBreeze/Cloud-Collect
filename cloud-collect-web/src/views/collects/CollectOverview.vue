@@ -13,7 +13,7 @@
             <ElInput v-model="searchTerm1" placeholder="按名字搜索"></ElInput>
           </ElFormItem>
           <ElFormItem>
-            <ElButton type="primary" @click="searchCollectByName"><ElIcon name="search"/></ElButton>
+            <ElButton type="primary" @click="handleSearch('name')"><ElIcon name="search" /></ElButton>
           </ElFormItem>
         </ElForm>
       </ElCol>
@@ -23,7 +23,7 @@
             <ElInput v-model="searchTerm2" placeholder="按分类搜索"></ElInput>
           </ElFormItem>
           <ElFormItem>
-            <ElButton type="primary" @click="searchCollectByCategoryName"><ElIcon name="search"/></ElButton>
+            <ElButton type="primary" @click="handleSearch('categoryName')"><ElIcon name="search" /></ElButton>
           </ElFormItem>
         </ElForm>
       </ElCol>
@@ -33,7 +33,7 @@
             <ElInput v-model="searchTerm3" placeholder="按标签搜索"></ElInput>
           </ElFormItem>
           <ElFormItem>
-            <ElButton type="primary" @click="searchCollectByTagName"><ElIcon name="search"/></ElButton>
+            <ElButton type="primary" @click="handleSearch('tagName')"><ElIcon name="search" /></ElButton>
           </ElFormItem>
         </ElForm>
       </ElCol>
@@ -72,42 +72,28 @@
       this.searchCollect()
     }
 
-    handleGoBack() {
+    private handleGoBack() {
       this.$router.push("/")
     }
 
-    searchCollect() {
-      if (this.searchType == "name") {
-        this.searchCollectByName()
-      } else if (this.searchType == "categoryName") {
-        this.searchCollectByCategoryName()
-      } else {
-        this.searchCollectByTagName()
-      }
+    private handleSearch(type: CollectSearchType) {
+      this.searchType = type
+      this.searchCollect()
     }
 
-    async searchCollectByName() {
-      this.searchType = "name"
+    async searchCollect() {
       try {
-        this.searchPage = await collectService.findAllByNameContains(this.searchTerm1, this.searchPageableParam)
-      } catch (e) {
-        this.$message.warning("查询失败！")
-      }
-    }
-
-    async searchCollectByCategoryName() {
-      this.searchType = "categoryName"
-      try {
-        this.searchPage = await collectService.findAllByCategoryNameContains(this.searchTerm2, this.searchPageableParam)
-      } catch (e) {
-        this.$message.warning("查询失败！")
-      }
-    }
-
-    async searchCollectByTagName() {
-      this.searchType = "tagName"
-      try {
-        this.searchPage = await collectService.findAllByCategoryNameContains(this.searchTerm3, this.searchPageableParam)
+        switch (this.searchType) {
+          case "name":
+            this.searchPage = await collectService.findAllByNameContains(this.searchTerm1, this.searchPageableParam)
+            break
+          case "categoryName":
+            this.searchPage = await collectService.findAllByCategoryNameContains(this.searchTerm2, this.searchPageableParam)
+            break
+          case "tagName":
+            this.searchPage = await collectService.findAllByTagNameContains(this.searchTerm3, this.searchPageableParam)
+            break
+        }
       } catch (e) {
         this.$message.warning("查询失败！")
       }

@@ -103,7 +103,6 @@ class UserServiceImpl(
 	override fun modify(id: Long, user: User) {
 		val rawUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException()
 		rawUser.apply {
-			password = passwordEncoder.encode(user.password) //NOTE 密码需要加密
 			nickname = user.nickname
 			introduce = user.introduce
 			avatarUrl = user.avatarUrl

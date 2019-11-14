@@ -23,7 +23,7 @@
     components: {ElText}
   })
   export default class ForgotPasswordDialog extends Vue {
-    @PropSync("visible") syncVisible!: boolean
+    @PropSync("visible", {required: true}) syncVisible!: boolean
 
     private email: string = ""
 

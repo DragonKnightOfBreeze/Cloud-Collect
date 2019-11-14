@@ -9,6 +9,10 @@
       <ElButton type="danger" @click="handleDelete">删除</ElButton>
     </ElButtonGroup>
 
+    <ElButtonGroup class="align-center" v-show="currentUser && !isCurrentUser">
+      <ElButton type="primary" @click="handleFork">拷贝收藏</ElButton>
+    </ElButtonGroup>
+
     <EditCollectDialog :collect="collect" :visible.sync="editDialogVisible" @submit="handleSubmit"/>
 
     <ElCollapse v-model="activeNames">
@@ -94,15 +98,16 @@
 
     @Watch("commentPageableParam")
     private onCommentPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+      console.log(`查询分页参数发生变化：`, value)
       this.getCommentPage()
-    }
-
-    handleEdit() {
-      this.editDialogVisible = true
     }
 
     handleGoBack() {
       this.$router.push("/collects")
+    }
+
+    handleEdit() {
+      this.editDialogVisible = true
     }
 
     async handleDelete() {
@@ -113,6 +118,10 @@
       } catch (e) {
         this.$message.info("已取消删除。")
       }
+    }
+
+    handleFork() {
+      this.forkCollect()
     }
 
     //当用户编辑标签并提交更改成功后，需要从后台重新得到标签数据
@@ -141,6 +150,15 @@
 
     private async getCommentPage() {
       this.commentPage = await collectService.getCommentPage(this.collectId, this.commentPageableParam)
+    }
+
+    private async forkCollect() {
+      try {
+        await collectService.createFrom(this.collect)
+        this.$message.success("拷贝成功！")
+      } catch (e) {
+        this.$message.warning("拷贝失败！")
+      }
     }
 
     private async deleteCollect() {

@@ -3,11 +3,11 @@
   <!--登录对话框-->
   <ElDialog title="登录" center :visible="syncDialogType==='login'" @close="handleClose">
     <!--登录表单-->
-    <ElForm>
-      <ElFormItem label="用户名" :label-width="formLabelWidth">
+    <ElForm label-width="120px">
+      <ElFormItem label="用户名">
         <ElInput v-model="form.username" placeholder="请输入用户名。"/>
       </ElFormItem>
-      <ElFormItem label="密码" :label-width="formLabelWidth">
+      <ElFormItem label="密码">
         <ElInput type="password" v-model="form.password" placeholder="请输入密码。"/>
       </ElFormItem>
       <ElFormItem>
@@ -19,7 +19,7 @@
 
     <!--提交按钮-->
     <template v-slot:footer>
-      <ElButton type="success" :loading="buttonLoading" @click="handleLogin">登 录</ElButton>
+      <ElButton type="success" @click="handleLogin">登 录</ElButton>
       <ElButton type="primary" @click="handleRegister">注 册</ElButton>
     </template>
   </ElDialog>
@@ -36,10 +36,8 @@
   })
   export default class LoginDialog extends Vue {
     //NOTE 需要配合.sync修饰符使用，添加到父组件的对应位置
-    @PropSync("dialogType") syncDialogType!: DialogType | null
+    @PropSync("dialogType", {required: true}) syncDialogType!: DialogType
 
-    private buttonLoading = false
-    private formLabelWidth = "120px"
     private forgotPasswordDialogVisible = false
     private form: LoginForm = {
       username: "",
@@ -51,6 +49,9 @@
     }
 
     async handleLogin() {
+      //要求用户输入
+      if (!this.form.username || !this.form.password) return
+
       //如果用户存在，则存储用户信息，弹出成功提示框，并关闭对话框。否则弹出错误提示框
       try {
         const userDetailsVo = await indexService.login(this.form)
@@ -64,7 +65,7 @@
         window.sessionStorage["currentUser"] = JSON.stringify(user)
         this.$store.commit("setCurrentUser", user)
         this.$message.success("登录成功！")
-        this.syncDialogType = null
+        this.syncDialogType = "none"
       } catch (e) {
         this.$message.warning("登录失败！用户名或密码错误！")
       }
@@ -76,7 +77,7 @@
     }
 
     handleClose() {
-      this.syncDialogType = null
+      this.syncDialogType = "none"
     }
   }
 </script>

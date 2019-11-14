@@ -16,11 +16,13 @@ export interface Option<T extends string> {
   value: T
 }
 
-export type DialogType = "login" | "register"
+export type DialogType = "none" | "login" | "register"
 
 export type CollectSearchType = "name" | "categoryName" | "tagName";
 
 export type UserSearchType = "nickname" | "username" | "email"
+
+export type CollectFilterType = "none" | "name" | "categoryName" | "tagName" | "type"
 
 //REGION Backend
 

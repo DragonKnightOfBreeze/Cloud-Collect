@@ -43,7 +43,7 @@
 
   @Component
   export default class CommentOverviewCard extends Vue {
-    @Prop() comment!: Comment
+    @Prop({required: true}) comment!: Comment
 
     reply = this.comment.replyToComment
 
