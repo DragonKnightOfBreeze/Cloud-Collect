@@ -36,7 +36,6 @@ export interface Collect {
   user?: User
   createdTime?: string
   lastModifiedTime?: string
-  praiseByUserList?: User[]
   praiseByUserCount?: number
   commentCount?: number
 }
@@ -84,7 +83,6 @@ export interface Notice {
   content: string
   type: NoticeType
   user?: User
-  readStatus?: boolean
   createdTime?: string
 }
 
@@ -101,14 +99,11 @@ export interface User {
   activateStatus?: boolean
   registerTime?: string
   updateTime?: string
-  followToUserList?: User[]
-  followByUserList?: User[]
-  praiseToCollectList?: Collect[]
+  collectCount?: number
+  categoryCount?: number
+  praiseToCollectCount?: number
   followToUserCount?: number
   followByUserCount?: number
-  collectCount?: number
-  commentCount?: number
-  noticeCount?: number
 }
 
 //REGION request

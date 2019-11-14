@@ -6,7 +6,7 @@
 
     <ElRow class="app-meta-small">
       <ElCol :span="6">
-        创建者
+        创建者&nbsp;
         <ElLink type="info" v-if="tag.user" :href="'/profile/'+tag.user.id">{{tag.user.nickname}}</ElLink>
         <ElLink type="info" disabled v-else>未知</ElLink>
       </ElCol>

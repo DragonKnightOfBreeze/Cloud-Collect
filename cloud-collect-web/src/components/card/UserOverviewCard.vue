@@ -9,7 +9,7 @@
           <ElLink type="primary" :href="'/profile/'+user.id">{{user.nickname}}</ElLink>
         </ElCol>
         <ElCol :span="4" :offset="8">
-          <FollowButton v-show="currentUser" :user="user"></FollowButton>
+          <FollowButton v-show="hasCurrentUser && !isCurrentUser" :user="user"></FollowButton>
         </ElCol>
       </ElRow>
     </template>
@@ -39,6 +39,9 @@
         </ElBadge>
       </ElCol>
     </ElRow>
+    <ElRow class="app-introduce">
+      <ElCol>{{user.introduce}}</ElCol>
+    </ElRow>
   </ElCard>
 </template>
 
@@ -53,8 +56,12 @@
   export default class UserOverviewCard extends Vue {
     @Prop({required: true}) user!: User
 
-    get currentUser(): User | null {
-      return this.$store.getters.currentUser
+    get hasCurrentUser() {
+      return !!this.$store.getters.currentUser
+    }
+
+    get isCurrentUser() {
+      return this.$store.getters.currentUser && this.$store.getters.currentUser.id === this.user.id
     }
   }
 </script>

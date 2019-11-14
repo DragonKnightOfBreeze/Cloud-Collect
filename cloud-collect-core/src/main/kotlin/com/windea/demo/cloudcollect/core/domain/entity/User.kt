@@ -102,6 +102,18 @@ data class User constructor(
 	@ManyToMany
 	val praiseToCollectList: MutableList<Collect> = mutableListOf()
 	
+	@ApiModelProperty("收藏数量。")
+	@Transient
+	var collectCount: Long = 0
+	
+	@ApiModelProperty("分类数量。")
+	@Transient
+	var categoryCount: Long = 0
+	
+	@ApiModelProperty("点赞收藏数量。")
+	@Transient
+	var praiseToCollectCount: Long = 0
+	
 	@ApiModelProperty("关注用户数量。")
 	@Transient
 	var followToUserCount: Long = 0
@@ -109,18 +121,6 @@ data class User constructor(
 	@ApiModelProperty("粉丝用户数量。")
 	@Transient
 	var followByUserCount: Long = 0
-	
-	@ApiModelProperty("点赞收藏数量。")
-	@Transient
-	var praiseToCollectCount: Long = 0
-	
-	@ApiModelProperty("收藏数量。")
-	@Transient
-	var collectCount: Long = 0
-	
-	@ApiModelProperty("通知数量。")
-	@Transient
-	var noticeCount: Long = 0
 	
 	
 	override fun equals(other: Any?) = other === this || (other is User && other.id == id)

@@ -32,8 +32,6 @@
     private async handleActivate() {
       try {
         await indexService.activate(this.username, this.activateCode)
-
-        this.$message.success("激活用户成功！请登录。")
         await this.$router.push("/success/activate")
       } catch (e) {
         this.$message.warning("激活用户失败！")

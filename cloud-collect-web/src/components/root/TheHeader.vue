@@ -11,9 +11,8 @@
       </ElCol>
       <!--导航内容，到各个分页-->
       <ElCol :span="12">
-        <ElMenu mode="horizontal" :router="true" :default-active="activeIndex" @select="handleSelect">
-          <ElMenuItem v-for="item in menuItemList" :key="item.index"
-                      :route="item.path" :index="item.index">
+        <ElMenu mode="horizontal" router :default-active="activeIndex" @select="handleSelect">
+          <ElMenuItem v-for="item in menuItemList" :key="item.index" :route="item.path" :index="item.index">
             {{item.name}}
           </ElMenuItem>
         </ElMenu>
@@ -106,11 +105,10 @@
       this.changeOperation(value, oldValue)
     }
 
-    //DONE 监听当前路由，更改activeIndex。
+    //监听当前路由，更改activeIndex
     private changeActiveIndex(value: Route, oldValue: Route) {
       for (let navItem of this.menuItemList) {
         if (navItem.path == value.path) {
-          console.log(`更改当前导航索引：${navItem.index}`)
           this.activeIndex = navItem.index
           break
         }

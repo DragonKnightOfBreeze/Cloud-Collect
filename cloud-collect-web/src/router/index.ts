@@ -13,11 +13,11 @@ const ProfileDetail = () => import("@/views/profile/ProfileDetail.vue")
 const ProfileDetailOverview = () => import("@/views/profile/profileDetail/ProfileDetailOverview.vue")
 const ProfileDetailCollects = () => import("@/views/profile/profileDetail/ProfileDetailCollects.vue")
 const ProfileDetailCategories = () => import("@/views/profile/profileDetail/ProfileDetailCategories.vue")
+const ProfileDetailStars = () => import("@/views/profile/profileDetail/ProfileDetailStars.vue")
+const ProfileDetailFollowing = () => import("@/views/profile/profileDetail/ProfileDetailFollowing.vue")
+const ProfileDetailFollowers = () => import("@/views/profile/profileDetail/ProfileDetailFollowers.vue")
 const ProfileDetailHistory = () => import("@/views/profile/profileDetail/ProfileDetailHistory.vue")
 const ProfileDetailNotices = () => import("@/views/profile/profileDetail/ProfileDetailNotices.vue")
-const ProfileDetailStars = () => import("@/views/profile/profileDetail/ProfileDetailStars.vue")
-const ProfileDetailFollowers = () => import("@/views/profile/profileDetail/ProfileDetailFollowers.vue")
-const ProfileDetailFollowing = () => import("@/views/profile/profileDetail/ProfileDetailFollowing.vue")
 const Search = () => import( "@/views/Search.vue")
 const SearchOverview = () => import("@/views/search/SearchOverview.vue")
 const SearchCollect = () => import("@/views/search/SearchCollect.vue")
@@ -89,11 +89,11 @@ const routes: RouteConfig[] = [
           {path: "", component: ProfileDetailOverview},
           {path: "collects", component: ProfileDetailCollects},
           {path: "categories", component: ProfileDetailCategories},
-          {path: "history", component: ProfileDetailHistory},
-          {path: "notices", component: ProfileDetailNotices},
           {path: "stars", component: ProfileDetailStars},
+          {path: "following", component: ProfileDetailFollowing},
           {path: "followers", component: ProfileDetailFollowers},
-          {path: "following", component: ProfileDetailFollowing}
+          {path: "history", component: ProfileDetailHistory},
+          {path: "notices", component: ProfileDetailNotices}
         ]
       }
     ]

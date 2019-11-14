@@ -25,6 +25,7 @@ import kotlin.random.*
 class UserServiceImpl(
 	private val userRepository: UserRepository,
 	private val collectRepository: CollectRepository,
+	private val categoryRepository: CategoryRepository,
 	private val historyRepository: HistoryRepository,
 	private val noticeRepository: NoticeRepository,
 	private val cacheService: CacheService,
@@ -192,11 +193,11 @@ class UserServiceImpl(
 	}
 	
 	private fun User.lateInit() = this.apply {
+		collectCount = collectRepository.countByUserId(id)
+		categoryCount = categoryRepository.countByUserId(id)
+		praiseToCollectCount = collectRepository.countByPraiseByUserListId(id)
 		followToUserCount = userRepository.countByFollowByUserListId(id)
 		followByUserCount = userRepository.countByFollowToUserListId(id)
-		praiseToCollectCount = collectRepository.countByPraiseByUserListId(id)
-		collectCount = collectRepository.countByUserId(id)
-		noticeCount = noticeRepository.countByUserId(id)
 	}
 	
 	override fun isFollowed(id: Long, user: User): Boolean {

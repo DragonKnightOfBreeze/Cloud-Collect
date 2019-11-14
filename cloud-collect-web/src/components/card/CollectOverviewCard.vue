@@ -15,14 +15,14 @@
           <ElLink type="info" :href="collect.url">转到链接</ElLink>
         </ElCol>
         <ElCol :span="4">
-          <PraiseButton v-show="currentUser" :collect="collect"></PraiseButton>
+          <PraiseButton v-show="hasCurrentUser" :collect="collect"></PraiseButton>
         </ElCol>
       </ElRow>
     </template>
 
     <ElRow class="app-meta-small">
       <ElCol :span="6">
-        创建者
+        创建者&nbsp;
         <ElLink type="info" v-if="collect.user" :href="'/profile/'+collect.user.id">{{collect.user.nickname}}</ElLink>
         <ElLink type="info" disabled v-else>未知</ElLink>
       </ElCol>
@@ -65,7 +65,7 @@
 <script lang="ts">
   import PraiseButton from "@/components/button/PraiseButton.vue"
   import UrlCopyDropdown from "@/components/menu/UrlCopyDropdown.vue"
-  import {Collect, User} from "@/types"
+  import {Collect} from "@/types"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component({
@@ -74,8 +74,8 @@
   export default class CollectOverviewCard extends Vue {
     @Prop({required: true}) collect!: Collect
 
-    get currentUser(): User | null {
-      return this.$store.getters.currentUser
+    get hasCurrentUser() {
+      return !!this.$store.getters.currentUser
     }
   }
 </script>

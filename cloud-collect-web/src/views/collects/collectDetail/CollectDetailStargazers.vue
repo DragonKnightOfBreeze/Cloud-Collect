@@ -5,7 +5,7 @@
     <div>查看该收藏的收藏家</div>
 
     <ElCardGroup>
-      <UserOverviewCard v-for="user in praiseByUserList" :key="user.id" :user="user"/>
+      <UserOverviewCard v-for="user in praiseByUserPage.content" :key="user.id" :user="user"/>
       <ThePagination :page="praiseByUserPage" :pageable-param.sync="praiseByUserPageableParam"/>
     </ElCardGroup>
   </div>
@@ -27,12 +27,8 @@
     private praiseByUserPageableParam: PageableParam = {page: 0, size: 20}
     private praiseByUserPage: Page<User> | null = null
 
-    get collectId() {
+    private get collectId() {
       return parseInt(this.$route.params["id"] as string)
-    }
-
-    get praiseByUserList() {
-      return this.praiseByUserPage && this.praiseByUserPage.content || []
     }
 
     created() {
@@ -53,11 +49,11 @@
       try {
         this.praiseByUserPage = await collectService.getPraiseByUserPage(this.collectId, this.praiseByUserPageableParam)
       } catch (e) {
-        this.$message("查询失败！")
+        this.$message.warning("查询失败！")
       }
     }
 
-    handleGoBack() {
+    private handleGoBack() {
       this.$router.push(`/collects/${this.collectId}`)
     }
   }

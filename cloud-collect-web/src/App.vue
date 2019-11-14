@@ -13,6 +13,8 @@
       <ElFooter v-show="showFooter">
         <TheFooter></TheFooter>
       </ElFooter>
+
+      <ElBacktop :visibility-height="400"/>
     </ElContainer>
   </div>
 </template>
@@ -32,16 +34,17 @@
 
     @Watch("$route")
     onRouteChange(value: Route, oldValue: Route) {
-      this.changeShowHeaderAndFooter(value, oldValue)
+      this.changeShowHeaderAndFooter()
     }
 
     //DONE 当为错误页和成功页时隐藏首页头部和尾部
-    private changeShowHeaderAndFooter(value: Route, oldValue: Route) {
-      if (value.path.startsWith("/error") || value.path.startsWith("/success")) {
+    private changeShowHeaderAndFooter() {
+      if (this.$route.path.startsWith("/error") || this.$route.path.startsWith("/success")) {
         console.log("隐藏页面首部和尾部。")
         this.showHeader = false
         this.showFooter = false
       } else {
+        console.log("显示页面首部和尾部。")
         this.showHeader = true
         this.showFooter = true
       }
@@ -76,7 +79,7 @@
     padding: 10px 0;
   }
   .app-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     line-height: 30px;
     color: #333;
@@ -98,8 +101,10 @@
   .app-summary {
     padding: 15px 0;
   }
-  /*对应的html元素不应该是p，因为可能是markdown文本*/
   .app-content {
+    padding: 15px 0;
+  }
+  .app-introduce {
     padding: 15px 0;
   }
 </style>
