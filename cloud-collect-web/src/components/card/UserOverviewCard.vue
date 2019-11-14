@@ -24,7 +24,12 @@
         </ElBadge>
       </ElCol>
       <ElCol :span="3">
-        <ElBadge type="primary" :value="user.praiseToCollectList">
+        <ElBadge type="primary" :value="user.categoryCount">
+          <ElLink type="info" :href="'/profile'+user.id+'/categories'">分类</ElLink>
+        </ElBadge>
+      </ElCol>
+      <ElCol :span="3">
+        <ElBadge type="primary" :value="user.praiseToCollectCount">
           <ElLink type="info" :href="'/profile'+user.id+'/stars'">喜爱</ElLink>
         </ElBadge>
       </ElCol>

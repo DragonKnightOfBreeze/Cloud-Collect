@@ -19,7 +19,7 @@
     </ElRow>
     <ElDivider/>
     <ElRow class="app-item-list">
-      <ElCol :offset="1">{{category.summary}}</ElCol>
+      <ElCol>{{category.summary}}</ElCol>
     </ElRow>
   </ElCard>
 </template>

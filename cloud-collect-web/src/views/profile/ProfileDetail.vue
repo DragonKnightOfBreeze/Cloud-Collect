@@ -37,7 +37,7 @@
     private user: User | null = null
     private activeIndex = "0"
     private menuItemList: MenuItem[] = [
-      {index: "0", path: "", name: "总览"},
+      {index: "0", path: "", name: "主页"},
       {index: "1", path: "collects", name: `收藏 ${this.user ? this.user.collectCount : 0}`},
       {index: "2", path: "categories", name: `分类 ${this.user ? this.user.categoryCount : 0}`},
       {index: "5", path: "stars", name: `喜爱 ${this.user ? this.user.praiseToCollectCount : 0}`},
