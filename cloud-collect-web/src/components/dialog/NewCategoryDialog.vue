@@ -1,17 +1,19 @@
 <template>
   <ElDialog title="创建分类" center :visible="syncVisible" @close="handleClose">
-    <ElForm label-width="80px">
-      <ElFormItem label="名字">
+    <ElForm label-width="80px" :model="category" :rules="rules" ref="form">
+      <ElFormItem label="名字" prop="name">
         <ElInput v-model="category.name"></ElInput>
       </ElFormItem>
-      <ElFormItem label="概述">
-        <ElInput v-model="category.summary"></ElInput>
-      </ElFormItem>
-      <ElFormItem>
-        <el-button type="primary" @click="handleSubmit">完成创建</el-button>
-        <el-button type="info" @click="handleClose">取消创建</el-button>
+      <ElFormItem label="概述" prop="summary">
+        <ElInput type="textarea" v-model="category.summary"
+                 maxlength="255" show-word-limit :autosize="{minRows: 3, maxRows: 6}"></ElInput>
       </ElFormItem>
     </ElForm>
+
+    <template v-slot:footer>
+      <el-button type="primary" @click="handleSubmit">完成创建</el-button>
+      <el-button type="info" @click="handleClose">取消创建</el-button>
+    </template>
   </ElDialog>
 </template>
 
@@ -28,11 +30,20 @@
       name: "",
       summary: ""
     }
+    private rules = {
+      name: [
+        {required: true, message: "名字不能为空！"},
+        {max: 64, message: "名字过长！"}
+      ],
+      summary: [
+        {max: 255, message: "概述过长！"}
+      ]
+    }
 
     @Emit("submit")
     async handleSubmit() {
-      //不允许分类名为空
-      if (!this.category.name) return
+      const isValid = await (this.$refs["form"] as any).validate()
+      if (!isValid) return
 
       try {
         await categoryService.create(this.category)

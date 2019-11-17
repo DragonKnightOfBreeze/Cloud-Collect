@@ -122,9 +122,14 @@
 ## 前端
 
 * 如何使文字水平中心对齐：
-    * `line-height: 51px;text-align: center;`
-* 如何使文字和图片垂直中心对齐：
-    * `line-height: 51px;vertical-align: middle;`
+    * `text-align: center;`
+* 如何使文字和图片垂直中心对齐（需要设置高度）：
+    * `height: 51px;vertical-align: middle;`
+* 在flex布局下，如何对齐：
+    * 水平对齐当前元素：`justify-self: start/end/center/space-around/space-between`
+    * 垂直对齐当亲元素：`align-self: start/end/center`
+    * 水平对齐当前元素的子元素：`justify-content: start/end/center`
+    * 垂直对齐当前元素的子元素：`align-items: start/end/center`
 * 关于vue响应式的问题：
     * 默认情况下，vue监听不到对象和数组内部的变化（包括添加、删除、修改？）
     * 必要时，需要使用`Vue.set`和`Array.splice`方法
@@ -210,3 +215,5 @@
         * 当查询时，如果是直接访问实体类的集合级联属性，则需要添加事务注解。如果是调用自定义的持久层方法，则不需要。
 * 关于Swagger：
     * Swagger界面的默认地址映射是`/swagger-ui.html`。
+* 解决无法读取国际化的参数验证信息的问题：
+    * SpringBoot已经帮我们配置好了默认的messageResource，不需要手动进行配置，否则会出错。

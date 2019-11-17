@@ -1,11 +1,12 @@
 <template>
   <ElDialog title="编辑收藏" center :visible="syncVisible" @close="handleClose">
-    <ElForm label-width="80px">
-      <ElFormItem label="名字">
+    <ElForm label-width="80px" :model="savedCollect" :rules="rules" ref="form">
+      <ElFormItem label="名字" prop="name">
         <ElInput v-model="savedCollect.name"></ElInput>
       </ElFormItem>
-      <ElFormItem label="概述">
-        <ElInput v-model="savedCollect.summary"></ElInput>
+      <ElFormItem label="概述" prop="summary">
+        <ElInput type="textarea" v-model="savedCollect.summary"
+                 maxlength="255" show-word-limit :autosize="{minRows: 3, maxRows: 6}"></ElInput>
       </ElFormItem>
       <ElFormItem label="地址">
         <ElInput v-model="savedCollect.url"></ElInput>
@@ -14,8 +15,6 @@
         <ElInput v-model="savedCollect.logoUrl"></ElInput>
       </ElFormItem>
       <ElFormItem label="分类">
-        <!--TODO 可行的写法？-->
-        <!--TODO 允许创建新的分类-->
         <!--NOTE value-key是相对于option的value属性而言的，将其作为this关键字-->
         <!--NOTE 当option的value属性类型为object时，必须设置select的value-key以及option的对应key属性-->
         <ElSelect v-model="savedCollect.category" :value="savedCollect.category" value-key="id" placeholder="请选择分类"
@@ -25,8 +24,6 @@
         </ElSelect>
       </ElFormItem>
       <ElFormItem label="标签">
-        <!--TODO 可行的写法？-->
-        <!--TODO 允许创建新的标签-->
         <ElSelect v-model="savedCollect.tags" :value="savedCollect.tags" value-key="id" placeholder="请选择标签"
                   filterable remote reserve-keyword multiple clearable
                   :loading="loadingTags" :remote-method="searchTagByName">
@@ -40,11 +37,12 @@
           </ElRadio>
         </ElRadioGroup>
       </ElFormItem>
-      <ElFormItem>
-        <el-button type="primary" @click="handleSubmit">完成编辑</el-button>
-        <el-button type="info" @click="handleClose">取消编辑</el-button>
-      </ElFormItem>
     </ElForm>
+
+    <template v-slot:footer>
+      <ElButton type="primary" @click="handleSubmit">完成编辑</ElButton>
+      <ElButton type="info" @click="handleClose">取消编辑</ElButton>
+    </template>
   </ElDialog>
 </template>
 
@@ -61,7 +59,16 @@
     @PropSync("visible", {required: true}) syncVisible!: boolean
     @Prop({required: true}) collect!: Collect
 
-    private savedCollect = this.collect
+    private savedCollect = {...this.collect}
+    private rules = {
+      name: [
+        {required: true, message: "名字不能为空！"},
+        {max: 64, message: "名字过长！"}
+      ],
+      summary: [
+        {max: 255, message: "概述过长！"}
+      ]
+    }
     private categories: Category[] = []
     private loadingCategories = false
     private tags: Tag[] = []
@@ -84,6 +91,9 @@
 
     @Emit("submit")
     async handleSubmit() {
+      const isValid = await (this.$refs["form"] as any).validate()
+      if (!isValid) return
+
       try {
         await collectService.modify(this.savedCollect.id!, this.savedCollect)
         this.$message.success("编辑成功！")

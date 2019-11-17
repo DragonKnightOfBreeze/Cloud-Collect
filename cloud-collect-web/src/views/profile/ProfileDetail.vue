@@ -1,17 +1,19 @@
 <template>
   <div>
-    <ElRow>
-      <ElCol :span="2">
-        <ElAvatar :src="user.avatarUrl"/>
-      </ElCol>
-      <ElCol :span="18">
-        <div class="app-title">{{user.nickname}}</div>
-        <div class="app-introduce">{{user.introduce}}</div>
-      </ElCol>
-      <ElCol :span="4">
-        <FollowButton v-show="currentUser && !isCurrentUser" :user="user"></FollowButton>
-      </ElCol>
-    </ElRow>
+    <template v-if="user">
+      <ElRow type="flex" align="middle">
+        <ElCol :span="2">
+          <ElAvatar size="large" :src="user.avatarUrl" />
+        </ElCol>
+        <ElCol :span="18">
+          <div class="app-title">{{user.nickname}}</div>
+          <div class="app-introduce">{{user.introduce}}</div>
+        </ElCol>
+        <ElCol :span="4">
+          <FollowButton v-if="currentUser && !isCurrentUser" :user="user"></FollowButton>
+        </ElCol>
+      </ElRow>
+    </template>
 
     <ElMenu mode="horizontal" router :default-active="activeIndex" @select="handleSelect">
       <ElMenuItem v-for="item in menuItemList" :key="item.index" :route="item.path" :index="item.index">
@@ -38,11 +40,11 @@
     private activeIndex = "0"
     private menuItemList: MenuItem[] = [
       {index: "0", path: "", name: "主页"},
-      {index: "1", path: "collects", name: `收藏 ${this.user ? this.user.collectCount : 0}`},
-      {index: "2", path: "categories", name: `分类 ${this.user ? this.user.categoryCount : 0}`},
-      {index: "5", path: "stars", name: `喜爱 ${this.user ? this.user.praiseToCollectCount : 0}`},
-      {index: "7", path: "following", name: `关注 ${this.user ? this.user.followToUserCount : 0}`},
-      {index: "6", path: "followers", name: `粉丝 ${this.user ? this.user.followByUserCount : 0}`},
+      {index: "1", path: "collects", name: `收藏 ${this.collectCount}`},
+      {index: "2", path: "categories", name: `分类 ${this.categoryCount}`},
+      {index: "5", path: "stars", name: `喜爱 ${this.praiseToCollectCount}`},
+      {index: "7", path: "following", name: `关注 ${this.followToUserCount}`},
+      {index: "6", path: "followers", name: `粉丝 ${this.followByUserCount}`},
       {index: "3", path: "history", name: "历史"},
       {index: "4", path: "notices", name: "通知"}
     ]
@@ -53,6 +55,26 @@
 
     get currentUser() {
       return this.$store.getters.currentUser
+    }
+
+    get collectCount() {
+      return this.user ? this.user.collectCount : 0
+    }
+
+    get categoryCount() {
+      return this.user ? this.user.categoryCount : 0
+    }
+
+    get praiseToCollectCount() {
+      return this.user ? this.user.praiseToCollectCount : 0
+    }
+
+    get followToUserCount() {
+      return this.user ? this.user.followToUserCount : 0
+    }
+
+    get followByUserCount() {
+      return this.user ? this.user.followByUserCount : 0
     }
 
     private get isCurrentUser() {
@@ -85,7 +107,11 @@
     }
 
     private async getUser() {
-      this.user = await userService.findById(this.userId)
+      if (this.isCurrentUser) {
+        this.user = this.currentUser
+      } else {
+        this.user = await userService.findById(this.userId)
+      }
     }
   }
 </script>

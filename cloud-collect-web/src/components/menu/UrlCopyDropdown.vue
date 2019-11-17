@@ -1,12 +1,14 @@
 <template>
-  <ElDropdown split-button type="info" @command="handleCommand">
-    <ElLink>复制链接</ElLink>
+  <ElDropdown size="small" @command="handleCommand">
+    <ElButton type="text" size="small">复制链接</ElButton>
 
-    <ElDropdownMenu v-slot:dropdown>
+    <template v-slot:dropdown>
+      <ElDropdownMenu>
       <ElDropdownItem v-for="item in dropdownItemList" :key="item.command" :command="item.command">
         {{item.name}}
       </ElDropdownItem>
     </ElDropdownMenu>
+    </template>
   </ElDropdown>
 </template>
 

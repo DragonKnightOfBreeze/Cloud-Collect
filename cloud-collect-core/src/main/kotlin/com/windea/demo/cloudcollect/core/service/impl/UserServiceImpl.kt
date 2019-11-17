@@ -38,7 +38,9 @@ class UserServiceImpl(
 		val authentication = UsernamePasswordAuthenticationToken(form.username, form.password)
 		val validAuthentication = authenticationManager.authenticate(authentication)
 		SecurityContextHolder.getContext().authentication = validAuthentication
-		return (validAuthentication.principal as UserDetailsVo)
+		val userDetailsVo = validAuthentication.principal as UserDetailsVo
+		userDetailsVo.delegateUser.lateInit()
+		return userDetailsVo
 	}
 	
 	@Transactional
@@ -55,9 +57,9 @@ class UserServiceImpl(
 		if(sendEmail) emailService.sendActivateEmail(user, activateCode)
 	}
 	
-	override fun logout() {
-		SecurityContextHolder.clearContext()
-	}
+	//override fun logout() {
+	//	SecurityContextHolder.clearContext()
+	//}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
@@ -106,7 +108,6 @@ class UserServiceImpl(
 			nickname = user.nickname
 			introduce = user.introduce
 			avatarUrl = user.avatarUrl
-			backgroundUrl = user.backgroundUrl
 		}
 	}
 	

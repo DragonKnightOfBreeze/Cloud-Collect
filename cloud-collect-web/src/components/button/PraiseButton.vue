@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ElButton type="primary" v-if="!isPraised" @click="handlePraise">点赞</ElButton>
-    <ElButton type="info" v-else @click="handleUnpraise">已点赞</ElButton>
+    <ElButton type="primary" size="small" plain v-if="!isPraised" @click="handlePraise">点赞</ElButton>
+    <ElButton type="info" size="small" plain v-else @click="handleUnpraise">已点赞</ElButton>
   </div>
 </template>
 

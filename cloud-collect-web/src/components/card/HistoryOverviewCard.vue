@@ -1,14 +1,14 @@
 <template>
   <ElCard class="app-history-overview-card">
-    <ElRow class="app-title">
+    <ElRow type="flex" class="app-title align-items-center">
       <ElCol :span="12">
         {{history.collect.name}}
       </ElCol>
       <ElCol :span="4" :offset="8">
-        <ElButton type="danger" v-show="isCurrentUser" @click="handleDelete">删除</ElButton>
+        <ElButton type="danger" v-if="isCurrentUser" @click="handleDelete">删除</ElButton>
       </ElCol>
     </ElRow>
-    <ElRow class="app-meta-small">
+    <ElRow type="flex" class="app-meta-small align-items-center">
       <ElCol :span="6">
         创建者&nbsp;
         <ElLink type="info" v-if="history.collect.user" :href="'/profile/'+history.collect.user.id">{{history.collect.user.nickname}}</ElLink>

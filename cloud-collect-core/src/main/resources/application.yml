@@ -64,8 +64,6 @@ spring:
       mail.smtp.starttls.enable: true
       mail.smtp.starttls.required: true
 
-
-
 server:
   tomcat:
     # 配置Tomcat的访问日志
@@ -76,7 +74,6 @@ server:
   servlet:
     # 指定服务器的内容根路径
     context-path: /cloudCollect/api
-
 cloud-collect:
   security:
     secret: Windea

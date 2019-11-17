@@ -1,26 +1,26 @@
 <template>
   <ElCard class="app-collect-overview-card">
     <template v-slot:header>
-      <ElRow>
+      <ElRow type="flex" class="align-items-center">
         <ElCol :span="1">
           <ElAvatar size="small" :src="collect.logoUrl"/>
         </ElCol>
         <ElCol :span="11">
-          <ElLink type="primary" :href="'/collects/'+collect.id">{{collect.name}}</ElLink>
+          <ElLink :href="'/collects/'+collect.id">{{collect.name}}</ElLink>
         </ElCol>
         <ElCol :span="4">
           <UrlCopyDropdown :collect="collect"></UrlCopyDropdown>
         </ElCol>
         <ElCol :span="4">
-          <ElLink type="info" :href="collect.url">转到链接</ElLink>
+          <ElButton type="text" size="small" :href="collect.url">转到链接</ElButton>
         </ElCol>
         <ElCol :span="4">
-          <PraiseButton v-show="currentUser" :collect="collect"></PraiseButton>
+          <PraiseButton v-if="currentUser" :collect="collect"></PraiseButton>
         </ElCol>
       </ElRow>
     </template>
 
-    <ElRow class="app-meta-small">
+    <ElRow type="flex" class="app-meta-small align-items-center">
       <ElCol :span="6">
         创建者&nbsp;
         <ElLink type="info" v-if="collect.user" :href="'/profile/'+collect.user.id">{{collect.user.nickname}}</ElLink>
@@ -43,7 +43,7 @@
         </ElBadge>
       </ElCol>
     </ElRow>
-    <ElRow class="app-meta">
+    <ElRow type="flex" class="app-meta align-items-center">
       <ElCol :span="6">
         分类
         <ElLink type="info" v-if="collect.category" :href="'/categories/'+collect.id">{{collect.category.name}}</ElLink>

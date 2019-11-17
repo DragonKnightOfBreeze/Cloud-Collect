@@ -24,6 +24,7 @@ http.interceptors.response.use(value => {
   console.log("Response success:", value)
   return value
 }, error => {
+  console.log("Response with error:", error.response)
   //error: {request} | {response} | {message}
   if (error.response) {
     const status = error.response.status
@@ -35,8 +36,10 @@ http.interceptors.response.use(value => {
         //  store.commit("setValidationErrors", validationErrors)
         //}
         //这里只取最先一条消息
-        if (error.response.data.valitationErrors) {
+        if (error.response.data.validationErrors) {
           const validationMessage = (error.response.data.validationErrors as ObjectError[])[0].defaultMessage
+          console.warn("参数验证错误。")
+          console.warn("Validation message:", validationMessage)
           store.commit("setValidationMessage", validationMessage)
         }
         break

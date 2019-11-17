@@ -6,19 +6,21 @@
       <div>搜索指定的用户。</div>
     </div>
     <ElBlankLine/>
-    <div class="align-center">
+    <ElRow type="flex" justify="center" align="middle">
+      <ElCol :span="12">
       <ElInput v-model="searchTerm" placeholder="关键词">
         <template v-slot:prepend>
-          <ElSelect v-model="searchType" :value="searchType" placeholder="请选择">
+          <ElSelect class="app-input-select" v-model="searchType" :value="searchType" placeholder="请选择">
             <ElOption v-for="option in searchOptions" :key="option.label" :label="option.label" :value="option.value"></ElOption>
           </ElSelect>
         </template>
 
         <template v-slot:append>
-          <ElButton><ElIcon name="search"/></ElButton>
+          <ElButton @click="handleSearch"><ElIcon name="search" /></ElButton>
         </template>
       </ElInput>
-    </div>
+      </ElCol>
+    </ElRow>
 
     <ElCardGroup v-if="searchPage">
       <UserOverviewCard v-for="user in searchPage.content" :key="user.id" :user="user"/>
@@ -56,11 +58,15 @@
       this.searchUser()
     }
 
-    handleGoBack() {
+    private handleGoBack() {
       this.$router.push("/search")
     }
 
-    async searchUser() {
+    private handleSearch() {
+      this.searchUser()
+    }
+
+    private async searchUser() {
       try {
         switch (this.searchType) {
           case "nickname":

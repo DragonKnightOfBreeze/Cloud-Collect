@@ -14,14 +14,13 @@
   import UserOverviewCard from "@/components/card/UserOverviewCard.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
-  import ProfileSidebar from "@/components/sidebar/ProfileSidebar.vue"
   import * as userService from "@/services/userService"
   import {Page, PageableParam, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
   @Component({
-    components: {ThePagination, UserOverviewCard, ElCardGroup, ProfileSidebar}
+    components: {ThePagination, UserOverviewCard, ElCardGroup}
   })
   export default class ProfileDetailFollowing extends Vue {
     private followToUserPageableParam: PageableParam = {page: 0, size: 20}

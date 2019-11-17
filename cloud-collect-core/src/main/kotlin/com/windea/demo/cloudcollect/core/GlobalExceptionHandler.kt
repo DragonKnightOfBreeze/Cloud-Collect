@@ -2,6 +2,7 @@ package com.windea.demo.cloudcollect.core
 
 import com.windea.demo.cloudcollect.core.exceptions.*
 import org.springframework.http.*
+import org.springframework.security.core.*
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.method.annotation.*
 
@@ -54,5 +55,11 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 	fun handleNotImplementedException(e: NotImplementedException): ResponseEntity<Nothing> {
 		e.printStackTrace()
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build()
+	}
+	
+	@ExceptionHandler(AuthenticationException::class)
+	fun handleAuthenticationException(e: AuthenticationException): ResponseEntity<Nothing> {
+		e.printStackTrace()
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
 	}
 }

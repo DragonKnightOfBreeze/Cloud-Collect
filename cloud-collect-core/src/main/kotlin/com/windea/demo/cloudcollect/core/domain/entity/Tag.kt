@@ -17,7 +17,7 @@ import javax.validation.constraints.*
 @ApiModel("收藏的标签。一个收藏可以带有多个标签。")
 @Entity
 @EntityListeners(AuditingEntityListener::class)
-@UniqueTag(groups = [Create::class])
+@UniqueTag(message = "{validation.Tag.UniqueTag}", groups = [Create::class])
 data class Tag(
 	@ApiModelProperty("编号。")
 	@Id
@@ -26,13 +26,12 @@ data class Tag(
 	
 	@ApiModelProperty("名字。")
 	@get:NotEmpty(message = "{validation.Tag.name.NotEmpty}", groups = [Create::class, Modify::class])
-	@get:Size(min = 1, max = 64, message = "{validation.Tag.name.Size}", groups = [Create::class, Modify::class])
+	@get:Size(max = 64, message = "{validation.Tag.name.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false, length = 64)
 	var name: String,
 	
 	@ApiModelProperty("概述。")
-	@get:NotEmpty(message = "{validation.Tag.summary.NotEmpty}", groups = [Create::class, Modify::class])
-	@get:Size(min = 1, max = 255, message = "{validation.Tag.summary.Size}", groups = [Create::class, Modify::class])
+	@get:Size(max = 255, message = "{validation.Tag.summary.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false)
 	var summary: String = "",
 	

@@ -55,6 +55,9 @@
 <style>
   @import "assets/css/global.css";
 
+  body {
+    margin: 0 0;
+  }
   #app {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -63,11 +66,16 @@
     color: #2c3e50;
     width: 1000px;
     margin: 0 auto;
+    vertical-align: middle;
+    overflow: hidden;
   }
   img {
-    vertical-align: center;
+    vertical-align: middle;
   }
 
+  .el-main {
+    overflow: hidden;
+  }
   .el-card {
     margin: 10px 10px;
   }
@@ -82,7 +90,6 @@
     font-size: 18px;
     font-weight: bold;
     line-height: 30px;
-    color: #333;
     padding: 15px 0;
   }
   .app-meta {
@@ -106,5 +113,9 @@
   }
   .app-introduce {
     padding: 15px 0;
+  }
+
+  .app-input-select {
+    width: 120px;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <ElCard class="app-comment-overview-card">
-    <ElRow class="app-title">
+    <ElRow type="flex" class="app-title align-items-center">
       <ElCol :span="1">
         <ElAvatar size="small" :src="comment.sponsorByUser.avatarUrl"/>
       </ElCol>
@@ -11,7 +11,7 @@
         <ElButton @click="handleReply">回复</ElButton>
       </ElCol>
     </ElRow>
-    <ElRow class="app-meta-small">
+    <ElRow type="flex" class="app-meta-small align-items-center">
       <ElCol :span="6">创建时间 {{comment.createdTime}}</ElCol>
     </ElRow>
     <ElRow class="app-content">
@@ -19,7 +19,7 @@
     </ElRow>
 
     <ElCard class="app-reply-overview-card" v-if="hasReply">
-      <ElRow class="app-title">
+      <ElRow type="flex" class="app-title align-items-center">
         <ElCol :span="1">
           <ElAvatar size="small" :src="reply.sponsorByUser.avatarUrl"/>
         </ElCol>
@@ -27,7 +27,7 @@
           <ElLink type="primary" :href="'/profile/'+reply.sponsorByUser.id">{{reply.sponsorByUser.nickname}}</ElLink>
         </ElCol>
       </ElRow>
-      <ElRow class="app-meta-small">
+      <ElRow type="flex" class="app-meta-small align-items-center">
         <ElCol :span="6">创建时间 {{reply.createdTime}}</ElCol>
       </ElRow>
       <ElRow class="app-content">

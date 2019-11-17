@@ -26,10 +26,10 @@ class IndexControllerTest {
 	@Test
 	fun registerByEmail() {
 		val form = User(
-			nickname = "微风的龙骑士",
-			username = "Windea",
-			email = "dk_breeze@qq.com",
-			password = "BreezesLanding"
+			nickname = "",
+			username = "",
+			email = "",
+			password = ""
 		)
 		val formJson = ObjectMapper().writeValueAsString(form)
 		mockMvc.post("/register") {

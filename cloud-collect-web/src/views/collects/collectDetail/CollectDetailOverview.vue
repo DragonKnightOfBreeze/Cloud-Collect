@@ -1,44 +1,46 @@
 <template>
   <div>
     <ElPageHeader title="返回总览页面" content="收藏详情" @back="handleGoBack"></ElPageHeader>
-    <ElDivider/>
-    <CollectDetailCard :collect="collect"/>
+    <ElDivider />
+    <template v-if="collect">
+      <CollectDetailCard :collect="collect" />
 
-    <ElButtonGroup class="align-center" v-show="isCurrentUser">
-      <ElButton type="success" @click="handleEdit">编辑</ElButton>
-      <ElButton type="danger" @click="handleDelete">删除</ElButton>
-    </ElButtonGroup>
+      <div class="align-center" v-if="isCurrentUser">
+        <ElButton type="success" @click="handleEdit">编辑</ElButton>
+        <ElButton type="danger" @click="handleDelete">删除</ElButton>
+      </div>
 
-    <ElButtonGroup class="align-center" v-show="currentUser && !isCurrentUser">
-      <ElButton type="primary" @click="handleFork">拷贝收藏</ElButton>
-    </ElButtonGroup>
+      <div class="align-center" v-if="currentUser && !isCurrentUser">
+        <ElButton type="primary" @click="handleFork">拷贝收藏</ElButton>
+      </div>
 
-    <EditCollectDialog :collect="collect" :visible.sync="editDialogVisible" @submit="handleSubmit"/>
+      <EditCollectDialog :collect="collect" :visible.sync="editDialogVisible" @submit="handleSubmit" />
 
-    <ElCollapse v-model="activeNames">
-      <ElCollapseItem name="0">
-        <template v-slot:title>
-          <ElRow>
-            <ElCol :span="12">查看评论</ElCol>
-            <ElCol :span="4" :offset="8">
-              <ElButton type="success" @click="handleNewComment">新评论</ElButton>
-            </ElCol>
-          </ElRow>
-        </template>
+      <ElCollapse v-model="activeNames">
+        <ElCollapseItem name="0">
+          <template v-slot:title>
+            <ElRow>
+              <ElCol :span="12">查看评论</ElCol>
+              <ElCol :span="4" :offset="8">
+                <ElButton type="success" @click="handleNewComment">新评论</ElButton>
+              </ElCol>
+            </ElRow>
+          </template>
 
-        <ElCardGroup v-if="commentPage && !commentPage.empty">
-          <CommentOverviewCard v-for="comment in commentPage.content" :key="comment.id" :comment="comment"
-                                 @reply="handleReplyComment(comment)"/>
-          <ThePagination :page="commentPage" :pageable-param.sync="commentPageableParam"/>
-        </ElCardGroup>
-        <div v-else>
-          没有评论。
-        </div>
-      </ElCollapseItem>
-    </ElCollapse>
+          <ElCardGroup v-if="commentPage && !commentPage.empty">
+            <CommentOverviewCard v-for="comment in commentPage.content" :key="comment.id" :comment="comment"
+                                 @reply="handleReplyComment(comment)" />
+            <ThePagination :page="commentPage" :pageable-param.sync="commentPageableParam" />
+          </ElCardGroup>
+          <div v-else>
+            没有评论。
+          </div>
+        </ElCollapseItem>
+      </ElCollapse>
 
-    <NewCommentDialog :visible.sync="newCommentDialogVisible" :collect="collect" :replyToComment="replyToComment"
-                        @submit="handleSubmitComment"/>
+      <NewCommentDialog :visible.sync="newCommentDialogVisible" :collect="collect" :replyToComment="replyToComment"
+                        @submit="handleSubmitComment" />
+    </template>
   </div>
 </template>
 
@@ -65,7 +67,7 @@
     }
   })
   export default class CollectDetailOverview extends Vue {
-    private collect!: Collect
+    private collect: Collect | null = null
     private editDialogVisible = false
     private activeNames = ["0"]
     private commentPage: Page<Comment> | null = null
@@ -82,7 +84,7 @@
     }
 
     get isCurrentUser() {
-      return this.currentUser && this.collect.user && this.currentUser.id == this.collect.user.id
+      return this.currentUser && this.collect && this.collect.user && this.currentUser.id == this.collect.user.id
     }
 
     created() {
@@ -154,7 +156,7 @@
 
     private async forkCollect() {
       try {
-        await collectService.createFrom(this.collect)
+        await collectService.createFrom(this.collect!)
         this.$message.success("拷贝成功！")
       } catch (e) {
         this.$message.warning("拷贝失败！")

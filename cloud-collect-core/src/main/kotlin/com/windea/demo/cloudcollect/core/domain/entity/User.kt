@@ -19,7 +19,7 @@ import javax.validation.constraints.*
 @ApiModel("用户。")
 @Entity
 @EntityListeners(AuditingEntityListener::class)
-@UniqueUser(groups = [Create::class])
+@UniqueUser(message = "{validation.User.UniqueUser}", groups = [Create::class])
 data class User constructor(
 	@ApiModelProperty("编号。")
 	@Id
@@ -46,24 +46,18 @@ data class User constructor(
 	
 	@ApiModelProperty("昵称。")
 	@get:NotEmpty(message = "{validation.User.nickname.NotEmpty}", groups = [Modify::class])
-	@get:Size(min = 1, max = 64, message = "{validation.User.nickname.Size}", groups = [Modify::class])
+	@get:Size(max = 64, message = "{validation.User.nickname.Size}", groups = [Modify::class])
 	@Column(nullable = false, length = 64)
 	var nickname: String = username,
 	
 	@ApiModelProperty("简介。")
-	@field:JsonIgnore
-	@get:NotEmpty(message = "{validation.User.introduce.NotEmpty}", groups = [Modify::class])
-	@get:Size(min = 1, max = 255, message = "{validation.User.introduce.Size}", groups = [Modify::class])
+	@get:Size(max = 255, message = "{validation.User.introduce.Size}", groups = [Modify::class])
 	@Column(nullable = false)
 	var introduce: String = "这家伙很懒，什么也没留下。",
 	
 	@ApiModelProperty("头像地址。")
 	@Column(length = 512, nullable = false)
 	var avatarUrl: String = "",
-	
-	@ApiModelProperty("背景地址。")
-	@Column(length = 512, nullable = false)
-	var backgroundUrl: String = "",
 	
 	@ApiModelProperty("身份。")
 	@Column(nullable = false)

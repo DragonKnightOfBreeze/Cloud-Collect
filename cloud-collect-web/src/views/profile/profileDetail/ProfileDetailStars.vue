@@ -14,14 +14,13 @@
   import CollectOverviewCard from "@/components/card/CollectOverviewCard.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
-  import ProfileSidebar from "@/components/sidebar/ProfileSidebar.vue"
   import * as userService from "@/services/userService"
   import {Collect, Page, PageableParam} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
   @Component({
-    components: {ThePagination, CollectOverviewCard, ElCardGroup, ProfileSidebar}
+    components: {ThePagination, CollectOverviewCard, ElCardGroup}
   })
   export default class ProfileDetailStars extends Vue {
     private praiseToCollectPageableParam: PageableParam = {page: 0, size: 20}

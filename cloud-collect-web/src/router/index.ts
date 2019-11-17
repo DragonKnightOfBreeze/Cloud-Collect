@@ -52,15 +52,15 @@ const routes: RouteConfig[] = [
   },
   {
     path: "/login",
-    redirect: {path: "./", query: {operation: "login"}}
+    redirect: {path: "/", query: {operation: "login"}}
   },
   {
     path: "/register",
-    redirect: {path: "./", query: {operation: "register"}}
+    redirect: {path: "/", query: {operation: "register"}}
   },
   {
     path: "/logout",
-    redirect: {path: "./", query: {operation: "logout"}}
+    redirect: {path: "/", query: {operation: "logout"}}
   },
   {
     path: "/collects",

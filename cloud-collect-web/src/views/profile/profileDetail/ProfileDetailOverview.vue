@@ -1,14 +1,17 @@
 <template>
   <div>
     <h3>Ta的主页</h3>
-    <ElDivider/>
-    <UserDetailCard :user="user"/>
+    <ElDivider />
+    <template v-if="user">
+      <UserDetailCard :user="user" />
 
-    <ElButtonGroup class="align-center" v-show="isCurrentUser">
-      <ElButton type="success" @click="handleEdit">编辑个人资料</ElButton>
-    </ElButtonGroup>
+      <!--对齐不能直接作用在ElButtonGroup上，原因不明-->
+      <div class="align-center" v-if="isCurrentUser">
+        <ElButton class="align-center" type="success" @click="handleEdit">编辑个人资料</ElButton>
+      </div>
 
-    <EditProfileDialog :visible.sync="editDialogVisible" :user="user" @submit="handleSubmit"/>
+      <EditProfileDialog :visible.sync="editDialogVisible" :user="user" @submit="handleSubmit" />
+    </template>
   </div>
 </template>
 
@@ -31,6 +34,10 @@
       return parseInt(this.$route.params["id"] as string)
     }
 
+    get currentUser() {
+      return this.$store.getters.currentUser
+    }
+
     private get isCurrentUser() {
       return this.$store.getters.currentUser && this.$store.getters.currentUser.id === this.userId
     }
@@ -48,7 +55,11 @@
     }
 
     private async getUser() {
-      this.user = await userService.findById(this.userId)
+      if (this.isCurrentUser) {
+        this.user = this.currentUser
+      } else {
+        this.user = await userService.findById(this.userId)
+      }
     }
   }
 </script>

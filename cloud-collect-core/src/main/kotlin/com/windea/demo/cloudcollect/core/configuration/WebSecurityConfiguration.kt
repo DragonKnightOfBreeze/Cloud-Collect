@@ -33,6 +33,8 @@ class WebSecurityConfiguration(
 		}.headers {
 			//禁用缓存
 			it.cacheControl().disable()
+		}.sessionManagement {
+		
 		}
 	}
 	

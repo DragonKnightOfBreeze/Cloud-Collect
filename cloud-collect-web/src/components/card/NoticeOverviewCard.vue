@@ -1,17 +1,14 @@
 <template>
   <ElCard class="app-notice-overview-card">
-    <template v-slot:header>
-      <ElRow>
-        <ElCol :span="12">
-          {{notice.title}}
-        </ElCol>
-        <ElCol :span="4" :offset="8">
-          <ElButton type="danger" v-show="isCurrentUser" @click="handleDelete">删除</ElButton>
-        </ElCol>
-      </ElRow>
-    </template>
-
-    <ElRow class="app-meta-small">
+    <ElRow type="flex" class="app-title align-items-center">
+      <ElCol :span="12">
+        {{notice.title}}
+      </ElCol>
+      <ElCol :span="4" :offset="8">
+        <ElButton type="danger" v-if="isCurrentUser" @click="handleDelete">删除</ElButton>
+      </ElCol>
+    </ElRow>
+    <ElRow type="flex" class="app-meta-small align-items-center">
       <ElCol :span="6">
         类型 {{notice.type | enumText(noticeTypes)}}
       </ElCol>

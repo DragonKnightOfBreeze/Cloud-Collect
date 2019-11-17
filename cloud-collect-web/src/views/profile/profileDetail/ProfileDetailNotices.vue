@@ -4,13 +4,13 @@
     <ElDivider/>
 
     <!--仅当用户为当前用户时，才会显示以下内容-->
-    <ElRow v-show="isCurrentUser">
+    <ElRow v-if="isCurrentUser">
       <ElCol :span="4" :offset="20">
         <ElButton type="danger" @click="handleDeleteAll">清空通知</ElButton>
       </ElCol>
     </ElRow>
 
-    <ElCardGroup v-show="isCurrentUser">
+    <ElCardGroup v-if="isCurrentUser">
       <NoticeOverviewCard v-for="notice in notices" :key="notice.id" :notice="notice"
                           @delete="handleDelete(notice.id)"/>
       <ThePagination :page="noticePage" :pageable-param.sync="noticePageableParam"/>

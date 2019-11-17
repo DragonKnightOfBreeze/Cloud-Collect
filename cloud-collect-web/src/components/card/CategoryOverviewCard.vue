@@ -4,7 +4,7 @@
       <ElLink type="primary" :href="'/categories/'+category.id">{{category.name}}</ElLink>
     </template>
 
-    <ElRow class="app-meta-small">
+    <ElRow type="flex" class="app-meta-small align-items-center">
       <ElCol :span="6">
         创建者&nbsp;
         <ElLink type="info" v-if="category.user" :href="'/profile/'+category.user.id">{{category.user.nickname}}</ElLink>

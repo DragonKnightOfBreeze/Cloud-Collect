@@ -4,13 +4,13 @@
     <ElDivider />
 
     <!--仅当用户为当前用户时，才会显示以下内容-->
-    <ElRow v-show="isCurrentUser">
-      <ElCol :span="4">
-        <ElButton type="warning" @click="handleImport">导入收藏</ElButton>
-      </ElCol>
-      <ElCol :span="4">
-        <ElButton type="warning" @click="handleExport">导出收藏</ElButton>
-      </ElCol>
+    <ElRow v-if="isCurrentUser">
+      <!--<ElCol :span="4">-->
+      <!--  <ElButton type="warning" @click="handleImport">导入收藏</ElButton>-->
+      <!--</ElCol>-->
+      <!--<ElCol :span="4">-->
+      <!--  <ElButton type="warning" @click="handleExport">导出收藏</ElButton>-->
+      <!--</ElCol>-->
       <ElCol :span="4" :offset="4">
         <ElButton type="primary" @click="handleCreateCategory">创建分类</ElButton>
       </ElCol>
@@ -24,7 +24,7 @@
 
     <!--允许过滤收藏-->
     <ElRow type="flex" justify="center" align="middle">
-      <ElCol :span="6">
+      <ElCol :span="8">
         <ElForm inline class="align-center">
           <ElFormItem>
             <ElInput v-model="searchTerm1" placeholder="按名字搜索"></ElInput>
@@ -34,7 +34,7 @@
           </ElFormItem>
         </ElForm>
       </ElCol>
-      <ElCol :span="6">
+      <ElCol :span="8">
         <ElForm inline class="align-center">
           <ElFormItem>
             <ElInput v-model="searchTerm2" placeholder="按分类搜索"></ElInput>
@@ -44,7 +44,7 @@
           </ElFormItem>
         </ElForm>
       </ElCol>
-      <ElCol :span="6">
+      <ElCol :span="8">
         <ElForm inline class="align-center">
           <ElFormItem>
             <ElInput v-model="searchTerm3" placeholder="按标签搜索"></ElInput>
@@ -54,18 +54,22 @@
           </ElFormItem>
         </ElForm>
       </ElCol>
-      <ElCol :span="4">
+    </ElRow>
+    <ElRow type="flex" justify="center" align="middle">
+      <ElCol :span="8">
         <ElDropdown split-button type="primary" @command="handleCommand">
           <ElButton>按类型搜索</ElButton>
 
-          <ElDropdownMenu v-slot:dropdown>
-            <ElDropdownItem v-for="type in collectTypes" :key="type.name" :command="type.name">
-              {{type.text}}
-            </ElDropdownItem>
-          </ElDropdownMenu>
+          <template v-slot:dropdown>
+            <ElDropdownMenu>
+              <ElDropdownItem v-for="type in collectTypes" :key="type.name" :command="type.name">
+                {{type.text}}
+              </ElDropdownItem>
+            </ElDropdownMenu>
+          </template>
         </ElDropdown>
       </ElCol>
-      <ElCol :span="2">
+      <ElCol :span="4">
         <ElButton type="info" @click="handleSearch('none')">重置条件</ElButton>
       </ElCol>
     </ElRow>

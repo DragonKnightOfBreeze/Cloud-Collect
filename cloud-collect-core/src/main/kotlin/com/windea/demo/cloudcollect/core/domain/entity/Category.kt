@@ -17,7 +17,7 @@ import javax.validation.constraints.*
 @ApiModel("收藏的分类。一个收藏可以有多个分类。")
 @Entity
 @EntityListeners(AuditingEntityListener::class)
-@UniqueCategory(groups = [Create::class])
+@UniqueCategory(message = "{validation.Category.UniqueCategory}", groups = [Create::class])
 data class Category(
 	@ApiModelProperty("编号。")
 	@Id
@@ -26,13 +26,12 @@ data class Category(
 	
 	@ApiModelProperty("名字。")
 	@get:NotEmpty(message = "{validation.Category.name.NotEmpty}", groups = [Create::class, Modify::class])
-	@get:Size(min = 1, max = 64, message = "{validation.Category.name.Size}", groups = [Create::class, Modify::class])
+	@get:Size(max = 64, message = "{validation.Category.name.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false, length = 64)
 	var name: String,
 	
 	@ApiModelProperty("概述。")
-	@get:NotEmpty(message = "{validation.Category.summary.NotEmpty}", groups = [Create::class, Modify::class])
-	@get:Size(min = 1, max = 255, message = "{validation.Category.summary.Size}", groups = [Create::class, Modify::class])
+	@get:Size(max = 255, message = "{validation.Category.summary.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false)
 	var summary: String = "",
 	

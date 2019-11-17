@@ -5,7 +5,8 @@
         <ElInput v-model="collect.name"></ElInput>
       </ElFormItem>
       <ElFormItem label="概述">
-        <ElInput v-model="collect.summary"></ElInput>
+        <ElInput type="textarea" v-model="collect.summary"
+                 maxlength="255" show-word-limit :autosize="{minRows: 3, maxRows: 6}"></ElInput>
       </ElFormItem>
       <ElFormItem label="地址">
         <ElInput v-model="collect.url"></ElInput>
@@ -14,8 +15,6 @@
         <ElInput v-model="collect.logoUrl"></ElInput>
       </ElFormItem>
       <ElFormItem label="分类">
-        <!--TODO 可行的写法？-->
-        <!--TODO 允许创建新的分类-->
         <!--NOTE value-key是相对于option的value属性而言的，将其作为this关键字-->
         <!--NOTE 当option的value属性类型为object时，必须设置select的value-key以及option的对应key属性-->
         <ElSelect v-model="collect.category" :value="collect.category" value-key="id" placeholder="请选择分类"
@@ -25,8 +24,6 @@
         </ElSelect>
       </ElFormItem>
       <ElFormItem label="标签">
-        <!--TODO 可行的写法？-->
-        <!--TODO 允许创建新的标签-->
         <ElSelect v-model="collect.tags" :value="collect.tags" value-key="id" placeholder="请选择标签"
                   filterable remote reserve-keyword multiple clearable
                   :loading="loadingTags" :remote-method="searchTagByName">
@@ -40,11 +37,12 @@
           </ElRadio>
         </ElRadioGroup>
       </ElFormItem>
-      <ElFormItem>
-        <el-button type="primary" @click="handleSubmit">完成创建</el-button>
-        <el-button type="info" @click="handleClose">取消创建</el-button>
-      </ElFormItem>
     </ElForm>
+
+    <template v-slot:footer>
+      <el-button type="primary" @click="handleSubmit">完成创建</el-button>
+      <el-button type="info" @click="handleClose">取消创建</el-button>
+    </template>
   </ElDialog>
 </template>
 

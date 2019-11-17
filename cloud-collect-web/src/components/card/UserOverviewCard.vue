@@ -1,7 +1,7 @@
 <template>
   <ElCard class="app-user-overview-card">
     <template v-slot:header>
-      <ElRow>
+      <ElRow type="flex" class="align-items-center">
         <ElCol :span="1">
           <ElAvatar size="small" :src="user.avatarUrl"/>
         </ElCol>
@@ -9,12 +9,12 @@
           <ElLink type="primary" :href="'/profile/'+user.id">{{user.nickname}}</ElLink>
         </ElCol>
         <ElCol :span="4" :offset="8">
-          <FollowButton v-show="currentUser && !isCurrentUser" :user="user"></FollowButton>
+          <FollowButton v-if="currentUser && !isCurrentUser" :user="user"></FollowButton>
         </ElCol>
       </ElRow>
     </template>
 
-    <ElRow class="app-meta-small">
+    <ElRow type="flex" class="app-meta-small align-items-center">
       <ElCol :span="6">
         用户名 {{user.username}}
       </ElCol>

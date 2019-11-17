@@ -18,10 +18,29 @@
   vertical-align: bottom;
 }
 
-.color-brand {
-  color: #409EFF;
+.justify-content-start {
+  justify-content: start;
+}
+.justify-content-center {
+  justify-content: center;
+}
+.justify-content-end {
+  justify-content: end;
 }
 
+.align-items-start {
+  align-items: start;
+}
+.align-items-center {
+  align-items: center;
+}
+.align-items-end {
+  align-items: end;
+}
+
+.color-primary {
+  color: #409EFF;
+}
 .color-success {
   color: #67C23A;
 }
@@ -35,7 +54,7 @@
   color: #909399;
 }
 
-.bg-color-brand {
+.bg-color-primary {
   background-color: #409EFF;
 }
 .bg-color-success {

@@ -2,26 +2,28 @@
   <div>
     <ElPageHeader title="返回总览页面" content="分类详情" @back="handleGoBack"></ElPageHeader>
     <ElDivider/>
-    <CategoryDetailCard :category="category"/>
+    <template v-if="category">
+      <CategoryDetailCard :category="category" />
 
-    <ElButtonGroup class="align-center" v-show="isCurrentUser">
-      <ElButton type="success" @click="handleEdit">编辑</ElButton>
-      <ElButton type="danger" @click="handleDelete">删除</ElButton>
-    </ElButtonGroup>
+      <div class="align-center" v-if="isCurrentUser">
+        <ElButton type="success" @click="handleEdit">编辑</ElButton>
+        <ElButton type="danger" @click="handleDelete">删除</ElButton>
+      </div>
 
-    <EditCategoryDialog :category="category" :visible.sync="editDialogVisible" @submit="handleSubmit"/>
+      <EditCategoryDialog :category="category" :visible.sync="editDialogVisible" @submit="handleSubmit" />
 
-    <ElCollapse v-model="activeNames">
-      <ElCollapseItem name="0" title="查看相关收藏">
-        <ElCardGroup v-if="collectPage && !collectPage.empty">
-          <CollectOverviewCard v-for="collect in collectPage.content" :key=collect.id :collect="collect"/>
-          <ThePagination :page="collectPage" :pageable-param.sync="collectPageableParam"/>
-        </ElCardGroup>
-        <div v-else>
-          没有相关收藏。
-        </div>
-      </ElCollapseItem>
-    </ElCollapse>
+      <ElCollapse v-model="activeNames" @change="handleChange">
+        <ElCollapseItem name="0" title="查看相关收藏">
+          <ElCardGroup v-if="collectPage && !collectPage.empty">
+            <CollectOverviewCard v-for="collect in collectPage.content" :key=collect.id :collect="collect" />
+            <ThePagination :page="collectPage" :pageable-param.sync="collectPageableParam" />
+          </ElCardGroup>
+          <div v-else>
+            没有相关收藏。
+          </div>
+        </ElCollapseItem>
+      </ElCollapse>
+    </template>
   </div>
 </template>
 
@@ -60,13 +62,11 @@
 
     created() {
       this.getCategory()
-      this.getCollectPage()
     }
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
       this.getCategory()
-      this.getCollectPage()
     }
 
     @Watch("collectPageableParam")
@@ -77,6 +77,12 @@
 
     handleGoBack() {
       this.$router.push("/categories")
+    }
+
+    handleChange() {
+      if (!this.getCollectPage()) {
+        this.getCollectPage()
+      }
     }
 
     handleEdit() {

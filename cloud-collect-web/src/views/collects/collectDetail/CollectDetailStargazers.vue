@@ -2,8 +2,8 @@
   <div>
     <ElPageHeader title="返回详情页面" content="收藏家" @back="handleGoBack"></ElPageHeader>
     <ElDivider/>
-    <div>查看该收藏的收藏家</div>
-
+    <div>查看该收藏的收藏家。</div>
+    <ElBlankLine />
     <ElCardGroup>
       <UserOverviewCard v-for="user in praiseByUserPage.content" :key="user.id" :user="user"/>
       <ThePagination :page="praiseByUserPage" :pageable-param.sync="praiseByUserPageableParam"/>
@@ -13,6 +13,7 @@
 
 <script lang="ts">
   import UserOverviewCard from "@/components/card/UserOverviewCard.vue"
+  import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import * as collectService from "@/services/collectService"
@@ -21,7 +22,7 @@
   import {Route} from "vue-router"
 
   @Component({
-    components: {ThePagination, UserOverviewCard, ElCardGroup}
+    components: {ElBlankLine, ThePagination, UserOverviewCard, ElCardGroup}
   })
   export default class CollectDetailStargazers extends Vue {
     private praiseByUserPageableParam: PageableParam = {page: 0, size: 20}

@@ -33,11 +33,11 @@ class IndexController(
 		userService.register(user)
 	}
 	
-	@ApiOperation("注销用户。")
-	@PostMapping("/logout")
-	fun logout() {
-		userService.logout()
-	}
+	//@ApiOperation("注销用户。")
+	//@PostMapping("/logout")
+	//fun logout() {
+	//	userService.logout()
+	//}
 	
 	@ApiOperation("激活用户。")
 	@PostMapping("/activate")

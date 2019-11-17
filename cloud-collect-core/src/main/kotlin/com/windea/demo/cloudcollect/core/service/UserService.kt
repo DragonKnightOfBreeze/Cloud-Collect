@@ -13,8 +13,8 @@ interface UserService {
 	/**注册用户。*/
 	fun register(user: User)
 	
-	/**注销用户。*/
-	fun logout()
+	///**注销用户。*/
+	//fun logout()
 	
 	/**激活用户。*/
 	fun activate(username: String, activateCode: String)

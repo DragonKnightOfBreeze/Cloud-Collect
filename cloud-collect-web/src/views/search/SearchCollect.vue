@@ -1,28 +1,31 @@
 <template>
   <div>
     <ElPageHeader title="返回搜索页面" content="搜索收藏" @back="handleGoBack"></ElPageHeader>
-    <ElDivider/>
+    <ElDivider />
     <div>
       <div>搜索指定的收藏。</div>
     </div>
-    <ElBlankLine/>
-    <div class="align-center">
-      <ElInput v-model="searchTerm" placeholder="关键词">
-        <template v-slot:prepend>
-          <ElSelect v-model="searchType" :value="searchType" placeholder="请选择">
-            <ElOption v-for="option in searchOptions" :key="option.value" :label="option.label" :value="option.value"></ElOption>
-          </ElSelect>
-        </template>
+    <ElBlankLine />
+    <ElRow type="flex" justify="center" align="middle">
+      <ElCol :span="12">
+        <ElInput v-model="searchTerm" placeholder="关键词">
+          <template v-slot:prepend>
+            <!--这里需要为内嵌的el-select指定宽度-->
+            <ElSelect class="app-input-select" v-model="searchType" :value="searchType" placeholder="请选择">
+              <ElOption v-for="option in searchOptions" :key="option.value" :label="option.label" :value="option.value"></ElOption>
+            </ElSelect>
+          </template>
 
-        <template v-slot:append>
-          <ElButton><ElIcon name="search"/></ElButton>
-        </template>
-      </ElInput>
-    </div>
+          <template v-slot:append>
+            <ElButton @click="handleSearch"><ElIcon name="search" /></ElButton>
+          </template>
+        </ElInput>
+      </ElCol>
+    </ElRow>
 
     <ElCardGroup v-if="searchPage">
-      <CollectOverviewCard v-for="collect in searchPage.content" :key="collect.id" :collect="collect"/>
-      <ThePagination :page="searchPage" :pageable-param.sync="searchPageableParam"/>
+      <CollectOverviewCard v-for="collect in searchPage.content" :key="collect.id" :collect="collect" />
+      <ThePagination :page="searchPage" :pageable-param.sync="searchPageableParam" />
     </ElCardGroup>
   </div>
 </template>
@@ -56,11 +59,15 @@
       this.searchCollect()
     }
 
-    handleGoBack() {
+    private handleGoBack() {
       this.$router.push("/search")
     }
 
-    async searchCollect() {
+    private handleSearch() {
+      this.searchCollect()
+    }
+
+    private async searchCollect() {
       try {
         switch (this.searchType) {
           case "name":

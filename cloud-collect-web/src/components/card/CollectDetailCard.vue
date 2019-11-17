@@ -1,7 +1,7 @@
 <template>
   <ElCard class="app-collect-detail-card">
     <template v-slot:header>
-      <ElRow>
+      <ElRow type="flex">
         <ElCol :span="1">
           <ElAvatar size="small" :src="collect.logoUrl"/>
         </ElCol>
@@ -15,7 +15,7 @@
           <ElLink type="info" :href="collect.url">转到链接</ElLink>
         </ElCol>
         <ElCol :span="3">
-          <PraiseButton v-show="currentUser" :collect="collect"></PraiseButton>
+          <PraiseButton v-if="currentUser" :collect="collect"></PraiseButton>
         </ElCol>
       </ElRow>
     </template>

@@ -3,11 +3,11 @@
   <!--登录对话框-->
   <ElDialog title="登录" center :visible="syncDialogType==='login'" @close="handleClose">
     <!--登录表单-->
-    <ElForm label-width="120px">
-      <ElFormItem label="用户名">
+    <ElForm label-width="120px" :model="form" :rules="rules" ref="form">
+      <ElFormItem label="用户名" prop="username">
         <ElInput v-model="form.username" placeholder="请输入用户名。"/>
       </ElFormItem>
-      <ElFormItem label="密码">
+      <ElFormItem label="密码" prop="password">
         <ElInput type="password" v-model="form.password" placeholder="请输入密码。"/>
       </ElFormItem>
       <ElFormItem>
@@ -43,25 +43,27 @@
       username: "",
       password: ""
     }
+    private rules = {
+      username: [
+        {required: true, message: "请输入用户名！"}
+      ],
+      password: [
+        {required: true, message: "请输入密码！"}
+      ]
+    }
 
     handleForgotPassword() {
       this.forgotPasswordDialogVisible = true
     }
 
     async handleLogin() {
-      //要求用户输入
-      if (!this.form.username || !this.form.password) return
+      const isValid = await (this.$refs["form"] as any).validate()
+      if (!isValid) return
 
       //如果用户存在，则存储用户信息，弹出成功提示框，并关闭对话框。否则弹出错误提示框
       try {
         const userDetailsVo = await indexService.login(this.form)
         const user = userDetailsVo.delegateUser
-        //const user: User = {
-        //  email: "dk@breeze.com",
-        //  nickname: "微风的龙骑士",
-        //  username: this.form.username,
-        //  password: this.form.password
-        //}
         window.sessionStorage["currentUser"] = JSON.stringify(user)
         this.$store.commit("setCurrentUser", user)
         this.$message.success("登录成功！")

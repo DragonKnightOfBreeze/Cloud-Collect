@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.*
 import org.springframework.boot.test.context.*
 import org.springframework.data.domain.*
 import org.springframework.data.repository.*
+import org.springframework.security.crypto.bcrypt.*
 import kotlin.random.*
 
 @SpringBootTest
@@ -20,9 +21,20 @@ class MockData(
 	@Autowired private val noticeRepository: NoticeRepository,
 	@Autowired private val tagRepository: TagRepository,
 	@Autowired private val userRepository: UserRepository,
-	@Autowired private val userService: UserService
+	@Autowired private val userService: UserService,
+	@Autowired private val passwordEncoder: BCryptPasswordEncoder
 ) {
 	private fun Int.randomId() = Random.nextInt(this) + 1L
+	private fun String.encode() = passwordEncoder.encode(this)
+	
+	@Test
+	fun encodePassword() {
+		val users = userRepository.findAll()
+		users.forEach {
+			it.password = it.password.encode()
+		}
+		userRepository.saveAll(users)
+	}
 	
 	@Test //TESTED
 	fun addMockData() {
@@ -31,11 +43,11 @@ class MockData(
 			nickname = "微风的龙骑士",
 			username = "Windea",
 			email = "dk_breeze@qq.com",
-			password = "BreezesLanding"
+			password = "BreezesLanding".encode()
 		))
 		
 		repeat(5) {
-			userRepository.save(User(0, "UserUsername$it", "UserPassword$it", "UserEmail$it"))
+			userRepository.save(User(0, "UserUsername$it", "UserPassword$it".encode(), "UserEmail$it"))
 		}
 		repeat(20) {
 			val user = userRepository.findByIdOrNull(5.randomId())!!

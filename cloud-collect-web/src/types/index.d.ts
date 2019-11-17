@@ -96,7 +96,6 @@ export interface User {
   nickname: string
   introduce?: string
   avatarUrl?: string
-  backgroundUrl?: string
   role?: Role
   activateStatus?: boolean
   registerTime?: string

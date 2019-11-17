@@ -4,7 +4,7 @@
       <ElLink type="primary" :href="'/tags/'+tag.id">{{tag.name}}</ElLink>
     </template>
 
-    <ElRow class="app-meta-small">
+    <ElRow type="flex" class="app-meta-small align-items-center">
       <ElCol :span="6">
         创建者&nbsp;
         <ElLink type="info" v-if="tag.user" :href="'/profile/'+tag.user.id">{{tag.user.nickname}}</ElLink>

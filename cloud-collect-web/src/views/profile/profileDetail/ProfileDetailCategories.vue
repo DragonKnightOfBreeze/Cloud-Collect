@@ -4,7 +4,7 @@
     <ElDivider/>
 
     <!--仅当用户为当前用户时，才会显示以下内容-->
-    <ElRow v-show="isCurrentUser">
+    <ElRow v-if="isCurrentUser">
       <ElCol :span="4" :offset="20">
         <ElButton type="primary" @click="handleCreate">创建分类</ElButton>
       </ElCol>

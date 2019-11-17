@@ -20,7 +20,7 @@
       if (this.currentUser) {
         this.$router.replace(`/profile/${this.currentUser.id}`)
       } else {
-        this.$router.replace("/login")
+        this.$router.replace({path: "", query: {operation: "login"}})
       }
     }
   }

@@ -19,7 +19,7 @@ import javax.validation.constraints.*
 @ApiModel("收藏。")
 @Entity
 @EntityListeners(AuditingEntityListener::class)
-@UniqueCollect(groups = [Create::class])
+@UniqueCollect(message = "{validation.Collect.UniqueCollect}", groups = [Create::class])
 data class Collect(
 	@ApiModelProperty("编号。")
 	@Id
@@ -28,13 +28,12 @@ data class Collect(
 	
 	@ApiModelProperty("名字。")
 	@get:NotEmpty(message = "{validation.Collect.name.NotEmpty}", groups = [Create::class, Modify::class])
-	@get:Size(min = 1, max = 64, message = "{validation.Collect.name.Size}", groups = [Create::class, Modify::class])
+	@get:Size(max = 64, message = "{validation.Collect.name.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false, length = 64)
 	var name: String,
 	
 	@ApiModelProperty("概述。")
-	@get:NotEmpty(message = "{validation.Collect.summary.NotEmpty}", groups = [Create::class, Modify::class])
-	@get:Size(min = 1, max = 255, message = "{validation.Collect.summary.Size}", groups = [Create::class, Modify::class])
+	@get:Size(max = 255, message = "{validation.Collect.summary.Size}", groups = [Create::class, Modify::class])
 	@Column(nullable = false)
 	var summary: String = "",
 	

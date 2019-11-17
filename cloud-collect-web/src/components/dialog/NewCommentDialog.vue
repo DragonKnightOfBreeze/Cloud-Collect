@@ -1,14 +1,15 @@
 <template>
   <ElDialog center :visible="syncVisible" @close="handleClose">
-    <ElForm>
-      <ElFormItem>
+    <ElForm :model="comment" :rules="rules" ref="form">
+      <ElFormItem prop="content">
         <ElInput type="textarea" v-model="comment.content" placeholder="请输入回复内容"
-                 maxlength="255" show-word-limit :autosize="autoSize"></ElInput>
-      </ElFormItem>
-      <ElFormItem>
-        <ElButton type="primary" @click="handleSubmit">发送</ElButton>
+                 maxlength="255" show-word-limit :autosize="{minRows: 3, maxRows: 6}"></ElInput>
       </ElFormItem>
     </ElForm>
+
+    <template v-slot:footer>
+      <ElButton type="primary" @click="handleSubmit">发送</ElButton>
+    </template>
   </ElDialog>
 </template>
 
@@ -23,11 +24,16 @@
     @Prop({required: true}) collect!: Collect
     @Prop({required: true}) replyToComment: Comment | undefined
 
-    private autoSize = {minRows: 3, maxRows: 6}
     private comment: Comment = {
       content: "",
       collect: this.collect,
       replyToComment: this.replyToComment
+    }
+    private rules = {
+      content: [
+        {required: true, message: "回复内容不能为空！"},
+        {max: 255, message: "回复内容过长！"}
+      ]
     }
 
     get currentUser(): User | undefined {
@@ -36,8 +42,8 @@
 
     @Emit("submit")
     async handleSubmit() {
-      //不允许回复内容为空
-      if (!this.comment.content) return
+      const isValid = await (this.$refs["form"] as any).validate()
+      if (!isValid) return
 
       //提交时判断用户是否已登录
       if (!this.currentUser) return await this.$router.replace("/login")

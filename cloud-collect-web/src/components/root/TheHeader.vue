@@ -6,7 +6,7 @@
       <ElCol :span="4">
         <router-link to="/">
           <!--NOTE 使用ElImage会找不到图片-->
-          <img id="app-logo" src="../../assets/logo.png" alt="云收藏"/>
+          <img id="app-logo" src="../../assets/logo.png" alt="云收藏" />
         </router-link>
       </ElCol>
       <!--导航内容，到各个分页-->
@@ -20,20 +20,21 @@
       <!--导航侧边栏，显示用户信息，或者登录注册按钮-->
       <ElCol :span="2">
         <template v-if="currentUser">
-          <ElAvatar id="app-user-avatar" fit="fill" :src="currentUser.avatarUrl"/>
+          <ElAvatar id="app-user-avatar" fit="fill" :src="currentUser.avatarUrl" />
         </template>
       </ElCol>
-      <ElCol :span="6" class="align-right">
+      <ElCol :span="6">
         <!--用户信息，点击跳转到档案页，点击下拉项跳转到对应页-->
         <template v-if="currentUser">
-          <ElDropdown split-button type="primary" @click="handleGoProfile" @command="handleCommand">
+          <ElDropdown type="primary" split-button @click="handleGoProfile" @command="handleCommand">
             {{currentUser.nickname}}
-
-            <ElDropdownMenu v-slot:dropdown>
-              <ElDropdownItem v-for="item in dropdownItemList" :key="item.command" :command="item.command">
-                {{item.name}}
-              </ElDropdownItem>
-            </ElDropdownMenu>
+            <template v-slot:dropdown>
+              <ElDropdownMenu>
+                <ElDropdownItem v-for="item in dropdownItemList" :key="item.command" :command="item.command">
+                  {{item.name}}
+                </ElDropdownItem>
+              </ElDropdownMenu>
+            </template>
           </ElDropdown>
         </template>
         <!--登录注册按钮-->
@@ -83,19 +84,9 @@
     ]
     private dialogType: DialogType = "none"
 
-    //DONE 得到当前用户信息
+
     get currentUser(): User | null {
-      let currentUser = null
-      //尝试从storage中得到当前用户信息，并提交到store
-      if (window.sessionStorage["currentUser"]) {
-        currentUser = JSON.parse(window.sessionStorage["currentUser"]) as User
-        this.$store.commit("setCurrentUser", currentUser)
-      }
-      //尝试从store中得到当前用户信息
-      if (this.$store.getters.currentUser) {
-        currentUser = this.$store.getters.currentUser
-      }
-      return currentUser
+      return this.$store.getters.currentUser || this.initUser()
     }
 
     //NOTE 这里只能监听当前路由，不能使用beforeRouteUpdate回调。
@@ -106,10 +97,24 @@
       this.changeOperation(value, oldValue)
     }
 
-    //监听当前路由，更改activeIndex
+    private initUser() {
+      let currentUser = null
+      //尝试从storage中得到当前用户信息，并提交到store，并后台自动登录
+      if (window.sessionStorage["currentUser"]) {
+        currentUser = JSON.parse(window.sessionStorage["currentUser"]) as User
+        if (currentUser && currentUser.username && currentUser.password) {
+          this.$store.commit("setCurrentUser", currentUser)
+        }
+      }
+      return currentUser
+    }
+
+    //监听当前路由，更改activeIndex，默认为0
     private changeActiveIndex(value: Route, oldValue: Route) {
+      this.activeIndex = "0"
       for (let navItem of this.menuItemList) {
-        if (navItem.path == value.path) {
+        //这里应当是包含，而非相等
+        if (value.matched[0].path == navItem.path) {
           this.activeIndex = navItem.index
           break
         }
