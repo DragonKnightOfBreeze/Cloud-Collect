@@ -36,20 +36,23 @@
     components: {FollowButton}
   })
   export default class ProfileDetail extends Vue {
-    private user: User | null = null
-    private activeIndex = "0"
-    private menuItemList: MenuItem[] = [
-      {index: "0", path: "", name: "主页"},
-      {index: "1", path: "collects", name: `收藏 ${this.collectCount}`},
-      {index: "2", path: "categories", name: `分类 ${this.categoryCount}`},
-      {index: "5", path: "stars", name: `喜爱 ${this.praiseToCollectCount}`},
-      {index: "7", path: "following", name: `关注 ${this.followToUserCount}`},
-      {index: "6", path: "followers", name: `粉丝 ${this.followByUserCount}`},
-      {index: "3", path: "history", name: "历史"},
-      {index: "4", path: "notices", name: "通知"}
-    ]
+    user: User | null = null
+    activeIndex = "0"
 
-    private get userId() {
+    get menuItemList(): MenuItem[] {
+      return [
+        {index: "0", path: `/profile/${this.userId}`, name: "主页"},
+        {index: "1", path: `/profile/${this.userId}/collects`, name: `收藏 ${this.collectCount}`},
+        {index: "2", path: `/profile/${this.userId}/categories`, name: `分类 ${this.categoryCount}`},
+        {index: "5", path: `/profile/${this.userId}/stars`, name: `喜爱 ${this.praiseToCollectCount}`},
+        {index: "7", path: `/profile/${this.userId}/following`, name: `关注 ${this.followToUserCount}`},
+        {index: "6", path: `/profile/${this.userId}/followers`, name: `粉丝 ${this.followByUserCount}`},
+        {index: "3", path: `/profile/${this.userId}/history`, name: "历史"},
+        {index: "4", path: `/profile/${this.userId}/notices`, name: "通知"}
+      ]
+    }
+
+    get userId() {
       return parseInt(this.$route.params["id"] as string)
     }
 
@@ -107,11 +110,7 @@
     }
 
     private async getUser() {
-      if (this.isCurrentUser) {
-        this.user = this.currentUser
-      } else {
-        this.user = await userService.findById(this.userId)
-      }
+      this.user = await userService.findById(this.userId)
     }
   }
 </script>

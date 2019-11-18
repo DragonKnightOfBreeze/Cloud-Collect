@@ -1,7 +1,7 @@
 <template>
   <ElCard class="app-category-overview-card">
     <template v-slot:header>
-      <ElLink type="primary" :href="'/categories/'+category.id">{{category.name}}</ElLink>
+      <ElLink :href="'/categories/'+category.id">{{category.name}}</ElLink>
     </template>
 
     <ElRow type="flex" class="app-meta-small align-items-center">

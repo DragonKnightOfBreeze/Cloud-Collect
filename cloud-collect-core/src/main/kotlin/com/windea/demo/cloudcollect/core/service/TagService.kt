@@ -5,7 +5,7 @@ import org.springframework.data.domain.*
 
 interface TagService {
 	/**创建自己的标签。*/
-	fun create(tag: Tag, user: User)
+	fun create(tag: Tag)
 	
 	/**修改自己的标签。包括名字，概述*/
 	fun modify(id: Long, tag: Tag)

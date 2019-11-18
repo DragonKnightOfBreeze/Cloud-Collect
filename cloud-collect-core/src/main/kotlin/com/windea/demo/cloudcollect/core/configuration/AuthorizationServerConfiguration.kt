@@ -18,7 +18,7 @@ package com.windea.demo.cloudcollect.core.configuration
 //	private val accessTokenConverter: JwtAccessTokenConverter,
 //	private val authenticationManager: AuthenticationManager,
 //	private val passwordEncoder: PasswordEncoder,
-//	private val securityProperties: SecurityProperties
+//	private val securityProperties: JwtProperties
 //) : AuthorizationServerConfigurerAdapter() {
 //	override fun configure(configurer: ClientDetailsServiceConfigurer) {
 //		configurer.inMemory()

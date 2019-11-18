@@ -74,11 +74,17 @@ server:
   servlet:
     # 指定服务器的内容根路径
     context-path: /cloudCollect/api
+
 cloud-collect:
-  security:
-    secret: Windea
-    resource-id: cloud-collect
-    client-id: cloud-collect
+  jwt:
+    # jwt口令的请求头
+    tokenHeader: Authorization
+    # jwt口令的开头
+    tokenHead: Bearer
+    # jwt密钥
+    secret: windea
+    # jwt过期时间
+    expiration: 86400
   validation:
     username: "\\w{6,16}"
     password: "[a-zA-Z]\\w{5,15}"

@@ -18,9 +18,9 @@
     created() {
       //如果当前用户已登录，则重定向到档案详情页，否则要求用户登录
       if (this.currentUser) {
-        this.$router.replace(`/profile/${this.currentUser.id}`)
+        this.$router.push(`/profile/${this.currentUser.id}`)
       } else {
-        this.$router.replace({path: "", query: {operation: "login"}})
+        this.$router.push({path: "", query: {operation: "login"}})
       }
     }
   }

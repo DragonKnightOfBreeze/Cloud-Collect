@@ -5,30 +5,30 @@
         <ElAvatar size="small" :src="comment.sponsorByUser.avatarUrl"/>
       </ElCol>
       <ElCol :span="11">
-        <ElLink type="primary" :href="'/profile/'+comment.sponsorByUser.id">{{comment.sponsorByUser.nickname}}</ElLink>
+        <ElLink :href="'/profile/'+comment.sponsorByUser.id">{{comment.sponsorByUser.nickname}}</ElLink>
       </ElCol>
-      <ElCol :span="4" :offset="8">
-        <ElButton @click="handleReply">回复</ElButton>
+      <ElCol :span="8" class="app-meta-small">
+        {{comment.createdTime}}
       </ElCol>
-    </ElRow>
-    <ElRow type="flex" class="app-meta-small align-items-center">
-      <ElCol :span="6">创建时间 {{comment.createdTime}}</ElCol>
+      <ElCol :span="4">
+        <ElButton type="text" size="small" @click="handleReply">回复</ElButton>
+      </ElCol>
     </ElRow>
     <ElRow class="app-content">
       <ElCol>{{comment.content}}</ElCol>
     </ElRow>
 
-    <ElCard class="app-reply-overview-card" v-if="hasReply">
+    <ElCard class="app-reply-overview-card" v-if="hasReply" :body-style="replyOverviewCardStyle">
       <ElRow type="flex" class="app-title align-items-center">
         <ElCol :span="1">
           <ElAvatar size="small" :src="reply.sponsorByUser.avatarUrl"/>
         </ElCol>
         <ElCol :span="11">
-          <ElLink type="primary" :href="'/profile/'+reply.sponsorByUser.id">{{reply.sponsorByUser.nickname}}</ElLink>
+          <ElLink :href="'/profile/'+reply.sponsorByUser.id">{{reply.sponsorByUser.nickname}}</ElLink>
         </ElCol>
-      </ElRow>
-      <ElRow type="flex" class="app-meta-small align-items-center">
-        <ElCol :span="6">创建时间 {{reply.createdTime}}</ElCol>
+        <ElCol :span="8" class="app-meta-small">
+          {{comment.createdTime}}
+        </ElCol>
       </ElRow>
       <ElRow class="app-content">
         <ElCol>{{reply.content}}</ElCol>
@@ -45,9 +45,12 @@
   export default class CommentOverviewCard extends Vue {
     @Prop({required: true}) comment!: Comment
 
-    reply = this.comment.replyToComment
+    private reply = this.comment.replyToComment
+    private replyOverviewCardStyle = {
+      padding: "15px"
+    }
 
-    get hasReply() {
+    private get hasReply() {
       return !!this.reply
     }
 
@@ -60,9 +63,10 @@
 
 <style scoped>
   .app-comment-overview-card {
-
+    border: 1px solid #999;
   }
   .app-reply-overview-card {
-    background-color: #cccccc;
+    border: 1px solid #999;
+    background-color: #e2e2e2;
   }
 </style>

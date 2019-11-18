@@ -1,18 +1,20 @@
 import router from "@/router"
 import store from "@/store"
-import {ObjectError} from "@/types"
 import axios from "axios"
 
 //不要直接使用axios，使用新的实例
 const http = axios.create({
   baseURL: "http://localhost:8080/cloudCollect/api",
-  timeout: 36000
+  timeout: 3600000
 })
 
 //REGION 配置拦截器
 
 http.interceptors.request.use(value => {
-  //TODO 可能需要设置额外的请求头
+  //如果存在当前用户且存在jwt令牌，则将jwt令牌存储在请求头中
+  if (!!store.getters.currentUser && !!(store.getters.jwtToken as string)) {
+    value.headers["Authorization"] = `Bearer ${store.getters.jwtToken}`
+  }
   console.log(`Request success:`, value)
   return value
 }, error => {
@@ -36,12 +38,17 @@ http.interceptors.response.use(value => {
         //  store.commit("setValidationErrors", validationErrors)
         //}
         //这里只取最先一条消息
-        if (error.response.data.validationErrors) {
-          const validationMessage = (error.response.data.validationErrors as ObjectError[])[0].defaultMessage
-          console.warn("参数验证错误。")
-          console.warn("Validation message:", validationMessage)
-          store.commit("setValidationMessage", validationMessage)
-        }
+        //if (error.response.data.validationErrors) {
+        //  const validationMessage = (error.response.data.validationErrors as ObjectError[])[0].defaultMessage
+        //  console.warn("参数验证错误。")
+        //  console.warn("Validation message:", validationMessage)
+        //  store.commit("setValidationMessage", validationMessage)
+        //}
+        //参数验证错误
+        const validationMessage = error.response.data as string
+        console.warn("参数验证错误。")
+        console.warn("Validation message:", validationMessage)
+        store.commit("setValidationMessage", validationMessage)
         break
       case 401:
         //要求用户登录

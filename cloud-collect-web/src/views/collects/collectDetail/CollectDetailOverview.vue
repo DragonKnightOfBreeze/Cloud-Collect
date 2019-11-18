@@ -16,16 +16,13 @@
 
       <EditCollectDialog :collect="collect" :visible.sync="editDialogVisible" @submit="handleSubmit" />
 
-      <ElCollapse v-model="activeNames">
-        <ElCollapseItem name="0">
-          <template v-slot:title>
-            <ElRow>
-              <ElCol :span="12">查看评论</ElCol>
-              <ElCol :span="4" :offset="8">
-                <ElButton type="success" @click="handleNewComment">新评论</ElButton>
-              </ElCol>
-            </ElRow>
-          </template>
+      <ElCollapse id="comments" v-model="activeNames">
+        <ElCollapseItem name="0" title="查看评论">
+          <ElRow>
+            <ElCol :span="4" :offset="20">
+              <ElButton type="success" @click="handleNewComment">新评论</ElButton>
+            </ElCol>
+          </ElRow>
 
           <ElCardGroup v-if="commentPage && !commentPage.empty">
             <CommentOverviewCard v-for="comment in commentPage.content" :key="comment.id" :comment="comment"

@@ -12,7 +12,7 @@ package com.windea.demo.cloudcollect.core.configuration
 //@EnableResourceServer
 //class ResourceServerConfiguration(
 //	private val tokenServices: ResourceServerTokenServices,
-//	private val securityProperties: SecurityProperties
+//	private val securityProperties: JwtProperties
 //) : ResourceServerConfigurerAdapter() {
 //	override fun configure(resources: ResourceServerSecurityConfigurer) {
 //		resources.resourceId(securityProperties.resourceId).tokenServices(tokenServices)

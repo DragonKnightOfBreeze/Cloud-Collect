@@ -1,7 +1,7 @@
 <template>
   <ElCard class="app-tag-overview-card">
     <template v-slot:header>
-      <ElLink type="primary" :href="'/tags/'+tag.id">{{tag.name}}</ElLink>
+      <ElLink :href="'/tags/'+tag.id">{{tag.name}}</ElLink>
     </template>
 
     <ElRow type="flex" class="app-meta-small align-items-center">

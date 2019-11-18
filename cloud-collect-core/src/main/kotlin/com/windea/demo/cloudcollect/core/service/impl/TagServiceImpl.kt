@@ -18,11 +18,8 @@ class TagServiceImpl(
 ) : TagService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(tag: Tag, user: User) {
-		val newTag = tag.copy(
-			user = user
-		)
-		tagRepository.save(newTag)
+	override fun create(tag: Tag) {
+		tagRepository.save(tag)
 	}
 	
 	@Transactional

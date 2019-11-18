@@ -13,7 +13,6 @@ import java.time.*
 import javax.persistence.*
 import javax.persistence.Id
 import javax.persistence.Transient
-import javax.validation.*
 import javax.validation.constraints.*
 
 @ApiModel("收藏。")
@@ -47,12 +46,10 @@ data class Collect(
 	
 	@ApiModelProperty("收藏的分类。")
 	@ManyToOne
-	@get:Valid
 	var category: Category? = null,
 	
 	@ApiModelProperty("收藏的标签。")
 	@ManyToMany(fetch = FetchType.EAGER)
-	@get:Valid
 	@JvmSuppressWildcards //NOTE 防止Jpa报错
 	var tags: Set<Tag> = setOf(),
 	

@@ -2,6 +2,7 @@
 
 package com.windea.demo.cloudcollect.core.controller
 
+import com.windea.demo.cloudcollect.core.component.*
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.domain.response.*
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin
 class IndexController(
 	private val collectService: CollectService,
-	private val userService: UserService
+	private val userService: UserService,
+	private val jwtProvider: JwtProvider
 ) {
 	@ApiOperation("登录用户。")
 	@PostMapping("/login")
@@ -33,11 +35,11 @@ class IndexController(
 		userService.register(user)
 	}
 	
-	//@ApiOperation("注销用户。")
-	//@PostMapping("/logout")
-	//fun logout() {
-	//	userService.logout()
-	//}
+	@ApiOperation("生成jwt令牌。")
+	@GetMapping("/generateToken")
+	fun generateToken(@RequestParam username: String): String {
+		return jwtProvider.generateToken(username)
+	}
 	
 	@ApiOperation("激活用户。")
 	@PostMapping("/activate")

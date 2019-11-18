@@ -1,4 +1,4 @@
-import {Collect, ObjectError, User} from "@/types"
+import {User} from "@/types"
 import Vue from "vue"
 import Vuex from "vuex"
 
@@ -11,27 +11,31 @@ export default new Vuex.Store({
   state: {
     //当前用户
     _currentUser: null,
+    //当前用户的jwt令牌
+    _jwtToken: "",
     //最后浏览的收藏
-    _lastViewedCollect: null,
+    //_lastViewedCollect: null,
     //参数校验的错误列表
-    _validationErrors: [],
+    //_validationErrors: [],
     //参数校验的首条消息
     _validationMessage: ""
   },
   getters: {
     currentUser(state): User | null {
-      //TODO 可能需要用到cookie或者storage
       return state._currentUser as User | null
     },
-    lastViewedCollect(state): Collect | null {
-      return state._lastViewedCollect as Collect | null
+    jwtToken(state): string {
+      return state._jwtToken
     },
-    validationErrors(state): ObjectError[] {
-      const result = state._validationErrors
-      //每次读取错误列表时，需要同时清空所有数据
-      state._validationErrors = []
-      return result
-    },
+    //lastViewedCollect(state): Collect | null {
+    //  return state._lastViewedCollect as Collect | null
+    //},
+    //validationErrors(state): ObjectError[] {
+    //  const result = state._validationErrors
+    //  //每次读取错误列表时，需要同时清空所有数据
+    //  state._validationErrors = []
+    //  return result
+    //},
     validationMessage(state): string {
       const result = state._validationMessage
       //每次读取时需要清空消息
@@ -43,12 +47,15 @@ export default new Vuex.Store({
     setCurrentUser(state, currentUser: User) {
       state._currentUser = currentUser as any
     },
-    setLastViewedCollect(state, lastViewedCollect: Collect) {
-      state._lastViewedCollect = lastViewedCollect as any
+    setJwtToken(state, jwtToken: string) {
+      state._jwtToken = jwtToken
     },
-    setValidationErrors(state, validationErrors: ObjectError[]) {
-      state._validationErrors.push(...validationErrors as [])
-    },
+    //setLastViewedCollect(state, lastViewedCollect: Collect) {
+    //  state._lastViewedCollect = lastViewedCollect as any
+    //},
+    //setValidationErrors(state, validationErrors: ObjectError[]) {
+    //  state._validationErrors.push(...validationErrors as [])
+    //},
     setValidationMessage(state, validationMessage: string) {
       state._validationMessage = validationMessage
     }

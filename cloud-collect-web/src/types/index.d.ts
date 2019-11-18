@@ -35,7 +35,7 @@ export interface Collect {
   category?: Category
   tags?: Tag[]
   type?: CollectType
-  user?: User
+  user: User
   createdTime?: string
   lastModifiedTime?: string
   praiseByUserCount?: number
@@ -46,7 +46,7 @@ export interface Category {
   id?: number
   name: string
   summary: string
-  user?: User
+  user: User
   createdTime?: string
   lastModifiedTime?: string
   collectCount?: number
@@ -56,7 +56,7 @@ export interface Tag {
   id?: number
   name: string
   summary: string
-  user?: User
+  user: User
   createdTime?: string
   lastModifiedTime?: string
   collectCount?: number
@@ -66,7 +66,7 @@ export interface Comment {
   id?: number
   content: string
   collect: Collect
-  sponsorByUser?: User
+  sponsorByUser: User
   replyToComment?: Comment
   createdTime?: string
   replyToCommentCount?: number
@@ -75,7 +75,7 @@ export interface Comment {
 export interface History {
   id?: number
   collect: Collect
-  user?: User
+  user: User
   createdTime?: string
 }
 
@@ -84,7 +84,7 @@ export interface Notice {
   title: string
   content: string
   type: NoticeType
-  user?: User
+  user: User
   createdTime?: string
 }
 
@@ -129,7 +129,7 @@ export interface UserDetailsVo extends UserDetails {
 
 export type CollectPrivacy = "PUBLIC" | "PRIVATE"
 
-export type CollectType = "NONE" | "LOVE" | "IMPORT" | "TODO" | "DELAY"
+export type CollectType = "NONE" | "LOVE" | "IMPORTANT" | "TODO" | "DELAY"
 
 export type NoticeType = "SYSTEM" | "ACCOUNT" | "HELLO"
 

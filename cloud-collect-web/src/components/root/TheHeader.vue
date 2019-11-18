@@ -98,15 +98,25 @@
     }
 
     private initUser() {
+      console.log("Init user start.")
       let currentUser = null
       //尝试从storage中得到当前用户信息，并提交到store，并后台自动登录
-      if (window.sessionStorage["currentUser"]) {
-        currentUser = JSON.parse(window.sessionStorage["currentUser"]) as User
+      //如果得到了，还要从后台得到jwt令牌，并存储到store中
+      const currentUserItem = window.localStorage.getItem("currentUser")
+      if (currentUserItem) {
+        currentUser = JSON.parse(currentUserItem) as User
         if (currentUser && currentUser.username && currentUser.password) {
           this.$store.commit("setCurrentUser", currentUser)
+          this.generateToken(currentUser.username)
+          console.log(`Init user: ${currentUser.username}`)
         }
       }
       return currentUser
+    }
+
+    private async generateToken(username: string) {
+      const jwtToken = await indexService.generateToken(username)
+      this.$store.commit("setJwtToken", jwtToken)
     }
 
     //监听当前路由，更改activeIndex，默认为0
@@ -165,8 +175,9 @@
     //注销用户
     async handleLogout() {
       console.log("注销用户")
-      window.sessionStorage["currentUser"] = null
+      window.localStorage.removeItem("currentUser")
       this.$store.commit("setCurrentUser", null)
+      this.$store.commit("setJwtToken", "")
       await indexService.logout()
     }
   }

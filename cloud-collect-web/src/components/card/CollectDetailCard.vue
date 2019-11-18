@@ -1,20 +1,20 @@
 <template>
   <ElCard class="app-collect-detail-card">
     <template v-slot:header>
-      <ElRow type="flex">
+      <ElRow type="flex" class="align-items-center">
         <ElCol :span="1">
           <ElAvatar size="small" :src="collect.logoUrl"/>
         </ElCol>
         <ElCol :span="11">
           {{collect.name}}
         </ElCol>
-        <ElCol :span="3">
+        <ElCol :span="4">
           <UrlCopyDropdown :collect="collect"></UrlCopyDropdown>
         </ElCol>
-        <ElCol :span="3">
-          <ElLink type="info" :href="collect.url">转到链接</ElLink>
+        <ElCol :span="4">
+          <ElButton type="text" size="small" :href="collect.url">转到链接</ElButton>
         </ElCol>
-        <ElCol :span="3">
+        <ElCol :span="4">
           <PraiseButton v-if="currentUser" :collect="collect"></PraiseButton>
         </ElCol>
       </ElRow>
@@ -24,13 +24,13 @@
       <ElCol :span="4">分类</ElCol>
       <ElCol :span="20">
         <ElLink type="info" v-if="collect.category" :href="'/categories/'+collect.id">{{collect.category.name}}</ElLink>
-        <ElLink type="info" disabled v-else>未分类</ElLink>
+        <ElLink type="info" v-else>未分类</ElLink>
       </ElCol>
     </ElRow>
     <ElRow class="app-item-list">
       <ElCol :span="4">标签</ElCol>
       <ElCol :span="20">
-        <ElTag v-for="tag in collect.tags" :key="tag.id">
+        <ElTag size="small" v-for="tag in collect.tags" :key="tag.id">
           <ElLink type="info" :href="'/tags/'+tag.id">{{tag.name}}</ElLink>
         </ElTag>
       </ElCol>
@@ -52,7 +52,7 @@
       <ElCol :span="4">创建者</ElCol>
       <ElCol :span="20">
         <ElLink v-if="collect.user" :href="'/profile/'+collect.user.id">{{collect.user.nickname}}</ElLink>
-        <ElLink disabled v-else>未知</ElLink>
+        <ElLink v-else>未知</ElLink>
       </ElCol>
     </ElRow>
     <ElRow class="app-item-list">
@@ -62,6 +62,16 @@
     <ElRow class="app-item-list">
       <ElCol :span="4">修改时间</ElCol>
       <ElCol :span="20">{{collect.lastModifiedTime}}</ElCol>
+    </ElRow>
+    <ElRow class="app-item-list">
+      <ElCol :span="4">评论数量</ElCol>
+      <ElCol :span="14">{{collect.commentCount}}</ElCol>
+      <ElCol :span="6"><ElLink type="info" href="#comments">查看评论</ElLink></ElCol>
+    </ElRow>
+    <ElRow class="app-item-list">
+      <ElCol :span="4">收藏家数量</ElCol>
+      <ElCol :span="14">{{collect.praiseByUserCount}}</ElCol>
+      <ElCol :span="6"><ElLink type="info" :href="'/collects/'+collect.id+'/stargazers'">查看收藏家</ElLink></ElCol>
     </ElRow>
     <ElDivider/>
     <ElRow class="app-item-list">

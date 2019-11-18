@@ -3,7 +3,7 @@
     <template v-slot:header>
       <ElRow type="flex" class="align-items-center">
         <ElCol :span="1">
-          <ElAvatar size="small" :src="collect.logoUrl"/>
+          <ElAvatar size="small" :src="collect.logoUrl" />
         </ElCol>
         <ElCol :span="11">
           <ElLink :href="'/collects/'+collect.id">{{collect.name}}</ElLink>
@@ -20,11 +20,11 @@
       </ElRow>
     </template>
 
-    <ElRow type="flex" class="app-meta-small align-items-center">
+    <ElRow type="flex" class="app-meta-small  align-items-center">
       <ElCol :span="6">
         创建者&nbsp;
         <ElLink type="info" v-if="collect.user" :href="'/profile/'+collect.user.id">{{collect.user.nickname}}</ElLink>
-        <ElLink type="info" disabled v-else>未知</ElLink>
+        <ElLink type="info" v-else>未知</ElLink>
       </ElCol>
       <ElCol :span="6">
         创建时间 {{collect.createdTime}}
@@ -47,7 +47,7 @@
       <ElCol :span="6">
         分类
         <ElLink type="info" v-if="collect.category" :href="'/categories/'+collect.id">{{collect.category.name}}</ElLink>
-        <ElLink type="info" disabled v-else>未分类</ElLink>
+        <ElLink type="info" v-else>未分类</ElLink>
       </ElCol>
       <ElCol :span="18">
         标签

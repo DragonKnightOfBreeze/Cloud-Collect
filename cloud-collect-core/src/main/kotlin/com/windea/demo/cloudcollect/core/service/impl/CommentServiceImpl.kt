@@ -17,20 +17,14 @@ class CommentServiceImpl(
 ) : CommentService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(comment: Comment, sponsorByUser: User) {
-		val newComment = comment.copy(
-			sponsorByUser = sponsorByUser
-		)
-		commentRepository.save(newComment)
+	override fun create(comment: Comment) {
+		commentRepository.save(comment)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun reply(comment: Comment, sponsorByUser: User) {
-		val newComment = comment.copy(
-			sponsorByUser = sponsorByUser
-		)
-		commentRepository.save(newComment)
+	override fun reply(comment: Comment) {
+		commentRepository.save(comment)
 	}
 	
 	@Transactional
@@ -51,12 +45,12 @@ class CommentServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByCollectId(collectId: Long, pageable: Pageable): Page<Comment> {
-		return commentRepository.findAllByCollectId(collectId, pageable)
+		return commentRepository.findAllByCollectIdOrderByIdDesc(collectId, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllBySponsorByUserId(sponsorByUserId: Long, pageable: Pageable): Page<Comment> {
-		return commentRepository.findAllBySponsorByUserId(sponsorByUserId, pageable)
+		return commentRepository.findAllBySponsorByUserIdOrderByIdDesc(sponsorByUserId, pageable)
 	}
 	
 	private fun Comment.lateInit() = this.apply {
@@ -66,6 +60,6 @@ class CommentServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun getReplyByCommentPage(id: Long, pageable: Pageable): Page<Comment> {
-		return commentRepository.findAllByReplyToCommentId(id, pageable)
+		return commentRepository.findAllByReplyToCommentIdOrderByIdDesc(id, pageable)
 	}
 }

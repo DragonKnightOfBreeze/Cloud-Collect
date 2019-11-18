@@ -217,3 +217,9 @@
     * Swagger界面的默认地址映射是`/swagger-ui.html`。
 * 解决无法读取国际化的参数验证信息的问题：
     * SpringBoot已经帮我们配置好了默认的messageResource，不需要手动进行配置，否则会出错。
+    * 对于validator bean，直接定义即可，但一定要加上`@Primary`，因为可能存在多个。
+* 解决无法保存用户登录状态的问题
+    * 手动使用http session保存用户登录信息。
+    * 或者：手动使用cookie保存用户登录信息。
+    * 或者：使用spring security的remember-me功能保存用户登录信息，需要进行相关配置，可能需要配置alwaysRemember为true。
+    * 或者：使用jwt或者oauth，向http header中添加token。需要进行相关配置。

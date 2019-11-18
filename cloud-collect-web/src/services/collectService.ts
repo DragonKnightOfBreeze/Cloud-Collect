@@ -28,7 +28,7 @@ export async function deleteById(id: number) {
 }
 
 export async function findById(id: number) {
-  const response = await http.get<Collect>(`${collectUrl}/${{id}}`)
+  const response = await http.get<Collect>(`${collectUrl}/${id}`)
   return response.data
 }
 

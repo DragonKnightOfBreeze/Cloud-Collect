@@ -4,9 +4,10 @@ import org.springframework.boot.context.properties.*
 
 /**安全校验的属性类。*/
 @ConstructorBinding
-@ConfigurationProperties("cloud-collect.security")
-data class SecurityProperties(
+@ConfigurationProperties("cloud-collect.jwt")
+data class JwtProperties(
+	val tokenHeader: String,
+	val tokenHead: String,
 	val secret: String,
-	val clientId: String,
-	val resourceId: String
+	val expiration: Int
 )

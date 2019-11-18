@@ -12,6 +12,12 @@ export async function register(user: User) {
   await http.post("/register", user)
 }
 
+export async function generateToken(username: string) {
+  const params = {username}
+  const response = await http.get<string>("/generateToken", {params})
+  return response.data
+}
+
 export async function logout() {
   await http.post("/logout")
 }

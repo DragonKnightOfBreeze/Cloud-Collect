@@ -61,11 +61,14 @@
       if (!isValid) return
 
       //如果用户存在，则存储用户信息，弹出成功提示框，并关闭对话框。否则弹出错误提示框
+      //除此之外，还需存储jwt令牌
       try {
         const userDetailsVo = await indexService.login(this.form)
         const user = userDetailsVo.delegateUser
-        window.sessionStorage["currentUser"] = JSON.stringify(user)
+        window.localStorage.setItem("currentUser", JSON.stringify(user))
         this.$store.commit("setCurrentUser", user)
+        const jwtToken = await indexService.generateToken(user.username)
+        this.$store.commit("setJwtToken", jwtToken)
         this.$message.success("登录成功！")
         this.syncDialogType = "none"
       } catch (e) {

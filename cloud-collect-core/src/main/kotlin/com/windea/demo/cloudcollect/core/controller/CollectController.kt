@@ -23,9 +23,8 @@ class CollectController(
 ) {
 	@ApiOperation("创建自己的收藏。")
 	@PostMapping("/create")
-	fun create(@RequestBody @Validated(Create::class) collect: Collect, bindingResult: BindingResult,
-		authentication: Authentication) {
-		collectService.create(collect, authentication.toUser())
+	fun create(@RequestBody @Validated(Create::class) collect: Collect, bindingResult: BindingResult) {
+		collectService.create(collect)
 	}
 	
 	@ApiOperation("从别人的收藏创建自己的收藏。")

@@ -11,7 +11,7 @@
       <!--<ElCol :span="4">-->
       <!--  <ElButton type="warning" @click="handleExport">导出收藏</ElButton>-->
       <!--</ElCol>-->
-      <ElCol :span="4" :offset="4">
+      <ElCol :span="4" :offset="12">
         <ElButton type="primary" @click="handleCreateCategory">创建分类</ElButton>
       </ElCol>
       <ElCol :span="4">
@@ -21,45 +21,33 @@
         <ElButton type="primary" @click="handleCreateCollect">创建收藏</ElButton>
       </ElCol>
     </ElRow>
-
+    <ElDivider />
     <!--允许过滤收藏-->
-    <ElRow type="flex" justify="center" align="middle">
-      <ElCol :span="8">
-        <ElForm inline class="align-center">
-          <ElFormItem>
-            <ElInput v-model="searchTerm1" placeholder="按名字搜索"></ElInput>
-          </ElFormItem>
-          <ElFormItem>
-            <ElButton type="primary" @click="handleSearch('name')"><ElIcon name="search" /></ElButton>
-          </ElFormItem>
-        </ElForm>
+    <ElRow type="flex" :gutter="5" class="align-items-center">
+      <ElCol :span="6">
+        <ElInput v-model="searchTerm1" placeholder="按名字搜索">
+          <template v-slot:append>
+            <ElButton @click="handleSearch('name')"><ElIcon name="search" /></ElButton>
+          </template>
+        </ElInput>
       </ElCol>
-      <ElCol :span="8">
-        <ElForm inline class="align-center">
-          <ElFormItem>
-            <ElInput v-model="searchTerm2" placeholder="按分类搜索"></ElInput>
-          </ElFormItem>
-          <ElFormItem>
-            <ElButton type="primary" @click="handleSearch('categoryName')"><ElIcon name="search" /></ElButton>
-          </ElFormItem>
-        </ElForm>
+      <ElCol :span="6">
+        <ElInput v-model="searchTerm2" placeholder="按分类搜索">
+          <template v-slot:append>
+            <ElButton @click="handleSearch('categoryName')"><ElIcon name="search" /></ElButton>
+          </template>
+        </ElInput>
       </ElCol>
-      <ElCol :span="8">
-        <ElForm inline class="align-center">
-          <ElFormItem>
-            <ElInput v-model="searchTerm3" placeholder="按标签搜索"></ElInput>
-          </ElFormItem>
-          <ElFormItem>
-            <ElButton type="primary" @click="handleSearch('tagName')"><ElIcon name="search" /></ElButton>
-          </ElFormItem>
-        </ElForm>
+      <ElCol :span="6">
+        <ElInput v-model="searchTerm3" placeholder="按标签搜索">
+          <template v-slot:append>
+            <ElButton @click="handleSearch('tagName')"><ElIcon name="search" /></ElButton>
+          </template>
+        </ElInput>
       </ElCol>
-    </ElRow>
-    <ElRow type="flex" justify="center" align="middle">
-      <ElCol :span="8">
-        <ElDropdown split-button type="primary" @command="handleCommand">
-          <ElButton>按类型搜索</ElButton>
-
+      <ElCol :span="4">
+        <ElDropdown type="primary" @command="handleCommand">
+          <ElButton type="text">按类型搜索<ElIcon name="arrow-down" /></ElButton>
           <template v-slot:dropdown>
             <ElDropdownMenu>
               <ElDropdownItem v-for="type in collectTypes" :key="type.name" :command="type.name">
@@ -69,8 +57,8 @@
           </template>
         </ElDropdown>
       </ElCol>
-      <ElCol :span="4">
-        <ElButton type="info" @click="handleSearch('none')">重置条件</ElButton>
+      <ElCol :span="2">
+        <ElButton type="info" @click="handleSearch('none')">重置</ElButton>
       </ElCol>
     </ElRow>
 
@@ -90,6 +78,7 @@
   import NewCategoryDialog from "@/components/dialog/NewCategoryDialog.vue"
   import NewCollectDialog from "@/components/dialog/NewCollectDialog.vue"
   import NewTagDialog from "@/components/dialog/NewTagDialog.vue"
+  import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import {collectTypes} from "@/enums"
@@ -99,7 +88,10 @@
   import {Route} from "vue-router"
 
   @Component({
-    components: {NewTagDialog, NewCategoryDialog, NewCollectDialog, ThePagination, CollectOverviewCard, ElCardGroup}
+    components: {
+      ElBlankLine,
+      NewTagDialog, NewCategoryDialog, NewCollectDialog, ThePagination, CollectOverviewCard, ElCardGroup
+    }
   })
   export default class ProfileDetailCollects extends Vue {
     private searchTerm1: string = ""

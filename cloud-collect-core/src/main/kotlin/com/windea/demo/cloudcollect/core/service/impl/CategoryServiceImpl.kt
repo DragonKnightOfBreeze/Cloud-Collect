@@ -18,11 +18,8 @@ class CategoryServiceImpl(
 ) : CategoryService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(category: Category, user: User) {
-		val newCategory = category.copy(
-			user = user
-		)
-		categoryRepository.save(newCategory)
+	override fun create(category: Category) {
+		categoryRepository.save(category)
 	}
 	
 	@Transactional

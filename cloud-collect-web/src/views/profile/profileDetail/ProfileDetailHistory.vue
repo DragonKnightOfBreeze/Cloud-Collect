@@ -6,7 +6,7 @@
     <!--仅当用户为当前用户时，才会显示以下内容-->
     <ElRow v-if="isCurrentUser">
       <ElCol :span="4" :offset="20">
-        <ElButton type="danger" @click="handleDeleteAll">清空通知</ElButton>
+        <ElButton type="danger" @click="handleDeleteAll">清空历史</ElButton>
       </ElCol>
     </ElRow>
 

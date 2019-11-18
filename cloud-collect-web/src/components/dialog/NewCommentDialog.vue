@@ -27,7 +27,7 @@
     private comment: Comment = {
       content: "",
       collect: this.collect,
-      replyToComment: this.replyToComment
+      sponsorByUser: this.currentUser
     }
     private rules = {
       content: [
@@ -36,7 +36,7 @@
       ]
     }
 
-    get currentUser(): User | undefined {
+    get currentUser(): User {
       return this.$store.getters.currentUser
     }
 
@@ -50,6 +50,7 @@
 
       try {
         //创建和回复评论的后台逻辑是不一样的
+        this.comment.replyToComment = this.replyToComment
         if (!this.replyToComment) {
           await commentService.create(this.comment)
         } else {

@@ -1,6 +1,8 @@
 <template>
   <ElDropdown size="small" @command="handleCommand">
-    <ElButton type="text" size="small">复制链接</ElButton>
+    <ElButton type="text" size="small">复制链接
+      <ElIcon name="arrow-down"/>
+    </ElButton>
 
     <template v-slot:dropdown>
       <ElDropdownMenu>

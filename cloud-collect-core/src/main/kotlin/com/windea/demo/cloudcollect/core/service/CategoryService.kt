@@ -5,7 +5,7 @@ import org.springframework.data.domain.*
 
 interface CategoryService {
 	/**创建自己的分类。*/
-	fun create(category: Category, user: User)
+	fun create(category: Category)
 	
 	/**修改自己的分类。*/
 	fun modify(id: Long, category: Category)

@@ -55,11 +55,7 @@
     }
 
     private async getUser() {
-      if (this.isCurrentUser) {
-        this.user = this.currentUser
-      } else {
         this.user = await userService.findById(this.userId)
-      }
     }
   }
 </script>

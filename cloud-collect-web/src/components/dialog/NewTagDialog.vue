@@ -19,7 +19,7 @@
 
 <script lang="ts">
   import * as tagService from "@/services/tagService"
-  import {Tag} from "@/types"
+  import {Tag, User} from "@/types"
   import {Component, Emit, PropSync, Vue} from "vue-property-decorator"
 
   @Component
@@ -28,7 +28,8 @@
 
     private tag: Tag = {
       name: "",
-      summary: ""
+      summary: "",
+      user: this.currentUser
     }
     private rules = {
       name: [
@@ -38,6 +39,10 @@
       summary: [
         {max: 255, message: "概述过长！"}
       ]
+    }
+
+    private get currentUser(): User {
+      return this.$store.getters.currentUser
     }
 
     @Emit("submit")

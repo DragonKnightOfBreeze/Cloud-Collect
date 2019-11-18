@@ -24,11 +24,8 @@ class CollectServiceImpl(
 ) : CollectService {
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun create(collect: Collect, user: User) {
-		val newCollect = collect.copy(
-			user = user
-		)
-		collectRepository.save(newCollect)
+	override fun create(collect: Collect) {
+		collectRepository.save(collect)
 	}
 	
 	@Transactional
@@ -173,6 +170,6 @@ class CollectServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun getCommentPage(id: Long, pageable: Pageable): Page<Comment> {
-		return commentRepository.findAllByCollectId(id, pageable)
+		return commentRepository.findAllByCollectIdOrderByIdDesc(id, pageable)
 	}
 }

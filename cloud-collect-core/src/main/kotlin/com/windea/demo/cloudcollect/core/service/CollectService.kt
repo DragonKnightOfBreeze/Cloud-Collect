@@ -6,7 +6,7 @@ import org.springframework.data.domain.*
 
 interface CollectService {
 	/**创建自己的收藏。*/
-	fun create(collect: Collect, user: User)
+	fun create(collect: Collect)
 	
 	/**从别人的收藏创建自己的收藏。默认点赞原始收藏。*/
 	fun createFrom(collect: Collect, user: User)

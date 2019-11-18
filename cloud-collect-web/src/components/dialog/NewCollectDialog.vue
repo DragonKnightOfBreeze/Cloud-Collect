@@ -1,14 +1,14 @@
 <template>
   <ElDialog title="创建收藏" center :visible="syncVisible" @close="handleClose">
-    <ElForm label-width="80px">
-      <ElFormItem label="名字">
+    <ElForm label-width="80px" :model="collect" :rules="rules" ref="form">
+      <ElFormItem label="名字" prop="name">
         <ElInput v-model="collect.name"></ElInput>
       </ElFormItem>
-      <ElFormItem label="概述">
+      <ElFormItem label="概述" prop="summary">
         <ElInput type="textarea" v-model="collect.summary"
                  maxlength="255" show-word-limit :autosize="{minRows: 3, maxRows: 6}"></ElInput>
       </ElFormItem>
-      <ElFormItem label="地址">
+      <ElFormItem label="地址" prop="url">
         <ElInput v-model="collect.url"></ElInput>
       </ElFormItem>
       <ElFormItem label="图标地址">
@@ -25,7 +25,7 @@
       </ElFormItem>
       <ElFormItem label="标签">
         <ElSelect v-model="collect.tags" :value="collect.tags" value-key="id" placeholder="请选择标签"
-                  filterable remote reserve-keyword multiple clearable
+                  filterable remote reserve-keyword multiple clearable collapse-tags
                   :loading="loadingTags" :remote-method="searchTagByName">
           <ElOption v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag"></ElOption>
         </ElSelect>
@@ -51,7 +51,7 @@
   import * as categoryService from "@/services/categoryService"
   import * as collectService from "@/services/collectService"
   import * as tagService from "@/services/tagService"
-  import {Category, Collect, PageableParam, Tag} from "@/types"
+  import {Category, Collect, PageableParam, Tag, User} from "@/types"
   import {Component, Emit, PropSync, Vue} from "vue-property-decorator"
 
   @Component
@@ -65,7 +65,20 @@
       logoUrl: "",
       category: undefined,
       tags: [],
-      type: "NONE"
+      type: "NONE",
+      user: this.currentUser
+    }
+    private rules = {
+      name: [
+        {required: true, message: "名字不能为空！"},
+        {max: 64, message: "名字过长！"}
+      ],
+      summary: [
+        {max: 255, message: "概述过长！"}
+      ],
+      url: [
+        {required: true, message: "收藏地址不能为空！"}
+      ]
     }
     private categories: Category[] = []
     private loadingCategories = false
@@ -73,7 +86,12 @@
     private loadingTags = false
     private collectTypes = collectTypes
 
+    private get currentUser(): User {
+      return this.$store.getters.currentUser
+    }
+
     private async searchCategoryByName(value: string) {
+      console.log("Loading categories...")
       this.loadingCategories = true
       const pageableParam: PageableParam = {page: 0, size: 100}
       this.categories = (await categoryService.findAllByNameContains(value, pageableParam)).content
@@ -81,6 +99,7 @@
     }
 
     private async searchTagByName(value: string) {
+      console.log("Loading tags...")
       this.loadingTags = true
       const pageableParam: PageableParam = {page: 0, size: 100}
       this.tags = (await tagService.findAllByNameContains(value, pageableParam)).content
@@ -89,8 +108,8 @@
 
     @Emit("submit")
     async handleSubmit() {
-      //不允许收藏名和地址为空
-      if (!this.collect.name || !this.collect.url) return
+      const isValid = await (this.$refs["form"] as any).validate()
+      if (!isValid) return
 
       try {
         await collectService.create(this.collect)

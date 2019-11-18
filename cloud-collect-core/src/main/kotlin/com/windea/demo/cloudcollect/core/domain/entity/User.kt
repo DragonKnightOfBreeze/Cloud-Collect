@@ -33,8 +33,8 @@ data class User constructor(
 	val username: String,
 	
 	@ApiModelProperty("密码。这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度。")
-	@NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class, Modify::class])
-	@get:Password(message = "{validation.User.password.Password}", groups = [Create::class, Modify::class])
+	@NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class])
+	@get:Password(message = "{validation.User.password.Password}", groups = [Create::class])
 	@Column(nullable = false)
 	var password: String,
 	

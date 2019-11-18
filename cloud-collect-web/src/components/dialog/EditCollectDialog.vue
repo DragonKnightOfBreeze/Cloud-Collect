@@ -8,7 +8,7 @@
         <ElInput type="textarea" v-model="savedCollect.summary"
                  maxlength="255" show-word-limit :autosize="{minRows: 3, maxRows: 6}"></ElInput>
       </ElFormItem>
-      <ElFormItem label="地址">
+      <ElFormItem label="地址" prop="url">
         <ElInput v-model="savedCollect.url"></ElInput>
       </ElFormItem>
       <ElFormItem label="图标地址">
@@ -25,7 +25,7 @@
       </ElFormItem>
       <ElFormItem label="标签">
         <ElSelect v-model="savedCollect.tags" :value="savedCollect.tags" value-key="id" placeholder="请选择标签"
-                  filterable remote reserve-keyword multiple clearable
+                  filterable remote reserve-keyword multiple clearable collapse-tags
                   :loading="loadingTags" :remote-method="searchTagByName">
           <ElOption v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag"></ElOption>
         </ElSelect>
@@ -67,6 +67,9 @@
       ],
       summary: [
         {max: 255, message: "概述过长！"}
+      ],
+      url: [
+        {required: true, message: "收藏地址不能为空！"}
       ]
     }
     private categories: Category[] = []
@@ -76,6 +79,7 @@
     private collectTypes = collectTypes
 
     private async searchCategoryByName(value: string) {
+      console.log("Loading categories...")
       this.loadingCategories = true
       const pageableParam: PageableParam = {page: 0, size: 100}
       this.categories = (await categoryService.findAllByNameContains(value, pageableParam)).content
@@ -83,6 +87,7 @@
     }
 
     private async searchTagByName(value: string) {
+      console.log("Loading tags...")
       this.loadingTags = true
       const pageableParam: PageableParam = {page: 0, size: 100}
       this.tags = (await tagService.findAllByNameContains(value, pageableParam)).content

@@ -3,12 +3,10 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
-import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
@@ -22,9 +20,8 @@ class CategoryController(
 ) {
 	@ApiOperation("创建自己的分类。")
 	@PostMapping("/create")
-	fun create(@RequestBody @Validated(Create::class) category: Category, bindingResult: BindingResult,
-		authentication: Authentication) {
-		categoryService.create(category, authentication.toUser())
+	fun create(@RequestBody @Validated(Create::class) category: Category, bindingResult: BindingResult) {
+		categoryService.create(category)
 	}
 	
 	@ApiOperation("修改自己的分类。")

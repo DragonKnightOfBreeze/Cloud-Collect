@@ -10,33 +10,33 @@ import org.springframework.web.servlet.mvc.method.annotation.*
 @RestControllerAdvice
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 	@ExceptionHandler(ValidationException::class)
-	fun handleValidationException(e: ValidationException): ResponseEntity<ValidationException> {
+	fun handleValidationException(e: ValidationException): ResponseEntity<String> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(e)
+		return ResponseEntity.badRequest().body(e.message)
 	}
 	
 	@ExceptionHandler(ExportDataException::class)
-	fun handleExportDataException(e: ExportDataException): ResponseEntity<ExportDataException> {
+	fun handleExportDataException(e: ExportDataException): ResponseEntity<String> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(e)
+		return ResponseEntity.badRequest().body(e.message)
 	}
 	
 	@ExceptionHandler(ImportDataException::class)
-	fun handleImportDataException(e: ImportDataException): ResponseEntity<ImportDataException> {
+	fun handleImportDataException(e: ImportDataException): ResponseEntity<String> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(e)
+		return ResponseEntity.badRequest().body(e.message)
 	}
 	
 	@ExceptionHandler(UserNotFoundException::class)
-	fun handleUserNotFoundException(e: UserNotFoundException): ResponseEntity<UserNotFoundException> {
+	fun handleUserNotFoundException(e: UserNotFoundException): ResponseEntity<String> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(e)
+		return ResponseEntity.badRequest().body(e.message)
 	}
 	
 	@ExceptionHandler(IncorrectAuthCodeException::class)
-	fun handleIncorrectAuthCodeException(e: IncorrectAuthCodeException): ResponseEntity<IncorrectAuthCodeException> {
+	fun handleIncorrectAuthCodeException(e: IncorrectAuthCodeException): ResponseEntity<String> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(e)
+		return ResponseEntity.badRequest().body(e.message)
 	}
 	
 	@ExceptionHandler(InvalidUserException::class)
@@ -60,6 +60,6 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 	@ExceptionHandler(AuthenticationException::class)
 	fun handleAuthenticationException(e: AuthenticationException): ResponseEntity<Nothing> {
 		e.printStackTrace()
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
 	}
 }
