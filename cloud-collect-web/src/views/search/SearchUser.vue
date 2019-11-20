@@ -24,7 +24,7 @@
 
     <ElCardGroup v-if="searchPage">
       <UserOverviewCard v-for="user in searchPage.content" :key="user.id" :user="user"/>
-      <ThePagination :page="searchPage" :pageable-param.sync="searchPageableParam"/>
+      <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
   </div>
 </template>
@@ -44,7 +44,7 @@
   export default class SearchUser extends Vue {
     private searchTerm: string = ""
     private searchType: UserSearchType = "nickname"
-    private searchPageableParam: PageableParam = {page: 0, size: 20}
+    private pageableParam: PageableParam = {page: 0, size: 20}
     private searchPage: Page<User> | null = null
     private searchOptions: Option<UserSearchType>[] = [
       {label: "按昵称搜索", value: "nickname"},
@@ -52,8 +52,8 @@
       {label: "按邮箱搜索", value: "email"}
     ]
 
-    @Watch("searchPageableParam")
-    onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    @Watch("pageableParam")
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.searchUser()
     }
@@ -69,14 +69,17 @@
     private async searchUser() {
       try {
         switch (this.searchType) {
+          case "none":
+            this.searchPage = await userService.findAll(this.pageableParam)
+            break
           case "nickname":
-            this.searchPage = await userService.findAllByNicknameContains(this.searchTerm, this.searchPageableParam)
+            this.searchPage = await userService.findAllByNicknameContains(this.searchTerm, this.pageableParam)
             break
           case "username":
-            this.searchPage = await userService.findAllByUsernameContains(this.searchTerm, this.searchPageableParam)
+            this.searchPage = await userService.findAllByUsernameContains(this.searchTerm, this.pageableParam)
             break
           case "email":
-            this.searchPage = await userService.findAllByEmailContains(this.searchTerm, this.searchPageableParam)
+            this.searchPage = await userService.findAllByEmailContains(this.searchTerm, this.pageableParam)
             break
         }
       } catch (e) {

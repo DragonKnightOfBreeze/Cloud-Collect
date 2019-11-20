@@ -23,14 +23,11 @@ interface CategoryService {
 	fun findAllByNameContains(name: String, pageable: Pageable): Page<Category>
 	
 	/**根据名字和用户id模糊查询所有分类。*/
-	fun findAllByNameContainsAndUserId(userId: Long, name: String, pageable: Pageable): Page<Category>
+	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<Category>
 	
 	/**根据用户id查询所有分类。*/
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Category>
 	
 	/**检查某一分类是否已存在。*/
 	fun existsByNameAndUser(name: String, user: User): Boolean
-	
-	/**得到该分类的所有收藏。*/
-	fun getCollectPage(id: Long, pageable: Pageable): Page<Collect>
 }

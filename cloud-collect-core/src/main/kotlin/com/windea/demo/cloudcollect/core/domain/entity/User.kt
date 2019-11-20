@@ -84,17 +84,21 @@ data class User constructor(
 	@ApiModelProperty("用户的关注用户列表。懒加载。")
 	@JsonIgnore
 	@ManyToMany
-	val followToUserList: MutableList<User> = mutableListOf()
+	val followToUsers: MutableList<User> = mutableListOf()
 	
 	@ApiModelProperty("该用户的粉丝用户列表。懒加载。")
 	@JsonIgnore
-	@ManyToMany(mappedBy = "followToUserList")
-	val followByUserList: MutableList<User> = mutableListOf()
+	@ManyToMany(mappedBy = "followToUsers")
+	val followByUsers: MutableList<User> = mutableListOf()
 	
 	@ApiModelProperty("该用户点赞的收藏列表。懒加载。")
 	@JsonIgnore
 	@ManyToMany
-	val praiseToCollectList: MutableList<Collect> = mutableListOf()
+	val praiseToCollects: MutableList<Collect> = mutableListOf()
+	
+	@ApiModelProperty("是否已关注。")
+	@Transient
+	var isFollowed: Boolean? = null
 	
 	@ApiModelProperty("收藏数量。")
 	@Transient

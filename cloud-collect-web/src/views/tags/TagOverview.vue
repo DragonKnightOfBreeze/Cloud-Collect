@@ -22,7 +22,7 @@
 
     <ElCardGroup v-if="searchPage">
       <TagOverviewCard v-for="tag in searchPage.content" :key="tag.id" :tag="tag"/>
-      <ThePagination :page="searchPage" :pageable-param.sync="searchPageableParam"/>
+      <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
   </div>
 </template>
@@ -41,12 +41,12 @@
   })
   export default class TagOverview extends Vue {
     private searchTerm: string = ""
-    private searchPageableParam: PageableParam = {page: 0, size: 20}
+    private pageableParam: PageableParam = {page: 0, size: 20}
     private searchPage: Page<Tag> | null = null
 
     //当分页参数发生变化时，重新加载数据
-    @Watch("searchPageableParam")
-    onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    @Watch("pageableParam")
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.searchTagByName()
     }
@@ -57,7 +57,7 @@
 
     async searchTagByName() {
       try {
-        this.searchPage = await tagService.findAllByNameContains(this.searchTerm, this.searchPageableParam)
+        this.searchPage = await tagService.findAllByNameContains(this.searchTerm, this.pageableParam)
       } catch (e) {
         this.$message.warning("查询失败！")
       }

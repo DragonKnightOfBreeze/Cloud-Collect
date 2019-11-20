@@ -1,5 +1,5 @@
 import http from "@/http"
-import {Collect, CollectType, Comment, Page, PageableParam, User} from "@/types"
+import {Collect, CollectType, Page, PageableParam} from "@/types"
 
 const collectUrl = "/collect"
 
@@ -44,15 +44,33 @@ export async function findAllByNameContains(name: string, pageableParam: Pageabl
   return response.data
 }
 
+export async function findAllByCategoryId(categoryId: number, pageableParam: PageableParam) {
+  const params = {categoryId, ...pageableParam}
+  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByCategoryId`, {params})
+  return response.data
+}
+
 export async function findAllByCategoryNameContains(categoryName: string, pageableParam: PageableParam) {
   const params = {categoryName, ...pageableParam}
   const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByCategoryNameContains`, {params})
   return response.data
 }
 
+export async function findAllByTagId(tagId: number, pageableParam: PageableParam) {
+  const params = {tagId, ...pageableParam}
+  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByTagId`, {params})
+  return response.data
+}
+
 export async function findAllByTagNameContains(tagName: string, pageableParam: PageableParam) {
   const params = {tagName, ...pageableParam}
   const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByTagNameContains`, {params})
+  return response.data
+}
+
+export async function findAllByUserId(userId: number, pageableParam: PageableParam) {
+  const params = {userId, ...pageableParam}
+  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByUserId`, {params})
   return response.data
 }
 
@@ -74,37 +92,38 @@ export async function findAllByTagNameContainsAndUserId(tagName: string, userId:
   return response.data
 }
 
-export async function findAllByCategoryId(categoryId: number, pageableParam: PageableParam) {
-  const params = {categoryId, ...pageableParam}
-  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByCategoryId`, {params})
-  return response.data
-}
-
 export async function findAllByTypeAndUserId(type: CollectType, userId: number, pageableParam: PageableParam) {
   const params = {type, userId, ...pageableParam}
   const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByTypeAndUserId`, {params})
   return response.data
 }
 
-export async function findAllByUserId(userId: number, pageableParam: PageableParam) {
+export async function findAllByPraiseByUserId(userId: number, pageableParam: PageableParam) {
   const params = {userId, ...pageableParam}
-  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByUserId`, {params})
+  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByPraiseByUserId`, {params})
   return response.data
 }
 
-export async function isPraised(id: number) {
-  const response = await http.get<boolean>(`${collectUrl}/${id}/isPraised`)
+export async function findAllByNameContainsAndPraiseByUserId(name: string, praiseByUserId: number, pageableParam: PageableParam) {
+  const params = {name, userId: praiseByUserId, ...pageableParam}
+  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByNameContainsAndPraiseByUserId`, {params})
   return response.data
 }
 
-export async function getPraiseByUserPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<User>>(`${collectUrl}/${id}/praiseByUserPage`)
+export async function findAllByCategoryNameContainsAndPraiseByUserId(categoryName: string, praiseByUserId: number, pageableParam: PageableParam) {
+  const params = {categoryName, userId: praiseByUserId, ...pageableParam}
+  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByCategoryNameContainsAndPraiseByUserId`, {params})
   return response.data
 }
 
-export async function getCommentPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<Comment>>(`${collectUrl}/${id}/commentPage`)
+export async function findAllByTagNameContainsAndPraiseByUserId(tagName: string, praiseByUserId: number, pageableParam: PageableParam) {
+  const params = {tagName, userId: praiseByUserId, ...pageableParam}
+  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByTagNameContainsAndPraiseByUserId`, {params})
+  return response.data
+}
+
+export async function findAllByTypeAndPraiseByUserId(type: CollectType, praiseByUserId: number, pageableParam: PageableParam) {
+  const params = {type, userId: praiseByUserId, ...pageableParam}
+  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByTypeAndPraiseByUserId`, {params})
   return response.data
 }

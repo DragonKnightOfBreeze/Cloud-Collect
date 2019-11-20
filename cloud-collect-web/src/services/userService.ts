@@ -1,5 +1,5 @@
 import http from "@/http"
-import {Collect, History, Notice, Page, PageableParam, User} from "@/types"
+import {Page, PageableParam, Role, User} from "@/types"
 
 const userUrl = "/user"
 
@@ -54,43 +54,38 @@ export async function findAllByEmailContains(email: string, pageableParam: Pagea
   return response.data
 }
 
-export async function isFollowed(id: number) {
-  const response = await http.get<boolean>(`${userUrl}/${id}/isFollowed`)
+export async function findAllByRole(role: Role, pageableParam: PageableParam) {
+  const params = {role, ...pageableParam}
+  const response = await http.get<Page<User>>(`${userUrl}/findAllByRole`, {params})
   return response.data
 }
 
-export async function getCollectPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<Collect>>(`${userUrl}/${id}/collectPage`, {params})
+export async function findAllByFollowToUserId(followToUserId: number, pageableParam: PageableParam) {
+  const params = {followToUserId, ...pageableParam}
+  const response = await http.get<Page<User>>(`${userUrl}/findAllByFollowToUserId`, {params})
   return response.data
 }
 
-export async function getPraiseToCollectPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<Collect>>(`${userUrl}/${id}/praiseToCollectPage`, {params})
+export async function findAllByNicknameContainsAndFollowToUserId(nickname: string, followToUserId: number, pageableParam: PageableParam) {
+  const params = {nickname, followToUserId, ...pageableParam}
+  const response = await http.get<Page<User>>(`${userUrl}/findAllByNicknameContainsAndFollowToUserId`, {params})
   return response.data
 }
 
-export async function getHistoryPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<History>>(`${userUrl}/${id}/historyPage`, {params})
+export async function findAllByFollowByUserId(followByUserId: number, pageableParam: PageableParam) {
+  const params = {followByUserId, ...pageableParam}
+  const response = await http.get<Page<User>>(`${userUrl}/findAllByFollowByUserId`, {params})
   return response.data
 }
 
-export async function getNoticePage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<Notice>>(`${userUrl}/${id}/noticePage`, {params})
+export async function findAllByNicknameContainsAndFollowByUserId(nickname: string, followByUserId: number, pageableParam: PageableParam) {
+  const params = {nickname, followByUserId, ...pageableParam}
+  const response = await http.get<Page<User>>(`${userUrl}/findAllByNicknameContainsAndFollowByUserId`, {params})
   return response.data
 }
 
-export async function getFollowToUserPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<User>>(`${userUrl}/${id}/followToUserPage`, {params})
-  return response.data
-}
-
-export async function getFollowByUserPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<User>>(`${userUrl}/${id}/followByUserPage`, {params})
+export async function findAllByPraiseToCollectId(praiseToCollectId: number, pageableParam: PageableParam) {
+  const params = {praiseToCollectId, ...pageableParam}
+  const response = await http.get<Page<User>>(`${userUrl}/findAllByPraiseToCollectId`, {params})
   return response.data
 }

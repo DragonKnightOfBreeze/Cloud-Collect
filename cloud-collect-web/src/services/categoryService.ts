@@ -1,5 +1,5 @@
 import http from "@/http"
-import {Category, Collect, Page, PageableParam} from "@/types"
+import {Category, Page, PageableParam} from "@/types"
 
 const categoryUrl = "/category"
 
@@ -38,14 +38,8 @@ export async function findAllByUserId(userId: number, pageableParam: PageablePar
   return response.data
 }
 
-export async function findAllByNameContainsAndUserId(userId: number, name: string, pageableParam: PageableParam) {
-  const params = {userId, name, ...pageableParam}
+export async function findAllByNameContainsAndUserId(name: string, userId: number, pageableParam: PageableParam) {
+  const params = {name, userId, ...pageableParam}
   const response = await http.get<Page<Category>>(`${categoryUrl}/findAllByNameContainsAndUserId`, {params})
-  return response.data
-}
-
-export async function getCollectPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<Collect>>(`${categoryUrl}/${id}/collectPage`, {params})
   return response.data
 }

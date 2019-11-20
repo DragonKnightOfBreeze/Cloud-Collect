@@ -9,6 +9,7 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
+import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
@@ -25,18 +26,21 @@ class UserController(
 	
 	@ApiOperation("更新用户信息。")
 	@PutMapping("/{id}")
+	@PreAuthorize("isAuthenticated()")
 	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) user: User, bindingResult: BindingResult) {
 		userService.modify(id, user)
 	}
 	
 	@ApiOperation("关注某一用户。")
 	@PutMapping("/{id}/follow")
+	@PreAuthorize("isAuthenticated()")
 	fun follow(@PathVariable id: Long, authentication: Authentication) {
 		userService.follow(id, authentication.toUser())
 	}
 	
 	@ApiOperation("取消关注某一用户。")
 	@PutMapping("/{id}/unfollow")
+	@PreAuthorize("isAuthenticated()")
 	fun unfollow(@PathVariable id: Long, authentication: Authentication) {
 		userService.unfollow(id, authentication.toUser())
 	}
@@ -89,46 +93,29 @@ class UserController(
 		return userService.findAllByRole(role, pageable)
 	}
 	
-	@ApiOperation("判断指定用户是否已关注指定用户。")
-	@GetMapping("/{id}/isFollowed")
-	fun isFollowed(@PathVariable id: Long, authentication: Authentication): Boolean {
-		return userService.isFollowed(id, authentication.toUser())
+	@ApiOperation("根据关注用户id查询用户。")
+	@GetMapping("/findAllByFollowToUserId")
+	fun findAllByFollowToUserId(@RequestParam followToUserId: Long, pageable: Pageable): Page<User> {
+		return userService.findAllByFollowToUserId(followToUserId, pageable)
 	}
 	
-	@ApiOperation("得到该用户的所有收藏。")
-	@GetMapping("/{id}/collectPage")
-	fun getCollectPage(@PathVariable id: Long, pageable: Pageable): Page<Collect> {
-		return userService.getCollectPage(id, pageable)
+	@ApiOperation("根据昵称和关注用户id模糊查询用户。")
+	@GetMapping("/findAllByNicknameContainsAndFollowToUserId")
+	fun findAllByNicknameContainsAndFollowToUserId(@RequestParam nickname: String, @RequestParam followToUserId: Long, pageable: Pageable): Page<User> {
+		return userService.findAllByNicknameContainsAndFollowToUserId(nickname, followToUserId, pageable)
 	}
 	
-	@ApiOperation("得到该用户点赞的所有收藏。")
-	@GetMapping("/{id}/praiseToCollectPage")
-	fun getPraiseToCollectPage(@PathVariable id: Long, pageable: Pageable): Page<Collect> {
-		return userService.getPraiseToCollectPage(id, pageable)
+	/**根据粉丝用户id查询用户。*/
+	@ApiOperation("根据粉丝用户id查询用户。")
+	@GetMapping("/findAllByFollowByUserId")
+	fun findAllByFollowByUserId(@RequestParam followByUserId: Long, pageable: Pageable): Page<User> {
+		return userService.findAllByFollowByUserId(followByUserId, pageable)
 	}
 	
-	@ApiOperation("得到该用户的所有浏览记录。")
-	@GetMapping("/{id}/historyPage")
-	fun getHistoryPage(@PathVariable id: Long, pageable: Pageable): Page<History> {
-		return userService.getHistoryPage(id, pageable)
-	}
-	
-	@ApiOperation("得到该用户的所有通知。")
-	@GetMapping("/{id}/noticePage")
-	fun getNoticePage(@PathVariable id: Long, pageable: Pageable): Page<Notice> {
-		return userService.getNoticePage(id, pageable)
-	}
-	
-	@ApiOperation("得到该用户的所有关注用户。")
-	@GetMapping("/{id}/followToUserPage")
-	fun getFollowToUserPage(@PathVariable id: Long, pageable: Pageable): Page<User> {
-		return userService.getFollowToUserPage(id, pageable)
-	}
-	
-	@ApiOperation("得到该用户的所有粉丝用户。")
-	@GetMapping("/{id}/followByUserPage")
-	fun getFollowByUserPage(@PathVariable id: Long, pageable: Pageable): Page<User> {
-		return userService.getFollowByUserPage(id, pageable)
+	@ApiOperation("根据昵称和粉丝用户id模糊查询用户。")
+	@GetMapping("/findAllByNicknameContainsAndFollowByUserId")
+	fun findAllByNicknameContainsAndFollowByUserId(@RequestParam nickname: String, @RequestParam followByUserId: Long, pageable: Pageable): Page<User> {
+		return userService.findAllByNicknameContainsAndFollowByUserId(nickname, followByUserId, pageable)
 	}
 }
 

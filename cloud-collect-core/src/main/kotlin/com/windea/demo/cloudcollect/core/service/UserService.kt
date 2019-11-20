@@ -64,33 +64,18 @@ interface UserService {
 	/**根据关注用户id查询用户。*/
 	fun findAllByFollowToUserId(followToUserId: Long, pageable: Pageable): Page<User>
 	
+	/**根据昵称和关注用户id模糊查询用户。*/
+	fun findAllByNicknameContainsAndFollowToUserId(nickname: String, followToUserId: Long, pageable: Pageable): Page<User>
+	
 	/**根据粉丝用户id查询用户。*/
 	fun findAllByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User>
+	
+	/**根据昵称和粉丝用户id模糊查询用户。*/
+	fun findAllByNicknameContainsAndFollowByUserId(nickname: String, followByUserId: Long, pageable: Pageable): Page<User>
 	
 	/**根据点赞收藏id查询用户。*/
 	fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User>
 	
 	/**检查某一用户是否已存在。*/
 	fun existsByUsernameOrEmail(username: String, email: String): Boolean
-	
-	/**判断指定用户是否已关注指定用户。*/
-	fun isFollowed(id: Long, user: User): Boolean
-	
-	/**得到该用户的所有收藏。*/
-	fun getCollectPage(id: Long, pageable: Pageable): Page<Collect>
-	
-	/**得到该用户点赞的所有收藏。*/
-	fun getPraiseToCollectPage(id: Long, pageable: Pageable): Page<Collect>
-	
-	/**得到该用户的所有浏览记录。*/
-	fun getHistoryPage(id: Long, pageable: Pageable): Page<History>
-	
-	/**得到该用户的所有通知。*/
-	fun getNoticePage(id: Long, pageable: Pageable): Page<Notice>
-	
-	/**得到该用户的所有关注用户。*/
-	fun getFollowToUserPage(id: Long, pageable: Pageable): Page<User>
-	
-	/**得到该用户的所有粉丝用户。*/
-	fun getFollowByUserPage(id: Long, pageable: Pageable): Page<User>
 }

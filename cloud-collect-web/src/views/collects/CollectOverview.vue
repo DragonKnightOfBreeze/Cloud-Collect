@@ -41,7 +41,7 @@
 
     <ElCardGroup v-if="searchPage">
       <CollectOverviewCard v-for="collect in searchPage.content" :key="collect.id" :collect="collect"/>
-      <ThePagination :page="searchPage" :pageable-param.sync="searchPageableParam"/>
+      <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
   </div>
 </template>
@@ -63,11 +63,11 @@
     private searchTerm2: string = ""
     private searchTerm3: string = ""
     private searchType: CollectSearchType = "name"
-    private searchPageableParam: PageableParam = {page: 0, size: 20}
+    private pageableParam: PageableParam = {page: 0, size: 20}
     private searchPage: Page<Tag> | null = null
 
-    @Watch("searchPageableParam")
-    onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    @Watch("pageableParam")
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.searchCollect()
     }
@@ -84,14 +84,20 @@
     async searchCollect() {
       try {
         switch (this.searchType) {
+          case "none":
+            this.searchPage = await collectService.findAll(this.pageableParam)
+            break
           case "name":
-            this.searchPage = await collectService.findAllByNameContains(this.searchTerm1, this.searchPageableParam)
+            this.searchPage = await collectService.findAllByNameContains(this.searchTerm1, this.pageableParam)
             break
           case "categoryName":
-            this.searchPage = await collectService.findAllByCategoryNameContains(this.searchTerm2, this.searchPageableParam)
+            this.searchPage = await collectService.findAllByCategoryNameContains(this.searchTerm2, this.pageableParam)
             break
           case "tagName":
-            this.searchPage = await collectService.findAllByTagNameContains(this.searchTerm3, this.searchPageableParam)
+            this.searchPage = await collectService.findAllByTagNameContains(this.searchTerm3, this.pageableParam)
+            break
+          case "type":
+            this.$message.error("Cannot search collects by type here.")
             break
         }
       } catch (e) {

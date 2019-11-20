@@ -58,8 +58,4 @@ class CommentServiceImpl(
 	}
 	
 	
-	@Cacheable(key = "methodName + args")
-	override fun getReplyByCommentPage(id: Long, pageable: Pageable): Page<Comment> {
-		return commentRepository.findAllByReplyToCommentIdOrderByIdDesc(id, pageable)
-	}
 }

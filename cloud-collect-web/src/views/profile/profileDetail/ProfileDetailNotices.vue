@@ -13,7 +13,7 @@
     <ElCardGroup v-if="isCurrentUser">
       <NoticeOverviewCard v-for="notice in notices" :key="notice.id" :notice="notice"
                           @delete="handleDelete(notice.id)"/>
-      <ThePagination :page="noticePage" :pageable-param.sync="noticePageableParam"/>
+      <ThePagination :page="noticePage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
   </div>
 </template>
@@ -31,7 +31,7 @@
     components: {ThePagination, NoticeOverviewCard, ElCardGroup}
   })
   export default class ProfileDetailNotices extends Vue {
-    private noticePageableParam: PageableParam = {page: 0, size: 20}
+    private pageableParam: PageableParam = {page: 0, size: 20}
     private noticePage: Page<Notice> | null = null
 
     private get notices() {
@@ -55,8 +55,8 @@
       this.getNoticePage()
     }
 
-    @Watch("noticePageableParam")
-    private onNoticePageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    @Watch("pageableParam")
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.getNoticePage()
     }
@@ -90,7 +90,7 @@
 
     private async getNoticePage() {
       try {
-        this.noticePage = await noticeService.findAllByUserId(this.userId, this.noticePageableParam)
+        this.noticePage = await noticeService.findAllByUserId(this.userId, this.pageableParam)
       } catch (e) {
         this.$message.warning("查询失败！")
       }

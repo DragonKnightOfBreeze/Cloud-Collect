@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ElButton type="primary" size="small" plain v-if="!isPraised" @click="handlePraise">点赞</ElButton>
-    <ElButton type="info" size="small" plain v-else @click="handleUnpraise">已点赞</ElButton>
+    <ElButton type="info" size="small" plain v-if="collect.isPraised===true" @click="handleUnpraise">已点赞</ElButton>
+    <ElButton type="primary" size="small" plain v-else-if="collect.isPraised===false" @click="handlePraise">点赞</ElButton>
   </div>
 </template>
 
@@ -14,20 +14,10 @@
   export default class PraiseButton extends Vue {
     @Prop({required: true}) collect!: Collect
 
-    isPraised: boolean = false
-
-    created() {
-      this.getIsPraised()
-    }
-
-    private async getIsPraised() {
-      this.isPraised = await collectService.isPraised(this.collect.id!)
-    }
-
     private async handlePraise() {
       try {
         await collectService.praise(this.collect.id!)
-        this.isPraised = true
+        this.collect.isPraised = true
       } catch (e) {
         this.$message.warning("点赞失败！")
       }
@@ -36,7 +26,7 @@
     private async handleUnpraise() {
       try {
         await collectService.unpraise(this.collect.id!)
-        this.isPraised = false
+        this.collect.isPraised = false
       } catch (e) {
         this.$message.warning("取消点赞失败！")
       }

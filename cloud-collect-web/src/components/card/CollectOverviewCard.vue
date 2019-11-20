@@ -15,7 +15,7 @@
           <ElButton type="text" size="small" :href="collect.url">转到链接</ElButton>
         </ElCol>
         <ElCol :span="4">
-          <PraiseButton v-if="currentUser" :collect="collect"></PraiseButton>
+          <PraiseButton :collect="collect"></PraiseButton>
         </ElCol>
       </ElRow>
     </template>

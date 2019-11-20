@@ -9,6 +9,7 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
+import org.springframework.security.access.prepost.*
 import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
@@ -23,37 +24,42 @@ class CollectController(
 ) {
 	@ApiOperation("创建自己的收藏。")
 	@PostMapping("/create")
+	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Validated(Create::class) collect: Collect, bindingResult: BindingResult) {
 		collectService.create(collect)
 	}
 	
 	@ApiOperation("从别人的收藏创建自己的收藏。")
 	@PostMapping("/createFrom")
+	@PreAuthorize("isAuthenticated()")
 	fun createFrom(@RequestBody collect: Collect, authentication: Authentication) {
 		collectService.createFrom(collect, authentication.toUser())
 	}
 	
 	@ApiOperation("修改自己的收藏。")
 	@PutMapping("/{id}")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) collect: Collect,
-		bindingResult: BindingResult) {
+	@PreAuthorize("isAuthenticated()")
+	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) collect: Collect, bindingResult: BindingResult) {
 		collectService.modify(id, collect)
 	}
 	
 	@ApiOperation("点赞某一收藏。")
 	@PutMapping("/{id}/praise")
+	@PreAuthorize("isAuthenticated()")
 	fun praise(@PathVariable id: Long, authentication: Authentication) {
 		collectService.praise(id, authentication.toUser())
 	}
 	
 	@ApiOperation("取消点赞某一收藏。")
 	@PutMapping("/{id}/unpraise")
+	@PreAuthorize("isAuthenticated()")
 	fun unpraise(@PathVariable id: Long, authentication: Authentication) {
 		collectService.unpraise(id, authentication.toUser())
 	}
 	
 	@ApiOperation("删除自己的收藏。")
 	@DeleteMapping("/{id}")
+	@PreAuthorize("isAuthenticated()")
 	fun deleteById(@PathVariable id: Long) {
 		collectService.deleteById(id)
 	}
@@ -76,43 +82,16 @@ class CollectController(
 		return collectService.findAllByNameContains(name, pageable)
 	}
 	
-	@ApiOperation("根据分类名字全局查询所有收藏。")
-	@GetMapping("/findAllByCategoryNameContains")
-	fun findAllByCategoryNameContains(@RequestParam categoryName: String, pageable: Pageable): Page<Collect> {
-		return collectService.findAllByCategoryNameContains(categoryName, pageable)
-	}
-	
-	@ApiOperation("根据标签名字全局查询所有收藏。")
-	@GetMapping("/findAllByTagNameContains")
-	fun findAllByTagNameContains(@RequestParam tagName: String, pageable: Pageable): Page<Collect> {
-		return collectService.findAllByTagNameContains(tagName, pageable)
-	}
-	
-	@ApiOperation("根据名字和用户id模糊查询所有收藏。")
-	@GetMapping("/findAllByNameContainsAndUserId")
-	fun findAllByNameContainsAndUserId(@RequestParam name: String, @RequestParam userId: Long,
-		pageable: Pageable): Page<Collect> {
-		return collectService.findAllByNameContainsAndUserId(name, userId, pageable)
-	}
-	
-	@ApiOperation("根据分类名字和用户id模糊查询所有收藏。")
-	@GetMapping("/findAllByCategoryNameContainsAndUserId")
-	fun findAllByCategoryNameContainsAndUserId(@RequestParam categoryName: String, @RequestParam userId: Long,
-		pageable: Pageable): Page<Collect> {
-		return collectService.findAllByCategoryNameContainsAndUserId(categoryName, userId, pageable)
-	}
-	
-	@ApiOperation("根据标签名字和用户id模糊查询所有收藏。")
-	@GetMapping("/findAllByTagNameContainsAndUserId")
-	fun findAllByTagNameContainsAndUserId(@RequestParam tagName: String, @RequestParam userId: Long,
-		pageable: Pageable): Page<Collect> {
-		return collectService.findAllByTagNameContainsAndUserId(tagName, userId, pageable)
-	}
-	
 	@ApiOperation("根据分类id查询所有收藏。")
 	@GetMapping("/findByUserAndCategory")
 	fun findAllByCategoryId(@RequestParam categoryId: Long, pageable: Pageable): Page<Collect> {
 		return collectService.findAllByCategoryId(categoryId, pageable)
+	}
+	
+	@ApiOperation("根据分类名字全局查询所有收藏。")
+	@GetMapping("/findAllByCategoryNameContains")
+	fun findAllByCategoryNameContains(@RequestParam categoryName: String, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByCategoryNameContains(categoryName, pageable)
 	}
 	
 	@ApiOperation("根据标签id查询所有收藏。")
@@ -121,11 +100,10 @@ class CollectController(
 		return collectService.findAllByTagId(tagId, pageable)
 	}
 	
-	@ApiOperation("根据类型和用户id查询所有收藏。")
-	@GetMapping("/findAllByTypeAndUserId")
-	fun findAllByTypeAndUserId(@RequestParam type: CollectType, @RequestParam userId: Long,
-		pageable: Pageable): Page<Collect> {
-		return collectService.findAllByTypeAndUserId(type, userId, pageable)
+	@ApiOperation("根据标签名字全局查询所有收藏。")
+	@GetMapping("/findAllByTagNameContains")
+	fun findAllByTagNameContains(@RequestParam tagName: String, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByTagNameContains(tagName, pageable)
 	}
 	
 	@ApiOperation("根据用户id和收藏状态查询所有收藏。")
@@ -134,22 +112,57 @@ class CollectController(
 		return collectService.findAllByUserId(userId, pageable)
 	}
 	
-	
-	@ApiOperation("判断指定用户是否已点赞指定收藏。")
-	@GetMapping("/{id}/isPraised")
-	fun isPraised(@PathVariable id: Long, authentication: Authentication): Boolean {
-		return collectService.isPraised(id, authentication.toUser())
+	@ApiOperation("根据名字和用户id模糊查询所有收藏。")
+	@GetMapping("/findAllByNameContainsAndUserId")
+	fun findAllByNameContainsAndUserId(@RequestParam name: String, @RequestParam userId: Long, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByNameContainsAndUserId(name, userId, pageable)
 	}
 	
-	@ApiOperation("得到该收藏的所有点赞用户。")
-	@GetMapping("/{id}/praiseByUserPage")
-	fun getPraiseByUserPage(@PathVariable id: Long, pageable: Pageable): Page<User> {
-		return collectService.getPraiseByUserPage(id, pageable)
+	@ApiOperation("根据分类名字和用户id模糊查询所有收藏。")
+	@GetMapping("/findAllByCategoryNameContainsAndUserId")
+	fun findAllByCategoryNameContainsAndUserId(@RequestParam categoryName: String, @RequestParam userId: Long, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByCategoryNameContainsAndUserId(categoryName, userId, pageable)
 	}
 	
-	@ApiOperation("得到该收藏的所有评论。")
-	@GetMapping("/{id}/commentPage")
-	fun getCommentPage(@PathVariable id: Long, pageable: Pageable): Page<Comment> {
-		return collectService.getCommentPage(id, pageable)
+	@ApiOperation("根据标签名字和用户id模糊查询所有收藏。")
+	@GetMapping("/findAllByTagNameContainsAndUserId")
+	fun findAllByTagNameContainsAndUserId(@RequestParam tagName: String, @RequestParam userId: Long, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByTagNameContainsAndUserId(tagName, userId, pageable)
+	}
+	
+	@ApiOperation("根据类型和用户id查询所有收藏。")
+	@GetMapping("/findAllByTypeAndUserId")
+	fun findAllByTypeAndUserId(@RequestParam type: CollectType, @RequestParam userId: Long, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByTypeAndUserId(type, userId, pageable)
+	}
+	
+	@ApiOperation("根据点赞用户id查询所有收藏。")
+	@GetMapping("/findAllByPraiseByUserId")
+	fun findAllByPraiseByUserId(@RequestParam praiseByUserId: Long, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByPraiseByUserId(praiseByUserId, pageable)
+	}
+	
+	@ApiOperation("根据名字和点赞用户id模糊查询所有收藏。")
+	@GetMapping("/findAllByNameContainsAndPraiseByUserId")
+	fun findAllByNameContainsAndPraiseByUserId(@RequestParam name: String, @RequestParam praiseByUserId: Long, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByNameContainsAndPraiseByUserId(name, praiseByUserId, pageable)
+	}
+	
+	@ApiOperation("根据分类名字和点赞用户id模糊查询所有收藏。")
+	@GetMapping("/findAllByCategoryNameContainsAndPraiseByUserId")
+	fun findAllByCategoryNameContainsAndPraiseByUserId(@RequestParam categoryName: String, @RequestParam praiseByUserId: Long, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByCategoryNameContainsAndPraiseByUserId(categoryName, praiseByUserId, pageable)
+	}
+	
+	@ApiOperation("根据类型和点赞用户id查询所有收藏。")
+	@GetMapping("/findAllByTagNameContainsAndPraiseByUserId")
+	fun findAllByTagNameContainsAndPraiseByUserId(@RequestParam tagName: String, @RequestParam praiseByUserId: Long, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByTagNameContainsAndPraiseByUserId(tagName, praiseByUserId, pageable)
+	}
+	
+	@ApiOperation("根据标签名字和点赞用户id模糊查询所有收藏。")
+	@GetMapping("/findAllByTypeAndPraiseByUserId")
+	fun findAllByTypeAndPraiseByUserId(@RequestParam type: CollectType, @RequestParam praiseByUserId: Long, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByTypeAndPraiseByUserId(type, praiseByUserId, pageable)
 	}
 }

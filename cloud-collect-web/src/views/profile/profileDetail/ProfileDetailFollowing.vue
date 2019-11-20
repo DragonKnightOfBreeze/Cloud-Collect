@@ -3,9 +3,23 @@
     <h3>Ta的关注</h3>
     <ElDivider/>
 
+    <!--允许过滤-->
+    <ElRow type="flex" :gutter="5" class="align-items-center">
+      <ElCol :span="6">
+        <ElInput v-model="searchTerm" placeholder="按昵称搜索">
+          <template v-slot:append>
+            <ElButton @click="handleSearch('nickname')"><ElIcon name="search" /></ElButton>
+          </template>
+        </ElInput>
+      </ElCol>
+      <ElCol :span="2" :offset="16">
+        <ElButton type="info" @click="handleSearch('none')">重置</ElButton>
+      </ElCol>
+    </ElRow>
+
     <ElCardGroup>
       <UserOverviewCard v-for="user in followToUserPage.content" :key="user.id" :user="user"/>
-      <ThePagination :page="followToUserPage" :pageable-param.sync="followToUserPageableParam"/>
+      <ThePagination :page="followToUserPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
   </div>
 </template>
@@ -15,7 +29,7 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import * as userService from "@/services/userService"
-  import {Page, PageableParam, User} from "@/types"
+  import {Page, PageableParam, User, UserSearchType} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -23,7 +37,9 @@
     components: {ThePagination, UserOverviewCard, ElCardGroup}
   })
   export default class ProfileDetailFollowing extends Vue {
-    private followToUserPageableParam: PageableParam = {page: 0, size: 20}
+    private searchTerm: string = ""
+    private searchType: UserSearchType = "none"
+    private pageableParam: PageableParam = {page: 0, size: 20}
     private followToUserPage: Page<User> | null = null
 
     private get userId() {
@@ -39,15 +55,30 @@
       this.getFollowToUserPage()
     }
 
-    @Watch("followToUserPageableParam")
-    private onFollowToUserPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    @Watch("pageableParam")
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
+      this.getFollowToUserPage()
+    }
+
+    private handleSearch(type: UserSearchType) {
+      this.searchType = type
       this.getFollowToUserPage()
     }
 
     private async getFollowToUserPage() {
       try {
-        this.followToUserPage = await userService.getFollowToUserPage(this.userId, this.followToUserPageableParam)
+        switch (this.searchType) {
+          case "none":
+            this.followToUserPage = await userService.findAllByFollowByUserId(this.userId, this.pageableParam)
+            break
+          case "nickname":
+            this.followToUserPage = await userService.findAllByNicknameContainsAndFollowByUserId(this.searchTerm, this.userId, this.pageableParam)
+            break
+          default:
+            this.$message.error("Cannot search collects by type here.")
+            break
+        }
       } catch (e) {
         this.$message.warning("查询失败！")
       }

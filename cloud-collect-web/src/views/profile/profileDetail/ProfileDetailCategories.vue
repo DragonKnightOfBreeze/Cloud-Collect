@@ -9,6 +9,21 @@
         <ElButton type="primary" @click="handleCreate">创建分类</ElButton>
       </ElCol>
     </ElRow>
+    <ElDivider />
+
+    <!--允许过滤-->
+    <ElRow type="flex" :gutter="5" class="align-items-center">
+      <ElCol :span="6">
+        <ElInput v-model="searchTerm" placeholder="按名字搜索">
+          <template v-slot:append>
+            <ElButton @click="handleSearch('name')"><ElIcon name="search" /></ElButton>
+          </template>
+        </ElInput>
+      </ElCol>
+      <ElCol :span="2" :offset="16">
+        <ElButton type="info" @click="handleSearch('none')">重置</ElButton>
+      </ElCol>
+    </ElRow>
 
     <ElCardGroup>
       <CategoryOverviewCard v-for="category in categories" :key="category.id" :category="category"/>
@@ -25,7 +40,7 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import * as categoryService from "@/services/categoryService"
-  import {Category, Page, PageableParam} from "@/types"
+  import {Category, CategorySearchType, Page, PageableParam} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -33,6 +48,8 @@
     components: {NewCategoryDialog, ThePagination, CategoryOverviewCard, ElCardGroup}
   })
   export default class ProfileDetailCategories extends Vue {
+    private searchTerm: string = ""
+    private searchType: CategorySearchType = "none"
     private pageableParam: PageableParam = {page: 0, size: 20}
     private categoryPage: Page<Category> | null = null
     private newDialogVisible = false
@@ -72,9 +89,21 @@
       this.getCategoryPage()
     }
 
+    private handleSearch(type: CategorySearchType) {
+      this.searchType = type
+      this.getCategoryPage()
+    }
+
     private async getCategoryPage() {
       try {
-        this.categoryPage = await categoryService.findAllByUserId(this.userId, this.pageableParam)
+        switch (this.searchType) {
+          case "none":
+            this.categoryPage = await categoryService.findAllByUserId(this.userId, this.pageableParam)
+            break
+          case "name":
+            this.categoryPage = await categoryService.findAllByNameContainsAndUserId(this.searchTerm, this.userId, this.pageableParam)
+            break
+        }
       } catch (e) {
         this.$message.warning("查询失败！")
       }

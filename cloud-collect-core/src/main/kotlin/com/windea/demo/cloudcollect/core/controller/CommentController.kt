@@ -7,6 +7,7 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
+import org.springframework.security.access.prepost.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
@@ -20,18 +21,21 @@ class CommentController(
 ) {
 	@ApiOperation("创建自己的评论。")
 	@PostMapping("/create")
+	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Validated(Create::class) comment: Comment, bindingResult: BindingResult) {
 		commentService.create(comment)
 	}
 	
 	@ApiOperation("回复某一评论。")
 	@PostMapping("/reply")
+	@PreAuthorize("isAuthenticated()")
 	fun reply(@RequestBody @Validated(Create::class) comment: Comment, bindingResult: BindingResult) {
 		commentService.reply(comment)
 	}
 	
 	@ApiOperation("删除自己的评论。")
 	@DeleteMapping("/{id}")
+	@PreAuthorize("isAuthenticated()")
 	fun deleteById(@PathVariable id: Long) {
 		commentService.deleteById(id)
 	}
@@ -52,12 +56,5 @@ class CommentController(
 	@GetMapping("/findAllByCollectId")
 	fun findAllByCollectId(@RequestParam collectId: Long, pageable: Pageable): Page<Comment> {
 		return commentService.findAllByCollectId(collectId, pageable)
-	}
-	
-	
-	@ApiOperation("得到回复某一评论的所有评论。")
-	@GetMapping("/{id}/replyByCommentPage")
-	fun getReplyByCommentPage(@PathVariable id: Long, pageable: Pageable): Page<Comment> {
-		return commentService.getReplyByCommentPage(id, pageable)
 	}
 }

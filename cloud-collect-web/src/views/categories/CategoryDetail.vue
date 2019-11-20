@@ -16,7 +16,7 @@
         <ElCollapseItem name="0" title="查看相关收藏">
           <ElCardGroup v-if="collectPage && !collectPage.empty">
             <CollectOverviewCard v-for="collect in collectPage.content" :key=collect.id :collect="collect" />
-            <ThePagination :page="collectPage" :pageable-param.sync="collectPageableParam" />
+            <ThePagination :page="collectPage" :pageable-param.sync="pageableParam" />
           </ElCardGroup>
           <div v-else>
             没有相关收藏。
@@ -34,6 +34,7 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import * as categoryService from "@/services/categoryService"
+  import * as collectService from "@/services/collectService"
   import {Category, Collect, Page, PageableParam, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
@@ -46,7 +47,7 @@
     private editDialogVisible = false
     private activeNames = []
     private collectPage: Page<Collect> | null = null
-    private collectPageableParam: PageableParam = {page: 0, size: 20}
+    private pageableParam: PageableParam = {page: 0, size: 20}
 
     get categoryId() {
       return parseInt(this.$route.params["id"] as string)
@@ -69,8 +70,8 @@
       this.getCategory()
     }
 
-    @Watch("collectPageableParam")
-    private onCollectPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    @Watch("pageableParam")
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.getCollectPage()
     }
@@ -109,7 +110,7 @@
     }
 
     private async getCollectPage() {
-      this.collectPage = await categoryService.getCollectPage(this.categoryId, this.collectPageableParam)
+      this.collectPage = await collectService.findAllByCategoryId(this.categoryId, this.pageableParam)
     }
 
     private async deleteCategory() {

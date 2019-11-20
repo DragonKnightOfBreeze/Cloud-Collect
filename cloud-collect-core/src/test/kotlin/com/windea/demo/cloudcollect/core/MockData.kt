@@ -91,16 +91,16 @@ class MockData(
 		userService.follow(6, user)
 		userService.follow(1, user1)
 		
-		val a = userRepository.findAllByFollowByUserListId(1, Pageable.unpaged())
+		val a = userRepository.findAllByFollowByUsersId(1, Pageable.unpaged())
 		println(a.content)
 		
-		val b = userRepository.findAllByFollowToUserListId(1, Pageable.unpaged())
+		val b = userRepository.findAllByFollowToUsersId(1, Pageable.unpaged())
 		println(b.content)
 		
 		//不能这样操作
-		//user.praiseToCollectList += collectRepository.findAll().subList(0, 10)
-		//user.followByUserList += userRepository.findAll().subList(5, 10)
-		//user.followToUserList += userRepository.findAll().subList(10, 15)
+		//user.praiseToCollects += collectRepository.findAll().subList(0, 10)
+		//user.followByUsers += userRepository.findAll().subList(5, 10)
+		//user.followToUsers += userRepository.findAll().subList(10, 15)
 		//userRepository.save(user)
 	}
 	

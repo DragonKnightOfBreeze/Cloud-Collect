@@ -6,7 +6,7 @@
     <ElBlankLine />
     <ElCardGroup>
       <UserOverviewCard v-for="user in praiseByUserPage.content" :key="user.id" :user="user"/>
-      <ThePagination :page="praiseByUserPage" :pageable-param.sync="praiseByUserPageableParam"/>
+      <ThePagination :page="praiseByUserPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
   </div>
 </template>
@@ -16,7 +16,7 @@
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
-  import * as collectService from "@/services/collectService"
+  import * as userService from "@/services/userService"
   import {Page, PageableParam, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
@@ -25,7 +25,7 @@
     components: {ElBlankLine, ThePagination, UserOverviewCard, ElCardGroup}
   })
   export default class CollectDetailStargazers extends Vue {
-    private praiseByUserPageableParam: PageableParam = {page: 0, size: 20}
+    private pageableParam: PageableParam = {page: 0, size: 20}
     private praiseByUserPage: Page<User> | null = null
 
     private get collectId() {
@@ -41,15 +41,15 @@
       this.getPraiseByUserPage()
     }
 
-    @Watch("praiseByUserPageableParam")
-    private onPraiseByUserPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    @Watch("pageableParam")
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.getPraiseByUserPage()
     }
 
     private async getPraiseByUserPage() {
       try {
-        this.praiseByUserPage = await collectService.getPraiseByUserPage(this.collectId, this.praiseByUserPageableParam)
+        this.praiseByUserPage = await userService.findAllByPraiseToCollectId(this.collectId, this.pageableParam)
       } catch (e) {
         this.$message.warning("查询失败！")
       }

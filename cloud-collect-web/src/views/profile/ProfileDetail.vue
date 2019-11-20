@@ -10,7 +10,7 @@
           <div class="app-introduce">{{user.introduce}}</div>
         </ElCol>
         <ElCol :span="4">
-          <FollowButton v-if="currentUser && !isCurrentUser" :user="user"></FollowButton>
+          <FollowButton v-if="!isCurrentUser" :user="user"></FollowButton>
         </ElCol>
       </ElRow>
     </template>

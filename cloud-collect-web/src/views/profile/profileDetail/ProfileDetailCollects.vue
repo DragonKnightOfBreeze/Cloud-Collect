@@ -5,12 +5,12 @@
 
     <!--仅当用户为当前用户时，才会显示以下内容-->
     <ElRow v-if="isCurrentUser">
-      <!--<ElCol :span="4">-->
-      <!--  <ElButton type="warning" @click="handleImport">导入收藏</ElButton>-->
-      <!--</ElCol>-->
-      <!--<ElCol :span="4">-->
-      <!--  <ElButton type="warning" @click="handleExport">导出收藏</ElButton>-->
-      <!--</ElCol>-->
+      <ElCol :span="4" v-show="enableImportAndExport">
+        <ElButton type="warning" @click="handleImport">导入收藏</ElButton>
+      </ElCol>
+      <ElCol :span="4" v-show="enableImportAndExport">
+        <ElButton type="warning" @click="handleExport">导出收藏</ElButton>
+      </ElCol>
       <ElCol :span="4" :offset="12">
         <ElButton type="primary" @click="handleCreateCategory">创建分类</ElButton>
       </ElCol>
@@ -22,7 +22,8 @@
       </ElCol>
     </ElRow>
     <ElDivider />
-    <!--允许过滤收藏-->
+
+    <!--允许过滤-->
     <ElRow type="flex" :gutter="5" class="align-items-center">
       <ElCol :span="6">
         <ElInput v-model="searchTerm1" placeholder="按名字搜索">
@@ -83,7 +84,7 @@
   import ThePagination from "@/components/root/ThePagination.vue"
   import {collectTypes} from "@/enums"
   import * as collectService from "@/services/collectService"
-  import {Collect, CollectFilterType, CollectType, Page, PageableParam} from "@/types"
+  import {Collect, CollectSearchType, CollectType, Page, PageableParam} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -98,13 +99,15 @@
     private searchTerm2: string = ""
     private searchTerm3: string = ""
     private searchTerm4: CollectType = "NONE"
-    private searchType: CollectFilterType = "none"
+    private searchType: CollectSearchType = "none"
     private pageableParam: PageableParam = {page: 0, size: 20}
     private collectPage: Page<Collect> | null = null
+    private collectTypes = collectTypes
     private newCollectDialogVisible = false
     private newCategoryDialogVisible = false
     private newTagDialogVisible = false
-    private collectTypes = collectTypes
+
+    private enableImportAndExport = false
 
     private get collects() {
       return this.collectPage ? this.collectPage.content : []
@@ -157,7 +160,7 @@
       this.getCollectPage()
     }
 
-    private handleSearch(type: CollectFilterType) {
+    private handleSearch(type: CollectSearchType) {
       this.searchType = type
       this.getCollectPage()
     }

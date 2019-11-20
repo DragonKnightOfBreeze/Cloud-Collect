@@ -30,7 +30,4 @@ interface TagService {
 	
 	/**检查某一标签是否已存在。*/
 	fun existsByNameAndUser(name: String, user: User): Boolean
-	
-	/**得到该标签的所有收藏。*/
-	fun getCollectPage(id: Long, pageable: Pageable): Page<Collect>
 }

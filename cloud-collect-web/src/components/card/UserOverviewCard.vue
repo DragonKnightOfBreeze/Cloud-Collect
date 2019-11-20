@@ -9,7 +9,7 @@
           <ElLink type="primary" :href="'/profile/'+user.id">{{user.nickname}}</ElLink>
         </ElCol>
         <ElCol :span="4" :offset="8">
-          <FollowButton v-if="currentUser && !isCurrentUser" :user="user"></FollowButton>
+          <FollowButton v-if="!isCurrentUser" :user="user"></FollowButton>
         </ElCol>
       </ElRow>
     </template>

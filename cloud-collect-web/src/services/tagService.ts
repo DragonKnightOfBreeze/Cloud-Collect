@@ -1,5 +1,5 @@
 import http from "@/http"
-import {Collect, Page, PageableParam, Tag} from "@/types"
+import {Page, PageableParam, Tag} from "@/types"
 
 const tagUrl = "/tag"
 
@@ -41,12 +41,5 @@ export async function findAllByUserId(userId: number, pageableParam: PageablePar
 export async function findAllByNameContainsAndUserId(userId: number, name: string, pageableParam: PageableParam) {
   const params = {userId, name, ...pageableParam}
   const response = await http.get<Page<Tag>>(`${tagUrl}/findAllByNameContainsAndUserId`, {params})
-  return response.data
-}
-
-
-export async function getCollectPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<Collect>>(`${tagUrl}/${id}/collectPage`, {params})
   return response.data
 }

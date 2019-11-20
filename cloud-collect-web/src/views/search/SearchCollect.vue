@@ -25,7 +25,7 @@
 
     <ElCardGroup v-if="searchPage">
       <CollectOverviewCard v-for="collect in searchPage.content" :key="collect.id" :collect="collect" />
-      <ThePagination :page="searchPage" :pageable-param.sync="searchPageableParam" />
+      <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
   </div>
 </template>
@@ -45,7 +45,7 @@
   export default class SearchCollect extends Vue {
     private searchTerm: string = ""
     private searchType: CollectSearchType = "name"
-    private searchPageableParam: PageableParam = {page: 0, size: 20}
+    private pageableParam: PageableParam = {page: 0, size: 20}
     private searchPage: Page<Collect> | null = null
     private searchOptions: Option<CollectSearchType>[] = [
       {label: "按名字搜索", value: "name"},
@@ -53,8 +53,8 @@
       {label: "按标签搜索", value: "tagName"}
     ]
 
-    @Watch("searchPageableParam")
-    onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    @Watch("pageableParam")
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.searchCollect()
     }
@@ -71,13 +71,13 @@
       try {
         switch (this.searchType) {
           case "name":
-            this.searchPage = await collectService.findAllByNameContains(this.searchTerm, this.searchPageableParam)
+            this.searchPage = await collectService.findAllByNameContains(this.searchTerm, this.pageableParam)
             break
           case "categoryName":
-            this.searchPage = await collectService.findAllByCategoryNameContains(this.searchTerm, this.searchPageableParam)
+            this.searchPage = await collectService.findAllByCategoryNameContains(this.searchTerm, this.pageableParam)
             break
           case "tagName":
-            this.searchPage = await collectService.findAllByTagNameContains(this.searchTerm, this.searchPageableParam)
+            this.searchPage = await collectService.findAllByTagNameContains(this.searchTerm, this.pageableParam)
             break
         }
       } catch (e) {

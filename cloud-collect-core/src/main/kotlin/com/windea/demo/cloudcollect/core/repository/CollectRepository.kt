@@ -10,7 +10,11 @@ interface CollectRepository : JpaRepository<Collect, Long> {
 	
 	fun findAllByNameContains(name: String, pageable: Pageable): Page<Collect>
 	
+	fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect>
+	
 	fun findAllByCategoryNameContains(categoryName: String, pageable: Pageable): Page<Collect>
+	
+	fun findAllByTagsId(tagId: Long, pageable: Pageable): Page<Collect>
 	
 	fun findAllByTagsNameContains(tagName: String, pageable: Pageable): Page<Collect>
 	
@@ -22,25 +26,27 @@ interface CollectRepository : JpaRepository<Collect, Long> {
 	
 	fun findAllByTagsNameContainsAndUserId(tagName: String, userId: Long, pageable: Pageable): Page<Collect>
 	
-	fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect>
-	
-	fun findAllByTagsId(tagId: Long, pageable: Pageable): Page<Collect>
-	
 	fun findAllByTypeAndUserId(type: CollectType, userId: Long, pageable: Pageable): Page<Collect>
 	
-	fun findAllByPraiseByUserListId(praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	fun findAllByPraiseByUsersId(praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	
+	fun findAllByNameContainsAndPraiseByUsersId(name: String, praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	
+	fun findAllByCategoryNameContainsAndPraiseByUsersId(categoryName: String, praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	
+	fun findAllByTagsNameContainsAndPraiseByUsersId(tagName: String, praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	
+	fun findAllByTypeContainsAndPraiseByUsersId(type: CollectType, praiseByUserId: Long, pageable: Pageable): Page<Collect>
 	
 	fun countByCategoryId(categoryId: Long): Long
 	
 	fun countByTagsId(tagId: Long): Long
 	
-	fun countByTypeAndUserId(type: CollectType, userId: Long): Long
-	
 	fun countByUserId(userId: Long): Long
 	
-	fun countByPraiseByUserListId(praiseByUserId: Long): Long
+	fun countByPraiseByUsersId(praiseByUserId: Long): Long
 	
 	fun existsByNameAndUser(name: String, user: User): Boolean
 	
-	fun existsByIdAndPraiseByUserList(id: Long, praiseByUser: User): Boolean
+	fun existsByIdAndPraiseByUsers(id: Long, praiseByUser: User): Boolean
 }

@@ -32,9 +32,3 @@ export async function findByCollectId(collectId: number, pageableParam: Pageable
   return response.data
 }
 
-export async function getReplyByCommentPage(id: number, pageableParam: PageableParam) {
-  const params = {...pageableParam}
-  const response = await http.get<Page<Comment>>(`${commentUrl}/${id}/replyByCommentPage`, {params})
-  return response.data
-}
-

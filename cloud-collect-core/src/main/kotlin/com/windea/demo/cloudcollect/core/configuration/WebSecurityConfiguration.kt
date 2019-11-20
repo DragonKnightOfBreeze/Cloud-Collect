@@ -5,6 +5,7 @@ import com.windea.demo.cloudcollect.core.service.impl.*
 import org.springframework.context.annotation.*
 import org.springframework.security.authentication.*
 import org.springframework.security.config.annotation.authentication.builders.*
+import org.springframework.security.config.annotation.method.configuration.*
 import org.springframework.security.config.annotation.web.builders.*
 import org.springframework.security.config.annotation.web.configuration.*
 import org.springframework.security.config.http.*
@@ -13,12 +14,13 @@ import org.springframework.security.web.authentication.*
 import javax.sql.*
 
 
-//TODO 更新到最新版本，使用更适合Kotlin的Dsl式配置。
+//DONE 更新到最新版本，使用更适合Kotlin的Dsl式配置。
 //DONE 实现Jwt的自动配置，但仍然需要显式注册过滤器和进入点。
 
 /**Spring Security的配置类。*/
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) //开启全局安全验证注解
 class WebSecurityConfiguration(
 	private val dataSource: DataSource,
 	private val userDetailsService: UserDetailsServiceImpl,

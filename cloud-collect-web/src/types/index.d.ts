@@ -18,11 +18,11 @@ export interface Option<T extends string> {
 
 export type DialogType = "none" | "login" | "register"
 
-export type CollectSearchType = "name" | "categoryName" | "tagName";
+export type CollectSearchType = "none" | "name" | "categoryName" | "tagName" | "type";
 
-export type UserSearchType = "nickname" | "username" | "email"
+export type CategorySearchType = "none" | "name"
 
-export type CollectFilterType = "none" | "name" | "categoryName" | "tagName" | "type"
+export type UserSearchType = "none" | "nickname" | "username" | "email"
 
 //REGION Backend
 
@@ -38,6 +38,7 @@ export interface Collect {
   user: User
   createdTime?: string
   lastModifiedTime?: string
+  isPraised?: boolean
   praiseByUserCount?: number
   commentCount?: number
 }
@@ -100,6 +101,7 @@ export interface User {
   activateStatus?: boolean
   registerTime?: string
   updateTime?: string
+  isFollowed?: boolean
   collectCount?: number
   categoryCount?: number
   praiseToCollectCount?: number

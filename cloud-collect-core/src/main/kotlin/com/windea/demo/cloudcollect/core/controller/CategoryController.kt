@@ -7,6 +7,7 @@ import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
+import org.springframework.security.access.prepost.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
@@ -20,12 +21,14 @@ class CategoryController(
 ) {
 	@ApiOperation("创建自己的分类。")
 	@PostMapping("/create")
+	@PreAuthorize("isAuthenticated()")
 	fun create(@RequestBody @Validated(Create::class) category: Category, bindingResult: BindingResult) {
 		categoryService.create(category)
 	}
 	
 	@ApiOperation("修改自己的分类。")
 	@PutMapping("/{id}")
+	@PreAuthorize("isAuthenticated()")
 	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) category: Category,
 		bindingResult: BindingResult) {
 		categoryService.modify(id, category)
@@ -33,6 +36,7 @@ class CategoryController(
 	
 	@ApiOperation("删除自己的分类。")
 	@DeleteMapping("/{id}")
+	@PreAuthorize("isAuthenticated()")
 	fun deleteById(@PathVariable id: Long) {
 		categoryService.deleteById(id)
 	}
@@ -63,15 +67,7 @@ class CategoryController(
 	
 	@ApiOperation("根据名字和用户id模糊查询所有分类。")
 	@GetMapping("/findAllByNameContainsAndUserId")
-	fun findAllByNameContainsAndUserId(@RequestParam userId: Long, @RequestParam name: String,
-		pageable: Pageable): Page<Category> {
-		return categoryService.findAllByNameContainsAndUserId(userId, name, pageable)
-	}
-	
-	
-	@ApiOperation("得到该分类的所有收藏。")
-	@GetMapping("/{id}/collectPage")
-	fun getCollectPage(@PathVariable id: Long, pageable: Pageable): Page<Collect> {
-		return categoryService.getCollectPage(id, pageable)
+	fun findAllByNameContainsAndUserId(@RequestParam name: String, @RequestParam userId: Long, pageable: Pageable): Page<Category> {
+		return categoryService.findAllByNameContainsAndUserId(name, userId, pageable)
 	}
 }

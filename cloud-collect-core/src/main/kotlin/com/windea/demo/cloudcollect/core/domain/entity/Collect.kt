@@ -76,8 +76,12 @@ data class Collect(
 	
 	@ApiModelProperty("点赞该收藏的用户列表。懒加载。")
 	@JsonIgnore
-	@ManyToMany(mappedBy = "praiseToCollectList")
-	val praiseByUserList: MutableList<User> = mutableListOf()
+	@ManyToMany(mappedBy = "praiseToCollects")
+	val praiseByUsers: MutableList<User> = mutableListOf()
+	
+	@ApiModelProperty("是否已点赞。")
+	@Transient
+	var isPraised: Boolean? = null
 	
 	@ApiModelProperty("点赞用户数量。")
 	@Transient

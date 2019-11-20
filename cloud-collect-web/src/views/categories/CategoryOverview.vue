@@ -22,7 +22,7 @@
 
     <ElCardGroup v-if="searchPage">
       <CategoryOverviewCard v-for="category in searchPage.content" :key="category.id" :category="category"/>
-      <ThePagination :page="searchPage" :pageable-param.sync="searchPageableParam"/>
+      <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
   </div>
 </template>
@@ -41,11 +41,11 @@
   })
   export default class CategoryOverview extends Vue {
     private searchTerm: string = ""
-    private searchPageableParam: PageableParam = {page: 0, size: 20}
+    private pageableParam: PageableParam = {page: 0, size: 20}
     private searchPage: Page<Category> | null = null
 
-    @Watch("searchPageableParam")
-    onSearchPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    @Watch("pageableParam")
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.searchCategoryByName()
     }
@@ -56,7 +56,7 @@
 
     async searchCategoryByName() {
       try {
-        this.searchPage = await categoryService.findAllByNameContains(this.searchTerm, this.searchPageableParam)
+        this.searchPage = await categoryService.findAllByNameContains(this.searchTerm, this.pageableParam)
       } catch (e) {
         this.$message.warning("查询失败！")
       }

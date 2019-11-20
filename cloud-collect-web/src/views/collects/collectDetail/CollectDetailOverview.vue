@@ -27,7 +27,7 @@
           <ElCardGroup v-if="commentPage && !commentPage.empty">
             <CommentOverviewCard v-for="comment in commentPage.content" :key="comment.id" :comment="comment"
                                  @reply="handleReplyComment(comment)" />
-            <ThePagination :page="commentPage" :pageable-param.sync="commentPageableParam" />
+            <ThePagination :page="commentPage" :pageable-param.sync="pageableParam" />
           </ElCardGroup>
           <div v-else>
             没有评论。
@@ -49,6 +49,7 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import * as collectService from "@/services/collectService"
+  import * as commentService from "@/services/commentService"
   import {Collect, Comment, Page, PageableParam, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
@@ -68,7 +69,7 @@
     private editDialogVisible = false
     private activeNames = ["0"]
     private commentPage: Page<Comment> | null = null
-    private commentPageableParam: PageableParam = {page: 0, size: 20}
+    private pageableParam: PageableParam = {page: 0, size: 20}
     private newCommentDialogVisible = false
     private replyToComment: Comment | null = null
 
@@ -95,8 +96,8 @@
       this.getCommentPage()
     }
 
-    @Watch("commentPageableParam")
-    private onCommentPageableParamChange(value: PageableParam, oldValue: PageableParam) {
+    @Watch("pageableParam")
+    private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
       console.log(`查询分页参数发生变化：`, value)
       this.getCommentPage()
     }
@@ -148,7 +149,7 @@
     }
 
     private async getCommentPage() {
-      this.commentPage = await collectService.getCommentPage(this.collectId, this.commentPageableParam)
+      this.commentPage = await commentService.findByCollectId(this.collectId, this.pageableParam)
     }
 
     private async forkCollect() {

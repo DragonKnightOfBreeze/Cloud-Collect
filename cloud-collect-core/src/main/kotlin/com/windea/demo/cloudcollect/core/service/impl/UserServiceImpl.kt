@@ -8,6 +8,7 @@ import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.enums.*
 import com.windea.demo.cloudcollect.core.exceptions.*
+import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
 import org.springframework.cache.annotation.*
@@ -38,9 +39,7 @@ class UserServiceImpl(
 		val authentication = UsernamePasswordAuthenticationToken(form.username, form.password)
 		val validAuthentication = authenticationManager.authenticate(authentication)
 		SecurityContextHolder.getContext().authentication = validAuthentication
-		val userDetailsVo = validAuthentication.principal as UserDetailsVo
-		userDetailsVo.delegateUser.lateInit()
-		return userDetailsVo
+		return validAuthentication.principal as UserDetailsVo
 	}
 	
 	@Transactional
@@ -118,14 +117,14 @@ class UserServiceImpl(
 		if(id == user.id) return
 		
 		val rawUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		rawUser.followByUserList += user
+		rawUser.followByUsers += user
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun unfollow(id: Long, user: User) {
 		val rawUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		rawUser.followByUserList -= user
+		rawUser.followByUsers -= user
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -175,17 +174,27 @@ class UserServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByFollowToUserId(followToUserId: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByFollowToUserListId(followToUserId, pageable).map { it.lateInit() }
+		return userRepository.findAllByFollowToUsersId(followToUserId, pageable).map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByNicknameContainsAndFollowToUserId(nickname: String, followToUserId: Long, pageable: Pageable): Page<User> {
+		return userRepository.findAllByNicknameContainsAndFollowToUsersId(nickname, followToUserId, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByFollowByUserListId(followByUserId, pageable).map { it.lateInit() }
+		return userRepository.findAllByFollowByUsersId(followByUserId, pageable).map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByNicknameContainsAndFollowByUserId(nickname: String, followByUserId: Long, pageable: Pageable): Page<User> {
+		return userRepository.findAllByNicknameContainsAndFollowByUsersId(nickname, followByUserId, pageable)
 	}
 	
 	@Cacheable(key = "methodName + args")
 	override fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByPraiseToCollectListId(praiseToCollectId, pageable).map { it.lateInit() }
+		return userRepository.findAllByPraiseToCollectsId(praiseToCollectId, pageable).map { it.lateInit() }
 	}
 	
 	override fun existsByUsernameOrEmail(username: String, email: String): Boolean {
@@ -193,44 +202,11 @@ class UserServiceImpl(
 	}
 	
 	private fun User.lateInit() = this.apply {
+		isFollowed = currentUser?.let { currentUser -> userRepository.existsByIdAndFollowByUsers(id, currentUser) }
 		collectCount = collectRepository.countByUserId(id)
 		categoryCount = categoryRepository.countByUserId(id)
-		praiseToCollectCount = collectRepository.countByPraiseByUserListId(id)
-		followToUserCount = userRepository.countByFollowByUserListId(id)
-		followByUserCount = userRepository.countByFollowToUserListId(id)
-	}
-	
-	override fun isFollowed(id: Long, user: User): Boolean {
-		return userRepository.existsByIdAndFollowByUserList(id, user)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun getCollectPage(id: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByUserId(id, pageable)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun getPraiseToCollectPage(id: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByPraiseByUserListId(id, pageable)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun getHistoryPage(id: Long, pageable: Pageable): Page<History> {
-		return historyRepository.findAllByUserIdOrderByIdDesc(id, pageable)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun getNoticePage(id: Long, pageable: Pageable): Page<Notice> {
-		return noticeRepository.findAllByUserIdOrderByIdDesc(id, pageable)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun getFollowToUserPage(id: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByFollowByUserListId(id, pageable)
-	}
-	
-	@Cacheable(key = "methodName + args")
-	override fun getFollowByUserPage(id: Long, pageable: Pageable): Page<User> {
-		return userRepository.findAllByFollowToUserListId(id, pageable)
+		praiseToCollectCount = collectRepository.countByPraiseByUsersId(id)
+		followToUserCount = userRepository.countByFollowByUsersId(id)
+		followByUserCount = userRepository.countByFollowToUsersId(id)
 	}
 }

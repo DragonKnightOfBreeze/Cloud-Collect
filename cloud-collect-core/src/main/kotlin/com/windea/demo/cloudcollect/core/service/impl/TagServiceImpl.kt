@@ -70,10 +70,4 @@ class TagServiceImpl(
 	private fun Tag.lateInit() = this.apply {
 		collectCount = collectRepository.countByTagsId(id)
 	}
-	
-	
-	@Cacheable(key = "methodName + args")
-	override fun getCollectPage(id: Long, pageable: Pageable): Page<Collect> {
-		return collectRepository.findAllByTagsId(id, pageable)
-	}
 }

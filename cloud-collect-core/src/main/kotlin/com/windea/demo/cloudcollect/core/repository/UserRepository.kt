@@ -18,17 +18,21 @@ interface UserRepository : JpaRepository<User, Long> {
 	
 	fun findAllByRole(role: Role, pageable: Pageable): Page<User>
 	
-	fun findAllByFollowToUserListId(followToUserId: Long, pageable: Pageable): Page<User>
+	fun findAllByFollowToUsersId(followToUserId: Long, pageable: Pageable): Page<User>
 	
-	fun findAllByFollowByUserListId(followByUserId: Long, pageable: Pageable): Page<User>
+	fun findAllByNicknameContainsAndFollowToUsersId(nickname: String, followToUserId: Long, pageable: Pageable): Page<User>
 	
-	fun findAllByPraiseToCollectListId(praiseToCollectId: Long, pageable: Pageable): Page<User>
+	fun findAllByFollowByUsersId(followByUserId: Long, pageable: Pageable): Page<User>
 	
-	fun countByFollowByUserListId(followByUserId: Long): Long
+	fun findAllByNicknameContainsAndFollowByUsersId(nickname: String, followByUserId: Long, pageable: Pageable): Page<User>
 	
-	fun countByFollowToUserListId(followToUserId: Long): Long
+	fun findAllByPraiseToCollectsId(praiseToCollectId: Long, pageable: Pageable): Page<User>
 	
-	fun countByPraiseToCollectListId(praiseToCollectId: Long): Long
+	fun countByFollowByUsersId(followByUserId: Long): Long
+	
+	fun countByFollowToUsersId(followToUserId: Long): Long
+	
+	fun countByPraiseToCollectsId(praiseToCollectId: Long): Long
 	
 	fun existsByUsername(username: String): Boolean
 	
@@ -36,5 +40,5 @@ interface UserRepository : JpaRepository<User, Long> {
 	
 	fun existsByUsernameOrEmail(username: String, email: String): Boolean
 	
-	fun existsByIdAndFollowByUserList(id: Long, followByUser: User): Boolean
+	fun existsByIdAndFollowByUsers(id: Long, followByUser: User): Boolean
 }
