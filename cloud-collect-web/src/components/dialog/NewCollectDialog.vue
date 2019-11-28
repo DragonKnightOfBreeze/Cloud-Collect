@@ -8,11 +8,11 @@
         <ElInput type="textarea" v-model="collect.summary"
                  maxlength="255" show-word-limit :autosize="{minRows: 3, maxRows: 6}"></ElInput>
       </ElFormItem>
-      <ElFormItem label="地址" prop="url">
-        <ElInput v-model="collect.url"></ElInput>
+      <ElFormItem label="地址">
+        <ElInput v-model="collect.url" placeholder="收藏的地址，允许留空"></ElInput>
       </ElFormItem>
       <ElFormItem label="图标地址">
-        <ElInput v-model="collect.logoUrl"></ElInput>
+        <ElInput v-model="collect.logoUrl" placeholder="收藏的图标地址，允许留空，自动获取"></ElInput>
       </ElFormItem>
       <ElFormItem label="分类">
         <!--NOTE value-key是相对于option的value属性而言的，将其作为this关键字-->
@@ -63,7 +63,7 @@
       summary: "",
       url: "",
       logoUrl: "",
-      category: undefined,
+      category: null,
       tags: [],
       type: "NONE",
       user: this.currentUser
@@ -75,9 +75,6 @@
       ],
       summary: [
         {max: 255, message: "概述过长！"}
-      ],
-      url: [
-        {required: true, message: "收藏地址不能为空！"}
       ]
     }
     private categories: Category[] = []

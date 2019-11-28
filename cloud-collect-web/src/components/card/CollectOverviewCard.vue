@@ -1,7 +1,7 @@
 <template>
   <ElCard class="app-collect-overview-card">
     <template v-slot:header>
-      <ElRow type="flex" class="align-items-center">
+      <ElRow class="align-items-center">
         <ElCol :span="1">
           <ElAvatar size="small" :src="collect.logoUrl" />
         </ElCol>
@@ -20,39 +20,43 @@
       </ElRow>
     </template>
 
-    <ElRow type="flex" class="app-meta-small  align-items-center">
-      <ElCol :span="6">
-        创建者&nbsp;
+    <ElRow class="app-meta-small align-items-center">
+      <ElCol :span="6" class="align-items-center">
+        创建者：
         <ElLink type="info" v-if="collect.user" :href="'/profile/'+collect.user.id">{{collect.user.nickname}}</ElLink>
         <ElLink type="info" v-else>未知</ElLink>
       </ElCol>
-      <ElCol :span="6">
-        创建时间 {{collect.createdTime}}
+      <ElCol :span="6" class="align-items-center">
+        创建时间：{{collect.createdTime}}
       </ElCol>
-      <ElCol :span="6">
-        修改时间 {{collect.lastModifiedTime}}
+      <ElCol :span="6" class="align-items-center">
+        修改时间：{{collect.lastModifiedTime}}
       </ElCol>
-      <ElCol :span="3">
+      <ElCol :span="3" class="align-items-center">
         <ElBadge :value="collect.commentCount">
           <ElLink type="info" :href="'/collects/'+collect.id">评论</ElLink>
         </ElBadge>
       </ElCol>
-      <ElCol :span="3">
+      <ElCol :span="3" class="align-items-center">
         <ElBadge :value="collect.praiseByUserCount">
           <ElLink type="info" :href="'/collects/'+collect.id+'/stargazers'">赞</ElLink>
         </ElBadge>
       </ElCol>
     </ElRow>
-    <ElRow type="flex" class="app-meta align-items-center">
+    <ElRow class="app-meta-small align-items-center">
       <ElCol :span="6">
-        分类
-        <ElLink type="info" v-if="collect.category" :href="'/categories/'+collect.id">{{collect.category.name}}</ElLink>
-        <ElLink type="info" v-else>未分类</ElLink>
+        分类：
+        <ElTag size="small" type="primary" v-if="category" @click="handleGoCategory(category.id)">
+          {{category.name}}
+        </ElTag>
+        <ElTag size="small" type="primary" v-else>
+          未分类
+        </ElTag>
       </ElCol>
       <ElCol :span="18">
-        标签
-        <ElTag size="small" v-for="tag in collect.tags" :key="tag.id">
-          <ElLink type="info" :href="'/tags/'+tag.id">{{tag.name}}</ElLink>
+        标签：
+        <ElTag size="small" type="info" v-for="tag in collect.tags" :key="tag.id" @click="handleGoTag(tag.id)">
+          {{tag.name}}
         </ElTag>
       </ElCol>
     </ElRow>
@@ -76,6 +80,22 @@
 
     get currentUser() {
       return this.$store.getters.currentUser
+    }
+
+    get category() {
+      return this.collect.category
+    }
+
+    get tags() {
+      return this.collect.tags
+    }
+
+    private handleGoCategory(categoryId: number) {
+      this.$router.replace(`/categories/${categoryId}`)
+    }
+
+    private handleGoTag(tagId: number) {
+      this.$router.replace(`/tags/${tagId}`)
     }
   }
 </script>

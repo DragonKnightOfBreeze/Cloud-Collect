@@ -1,7 +1,7 @@
 <template>
   <ElCard class="app-user-overview-card">
     <template v-slot:header>
-      <ElRow type="flex" class="align-items-center">
+      <ElRow class="align-items-center">
         <ElCol :span="1">
           <ElAvatar size="small" :src="user.avatarUrl"/>
         </ElCol>
@@ -14,7 +14,7 @@
       </ElRow>
     </template>
 
-    <ElRow type="flex" class="app-meta-small align-items-center">
+    <ElRow class="app-meta-small align-items-center">
       <ElCol :span="6">
         用户名 {{user.username}}
       </ElCol>

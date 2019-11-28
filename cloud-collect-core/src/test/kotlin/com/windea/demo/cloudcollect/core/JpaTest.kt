@@ -24,10 +24,10 @@ class JpaTest(
 		barRepository.save(Bar(foo = Foo(1, "Foo1")))
 	}
 	
-	@Test //瞬时态，需要先保存
-	fun saveCascade3() {
-		barRepository.save(Bar(foo = Foo(0, "Foo1")))
-	}
+	//@Test //瞬时态，需要先保存
+	//fun saveCascade3() {
+	//	barRepository.save(Bar(foo = Foo(0, "Foo1")))
+	//}
 	
 	@Test //TESTED
 	fun saveCascadeCollection1() {
@@ -45,13 +45,13 @@ class JpaTest(
 		)))
 	}
 	
-	@Test //瞬时态，需要先保存
-	fun saveCascadeCollection3() {
-		barRepository.save(Bar(fooList = mutableListOf(
-			Foo(0, "Foo?"),
-			Foo(0, "Foo?")
-		)))
-	}
+	//@Test //瞬时态，需要先保存
+	//fun saveCascadeCollection3() {
+	//	barRepository.save(Bar(fooList = mutableListOf(
+	//		Foo(0, "Foo?"),
+	//		Foo(0, "Foo?")
+	//	)))
+	//}
 	
 	@Test //TESTED
 	fun updateCascade1() {
@@ -67,12 +67,12 @@ class JpaTest(
 		barRepository.save(bar)
 	}
 	
-	@Test //瞬时态，需要先保存
-	fun updateCascade3() {
-		val bar = barRepository.findByIdOrNull(4)!!
-		bar.foo = Foo(0, "Foo???")
-		barRepository.save(bar)
-	}
+	//@Test //瞬时态，需要先保存
+	//fun updateCascade3() {
+	//	val bar = barRepository.findByIdOrNull(4)!!
+	//	bar.foo = Foo(0, "Foo???")
+	//	barRepository.save(bar)
+	//}
 	
 	@Test //TESTED
 	fun updateCascadeCollection1() {
@@ -88,13 +88,12 @@ class JpaTest(
 		barRepository.save(bar)
 	}
 	
-	@Test //瞬时态，需要先保存
-	fun updateCascadeCollection3() {
-		val bar = barRepository.findByIdOrNull(8)!!
-		bar.fooList += Foo(0, "Foo1")
-		barRepository.save(bar)
-	}
-	
+	//@Test //瞬时态，需要先保存
+	//fun updateCascadeCollection3() {
+	//	val bar = barRepository.findByIdOrNull(8)!!
+	//	bar.fooList += Foo(0, "Foo1")
+	//	barRepository.save(bar)
+	//}
 	
 	//@Test //NO SESSION
 	//fun updateCascadeLazy1() {

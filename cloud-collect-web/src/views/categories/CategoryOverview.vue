@@ -24,11 +24,15 @@
       <CategoryOverviewCard v-for="category in searchPage.content" :key="category.id" :category="category"/>
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
+    <NoContentCard v-else>
+      没有符合条件的分类。
+    </NoContentCard>
   </div>
 </template>
 
 <script lang="ts">
   import CategoryOverviewCard from "@/components/card/CategoryOverviewCard.vue"
+  import NoContentCard from "@/components/card/NoContentCard.vue"
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
@@ -37,7 +41,7 @@
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {ElBlankLine, CategoryOverviewCard, ElCardGroup, ThePagination}
+    components: {NoContentCard, ElBlankLine, CategoryOverviewCard, ElCardGroup, ThePagination}
   })
   export default class CategoryOverview extends Vue {
     private searchTerm: string = ""

@@ -18,8 +18,11 @@
 
       <ElCollapse id="comments" v-model="activeNames">
         <ElCollapseItem name="0" title="查看评论">
-          <ElRow>
-            <ElCol :span="4" :offset="20">
+          <ElRow class="app-title align-items-center">
+            <ElCol :span="20">
+              评论列表
+            </ElCol>
+            <ElCol :span="4">
               <ElButton type="success" @click="handleNewComment">新评论</ElButton>
             </ElCol>
           </ElRow>
@@ -29,9 +32,9 @@
                                  @reply="handleReplyComment(comment)" />
             <ThePagination :page="commentPage" :pageable-param.sync="pageableParam" />
           </ElCardGroup>
-          <div v-else>
-            没有评论。
-          </div>
+          <NoContentCard v-else>
+            暂无评论。
+          </NoContentCard>
         </ElCollapseItem>
       </ElCollapse>
 
@@ -44,6 +47,7 @@
 <script lang="ts">
   import CollectDetailCard from "@/components/card/CollectDetailCard.vue"
   import CommentOverviewCard from "@/components/card/CommentOverviewCard.vue"
+  import NoContentCard from "@/components/card/NoContentCard.vue"
   import EditCollectDialog from "@/components/dialog/EditCollectDialog.vue"
   import NewCommentDialog from "@/components/dialog/NewCommentDialog.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
@@ -56,6 +60,7 @@
 
   @Component({
     components: {
+      NoContentCard,
       CommentOverviewCard,
       NewCommentDialog,
       ThePagination,
@@ -149,7 +154,7 @@
     }
 
     private async getCommentPage() {
-      this.commentPage = await commentService.findByCollectId(this.collectId, this.pageableParam)
+      this.commentPage = await commentService.findAllByCollectId(this.collectId, this.pageableParam)
     }
 
     private async forkCollect() {

@@ -2,9 +2,8 @@
   <div>
     <h3>浏览历史</h3>
     <ElDivider/>
-
     <!--仅当用户为当前用户时，才会显示以下内容-->
-    <ElRow v-if="isCurrentUser">
+    <ElRow :gutter="5" class="align-items-center" v-if="isCurrentUser">
       <ElCol :span="4" :offset="20">
         <ElButton type="danger" @click="handleDeleteAll">清空历史</ElButton>
       </ElCol>

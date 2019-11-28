@@ -27,11 +27,15 @@
       <CollectOverviewCard v-for="collect in searchPage.content" :key="collect.id" :collect="collect" />
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
+    <NoContentCard v-else>
+      没有符合条件的收藏。
+    </NoContentCard>
   </div>
 </template>
 
 <script lang="ts">
   import CollectOverviewCard from "@/components/card/CollectOverviewCard.vue"
+  import NoContentCard from "@/components/card/NoContentCard.vue"
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
@@ -40,7 +44,7 @@
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {ThePagination, CollectOverviewCard, ElCardGroup, ElBlankLine}
+    components: {NoContentCard, ThePagination, CollectOverviewCard, ElCardGroup, ElBlankLine}
   })
   export default class SearchCollect extends Vue {
     private searchTerm: string = ""

@@ -24,10 +24,14 @@
       <TagOverviewCard v-for="tag in searchPage.content" :key="tag.id" :tag="tag"/>
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
+    <NoContentCard v-else>
+      没有符合条件的标签。
+    </NoContentCard>
   </div>
 </template>
 
 <script lang="ts">
+  import NoContentCard from "@/components/card/NoContentCard.vue"
   import TagOverviewCard from "@/components/card/TagOverviewCard.vue"
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
@@ -37,7 +41,7 @@
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {ElBlankLine, TagOverviewCard, ElCardGroup, ThePagination}
+    components: {NoContentCard, ElBlankLine, TagOverviewCard, ElCardGroup, ThePagination}
   })
   export default class TagOverview extends Vue {
     private searchTerm: string = ""

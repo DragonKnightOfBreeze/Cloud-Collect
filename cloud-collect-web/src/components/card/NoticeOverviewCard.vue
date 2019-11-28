@@ -1,6 +1,6 @@
 <template>
   <ElCard class="app-notice-overview-card">
-    <ElRow type="flex" class="app-title align-items-center">
+    <ElRow class="app-title align-items-center">
       <ElCol :span="12">
         {{notice.title}}
       </ElCol>
@@ -8,12 +8,12 @@
         <ElButton type="danger" v-if="isCurrentUser" @click="handleDelete">删除</ElButton>
       </ElCol>
     </ElRow>
-    <ElRow type="flex" class="app-meta-small align-items-center">
+    <ElRow class="app-meta-small align-items-center">
       <ElCol :span="6">
-        类型 {{notice.type | enumText(noticeTypes)}}
+        类型：{{notice.type | enumText(noticeTypes)}}
       </ElCol>
       <ElCol :span="6">
-        创建时间 {{notice.createdTime}}
+        创建时间：{{notice.createdTime}}
       </ElCol>
     </ElRow>
     <ElRow class="app-content">

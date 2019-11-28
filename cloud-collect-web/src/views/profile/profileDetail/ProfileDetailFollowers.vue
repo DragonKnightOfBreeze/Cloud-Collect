@@ -2,9 +2,8 @@
   <div>
     <h3>Ta的粉丝</h3>
     <ElDivider />
-
     <!--允许过滤-->
-    <ElRow type="flex" :gutter="5" class="align-items-center">
+    <ElRow :gutter="5" class="align-items-center">
       <ElCol :span="6">
         <ElInput v-model="searchTerm" placeholder="按昵称搜索">
           <template v-slot:append>
@@ -17,7 +16,7 @@
       </ElCol>
     </ElRow>
 
-    <ElCardGroup>
+    <ElCardGroup v-if="followByUserPage">
       <UserOverviewCard v-for="user in followByUserPage.content" :key="user.id" :user="user" />
       <ThePagination :page="followByUserPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>

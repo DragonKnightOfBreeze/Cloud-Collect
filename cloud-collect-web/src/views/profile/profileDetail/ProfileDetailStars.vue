@@ -4,7 +4,7 @@
     <ElDivider />
 
     <!--允许过滤-->
-    <ElRow type="flex" :gutter="5" class="align-items-center">
+    <ElRow :gutter="5" class="align-items-center">
       <ElCol :span="6">
         <ElInput v-model="searchTerm1" placeholder="按名字搜索">
           <template v-slot:append>
@@ -43,8 +43,8 @@
       </ElCol>
     </ElRow>
 
-    <ElCardGroup>
-      <CollectOverviewCard v-for="collect in praiseToCollects" :key="collect.id" :collect="collect" />
+    <ElCardGroup v-if="praiseToCollectPage">
+      <CollectOverviewCard v-for="collect in praiseToCollectPage.content" :key="collect.id" :collect="collect" />
       <ThePagination :page="praiseToCollectPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
   </div>
@@ -72,10 +72,6 @@
     private pageableParam: PageableParam = {page: 0, size: 20}
     private praiseToCollectPage: Page<Collect> | null = null
     private collectTypes = collectTypes
-
-    private get praiseToCollects() {
-      return this.praiseToCollectPage ? this.praiseToCollectPage.content : []
-    }
 
     private get userId() {
       return parseInt(this.$route.params["id"] as string)

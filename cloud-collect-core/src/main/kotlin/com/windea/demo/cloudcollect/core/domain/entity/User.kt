@@ -33,7 +33,7 @@ data class User constructor(
 	val username: String,
 	
 	@ApiModelProperty("密码。这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度。")
-	@NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class])
+	@get:NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class])
 	@get:Password(message = "{validation.User.password.Password}", groups = [Create::class])
 	@Column(nullable = false)
 	var password: String,
@@ -56,7 +56,7 @@ data class User constructor(
 	var introduce: String = "这家伙很懒，什么也没留下。",
 	
 	@ApiModelProperty("头像地址。")
-	@Column(length = 512, nullable = false)
+	@Column(nullable = false, length = 255)
 	var avatarUrl: String = "",
 	
 	@ApiModelProperty("身份。")
@@ -83,17 +83,17 @@ data class User constructor(
 	
 	@ApiModelProperty("用户的关注用户列表。懒加载。")
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(mappedBy = "followByUsers")
 	val followToUsers: MutableList<User> = mutableListOf()
 	
 	@ApiModelProperty("该用户的粉丝用户列表。懒加载。")
 	@JsonIgnore
-	@ManyToMany(mappedBy = "followToUsers")
+	@ManyToMany
 	val followByUsers: MutableList<User> = mutableListOf()
 	
 	@ApiModelProperty("该用户点赞的收藏列表。懒加载。")
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(mappedBy = "praiseByUsers")
 	val praiseToCollects: MutableList<Collect> = mutableListOf()
 	
 	@ApiModelProperty("是否已关注。")

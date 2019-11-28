@@ -1,6 +1,6 @@
 <template>
   <ElCard class="app-history-overview-card">
-    <ElRow type="flex" class="app-title align-items-center">
+    <ElRow class="app-title align-items-center">
       <ElCol :span="12">
         {{history.collect.name}}
       </ElCol>
@@ -8,9 +8,9 @@
         <ElButton type="danger" v-if="isCurrentUser" @click="handleDelete">删除</ElButton>
       </ElCol>
     </ElRow>
-    <ElRow type="flex" class="app-meta-small align-items-center">
-      <ElCol :span="6">
-        创建者&nbsp;
+    <ElRow class="app-meta-small align-items-center">
+      <ElCol :span="6" class="align-items-center">
+        创建者：
         <ElLink type="info" v-if="history.collect.user" :href="'/profile/'+history.collect.user.id">{{history.collect.user.nickname}}</ElLink>
         <ElLink type="info" disabled v-else>未知</ElLink>
       </ElCol>

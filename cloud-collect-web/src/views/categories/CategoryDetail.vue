@@ -14,13 +14,19 @@
 
       <ElCollapse v-model="activeNames" @change="handleChange">
         <ElCollapseItem name="0" title="查看相关收藏">
+          <ElRow>
+            <ElCol :span="20">
+              相关收藏列表
+            </ElCol>
+          </ElRow>
+
           <ElCardGroup v-if="collectPage && !collectPage.empty">
             <CollectOverviewCard v-for="collect in collectPage.content" :key=collect.id :collect="collect" />
             <ThePagination :page="collectPage" :pageable-param.sync="pageableParam" />
           </ElCardGroup>
-          <div v-else>
+          <NoContentCard v-else>
             没有相关收藏。
-          </div>
+          </NoContentCard>
         </ElCollapseItem>
       </ElCollapse>
     </template>
@@ -30,6 +36,7 @@
 <script lang="ts">
   import CategoryDetailCard from "@/components/card/CategoryDetailCard.vue"
   import CollectOverviewCard from "@/components/card/CollectOverviewCard.vue"
+  import NoContentCard from "@/components/card/NoContentCard.vue"
   import EditCategoryDialog from "@/components/dialog/EditCategoryDialog.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
@@ -40,7 +47,7 @@
   import {Route} from "vue-router"
 
   @Component({
-    components: {EditCategoryDialog, CollectOverviewCard, CategoryDetailCard, ElCardGroup, ThePagination}
+    components: {NoContentCard, EditCategoryDialog, CollectOverviewCard, CategoryDetailCard, ElCardGroup, ThePagination}
   })
   export default class CategoryDetail extends Vue {
     private category: Category | null = null

@@ -24,6 +24,10 @@ class CollectServiceImpl(
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun create(collect: Collect) {
+		//链接需要经过处理
+		collect.url = collect.url.toNoQueryUrl()
+		collect.logoUrl = collect.logoUrl.ifEmpty { collect.url.toLogoUrl() }
+		
 		collectRepository.save(collect)
 	}
 	
@@ -48,8 +52,8 @@ class CollectServiceImpl(
 		rawCollect.apply {
 			name = collect.name
 			summary = collect.summary
-			url = collect.url
-			logoUrl = collect.logoUrl
+			url = collect.url.toNoQueryUrl()
+			logoUrl = collect.logoUrl.ifEmpty { collect.url.toLogoUrl() }
 			category = collect.category
 			tags = collect.tags
 			type = collect.type

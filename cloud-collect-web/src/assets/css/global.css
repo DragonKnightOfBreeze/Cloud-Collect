@@ -19,22 +19,28 @@
 }
 
 .justify-content-start {
+  display: flex;
   justify-content: start;
 }
 .justify-content-center {
+  display: flex;
   justify-content: center;
 }
 .justify-content-end {
+  display: flex;
   justify-content: end;
 }
 
 .align-items-start {
+  display: flex;
   align-items: start;
 }
 .align-items-center {
+  display: flex;
   align-items: center;
 }
 .align-items-end {
+  display: flex;
   align-items: end;
 }
 

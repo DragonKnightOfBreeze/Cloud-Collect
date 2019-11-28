@@ -4,19 +4,19 @@
       <ElLink :href="'/categories/'+category.id">{{category.name}}</ElLink>
     </template>
 
-    <ElRow type="flex" class="app-meta-small align-items-center">
-      <ElCol :span="6">
-        创建者&nbsp;
+    <ElRow class="app-meta-small align-items-center">
+      <ElCol :span="6" class="align-items-center">
+        创建者：
         <ElLink type="info" v-if="category.user" :href="'/profile/'+category.user.id">{{category.user.nickname}}</ElLink>
         <ElLink type="info" disabled v-else>未知</ElLink>
       </ElCol>
-      <ElCol :span="6">
-        创建时间 {{category.createdTime}}
+      <ElCol :span="6" class="align-items-center">
+        创建时间：{{category.createdTime}}
       </ElCol>
-      <ElCol :span="6">
-        修改时间 {{category.lastModifiedTime}}
+      <ElCol :span="6" class="align-items-center">
+        修改时间：{{category.lastModifiedTime}}
       </ElCol>
-      <ElCol :span="3">
+      <ElCol :span="3" class="align-items-center">
         <ElBadge type="primary" :value="category.collectCount">
           <ElLink type="info" :href="'/categories/'+category.id">相关收藏</ElLink>
         </ElBadge>

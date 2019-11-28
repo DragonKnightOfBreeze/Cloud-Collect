@@ -22,6 +22,6 @@ data class Bar(
 	//@ManyToMany(fetch = FetchType.EAGER,cascade = [CascadeType.MERGE])
 	val fooList: MutableList<Foo> = mutableListOf(),
 	@ManyToMany
-	@JvmSuppressWildcards
-	var lazyFooList: List<Foo> = mutableListOf()
+	//@JvmSuppressWildcards
+	val lazyFooList: MutableList<Foo> = mutableListOf()
 )

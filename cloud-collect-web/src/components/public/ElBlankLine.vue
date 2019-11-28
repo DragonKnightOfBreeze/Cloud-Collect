@@ -1,20 +1,24 @@
 <template>
-  <div class="el-blank-line">
+  <div class="el-blank-line" :style="style">
     &nbsp;
   </div>
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from "vue-property-decorator"
+  import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component
   export default class ElBlankLine extends Vue {
+    @Prop({default: 24}) height: number
+
+    private style = {
+      marginTop: `${this.height}px`,
+      marginBottom: `${this.height}px`,
+      height: "1px"
+    }
   }
 </script>
 
 <style scoped>
-  .el-blank-line {
-    margin: 24px 0;
-    height: 1px;
-  }
+
 </style>

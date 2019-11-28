@@ -22,6 +22,7 @@ class MockData(
 	@Autowired private val tagRepository: TagRepository,
 	@Autowired private val userRepository: UserRepository,
 	@Autowired private val userService: UserService,
+	@Autowired private val collectService: CollectService,
 	@Autowired private val passwordEncoder: BCryptPasswordEncoder
 ) {
 	private fun Int.randomId() = Random.nextInt(this) + 1L
@@ -83,30 +84,56 @@ class MockData(
 		}
 	}
 	
-	@Test
+	@Test //TESTED
 	fun addCascadeMockData() {
 		val user = userRepository.findByIdOrNull(1)!!
 		val user1 = userRepository.findByIdOrNull(5)!!
 		userService.follow(3, user)
+		userService.follow(5, user)
 		userService.follow(6, user)
 		userService.follow(1, user1)
-		
+		userService.follow(3, user1)
 		val a = userRepository.findAllByFollowByUsersId(1, Pageable.unpaged())
 		println(a.content)
-		
 		val b = userRepository.findAllByFollowToUsersId(1, Pageable.unpaged())
 		println(b.content)
-		
-		//不能这样操作
-		//user.praiseToCollects += collectRepository.findAll().subList(0, 10)
-		//user.followByUsers += userRepository.findAll().subList(5, 10)
-		//user.followToUsers += userRepository.findAll().subList(10, 15)
-		//userRepository.save(user)
+	}
+	
+	@Test //TESTED
+	fun addCascadeMockData2() {
+		collectService.praise(1, userService.findById(1))
+		collectService.praise(2, userService.findById(1))
+		collectService.praise(3, userService.findById(1))
+		val result = collectService.findAllByPraiseByUserId(1, Pageable.unpaged()).content
+		println(result)
+	}
+	
+	@Test
+	fun findAllCascadeMockData() {
+		userService.findAllByFollowByUserId(1, Pageable.unpaged()).also { println(it.content) }
+		userService.findAllByFollowToUserId(1, Pageable.unpaged()).also { println(it.content) }
 	}
 	
 	@Test //TESTED
 	fun addNewUser() {
 		userRepository.save(User(0, "UserUsername???", "UserPassword???", "UserEmail???"))
+	}
+	
+	@Test
+	fun addSampleCollects() {
+		val user = userService.findById(1)
+		collectService.create(Collect(
+			name = "百度一下",
+			summary = "百度一下，你就知道",
+			url = "https://www.baidu.com",
+			user = user
+		))
+		collectService.create(Collect(
+			name = "哔哩哔哩",
+			summary = "哔哩哔哩 (゜-゜)つロ 干杯~-bilibili",
+			url = "https://www.bilibili.com",
+			user = user
+		))
 	}
 	
 	@Test

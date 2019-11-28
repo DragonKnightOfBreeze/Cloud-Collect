@@ -14,13 +14,19 @@
 
       <ElCollapse v-model="activeNames" @change="handleChange">
         <ElCollapseItem name="1" title="查看相关收藏">
+          <ElRow class="align-items-center">
+            <ElCol :span="20">
+              相关收藏列表
+            </ElCol>
+          </ElRow>
+
           <ElCardGroup v-if="collectPage && !collectPage.empty">
             <CollectOverviewCard v-for="collect in collectPage.content" :key=collect.id :collect="collect" />
             <ThePagination :page="collectPage" :pageable-param.sync="pageableParam" />
           </ElCardGroup>
-          <div v-else>
+          <NoContentCard v-else>
             没有相关收藏。
-          </div>
+          </NoContentCard>
         </ElCollapseItem>
       </ElCollapse>
     </template>
@@ -29,6 +35,7 @@
 
 <script lang="ts">
   import CollectOverviewCard from "@/components/card/CollectOverviewCard.vue"
+  import NoContentCard from "@/components/card/NoContentCard.vue"
   import TagDetailCard from "@/components/card/TagDetailCard.vue"
   import EditTagDialog from "@/components/dialog/EditTagDialog.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
@@ -40,7 +47,7 @@
   import {Route} from "vue-router"
 
   @Component({
-    components: {EditTagDialog, CollectOverviewCard, TagDetailCard, ElCardGroup, ThePagination}
+    components: {NoContentCard, EditTagDialog, CollectOverviewCard, TagDetailCard, ElCardGroup, ThePagination}
   })
   export default class TagDetail extends Vue {
     private tag: Tag | null = null
@@ -110,7 +117,7 @@
     }
 
     private async getCollectPage() {
-      this.collectPage = await collectService.findAllByTagId(this.tag, this.pageableParam)
+      this.collectPage = await collectService.findAllByTagId(this.tagId, this.pageableParam)
     }
 
     private async deleteTag() {

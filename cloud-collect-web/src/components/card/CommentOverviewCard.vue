@@ -1,13 +1,13 @@
 <template>
   <ElCard class="app-comment-overview-card">
-    <ElRow type="flex" class="app-title align-items-center">
+    <ElRow class="app-title align-items-center">
       <ElCol :span="1">
         <ElAvatar size="small" :src="comment.sponsorByUser.avatarUrl"/>
       </ElCol>
       <ElCol :span="11">
         <ElLink :href="'/profile/'+comment.sponsorByUser.id">{{comment.sponsorByUser.nickname}}</ElLink>
       </ElCol>
-      <ElCol :span="8" class="app-meta-small">
+      <ElCol :span="8" class="app-meta-small ">
         {{comment.createdTime}}
       </ElCol>
       <ElCol :span="4">
@@ -19,14 +19,14 @@
     </ElRow>
 
     <ElCard class="app-reply-overview-card" v-if="hasReply" :body-style="replyOverviewCardStyle">
-      <ElRow type="flex" class="app-title align-items-center">
+      <ElRow class="app-title align-items-center">
         <ElCol :span="1">
           <ElAvatar size="small" :src="reply.sponsorByUser.avatarUrl"/>
         </ElCol>
         <ElCol :span="11">
           <ElLink :href="'/profile/'+reply.sponsorByUser.id">{{reply.sponsorByUser.nickname}}</ElLink>
         </ElCol>
-        <ElCol :span="8" class="app-meta-small">
+        <ElCol :span="8" class="app-meta-small ">
           {{comment.createdTime}}
         </ElCol>
       </ElRow>

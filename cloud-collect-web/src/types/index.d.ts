@@ -32,13 +32,13 @@ export interface Collect {
   summary: string
   url: string
   logoUrl: string
-  category?: Category
-  tags?: Tag[]
-  type?: CollectType
+  category: Category | null
+  tags: Tag[]
+  type: CollectType
   user: User
   createdTime?: string
   lastModifiedTime?: string
-  isPraised?: boolean
+  praised?: boolean
   praiseByUserCount?: number
   commentCount?: number
 }
@@ -101,7 +101,7 @@ export interface User {
   activateStatus?: boolean
   registerTime?: string
   updateTime?: string
-  isFollowed?: boolean
+  followed?: boolean
   collectCount?: number
   categoryCount?: number
   praiseToCollectCount?: number

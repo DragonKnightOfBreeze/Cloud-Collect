@@ -87,8 +87,8 @@
     padding: 10px 0;
   }
   .app-title {
-    font-size: 18px;
-    line-height: 24px;
+    font-size: 24px;
+    line-height: 30px;
     padding: 10px 0;
   }
   .app-meta {
@@ -98,7 +98,9 @@
     padding: 5px 0;
   }
   .app-meta span {
-    font-size: 14px;
+    font-size: 12px;
+    height: 18px;
+    line-height: 18px;
   }
   .app-meta-small {
     font-size: 12px;
@@ -109,6 +111,8 @@
   }
   .app-meta-small span {
     font-size: 12px;
+    height: 18px;
+    line-height: 18px;
   }
   /*对应的html元素不应该是p，因为可能是markdown文本*/
   .app-summary {

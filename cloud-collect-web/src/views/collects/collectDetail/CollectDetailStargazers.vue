@@ -4,7 +4,7 @@
     <ElDivider/>
     <div>查看该收藏的收藏家。</div>
     <ElBlankLine />
-    <ElCardGroup>
+    <ElCardGroup v-if="praiseByUserPage">
       <UserOverviewCard v-for="user in praiseByUserPage.content" :key="user.id" :user="user"/>
       <ThePagination :page="praiseByUserPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>

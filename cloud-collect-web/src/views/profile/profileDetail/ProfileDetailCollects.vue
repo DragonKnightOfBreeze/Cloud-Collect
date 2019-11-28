@@ -2,29 +2,27 @@
   <div>
     <h3>Ta的收藏</h3>
     <ElDivider />
-
     <!--仅当用户为当前用户时，才会显示以下内容-->
-    <ElRow v-if="isCurrentUser">
+    <ElRow :gutter="5" class="align-items-center" v-if="isCurrentUser">
+      <ElCol :span="4">
+        <ElButton type="primary" @click="handleCreateCollect">创建收藏</ElButton>
+      </ElCol>
+      <ElCol :span="4">
+        <ElButton type="primary" @click="handleCreateCategory">创建分类</ElButton>
+      </ElCol>
+      <ElCol :span="4">
+        <ElButton type="primary" @click="handleCreateTag">创建标签</ElButton>
+      </ElCol>
       <ElCol :span="4" v-show="enableImportAndExport">
         <ElButton type="warning" @click="handleImport">导入收藏</ElButton>
       </ElCol>
       <ElCol :span="4" v-show="enableImportAndExport">
         <ElButton type="warning" @click="handleExport">导出收藏</ElButton>
       </ElCol>
-      <ElCol :span="4" :offset="12">
-        <ElButton type="primary" @click="handleCreateCategory">创建分类</ElButton>
-      </ElCol>
-      <ElCol :span="4">
-        <ElButton type="primary" @click="handleCreateTag">创建标签</ElButton>
-      </ElCol>
-      <ElCol :span="4">
-        <ElButton type="primary" @click="handleCreateCollect">创建收藏</ElButton>
-      </ElCol>
     </ElRow>
-    <ElDivider />
-
+    <ElBlankLine :height="12" />
     <!--允许过滤-->
-    <ElRow type="flex" :gutter="5" class="align-items-center">
+    <ElRow :gutter="5" class="align-items-center">
       <ElCol :span="6">
         <ElInput v-model="searchTerm1" placeholder="按名字搜索">
           <template v-slot:append>
@@ -63,8 +61,8 @@
       </ElCol>
     </ElRow>
 
-    <ElCardGroup>
-      <CollectOverviewCard v-for="collect in collects" :key="collect.id" :collect="collect" />
+    <ElCardGroup v-if="collectPage">
+      <CollectOverviewCard v-for="collect in collectPage.content" :key="collect.id" :collect="collect" />
       <ThePagination :page="collectPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
 
@@ -108,10 +106,6 @@
     private newTagDialogVisible = false
 
     private enableImportAndExport = false
-
-    private get collects() {
-      return this.collectPage ? this.collectPage.content : []
-    }
 
     private get userId() {
       return parseInt(this.$route.params["id"] as string)

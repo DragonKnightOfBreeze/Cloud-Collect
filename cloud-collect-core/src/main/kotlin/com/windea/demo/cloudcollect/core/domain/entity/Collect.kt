@@ -37,12 +37,12 @@ data class Collect(
 	var summary: String = "",
 	
 	@ApiModelProperty("链接地址。")
-	@Column(nullable = false, length = 512)
-	var url: String,
+	@Column(nullable = false, length = 255)
+	var url: String = "",
 	
-	@ApiModelProperty("标志地址。")
-	@Column(nullable = false, length = 512)
-	var logoUrl: String,
+	@ApiModelProperty("图标地址。")
+	@Column(nullable = false, length = 64)
+	var logoUrl: String = "",
 	
 	@ApiModelProperty("收藏的分类。")
 	@ManyToOne
@@ -76,7 +76,7 @@ data class Collect(
 	
 	@ApiModelProperty("点赞该收藏的用户列表。懒加载。")
 	@JsonIgnore
-	@ManyToMany(mappedBy = "praiseToCollects")
+	@ManyToMany
 	val praiseByUsers: MutableList<User> = mutableListOf()
 	
 	@ApiModelProperty("是否已点赞。")

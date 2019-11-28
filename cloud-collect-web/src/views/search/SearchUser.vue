@@ -26,10 +26,14 @@
       <UserOverviewCard v-for="user in searchPage.content" :key="user.id" :user="user"/>
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
+    <NoContentCard v-else>
+      没有符合条件的用户。
+    </NoContentCard>
   </div>
 </template>
 
 <script lang="ts">
+  import NoContentCard from "@/components/card/NoContentCard.vue"
   import UserOverviewCard from "@/components/card/UserOverviewCard.vue"
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
@@ -39,7 +43,7 @@
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {ThePagination, ElCardGroup, UserOverviewCard, ElBlankLine}
+    components: {NoContentCard, ThePagination, ElCardGroup, UserOverviewCard, ElBlankLine}
   })
   export default class SearchUser extends Vue {
     private searchTerm: string = ""

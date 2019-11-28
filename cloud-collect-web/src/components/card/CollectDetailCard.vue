@@ -1,7 +1,7 @@
 <template>
   <ElCard class="app-collect-detail-card">
     <template v-slot:header>
-      <ElRow type="flex" class="align-items-center">
+      <ElRow class="align-items-center">
         <ElCol :span="1">
           <ElAvatar size="small" :src="collect.logoUrl"/>
         </ElCol>
@@ -65,13 +65,13 @@
     </ElRow>
     <ElRow class="app-item-list">
       <ElCol :span="4">评论数量</ElCol>
-      <ElCol :span="14">{{collect.commentCount}}</ElCol>
-      <ElCol :span="6"><ElLink type="info" href="#comments">查看评论</ElLink></ElCol>
+      <ElCol :span="16">{{collect.commentCount}}</ElCol>
+      <ElCol :span="4"><ElLink type="info" href="#comments">查看评论</ElLink></ElCol>
     </ElRow>
     <ElRow class="app-item-list">
       <ElCol :span="4">收藏家数量</ElCol>
-      <ElCol :span="14">{{collect.praiseByUserCount}}</ElCol>
-      <ElCol :span="6"><ElLink type="info" :href="'/collects/'+collect.id+'/stargazers'">查看收藏家</ElLink></ElCol>
+      <ElCol :span="16">{{collect.praiseByUserCount}}</ElCol>
+      <ElCol :span="4"><ElLink type="info" :href="'/collects/'+collect.id+'/stargazers'">查看收藏家</ElLink></ElCol>
     </ElRow>
     <ElDivider/>
     <ElRow class="app-item-list">

@@ -48,10 +48,10 @@ class UserServiceImpl(
 		//将激活码存储到缓存中
 		val activateCode = cacheService.setActivateCode(user.username)
 		
-		val newUser = user.copy(
-			password = passwordEncoder.encode(user.password) //NOTE 密码需要加密
-		)
-		userRepository.save(newUser)
+		//密码需要进行加密
+		user.password = passwordEncoder.encode(user.password)
+		
+		userRepository.save(user)
 		//当配置为要求发送邮件时，发送邮件
 		if(sendEmail) emailService.sendActivateEmail(user, activateCode)
 	}

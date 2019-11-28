@@ -15,7 +15,7 @@ class BarService(
 	@Transactional
 	fun updateCascadeLazy1Tx() {
 		val bar = barRepository.findByIdOrNull(1)!!
-		bar.lazyFooList = listOf(fooRepository.findByIdOrNull(1)!!)
+		//bar.lazyFooList = mutableListOf(fooRepository.findByIdOrNull(1)!!)
 		//bar.lazyFooList += fooRepository.findByIdOrNull(1)!!
 		//bar.lazyFooList += fooRepository.findByIdOrNull(2)!!
 		println(bar.lazyFooList)

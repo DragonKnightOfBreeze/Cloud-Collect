@@ -1,7 +1,7 @@
 <template>
   <div id="app-header">
     <!--导航栏-->
-    <ElRow id="app-navbar" type="flex" justify="center" align="center" :gutter="20">
+    <ElRow id="app-navbar" align="center">
       <!--导航头部-->
       <ElCol :span="4">
         <router-link to="/">
@@ -10,7 +10,7 @@
         </router-link>
       </ElCol>
       <!--导航内容，到各个分页-->
-      <ElCol :span="12">
+      <ElCol :span="10">
         <ElMenu mode="horizontal" router :default-active="activeIndex" @select="handleSelect">
           <ElMenuItem v-for="item in menuItemList" :key="item.index" :route="item.path" :index="item.index">
             {{item.name}}
@@ -18,15 +18,11 @@
         </ElMenu>
       </ElCol>
       <!--导航侧边栏，显示用户信息，或者登录注册按钮-->
-      <ElCol :span="2">
-        <template v-if="currentUser">
-          <ElAvatar id="app-user-avatar" fit="fill" :src="currentUser.avatarUrl" />
-        </template>
-      </ElCol>
-      <ElCol :span="6">
+      <ElCol :span="8" :offset="2">
         <!--用户信息，点击跳转到档案页，点击下拉项跳转到对应页-->
         <template v-if="currentUser">
-          <ElDropdown type="primary" split-button @click="handleGoProfile" @command="handleCommand">
+          <ElAvatar id="app-user-avatar" fit="fill" :src="currentUser.avatarUrl" />
+          <ElDropdown split-button @click="handleGoProfile" @command="handleCommand">
             {{currentUser.nickname}}
             <template v-slot:dropdown>
               <ElDropdownMenu>
@@ -187,18 +183,18 @@
   #app-navbar {
     position: fixed;
     width: 1000px;
+    margin: 0 -20px;
     height: 61px;
     line-height: 61px;
     z-index: 1000;
-    background-color: #fff;
   }
   #app-logo {
     height: 51px;
-    line-height: 51px;
     vertical-align: middle;
   }
   #app-user-avatar {
-    line-height: 51px;
+    height: 40px;
     vertical-align: middle;
+    margin-right: 5px;
   }
 </style>

@@ -98,8 +98,8 @@ export async function findAllByTypeAndUserId(type: CollectType, userId: number, 
   return response.data
 }
 
-export async function findAllByPraiseByUserId(userId: number, pageableParam: PageableParam) {
-  const params = {userId, ...pageableParam}
+export async function findAllByPraiseByUserId(praiseByUserId: number, pageableParam: PageableParam) {
+  const params = {praiseByUserId, ...pageableParam}
   const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByPraiseByUserId`, {params})
   return response.data
 }

@@ -195,6 +195,8 @@
 * 关于Jpa级联操作
     * 不要在子关系上添加任何级联，必要时在父关系上添加MERGE、REMOVE等级联
     * 尽量不要同时使用MERGE和PERSIST级联，因为会导致各种各样奇怪的问题。
+    * 对于集合属性，可以使用`@JvmSuppressWildcards var List`，也可以使用`val MutableList`。
+    * 对于集合属性，不要对被映射的一方进行修改操作（即对应的JPA注解声明了`mappedBy`属性）。经测试没有效果。
     * 当创建时，最好先对输入的数据进行处理，然后再保存处理后的数据。
         * 当创建时，级联属性是持久态，也就是从数据库查询id得到的时，不需要添加任何级联。
         * 当创建时，级联属性不是持久态，而是游离态，也就是附带id和对应数据时，不需要添加任何级联。
@@ -211,7 +213,7 @@
         * MERGE 当更新时，集合级联属性不是持久态，也不是游离态时，可以通过添加MERGE级联解决。但是之前两种惭怍会出现问题。
     * 关于懒加载
         * 当更新懒加载的集合级联属性时，需要为对应的数据库操作方法添加任意`@Transactional`注解。且该方法仅用于数据库操作。
-        * 可以使用`@JvmSuppressWildcards var List`，也可以使用`val MutableList`。
+        * 对于集合属性，可以使用`@JvmSuppressWildcards var List`，也可以使用`val MutableList`。
         * 当查询时，如果是直接访问实体类的集合级联属性，则需要添加事务注解。如果是调用自定义的持久层方法，则不需要。
 * 关于Swagger：
     * Swagger界面的默认地址映射是`/swagger-ui.html`。
@@ -223,3 +225,5 @@
     * 或者：手动使用cookie保存用户登录信息。
     * 或者：使用spring security的remember-me功能保存用户登录信息，需要进行相关配置，可能需要配置alwaysRemember为true。
     * 或者：使用jwt或者oauth，向http header中添加token。需要进行相关配置。
+* 如何获得一个网站的图标地址：
+    * 例如，获取B站的图标地址：https://www.bilibili.com/favicon.ico

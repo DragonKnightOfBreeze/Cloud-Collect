@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ElButton type="info" size="small" plain v-if="collect.isPraised===true" @click="handleUnpraise">已点赞</ElButton>
-    <ElButton type="primary" size="small" plain v-else-if="collect.isPraised===false" @click="handlePraise">点赞</ElButton>
+    <ElButton type="info" size="small" plain v-if="collect.praised===true" @click="handleUnpraise">已点赞</ElButton>
+    <ElButton type="primary" size="small" plain v-else-if="collect.praised===false" @click="handlePraise">点赞</ElButton>
   </div>
 </template>
 
@@ -17,7 +17,7 @@
     private async handlePraise() {
       try {
         await collectService.praise(this.collect.id!)
-        this.collect.isPraised = true
+        this.collect.praised = true
       } catch (e) {
         this.$message.warning("点赞失败！")
       }
@@ -26,7 +26,7 @@
     private async handleUnpraise() {
       try {
         await collectService.unpraise(this.collect.id!)
-        this.collect.isPraised = false
+        this.collect.praised = false
       } catch (e) {
         this.$message.warning("取消点赞失败！")
       }

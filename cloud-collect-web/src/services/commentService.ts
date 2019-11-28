@@ -26,9 +26,9 @@ export async function findAll(pageableParam: PageableParam) {
   return response.data
 }
 
-export async function findByCollectId(collectId: number, pageableParam: PageableParam) {
+export async function findAllByCollectId(collectId: number, pageableParam: PageableParam) {
   const params = {collectId, ...pageableParam}
-  const response = await http.get<Page<Comment>>(`${commentUrl}/findByCollectId`, {params})
+  const response = await http.get<Page<Comment>>(`${commentUrl}/findAllByCollectId`, {params})
   return response.data
 }
 

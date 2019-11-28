@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ElButton type="info" size="small" plain v-if="user.isFollowed===true" @click="handleUnfollow">已关注</ElButton>
-    <ElButton type="primary" size="small" plain v-else-if="user.isFollowed===false" @click="handleFollow">关注</ElButton>
+    <ElButton type="info" size="small" plain v-if="user.followed===true" @click="handleUnfollow">已关注</ElButton>
+    <ElButton type="primary" size="small" plain v-else-if="user.followed===false" @click="handleFollow">关注</ElButton>
   </div>
 </template>
 
@@ -18,7 +18,7 @@
     private async handleFollow() {
       try {
         await userService.follow(this.user.id!)
-        this.user.isFollowed = true
+        this.user.followed = true
       } catch (e) {
         this.$message.warning("关注失败！")
       }
@@ -27,7 +27,7 @@
     private async handleUnfollow() {
       try {
         await userService.unfollow(this.user.id!)
-        this.user.isFollowed = false
+        this.user.followed = false
       } catch (e) {
         this.$message.warning("取消关注失败！")
       }
