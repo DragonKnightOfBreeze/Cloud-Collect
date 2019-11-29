@@ -59,8 +59,8 @@
         this.$message.success("发送成功！")
         this.syncVisible = false
       } catch (e) {
-        const validationMessage = this.$store.getters.validationMessage
-        this.$message.warning(`发送失败！${validationMessage}`)
+        const errorMessage = this.$store.getters.errorMessage
+        this.$message.warning(`发送失败！${errorMessage}`)
       }
     }
 

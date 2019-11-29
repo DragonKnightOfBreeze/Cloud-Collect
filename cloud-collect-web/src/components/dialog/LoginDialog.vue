@@ -72,7 +72,8 @@
         this.$message.success("登录成功！")
         this.syncDialogType = "none"
       } catch (e) {
-        this.$message.warning("登录失败！用户名或密码错误！")
+        const errorMessage = this.$store.getters.errorMessage
+        this.$message.warning(`登录失败！${errorMessage}`)
       }
     }
 

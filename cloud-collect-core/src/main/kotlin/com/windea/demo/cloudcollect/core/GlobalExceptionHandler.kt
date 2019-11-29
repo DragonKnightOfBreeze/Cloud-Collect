@@ -2,7 +2,6 @@ package com.windea.demo.cloudcollect.core
 
 import com.windea.demo.cloudcollect.core.exceptions.*
 import org.springframework.http.*
-import org.springframework.security.core.*
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.method.annotation.*
 
@@ -33,16 +32,16 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 		return ResponseEntity.badRequest().body(e.message)
 	}
 	
-	@ExceptionHandler(IncorrectAuthCodeException::class)
-	fun handleIncorrectAuthCodeException(e: IncorrectAuthCodeException): ResponseEntity<String> {
+	@ExceptionHandler(InvalidUserException::class)
+	fun handleInvalidUserException(e: InvalidUserException): ResponseEntity<String> {
 		e.printStackTrace()
 		return ResponseEntity.badRequest().body(e.message)
 	}
 	
-	@ExceptionHandler(InvalidUserException::class)
-	fun handleInvalidUserException(e: InvalidUserException): ResponseEntity<Nothing> {
+	@ExceptionHandler(InvalidAuthCodeException::class)
+	fun handleInvalidAuthCodeException(e: InvalidAuthCodeException): ResponseEntity<String> {
 		e.printStackTrace()
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+		return ResponseEntity.badRequest().body(e.message)
 	}
 	
 	@ExceptionHandler(NotFoundException::class)
@@ -55,11 +54,5 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 	fun handleNotImplementedException(e: NotImplementedException): ResponseEntity<Nothing> {
 		e.printStackTrace()
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build()
-	}
-	
-	@ExceptionHandler(AuthenticationException::class)
-	fun handleAuthenticationException(e: AuthenticationException): ResponseEntity<Nothing> {
-		e.printStackTrace()
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
 	}
 }

@@ -119,7 +119,11 @@
       try {
         await this.$confirm("此操作将永久删除该收藏, 是否继续?", {type: "warning"})
         await this.deleteCollect()
-        await this.$router.push(`/profile/${this.currentUser!.id}`)
+        if (this.currentUser) {
+          await this.$router.push("/collects")
+        } else {
+          await this.$router.push(`/profile/${this.currentUser!.id}`)
+        }
       } catch (e) {
         this.$message.info("已取消删除。")
       }

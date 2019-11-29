@@ -5,13 +5,12 @@ enum class ResultStatus(
 	val code: Int,
 	val message: String
 ) {
-	OK(200, "200 操作成功。"),
-	USER_NOT_FOUND(401, "401 用户未找到！"),
-	INVALID_USER(403, "403 非法的用户！"),
-	INCORRECT_AUTH_CODE(403, "403 不正确的验证码！"),
-	NOT_FOUND(404, "404 页面未找到！"),
-	NOT_IMPLEMENTED(501, "501 功能未实现！"),
-	VALIDATION_ERROR(400, "400 参数错误！"),
-	IMPORT_DATA_FAILED(500, "500 导入收藏数据失败！"),
-	EXPORT_DATA_FAILED(500, "500 导出收藏数据失败！")
+	OK(200, "操作成功。"),
+	USER_NOT_FOUND(401, "用户不存在！"),
+	INVALID_USER(401, "用户名或密码错误！"),
+	INVALID_AUTH_CODE(401, "验证码错误！"),
+	IMPORT_DATA_FAILED(500, "导入数据失败！"),
+	EXPORT_DATA_FAILED(500, "导出数据失败！"),
+	NOT_FOUND(404, "页面不存在！"),
+	NOT_IMPLEMENTED(501, "功能未实现！")
 }

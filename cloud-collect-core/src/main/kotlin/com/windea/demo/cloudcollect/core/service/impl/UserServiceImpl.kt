@@ -3,7 +3,7 @@
 package com.windea.demo.cloudcollect.core.service.impl
 
 import com.windea.demo.cloudcollect.core.GlobalConfig.sendEmail
-import com.windea.demo.cloudcollect.core.domain.entity.*
+import com.windea.demo.cloudcollect.core.domain.entity.User
 import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.enums.*
@@ -16,6 +16,7 @@ import org.springframework.data.domain.*
 import org.springframework.data.repository.*
 import org.springframework.security.authentication.*
 import org.springframework.security.core.context.*
+import org.springframework.security.core.userdetails.*
 import org.springframework.security.crypto.password.*
 import org.springframework.stereotype.*
 import javax.transaction.*
@@ -36,10 +37,17 @@ class UserServiceImpl(
 ) : UserService {
 	override fun login(form: LoginForm): UserDetailsVo {
 		//验证鉴定对象，然后将其转化为UserDetailsVo后返回
-		val authentication = UsernamePasswordAuthenticationToken(form.username, form.password)
-		val validAuthentication = authenticationManager.authenticate(authentication)
-		SecurityContextHolder.getContext().authentication = validAuthentication
-		return validAuthentication.principal as UserDetailsVo
+		//如果用户不存在或者用户名或密码错误，则再次抛出自定义的异常
+		try {
+			val authentication = UsernamePasswordAuthenticationToken(form.username, form.password)
+			val validAuthentication = authenticationManager.authenticate(authentication)
+			SecurityContextHolder.getContext().authentication = validAuthentication
+			return validAuthentication.principal as UserDetailsVo
+		} catch(e: UsernameNotFoundException) {
+			throw UserNotFoundException()
+		} catch(e: Exception) {
+			throw InvalidUserException()
+		}
 	}
 	
 	@Transactional
@@ -65,7 +73,7 @@ class UserServiceImpl(
 	override fun activate(username: String, activateCode: String) {
 		//冲缓存中得到激活码，如果不匹配，则抛出异常
 		val code = cacheService.getActivateCode(username)
-		if(activateCode != code) throw IncorrectAuthCodeException()
+		if(activateCode != code) throw InvalidAuthCodeException()
 		
 		val rawUser = userRepository.findByUsername(username) ?: throw UserNotFoundException()
 		rawUser.activateStatus = true
@@ -90,7 +98,7 @@ class UserServiceImpl(
 	override fun resetPassword(form: ResetPasswordForm, resetPasswordCode: String) {
 		//从缓存中得到激活码，如果不匹配，则抛出异常
 		val code = cacheService.getResetPasswordCode(form.username)
-		if(resetPasswordCode != code) throw IncorrectAuthCodeException()
+		if(resetPasswordCode != code) throw InvalidAuthCodeException()
 		
 		val rawUser = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
 		rawUser.password = passwordEncoder.encode(form.password) //NOTE 密码需要加密

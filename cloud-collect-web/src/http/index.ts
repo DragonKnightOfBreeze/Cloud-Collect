@@ -32,30 +32,14 @@ http.interceptors.response.use(value => {
     const status = error.response.status
     switch (status) {
       case 400:
-        //如果为参数验证的错误
-        //if (error.response.data.validationErrors) {
-        //  const validationErrors = error.response.data.validationErrors as ObjectError[]
-        //  store.commit("setValidationErrors", validationErrors)
-        //}
-        //这里只取最先一条消息
-        //if (error.response.data.validationErrors) {
-        //  const validationMessage = (error.response.data.validationErrors as ObjectError[])[0].defaultMessage
-        //  console.warn("参数验证错误。")
-        //  console.warn("Validation message:", validationMessage)
-        //  store.commit("setValidationMessage", validationMessage)
-        //}
-        //参数验证错误
-        const validationMessage = error.response.data as string
-        console.warn("参数验证错误。")
-        console.warn("Validation message:", validationMessage)
-        store.commit("setValidationMessage", validationMessage)
+        //取得错误消息并存储到store中
+        const errorMessage = error.response.data as string
+        console.warn("Error message:", errorMessage)
+        store.commit("setErrorMessage", errorMessage)
         break
       case 401:
         //要求用户登录
         router.push({path: "/", query: {operation: "login"}})
-        break
-      case 403:
-        router.push("/error/403")
         break
       case 404:
         router.push("/error/404")

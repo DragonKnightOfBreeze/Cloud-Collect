@@ -58,8 +58,8 @@
         this.$message.success("编辑成功！")
         this.syncVisible = false
       } catch (e) {
-        const validationMessage = this.$store.getters.validationMessage
-        this.$message.warning(`编辑失败！${validationMessage}`)
+        const errorMessage = this.$store.getters.errorMessage
+        this.$message.warning(`编辑失败！${errorMessage}`)
       }
     }
 

@@ -101,7 +101,11 @@
       try {
         await this.$confirm("此操作将永久删除该标签, 是否继续?", {type: "warning"})
         await this.deleteTag()
-        await this.$router.push(`/profile/${this.currentUser!.id}`)
+        if (this.currentUser) {
+          await this.$router.push("/tags")
+        } else {
+          await this.$router.push(`/profile/${this.currentUser!.id}`)
+        }
       } catch (e) {
         this.$message.info("已取消删除。")
       }

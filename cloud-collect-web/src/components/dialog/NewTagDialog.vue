@@ -55,8 +55,8 @@
         this.$message.success("创建成功！")
         this.syncVisible = false
       } catch (e) {
-        const validationMessage = this.$store.getters.validationMessage
-        this.$message.warning(`创建失败！${validationMessage}`)
+        const errorMessage = this.$store.getters.errorMessage
+        this.$message.warning(`创建失败！${errorMessage}`)
       }
     }
 

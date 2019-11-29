@@ -13,12 +13,8 @@ export default new Vuex.Store({
     _currentUser: null,
     //当前用户的jwt令牌
     _jwtToken: "",
-    //最后浏览的收藏
-    //_lastViewedCollect: null,
-    //参数校验的错误列表
-    //_validationErrors: [],
-    //参数校验的首条消息
-    _validationMessage: ""
+    //错误消息
+    _errorMessage: ""
   },
   getters: {
     currentUser(state): User | null {
@@ -27,19 +23,10 @@ export default new Vuex.Store({
     jwtToken(state): string {
       return state._jwtToken
     },
-    //lastViewedCollect(state): Collect | null {
-    //  return state._lastViewedCollect as Collect | null
-    //},
-    //validationErrors(state): ObjectError[] {
-    //  const result = state._validationErrors
-    //  //每次读取错误列表时，需要同时清空所有数据
-    //  state._validationErrors = []
-    //  return result
-    //},
-    validationMessage(state): string {
-      const result = state._validationMessage
+    errorMessage(state): string {
       //每次读取时需要清空消息
-      state._validationMessage = ""
+      const result = state._errorMessage
+      state._errorMessage = ""
       return result
     }
   },
@@ -50,14 +37,8 @@ export default new Vuex.Store({
     setJwtToken(state, jwtToken: string) {
       state._jwtToken = jwtToken
     },
-    //setLastViewedCollect(state, lastViewedCollect: Collect) {
-    //  state._lastViewedCollect = lastViewedCollect as any
-    //},
-    //setValidationErrors(state, validationErrors: ObjectError[]) {
-    //  state._validationErrors.push(...validationErrors as [])
-    //},
-    setValidationMessage(state, validationMessage: string) {
-      state._validationMessage = validationMessage
+    setErrorMessage(state, errorMessage: string) {
+      state._errorMessage = errorMessage
     }
   },
   actions: {},
