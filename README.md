@@ -226,4 +226,4 @@
     * 或者：使用spring security的remember-me功能保存用户登录信息，需要进行相关配置，可能需要配置alwaysRemember为true。
     * 或者：使用jwt或者oauth，向http header中添加token。需要进行相关配置。
 * 如何获得一个网站的图标地址：
-    * 例如，获取B站的图标地址：https://www.bilibili.com/favicon.ico
+    * 例如，获取B站的图标地址：`https://www.bilibili.com/favicon.ico`
