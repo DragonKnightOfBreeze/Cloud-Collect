@@ -53,9 +53,12 @@ class CommentServiceImpl(
 		return commentRepository.findAllBySponsorByUserIdOrderByIdDesc(sponsorByUserId, pageable)
 	}
 	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByReplyToCommentId(replyToCommentId: Long, pageable: Pageable): Page<Comment> {
+		return commentRepository.findAllByReplyToCommentIdOrderByIdDesc(replyToCommentId, pageable)
+	}
+	
 	private fun Comment.lateInit() = this.apply {
 		replyToCommentCount = commentRepository.countByReplyToCommentId(id)
 	}
-	
-	
 }

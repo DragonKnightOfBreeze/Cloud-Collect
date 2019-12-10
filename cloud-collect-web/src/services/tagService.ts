@@ -32,14 +32,14 @@ export async function findAllByNameContains(name: string, pageableParam: Pageabl
   return response.data
 }
 
-export async function findAllByUserId(userId: number, pageableParam: PageableParam) {
-  const params = {userId, ...pageableParam}
-  const response = await http.get<Page<Tag>>(`${tagUrl}/findAllByUserId`, {params})
-  return response.data
-}
+//export async function findAllByUserId(userId: number, pageableParam: PageableParam) {
+//  const params = {userId, ...pageableParam}
+//  const response = await http.get<Page<Tag>>(`${tagUrl}/findAllByUserId`, {params})
+//  return response.data
+//}
 
-export async function findAllByNameContainsAndUserId(userId: number, name: string, pageableParam: PageableParam) {
-  const params = {userId, name, ...pageableParam}
-  const response = await http.get<Page<Tag>>(`${tagUrl}/findAllByNameContainsAndUserId`, {params})
-  return response.data
-}
+//export async function findAllByNameContainsAndUserId(userId: number, name: string, pageableParam: PageableParam) {
+//  const params = {userId, name, ...pageableParam}
+//  const response = await http.get<Page<Tag>>(`${tagUrl}/findAllByNameContainsAndUserId`, {params})
+//  return response.data
+//}

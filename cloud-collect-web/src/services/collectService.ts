@@ -50,6 +50,12 @@ export async function findAllByCategoryId(categoryId: number, pageableParam: Pag
   return response.data
 }
 
+export async function findAllByCategoryName(categoryName: string, pageableParam: PageableParam) {
+  const params = {categoryName, ...pageableParam}
+  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByCategoryName`, {params})
+  return response.data
+}
+
 export async function findAllByCategoryNameContains(categoryName: string, pageableParam: PageableParam) {
   const params = {categoryName, ...pageableParam}
   const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByCategoryNameContains`, {params})
@@ -59,6 +65,12 @@ export async function findAllByCategoryNameContains(categoryName: string, pageab
 export async function findAllByTagId(tagId: number, pageableParam: PageableParam) {
   const params = {tagId, ...pageableParam}
   const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByTagId`, {params})
+  return response.data
+}
+
+export async function findAllByTagName(tagName: string, pageableParam: PageableParam) {
+  const params = {tagName, ...pageableParam}
+  const response = await http.get<Page<Collect>>(`${collectUrl}/findAllByTagName`, {params})
   return response.data
 }
 

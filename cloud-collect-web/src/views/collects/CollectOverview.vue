@@ -20,7 +20,7 @@
       <ElCol :span="8">
         <ElForm inline class="align-center">
           <ElFormItem>
-            <ElInput v-model="searchTerm2" placeholder="按分类搜索"></ElInput>
+            <ElInput v-model="searchTerm2" placeholder="按分类名搜索"></ElInput>
           </ElFormItem>
           <ElFormItem>
             <ElButton type="primary" @click="handleSearch('categoryName')"><ElIcon name="search" /></ElButton>
@@ -30,7 +30,7 @@
       <ElCol :span="8">
         <ElForm inline class="align-center">
           <ElFormItem>
-            <ElInput v-model="searchTerm3" placeholder="按标签搜索"></ElInput>
+            <ElInput v-model="searchTerm3" placeholder="按标签名搜索"></ElInput>
           </ElFormItem>
           <ElFormItem>
             <ElButton type="primary" @click="handleSearch('tagName')"><ElIcon name="search" /></ElButton>
@@ -40,6 +40,7 @@
     </ElRow>
 
     <ElCardGroup v-if="searchPage">
+      <TheSorter type="collect" :pageable-param.sync="pageableParam" />
       <CollectOverviewCard v-for="collect in searchPage.content" :key="collect.id" :collect="collect"/>
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
@@ -55,12 +56,13 @@
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
+  import TheSorter from "@/components/root/TheSorter.vue"
   import * as collectService from "@/services/collectService"
   import {CollectSearchType, Page, PageableParam, Tag} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {NoContentCard, ElBlankLine, ThePagination, CollectOverviewCard, ElCardGroup}
+    components: {TheSorter, NoContentCard, ElBlankLine, ThePagination, CollectOverviewCard, ElCardGroup}
   })
   export default class CollectOverview extends Vue {
     private searchTerm1: string = ""
@@ -72,7 +74,7 @@
 
     @Watch("pageableParam")
     private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
-      console.log(`查询分页参数发生变化：`, value)
+      console.log(`分页参数发生了变化：`, value)
       this.searchCollect()
     }
 
@@ -100,8 +102,8 @@
           case "tagName":
             this.searchPage = await collectService.findAllByTagNameContains(this.searchTerm3, this.pageableParam)
             break
-          case "type":
-            this.$message.error("Cannot search collects by type here.")
+          default:
+            this.$message.error(`Cannot search collects by ${this.searchType} here.`)
             break
         }
       } catch (e) {

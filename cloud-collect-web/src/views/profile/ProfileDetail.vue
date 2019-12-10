@@ -90,6 +90,7 @@
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
+      console.log("路由发生了变化：", value)
       this.getUser()
       this.changeActiveIndex(value, oldValue)
     }

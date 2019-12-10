@@ -81,7 +81,7 @@
 
     //仅能搜索自己的分类
     private async searchCategoryByName(value: string) {
-      console.log("Loading categories...")
+      console.log("加载分类中...")
       this.loadingCategories = true
       const pageableParam: PageableParam = {page: 0, size: 100}
       this.categories = (await categoryService.findAllByNameContainsAndUserId(value, this.currentUser.id!, pageableParam)).content
@@ -90,7 +90,7 @@
 
     //可以搜索全部用户的标签
     private async searchTagByName(value: string) {
-      console.log("Loading tags...")
+      console.log("加载标签中...")
       this.loadingTags = true
       const pageableParam: PageableParam = {page: 0, size: 100}
       this.tags = (await tagService.findAllByNameContains(value, pageableParam)).content

@@ -106,6 +106,11 @@ class CollectServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
+	override fun findAllByCategoryName(categoryName: String, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByCategoryName(categoryName, pageable).map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
 	override fun findAllByCategoryNameContains(categoryName: String, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByCategoryNameContains(categoryName, pageable).map { it.lateInit() }
 	}
@@ -113,6 +118,11 @@ class CollectServiceImpl(
 	@Cacheable(key = "methodName + args")
 	override fun findAllByTagId(tagId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByTagsId(tagId, pageable).map { it.lateInit() }
+	}
+	
+	@Cacheable(key = "methodName + args")
+	override fun findAllByTagName(tagName: String, pageable: Pageable): Page<Collect> {
+		return collectRepository.findAllByTagsName(tagName, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -186,5 +196,4 @@ class CollectServiceImpl(
 		//尝试为当前用户添加一条浏览记录
 		currentUser?.let { currentUser -> historyService.create(History(collect = it, user = currentUser)) }
 	}
-	
 }

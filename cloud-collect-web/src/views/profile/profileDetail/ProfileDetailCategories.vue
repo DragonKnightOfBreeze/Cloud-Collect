@@ -24,6 +24,7 @@
     </ElRow>
 
     <ElCardGroup v-if="categoryPage">
+      <TheSorter type="category" :pageable-param.sync="pageableParam" />
       <CategoryOverviewCard v-for="category in categoryPage.content" :key="category.id" :category="category" />
       <ThePagination :page="categoryPage" :pageable-param.sync="pageableParam"/>
     </ElCardGroup>
@@ -38,13 +39,14 @@
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
+  import TheSorter from "@/components/root/TheSorter.vue"
   import * as categoryService from "@/services/categoryService"
   import {Category, CategorySearchType, Page, PageableParam} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
   @Component({
-    components: {ElBlankLine, NewCategoryDialog, ThePagination, CategoryOverviewCard, ElCardGroup}
+    components: {TheSorter, ElBlankLine, NewCategoryDialog, ThePagination, CategoryOverviewCard, ElCardGroup}
   })
   export default class ProfileDetailCategories extends Vue {
     private searchTerm: string = ""
@@ -67,12 +69,13 @@
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
+      console.log("路由发生了变化：", value)
       this.getCategoryPage()
     }
 
     @Watch("pageableParam")
     private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
-      console.log(`查询分页参数发生变化：`, value)
+      console.log(`分页参数发生了变化：`, value)
       this.getCategoryPage()
     }
 

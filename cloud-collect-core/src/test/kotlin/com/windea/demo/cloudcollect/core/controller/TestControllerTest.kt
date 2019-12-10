@@ -35,10 +35,6 @@ class TestControllerTest {
 	
 	@Test
 	fun testPageable4() {
-		//mockMvc.perform(get("/test/getPageable")
-		//	.param("page", "2").param("size", "15").param("sort", "name,age,DESC")
-		//).andDo(print())
-		
 		//使用Kotlin Dsl
 		mockMvc.get("/test/getPageable") {
 			param("page", "2")

@@ -21,6 +21,7 @@
     </ElRow>
 
     <ElCardGroup v-if="searchPage">
+      <TheSorter type="category" :pageable-param.sync="pageableParam" />
       <CategoryOverviewCard v-for="category in searchPage.content" :key="category.id" :category="category"/>
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
@@ -36,12 +37,13 @@
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
+  import TheSorter from "@/components/root/TheSorter.vue"
   import * as categoryService from "@/services/categoryService"
   import {Category, Page, PageableParam} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {NoContentCard, ElBlankLine, CategoryOverviewCard, ElCardGroup, ThePagination}
+    components: {TheSorter, NoContentCard, ElBlankLine, CategoryOverviewCard, ElCardGroup, ThePagination}
   })
   export default class CategoryOverview extends Vue {
     private searchTerm: string = ""
@@ -50,7 +52,7 @@
 
     @Watch("pageableParam")
     private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
-      console.log(`查询分页参数发生变化：`, value)
+      console.log(`分页参数发生了变化：`, value)
       this.searchCategoryByName()
     }
 

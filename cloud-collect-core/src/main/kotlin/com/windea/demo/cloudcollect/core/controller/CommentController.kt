@@ -57,4 +57,16 @@ class CommentController(
 	fun findAllByCollectId(@RequestParam collectId: Long, pageable: Pageable): Page<Comment> {
 		return commentService.findAllByCollectId(collectId, pageable)
 	}
+	
+	@ApiOperation("根据发起用户id查询所有评论。")
+	@GetMapping("/findAllBySponsorByUserId")
+	fun findAllBySponsorByUserId(@RequestParam sponsorByUserId: Long, pageable: Pageable): Page<Comment> {
+		return commentService.findAllBySponsorByUserId(sponsorByUserId, pageable)
+	}
+	
+	@ApiOperation("根据回复评论id查询所有评论。")
+	@GetMapping("/findAllByReplyToCommentId")
+	fun findAllByReplyToCommentId(@RequestParam replyToCommentId: Long, pageable: Pageable): Page<Comment> {
+		return commentService.findAllByReplyToCommentId(replyToCommentId, pageable)
+	}
 }

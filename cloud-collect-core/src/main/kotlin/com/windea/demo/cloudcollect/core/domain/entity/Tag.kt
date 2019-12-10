@@ -55,7 +55,6 @@ data class Tag(
 	@Transient
 	var collectCount: Long = 0
 	
-	
 	override fun equals(other: Any?) = other === this || (other is Tag && other.id == id)
 	
 	override fun hashCode() = id.hashCode()

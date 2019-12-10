@@ -21,6 +21,7 @@
           </ElRow>
 
           <ElCardGroup v-if="collectPage && !collectPage.empty">
+            <TheSorter type="collect" :pageable-param.sync="pageableParam" />
             <CollectOverviewCard v-for="collect in collectPage.content" :key=collect.id :collect="collect" />
             <ThePagination :page="collectPage" :pageable-param.sync="pageableParam" />
           </ElCardGroup>
@@ -40,6 +41,7 @@
   import EditTagDialog from "@/components/dialog/EditTagDialog.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
+  import TheSorter from "@/components/root/TheSorter.vue"
   import * as collectService from "@/services/collectService"
   import * as tagService from "@/services/tagService"
   import {Collect, Page, PageableParam, Tag, User} from "@/types"
@@ -47,7 +49,15 @@
   import {Route} from "vue-router"
 
   @Component({
-    components: {NoContentCard, EditTagDialog, CollectOverviewCard, TagDetailCard, ElCardGroup, ThePagination}
+    components: {
+      TheSorter,
+      NoContentCard,
+      EditTagDialog,
+      CollectOverviewCard,
+      TagDetailCard,
+      ElCardGroup,
+      ThePagination
+    }
   })
   export default class TagDetail extends Vue {
     private tag: Tag | null = null
@@ -74,12 +84,13 @@
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
+      console.log("路由发生了变化：", value)
       this.getTag()
     }
 
     @Watch("pageableParam")
     private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
-      console.log(`查询分页参数发生变化：`, value)
+      console.log(`分页参数发生了变化：`, value)
       this.getCollectPage()
     }
 

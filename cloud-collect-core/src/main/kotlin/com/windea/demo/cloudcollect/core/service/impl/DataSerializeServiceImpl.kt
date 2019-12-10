@@ -81,7 +81,7 @@ class DataSerializeServiceImpl(
 			categoryRepository.findByNameAndUserId(it, user.id) ?: Category(name = name, user = user)
 		},
 		tags = tagNames.map {
-			tagRepository.findByNameAndUserId(it, user.id) ?: Tag(name = name, user = user)
+			tagRepository.findByName(it) ?: Tag(name = name, user = user)
 		}.distinctBy { it.name }.toMutableSet(),
 		type = this.type,
 		user = user

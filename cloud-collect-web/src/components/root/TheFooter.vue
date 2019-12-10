@@ -17,8 +17,7 @@
 <style scoped>
   #app-footer {
     text-align: center;
-    font-weight: bold;
+    height: 60px;
     line-height: 60px;
-
   }
 </style>

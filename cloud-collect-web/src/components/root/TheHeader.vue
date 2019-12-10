@@ -88,7 +88,8 @@
     //NOTE 这里只能监听当前路由，不能使用beforeRouteUpdate回调。
     //NOTE 这个方法不需要在mounted()等钩子函数中主动调用。
     @Watch("$route")
-    onRouteChange(value: Route, oldValue: Route) {
+    private onRouteChange(value: Route, oldValue: Route) {
+      console.log("路由发生了变化：", value)
       this.changeActiveIndex(value, oldValue)
       this.changeOperation(value, oldValue)
     }
@@ -141,36 +142,34 @@
     }
 
     //切换当前导航
-    handleSelect(index: string, indexPath: string) {
+    private handleSelect(index: string, indexPath: string) {
       this.activeIndex = index
     }
 
-    handleGoProfile() {
+    private handleGoProfile() {
       if (this.currentUser != null && this.currentUser.id != null) {
-        console.log("转到档案页")
         this.$router.push(`/profile/${this.currentUser.id}`)
       }
     }
 
-    handleCommand(command: string) {
+    private handleCommand(command: string) {
       if (this.currentUser == null || this.currentUser.id == null) return
 
       if (command == "logout") {
         this.handleLogout()
       }
-      console.log(`执行档案命令：${command}`)
       this.$router.push(`/profile/${this.currentUser.id}/${command}`)
     }
 
     //打开对话框，点击对应按钮时调用
-    handleOpenDialog(dialogType: DialogType) {
+    private handleOpenDialog(dialogType: DialogType) {
       console.log(`打开对话框：${dialogType}`)
       this.dialogType = dialogType
     }
 
     //注销用户
-    async handleLogout() {
-      console.log("注销用户")
+    private async handleLogout() {
+      console.log("注销用户。")
       window.localStorage.removeItem("currentUser")
       this.$store.commit("setCurrentUser", null)
       this.$store.commit("setJwtToken", "")
@@ -180,12 +179,14 @@
 </script>
 
 <style scoped>
+  #app-header {
+    height: 60px;
+    line-height: 60px;
+  }
   #app-navbar {
     position: fixed;
     width: 1000px;
     margin: 0 -20px;
-    height: 61px;
-    line-height: 61px;
     z-index: 1000;
   }
   #app-logo {

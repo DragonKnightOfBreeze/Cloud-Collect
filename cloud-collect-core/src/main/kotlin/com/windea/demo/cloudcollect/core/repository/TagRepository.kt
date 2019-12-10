@@ -5,7 +5,7 @@ import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.*
 
 interface TagRepository : JpaRepository<Tag, Long> {
-	fun findByNameAndUserId(name: String, userId: Long): Tag?
+	fun findByName(name: String): Tag?
 	
 	fun findAllByNameContains(name: String, pageable: Pageable): Page<Tag>
 	
@@ -13,7 +13,5 @@ interface TagRepository : JpaRepository<Tag, Long> {
 	
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Tag>
 	
-	fun countByUserId(userId: Long): Long
-	
-	fun existsByNameAndUser(name: String, user: User): Boolean
+	fun existsByName(name: String): Boolean
 }

@@ -9,9 +9,9 @@ interface CategoryRepository : JpaRepository<Category, Long> {
 	
 	fun findAllByNameContains(name: String, pageable: Pageable): Page<Category>
 	
-	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<Category>
-	
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Category>
+	
+	fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<Category>
 	
 	fun countByUserId(userId: Long): Long
 	

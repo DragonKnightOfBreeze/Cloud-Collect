@@ -23,6 +23,7 @@
     </ElRow>
 
     <ElCardGroup v-if="searchPage">
+      <TheSorter type="user" :pageable-param.sync="pageableParam" />
       <UserOverviewCard v-for="user in searchPage.content" :key="user.id" :user="user"/>
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
@@ -38,12 +39,13 @@
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
+  import TheSorter from "@/components/root/TheSorter.vue"
   import * as userService from "@/services/userService"
   import {Option, Page, PageableParam, User, UserSearchType} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {NoContentCard, ThePagination, ElCardGroup, UserOverviewCard, ElBlankLine}
+    components: {TheSorter, NoContentCard, ThePagination, ElCardGroup, UserOverviewCard, ElBlankLine}
   })
   export default class SearchUser extends Vue {
     private searchTerm: string = ""
@@ -51,14 +53,14 @@
     private pageableParam: PageableParam = {page: 0, size: 20}
     private searchPage: Page<User> | null = null
     private searchOptions: Option<UserSearchType>[] = [
-      {label: "按昵称搜索", value: "nickname"},
-      {label: "按用户名搜索", value: "username"},
-      {label: "按邮箱搜索", value: "email"}
+      {label: "按昵称模糊搜索", value: "nickname"},
+      {label: "按用户名模糊搜索", value: "username"},
+      {label: "按邮箱模糊搜索", value: "email"}
     ]
 
     @Watch("pageableParam")
     private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
-      console.log(`查询分页参数发生变化：`, value)
+      console.log(`分页参数发生了变化：`, value)
       this.searchUser()
     }
 

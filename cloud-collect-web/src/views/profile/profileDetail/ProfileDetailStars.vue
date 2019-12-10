@@ -13,14 +13,14 @@
         </ElInput>
       </ElCol>
       <ElCol :span="6">
-        <ElInput v-model="searchTerm2" placeholder="按分类搜索">
+        <ElInput v-model="searchTerm2" placeholder="按分类名搜索">
           <template v-slot:append>
             <ElButton @click="handleSearch('categoryName')"><ElIcon name="search" /></ElButton>
           </template>
         </ElInput>
       </ElCol>
       <ElCol :span="6">
-        <ElInput v-model="searchTerm3" placeholder="按标签搜索">
+        <ElInput v-model="searchTerm3" placeholder="按标签名搜索">
           <template v-slot:append>
             <ElButton @click="handleSearch('tagName')"><ElIcon name="search" /></ElButton>
           </template>
@@ -44,6 +44,7 @@
     </ElRow>
 
     <ElCardGroup v-if="praiseToCollectPage">
+      <TheSorter type="collect" :pageable-param.sync="pageableParam" />
       <CollectOverviewCard v-for="collect in praiseToCollectPage.content" :key="collect.id" :collect="collect" />
       <ThePagination :page="praiseToCollectPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
@@ -54,6 +55,7 @@
   import CollectOverviewCard from "@/components/card/CollectOverviewCard.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
+  import TheSorter from "@/components/root/TheSorter.vue"
   import {collectTypes} from "@/enums"
   import * as collectService from "@/services/collectService"
   import {Collect, CollectSearchType, CollectType, Page, PageableParam} from "@/types"
@@ -61,7 +63,7 @@
   import {Route} from "vue-router"
 
   @Component({
-    components: {ThePagination, CollectOverviewCard, ElCardGroup}
+    components: {TheSorter, ThePagination, CollectOverviewCard, ElCardGroup}
   })
   export default class ProfileDetailStars extends Vue {
     private searchTerm1: string = ""
@@ -83,12 +85,13 @@
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
+      console.log("路由发生了变化：", value)
       this.getPraiseToCollectPage()
     }
 
     @Watch("pageableParam")
     private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
-      console.log(`查询分页参数发生变化：`, value)
+      console.log(`分页参数发生了变化：`, value)
       this.getPraiseToCollectPage()
     }
 
@@ -119,6 +122,9 @@
             break
           case "type":
             this.praiseToCollectPage = await collectService.findAllByTypeAndPraiseByUserId(this.searchTerm4, this.userId, this.pageableParam)
+            break
+          default:
+            this.$message.error(`Cannot search collects by ${this.searchType} here.`)
             break
         }
       } catch (e) {

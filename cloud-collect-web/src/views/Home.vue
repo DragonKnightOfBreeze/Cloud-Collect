@@ -24,15 +24,29 @@
         </ElRow>
       </ElCol>
     </ElRow>
+
+    <ElCardGroup>
+      <TheSorter type="collect" :pageable-param.sync="pageableParam" />
+      <ElCard>123</ElCard>
+      <ThePagination :page="{totalPages:10,totalElements:100}" :pageable-param.sync="pageableParam" />
+    </ElCardGroup>
   </div>
 </template>
 
 <script lang="ts">
+  import ElCardGroup from "@/components/public/ElCardGroup.vue"
+  import ThePagination from "@/components/root/ThePagination.vue"
+  import TheSorter from "@/components/root/TheSorter.vue"
   import * as indexService from "@/services/indexService"
+  import {PageableParam} from "@/types"
   import {Component, Vue} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    components: {ThePagination, TheSorter, ElCardGroup}
+  })
   export default class Home extends Vue {
+    private pageableParam: PageableParam = {page: 0, size: 20}
+
     handleLogin() {
       this.$router.push("/login")
     }

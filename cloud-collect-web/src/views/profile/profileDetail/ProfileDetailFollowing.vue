@@ -17,6 +17,7 @@
     </ElRow>
 
     <ElCardGroup v-if="followToUserPage">
+      <TheSorter type="user" :pageable-param.sync="pageableParam" />
       <UserOverviewCard v-for="user in followToUserPage.content" :key="user.id" :user="user"/>
       <ThePagination :page="followToUserPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
@@ -27,13 +28,14 @@
   import UserOverviewCard from "@/components/card/UserOverviewCard.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
+  import TheSorter from "@/components/root/TheSorter.vue"
   import * as userService from "@/services/userService"
   import {Page, PageableParam, User, UserSearchType} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
   @Component({
-    components: {ThePagination, UserOverviewCard, ElCardGroup}
+    components: {TheSorter, ThePagination, UserOverviewCard, ElCardGroup}
   })
   export default class ProfileDetailFollowing extends Vue {
     private searchTerm: string = ""
@@ -51,12 +53,13 @@
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
+      console.log("路由发生了变化：", value)
       this.getFollowToUserPage()
     }
 
     @Watch("pageableParam")
     private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
-      console.log(`查询分页参数发生变化：`, value)
+      console.log(`分页参数发生了变化：`, value)
       this.getFollowToUserPage()
     }
 

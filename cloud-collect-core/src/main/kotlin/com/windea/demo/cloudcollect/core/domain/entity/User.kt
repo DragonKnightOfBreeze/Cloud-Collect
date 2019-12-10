@@ -120,7 +120,6 @@ data class User constructor(
 	@Transient
 	var followByUserCount: Long = 0
 	
-	
 	override fun equals(other: Any?) = other === this || (other is User && other.id == id)
 	
 	override fun hashCode() = id.hashCode()

@@ -54,14 +54,14 @@ class CategoryServiceImpl(
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByNameContainsAndUserId(name: String, userId: Long,
-		pageable: Pageable): Page<Category> {
-		return categoryRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
+	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Category> {
+		return categoryRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
 	@Cacheable(key = "methodName + args")
-	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Category> {
-		return categoryRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
+	override fun findAllByNameContainsAndUserId(name: String, userId: Long,
+		pageable: Pageable): Page<Category> {
+		return categoryRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
 	}
 	
 	override fun existsByNameAndUser(name: String, user: User): Boolean {
@@ -71,5 +71,4 @@ class CategoryServiceImpl(
 	private fun Category.lateInit() = this.apply {
 		collectCount = collectRepository.countByCategoryId(id)
 	}
-	
 }

@@ -63,8 +63,8 @@ class TagServiceImpl(
 		return tagRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
-	override fun existsByNameAndUser(name: String, user: User): Boolean {
-		return tagRepository.existsByNameAndUser(name, user)
+	override fun existsByName(name: String): Boolean {
+		return tagRepository.existsByName(name)
 	}
 	
 	private fun Tag.lateInit() = this.apply {

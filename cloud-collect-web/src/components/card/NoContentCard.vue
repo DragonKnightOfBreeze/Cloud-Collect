@@ -19,5 +19,6 @@
 <style scoped>
   .no-content-card {
     border: 1px double orangered;
+    border-radius: 4px;
   }
 </style>

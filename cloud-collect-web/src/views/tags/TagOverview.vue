@@ -21,6 +21,7 @@
     </ElRow>
 
     <ElCardGroup v-if="searchPage">
+      <TheSorter type="tag" :pageable-param.sync="pageableParam" />
       <TagOverviewCard v-for="tag in searchPage.content" :key="tag.id" :tag="tag"/>
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
@@ -36,12 +37,13 @@
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
+  import TheSorter from "@/components/root/TheSorter.vue"
   import * as tagService from "@/services/tagService"
   import {Page, PageableParam, Tag} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {NoContentCard, ElBlankLine, TagOverviewCard, ElCardGroup, ThePagination}
+    components: {TheSorter, NoContentCard, ElBlankLine, TagOverviewCard, ElCardGroup, ThePagination}
   })
   export default class TagOverview extends Vue {
     private searchTerm: string = ""
@@ -51,7 +53,7 @@
     //当分页参数发生变化时，重新加载数据
     @Watch("pageableParam")
     private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
-      console.log(`查询分页参数发生变化：`, value)
+      console.log(`分页参数发生了变化：`, value)
       this.searchTagByName()
     }
 

@@ -63,10 +63,12 @@
 
 <style scoped>
   .app-comment-overview-card {
-    border: 1px solid #999;
+    border: 1px solid grey;
+    border-radius: 4px;
   }
   .app-reply-overview-card {
-    border: 1px solid #999;
+    border: 1px solid darkgrey;
+    border-radius: 4px;
     background-color: #e2e2e2;
   }
 </style>

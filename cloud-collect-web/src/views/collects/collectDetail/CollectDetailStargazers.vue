@@ -5,6 +5,7 @@
     <div>查看该收藏的收藏家。</div>
     <ElBlankLine />
     <ElCardGroup v-if="praiseByUserPage">
+      <TheSorter type="user" :pageable-param.sync="pageableParam" />
       <UserOverviewCard v-for="user in praiseByUserPage.content" :key="user.id" :user="user"/>
       <ThePagination :page="praiseByUserPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
@@ -16,13 +17,14 @@
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
+  import TheSorter from "@/components/root/TheSorter.vue"
   import * as userService from "@/services/userService"
   import {Page, PageableParam, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
   @Component({
-    components: {ElBlankLine, ThePagination, UserOverviewCard, ElCardGroup}
+    components: {TheSorter, ElBlankLine, ThePagination, UserOverviewCard, ElCardGroup}
   })
   export default class CollectDetailStargazers extends Vue {
     private pageableParam: PageableParam = {page: 0, size: 20}
@@ -38,12 +40,13 @@
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
+      console.log("路由发生了变化：", value)
       this.getPraiseByUserPage()
     }
 
     @Watch("pageableParam")
     private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
-      console.log(`查询分页参数发生变化：`, value)
+      console.log(`分页参数发生了变化：`, value)
       this.getPraiseByUserPage()
     }
 

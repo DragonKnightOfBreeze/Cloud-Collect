@@ -89,6 +89,12 @@ class CollectController(
 	}
 	
 	@ApiOperation("根据分类名字全局查询所有收藏。")
+	@GetMapping("/findAllByCategoryName")
+	fun findAllByCategoryName(@RequestParam categoryName: String, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByCategoryName(categoryName, pageable)
+	}
+	
+	@ApiOperation("根据分类名字全局模糊查询所有收藏。")
 	@GetMapping("/findAllByCategoryNameContains")
 	fun findAllByCategoryNameContains(@RequestParam categoryName: String, pageable: Pageable): Page<Collect> {
 		return collectService.findAllByCategoryNameContains(categoryName, pageable)
@@ -101,6 +107,12 @@ class CollectController(
 	}
 	
 	@ApiOperation("根据标签名字全局查询所有收藏。")
+	@GetMapping("/findAllByTagName")
+	fun findAllByTagName(@RequestParam tagName: String, pageable: Pageable): Page<Collect> {
+		return collectService.findAllByTagName(tagName, pageable)
+	}
+	
+	@ApiOperation("根据标签名字全局模糊查询所有收藏。")
 	@GetMapping("/findAllByTagNameContains")
 	fun findAllByTagNameContains(@RequestParam tagName: String, pageable: Pageable): Page<Collect> {
 		return collectService.findAllByTagNameContains(tagName, pageable)

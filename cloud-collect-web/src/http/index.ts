@@ -18,7 +18,7 @@ http.interceptors.request.use(value => {
   console.log(`Request success:`, value)
   return value
 }, error => {
-  console.error("Request error:", error)
+  console.error("Request with error:", error)
   Promise.reject(error)
 })
 
@@ -26,7 +26,7 @@ http.interceptors.response.use(value => {
   console.log("Response success:", value)
   return value
 }, error => {
-  console.log("Response with error:", error.response)
+  console.log("Response with error:", error)
   //error: {request} | {response} | {message}
   if (error.response) {
     const status = error.response.status
@@ -39,7 +39,7 @@ http.interceptors.response.use(value => {
         break
       case 401:
         //要求用户登录
-        router.push({path: "/", query: {operation: "login"}})
+        router.push("/login")
         break
       case 404:
         router.push("/error/404")

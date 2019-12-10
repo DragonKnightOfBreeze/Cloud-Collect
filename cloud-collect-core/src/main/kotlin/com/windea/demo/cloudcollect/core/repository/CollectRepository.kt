@@ -12,9 +12,13 @@ interface CollectRepository : JpaRepository<Collect, Long> {
 	
 	fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect>
 	
+	fun findAllByCategoryName(categoryName: String, pageable: Pageable): Page<Collect>
+	
 	fun findAllByCategoryNameContains(categoryName: String, pageable: Pageable): Page<Collect>
 	
 	fun findAllByTagsId(tagId: Long, pageable: Pageable): Page<Collect>
+	
+	fun findAllByTagsName(tagName: String, pageable: Pageable): Page<Collect>
 	
 	fun findAllByTagsNameContains(tagName: String, pageable: Pageable): Page<Collect>
 	

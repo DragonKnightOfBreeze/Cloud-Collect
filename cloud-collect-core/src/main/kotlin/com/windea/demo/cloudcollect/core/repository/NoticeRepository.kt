@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.*
 interface NoticeRepository : JpaRepository<Notice, Long> {
 	fun deleteAllByUserId(userId: Long)
 	
-	//NOTE 需要按id倒序排序显示
+	//需要按id倒序排序显示
 	fun findAllByUserIdOrderByIdDesc(userId: Long, pageable: Pageable): Page<Notice>
 	
-	fun countByUserId(userId: Long): Long
+	//fun countByUserId(userId: Long): Long
 }

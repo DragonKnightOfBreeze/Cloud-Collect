@@ -24,6 +24,7 @@
     </ElRow>
 
     <ElCardGroup v-if="searchPage">
+      <TheSorter type="collect" :pageable-param.sync="pageableParam" />
       <CollectOverviewCard v-for="collect in searchPage.content" :key="collect.id" :collect="collect" />
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
@@ -39,12 +40,13 @@
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
+  import TheSorter from "@/components/root/TheSorter.vue"
   import * as collectService from "@/services/collectService"
   import {Collect, CollectSearchType, Option, Page, PageableParam} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {NoContentCard, ThePagination, CollectOverviewCard, ElCardGroup, ElBlankLine}
+    components: {TheSorter, NoContentCard, ThePagination, CollectOverviewCard, ElCardGroup, ElBlankLine}
   })
   export default class SearchCollect extends Vue {
     private searchTerm: string = ""
@@ -52,14 +54,16 @@
     private pageableParam: PageableParam = {page: 0, size: 20}
     private searchPage: Page<Collect> | null = null
     private searchOptions: Option<CollectSearchType>[] = [
-      {label: "按名字搜索", value: "name"},
-      {label: "按分类搜索", value: "categoryName"},
-      {label: "按标签搜索", value: "tagName"}
+      {label: "按名字模糊搜索", value: "name"},
+      {label: "按分类名搜索", value: "category"},
+      {label: "按分类名模糊搜索", value: "categoryName"},
+      {label: "按标签名搜索", value: "tag"},
+      {label: "按标签名模糊搜索", value: "tagName"}
     ]
 
     @Watch("pageableParam")
     private onPageableParamChange(value: PageableParam, oldValue: PageableParam) {
-      console.log(`查询分页参数发生变化：`, value)
+      console.log(`分页参数发生了变化：`, value)
       this.searchCollect()
     }
 
@@ -77,11 +81,20 @@
           case "name":
             this.searchPage = await collectService.findAllByNameContains(this.searchTerm, this.pageableParam)
             break
+          case "category":
+            this.searchPage = await collectService.findAllByCategoryName(this.searchTerm, this.pageableParam)
+            break
           case "categoryName":
             this.searchPage = await collectService.findAllByCategoryNameContains(this.searchTerm, this.pageableParam)
             break
+          case "tag":
+            this.searchPage = await collectService.findAllByTagName(this.searchTerm, this.pageableParam)
+            break
           case "tagName":
             this.searchPage = await collectService.findAllByTagNameContains(this.searchTerm, this.pageableParam)
+            break
+          default:
+            this.$message.error(`Cannot search collects by ${this.searchType} here.`)
             break
         }
       } catch (e) {

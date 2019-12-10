@@ -18,11 +18,13 @@ export interface Option<T extends string> {
 
 export type DialogType = "none" | "login" | "register"
 
-export type CollectSearchType = "none" | "name" | "categoryName" | "tagName" | "type";
+export type CollectSearchType = "none" | "name" | "category" | "categoryName" | "tag" | "tagName" | "type";
 
 export type CategorySearchType = "none" | "name"
 
 export type UserSearchType = "none" | "nickname" | "username" | "email"
+
+export type SortType = "collect" | "category" | "tag" | "user"
 
 //REGION Backend
 
@@ -176,7 +178,7 @@ export interface Page<T> {
 export interface PageableParam {
   page: number //default: 0
   size: number //default: 20
-  sort?: string[] //expression: propName1, propName2, direction?
+  sort?: string //expression: propName1, propName2, direction?
 }
 
 //org.springframework.data.domain.Pageable
@@ -197,22 +199,6 @@ export interface Sort {
 }
 
 export type Direction = "ASC" | "DESC"
-
-//org.springframework.validation.FieldError
-export interface FieldError extends ObjectError {
-  field: string;
-  rejectedValue: object | null;
-  bindingFailure: boolean;
-}
-
-//org.springframework.validation.ObjectError
-export interface ObjectError {
-  objectName: string;
-  code: string | null;
-  codes: string[] | null;
-  arguments: object[] | null;
-  defaultMessage: string | null;
-}
 
 //REGION Kotlin Stdlib
 

@@ -38,11 +38,17 @@ interface CollectService {
 	/**根据分类id查询所有收藏。*/
 	fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect>
 	
+	/**根据分类名字全局查询所有收藏。*/
+	fun findAllByCategoryName(categoryName: String, pageable: Pageable): Page<Collect>
+	
 	/**根据分类名字全局模糊查询所有收藏。*/
 	fun findAllByCategoryNameContains(categoryName: String, pageable: Pageable): Page<Collect>
 	
 	/**根据标签id查询所有收藏。*/
 	fun findAllByTagId(tagId: Long, pageable: Pageable): Page<Collect>
+	
+	/**根据标签名字全局查询所有收藏。*/
+	fun findAllByTagName(tagName: String, pageable: Pageable): Page<Collect>
 	
 	/**根据标签名字全局模糊查询所有收藏。*/
 	fun findAllByTagNameContains(tagName: String, pageable: Pageable): Page<Collect>

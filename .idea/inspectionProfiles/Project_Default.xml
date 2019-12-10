@@ -117,6 +117,9 @@
     <inspection_tool class="RemoveSingleExpressionStringTemplate" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="RemoveToStringInStringTemplate" enabled="true" level="UNUSED ENTRY" enabled_by_default="true" />
     <inspection_tool class="ReplaceCollectionCountWithSize" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="RequiredAttributes" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myAdditionalRequiredHtmlAttributes" value="pageable-param" />
+    </inspection_tool>
     <inspection_tool class="SerialVersionUIDNotStaticFinal" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="SerializableHasSerialVersionUIDField" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoreAnonymousInnerClasses" value="false" />

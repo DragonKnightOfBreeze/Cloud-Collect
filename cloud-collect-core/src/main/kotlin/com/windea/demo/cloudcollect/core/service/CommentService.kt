@@ -24,4 +24,7 @@ interface CommentService {
 	
 	/**根据发起用户id查询所有评论。*/
 	fun findAllBySponsorByUserId(sponsorByUserId: Long, pageable: Pageable): Page<Comment>
+	
+	/**根据回复评论id查询所有评论。*/
+	fun findAllByReplyToCommentId(replyToCommentId: Long, pageable: Pageable): Page<Comment>
 }

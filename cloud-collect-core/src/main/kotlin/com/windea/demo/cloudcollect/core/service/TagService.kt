@@ -29,5 +29,5 @@ interface TagService {
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Tag>
 	
 	/**检查某一标签是否已存在。*/
-	fun existsByNameAndUser(name: String, user: User): Boolean
+	fun existsByName(name: String): Boolean
 }
