@@ -65,6 +65,6 @@
     font-size: 36px;
   }
   .app-home-line button {
-    font-size: 21px;
+    font-size: 24px;
   }
 </style>

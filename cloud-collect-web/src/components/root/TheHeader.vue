@@ -18,7 +18,7 @@
         </ElMenu>
       </ElCol>
       <!--导航侧边栏，显示用户信息，或者登录注册按钮-->
-      <ElCol :span="6" class="justify-content-end">
+      <ElCol :span="8" class="justify-content-end">
         <!--用户信息，点击跳转到档案页，点击下拉项跳转到对应页-->
         <template v-if="currentUser">
           <ElAvatar id="app-user-avatar" fit="fill" :src="currentUser.avatarUrl" />
@@ -36,13 +36,10 @@
         <!--登录注册按钮-->
         <template v-else>
           <ElButtonGroup class="align-items-end justify-content-end">
-            <ElButton size="small" type="primary" @click="handleOpenDialog('login')">登录</ElButton>
-            <ElButton size="small" type="info" @click="handleOpenDialog('register')">注册</ElButton>
+            <ElButton type="primary" @click="handleOpenDialog('login')">登录</ElButton>
+            <ElButton type="info" @click="handleOpenDialog('register')">注册</ElButton>
           </ElButtonGroup>
         </template>
-      </ElCol>
-      <ElCol :span="2">
-        &nbsp;
       </ElCol>
     </ElRow>
 
@@ -187,8 +184,7 @@
   }
   #app-navbar {
     position: fixed;
-    width: 1000px;
-    margin: 0 -20px;
+    width: 960px;
     z-index: 1000;
   }
   #app-logo {
