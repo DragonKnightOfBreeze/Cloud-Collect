@@ -18,7 +18,7 @@
       this.handleActivate()
     }
 
-    //DONE 得到对应的查询参数，如果不存在，则认为是非法的访问
+    //得到对应的查询参数，如果不存在，则认为是非法的访问
     private getParams() {
       if (!this.$route.query["username"] || !this.$route.query["activateCode"]) {
         console.warn("权限错误")

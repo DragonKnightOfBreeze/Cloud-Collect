@@ -13,9 +13,8 @@ import org.springframework.security.crypto.bcrypt.*
 import org.springframework.security.web.authentication.*
 import javax.sql.*
 
-
-//DONE 更新到最新版本，使用更适合Kotlin的Dsl式配置。
-//DONE 实现Jwt的自动配置，但仍然需要显式注册过滤器和进入点。
+//更新到最新版本，使用更适合Kotlin的Dsl式配置。
+//实现Jwt的自动配置，但仍然需要显式注册过滤器和进入点。
 
 /**Spring Security的配置类。*/
 @Configuration

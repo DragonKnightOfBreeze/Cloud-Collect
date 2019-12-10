@@ -1,8 +1,6 @@
 <template>
   <div id="app-footer">
-    <ElIcon name="lollipop"></ElIcon>
-    云收藏 ©2019 Created by DragonKnightOfBreeze
-    <ElIcon name="lollipop"></ElIcon>
+    <ElIcon name="lollipop"/> 云收藏 ©2019 Created by DragonKnightOfBreeze <ElIcon name="lollipop"/>
   </div>
 </template>
 
@@ -16,6 +14,7 @@
 
 <style scoped>
   #app-footer {
+    color: #303133;
     text-align: center;
     height: 60px;
     line-height: 60px;

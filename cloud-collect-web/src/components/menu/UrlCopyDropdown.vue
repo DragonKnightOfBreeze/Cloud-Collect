@@ -6,10 +6,10 @@
 
     <template v-slot:dropdown>
       <ElDropdownMenu>
-      <ElDropdownItem v-for="item in dropdownItemList" :key="item.command" :command="item.command">
-        {{item.name}}
-      </ElDropdownItem>
-    </ElDropdownMenu>
+        <ElDropdownItem v-for="item in dropdownItemList" :key="item.command" :command="item.command">
+          {{item.name}}
+        </ElDropdownItem>
+      </ElDropdownMenu>
     </template>
   </ElDropdown>
 </template>

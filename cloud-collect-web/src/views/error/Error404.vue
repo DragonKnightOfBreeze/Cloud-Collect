@@ -2,9 +2,7 @@
   <ElContentPage color="warn" align="center">
     <template v-slot:title>页面未找到</template>
 
-    <ElIcon name="warning"/>
-    这片领域尚未开拓……
-    <ElIcon name="warning"/>
+    <ElIcon name="warning"/> 这片领域尚未开拓…… <ElIcon name="warning"/>
   </ElContentPage>
 </template>
 

@@ -43,8 +43,8 @@ const Error501 = () => import("@/views/error/Error501.vue")
 
 Vue.use(VueRouter)
 
-//DONE 添加重定向到首页并进行对应操作的路由
-//DONE 添加重定向到404的路由
+//添加重定向到首页并进行对应操作的路由
+//添加重定向到404的路由
 const routes: RouteConfig[] = [
   {
     path: "/",

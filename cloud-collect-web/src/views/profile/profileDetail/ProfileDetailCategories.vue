@@ -5,7 +5,7 @@
     <!--仅当用户为当前用户时，才会显示以下内容-->
     <ElRow :gutter="5" class="align-items-center" v-if="isCurrentUser">
       <ElCol :span="4">
-        <ElButton type="primary" @click="handleCreate">创建分类</ElButton>
+        <ElButton type="primary" @click="handleCreate"><ElIcon name="plus"/> 创建分类</ElButton>
       </ElCol>
     </ElRow>
     <ElBlankLine :height="12" />

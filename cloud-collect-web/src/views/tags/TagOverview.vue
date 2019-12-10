@@ -25,7 +25,7 @@
       <TagOverviewCard v-for="tag in searchPage.content" :key="tag.id" :tag="tag"/>
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
-    <NoContentCard v-else>
+    <NoContentCard v-else-if="searchPage && searchPage.empty">
       没有符合条件的标签。
     </NoContentCard>
   </div>
@@ -57,11 +57,11 @@
       this.searchTagByName()
     }
 
-    handleGoBack() {
+    private handleGoBack() {
       this.$router.push("/")
     }
 
-    async searchTagByName() {
+    private async searchTagByName() {
       try {
         this.searchPage = await tagService.findAllByNameContains(this.searchTerm, this.pageableParam)
       } catch (e) {

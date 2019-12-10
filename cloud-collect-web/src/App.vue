@@ -3,7 +3,9 @@
     <!--NOTE 不指定direction的话，就会出现奇怪的问题-->
     <ElContainer direction="vertical">
       <ElHeader v-show="showHeader">
-        <TheHeader></TheHeader>
+        <keep-alive>
+          <TheHeader></TheHeader>
+        </keep-alive>
       </ElHeader>
 
       <ElMain>
@@ -11,7 +13,9 @@
       </ElMain>
 
       <ElFooter v-show="showFooter">
-        <TheFooter></TheFooter>
+        <keep-alive>
+          <TheFooter></TheFooter>
+        </keep-alive>
       </ElFooter>
 
       <ElBacktop :visibility-height="400"/>
@@ -38,7 +42,7 @@
       this.changeShowHeaderAndFooter()
     }
 
-    //DONE 当为错误页和成功页时隐藏首页头部和尾部
+    //当为错误页和成功页时隐藏首页头部和尾部
     private changeShowHeaderAndFooter() {
       if (this.$route.path.startsWith("/error") || this.$route.path.startsWith("/success")) {
         console.log("隐藏页面首部和尾部。")
@@ -127,6 +131,6 @@
   }
 
   .app-input-select {
-    width: 120px;
+    width: 180px;
   }
 </style>

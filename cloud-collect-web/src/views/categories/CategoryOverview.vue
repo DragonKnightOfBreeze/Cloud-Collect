@@ -25,7 +25,7 @@
       <CategoryOverviewCard v-for="category in searchPage.content" :key="category.id" :category="category"/>
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
-    <NoContentCard v-else>
+    <NoContentCard v-else-if="searchPage && searchPage.empty">
       没有符合条件的分类。
     </NoContentCard>
   </div>

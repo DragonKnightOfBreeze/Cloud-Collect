@@ -12,7 +12,7 @@
           <UrlCopyDropdown :collect="collect"></UrlCopyDropdown>
         </ElCol>
         <ElCol :span="4">
-          <ElButton type="text" size="small" :href="collect.url">转到链接</ElButton>
+          <ElButton type="text" size="small" :href="collect.url"><ElIcon name="link"/> 转到链接</ElButton>
         </ElCol>
         <ElCol :span="4">
           <PraiseButton :collect="collect"></PraiseButton>

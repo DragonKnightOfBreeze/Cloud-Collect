@@ -6,12 +6,12 @@
       <div>搜索指定的内容。</div>
     </div>
     <ElBlankLine/>
-    <ElRow type="flex" justify="center" align="middle" class="align-center">
-      <ElCol :span="8">
-        <ElButton type="primary" @click="handleGoSearchCollect"><ElIcon name="search"/>搜索收藏</ElButton>
+    <ElRow class="justify-content-center align-items-center">
+      <ElCol :span="6" class="justify-content-center align-items-center">
+        <ElButton type="primary" @click="handleGoSearchCollect"><ElIcon name="search"/> 搜索收藏</ElButton>
       </ElCol>
-      <ElCol :span="8">
-        <ElButton type="primary" @click="handleGoSearchUser"><ElIcon name="search"/>搜索用户</ElButton>
+      <ElCol :span="6" class="justify-content-center align-items-center">
+        <ElButton type="primary" @click="handleGoSearchUser"><ElIcon name="search"/> 搜索用户</ElButton>
       </ElCol>
     </ElRow>
   </div>

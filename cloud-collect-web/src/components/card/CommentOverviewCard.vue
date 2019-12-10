@@ -11,7 +11,7 @@
         {{comment.createdTime}}
       </ElCol>
       <ElCol :span="4">
-        <ElButton type="text" size="small" @click="handleReply">回复</ElButton>
+        <ElButton type="text" size="small" @click="handleReply"><ElIcon name="chat-dot-square"/> 回复</ElButton>
       </ElCol>
     </ElRow>
     <ElRow class="app-content">

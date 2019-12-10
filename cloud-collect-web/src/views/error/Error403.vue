@@ -2,9 +2,7 @@
   <ElContentPage color="warn" align="center">
     <template v-slot:title>权限错误</template>
 
-    <ElIcon name="warning"/>
-    这片领域不属于你……
-    <ElIcon name="warning"/>
+    <ElIcon name="warning"/> 这片领域不属于你…… <ElIcon name="warning"/>
   </ElContentPage>
 </template>
 

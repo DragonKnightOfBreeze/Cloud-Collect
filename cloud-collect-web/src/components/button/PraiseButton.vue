@@ -1,7 +1,11 @@
 <template>
   <div>
-    <ElButton type="info" size="small" plain v-if="collect.praised===true" @click="handleUnpraise">已点赞</ElButton>
-    <ElButton type="primary" size="small" plain v-else-if="collect.praised===false" @click="handlePraise">点赞</ElButton>
+    <ElButton type="info" size="small" plain v-if="collect.praised===true" @click="handleUnpraise">
+      <ElIcon name="star-on"/> 已点赞
+    </ElButton>
+    <ElButton type="primary" size="small" plain v-else-if="collect.praised===false" @click="handlePraise">
+      <ElIcon name="star-off"/> 点赞
+    </ElButton>
   </div>
 </template>
 

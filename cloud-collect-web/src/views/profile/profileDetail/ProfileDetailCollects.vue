@@ -5,19 +5,19 @@
     <!--仅当用户为当前用户时，才会显示以下内容-->
     <ElRow :gutter="5" class="align-items-center" v-if="isCurrentUser">
       <ElCol :span="4">
-        <ElButton type="primary" @click="handleCreateCollect">创建收藏</ElButton>
+        <ElButton type="primary" @click="handleCreateCollect"><ElIcon name="plus"/> 创建收藏</ElButton>
       </ElCol>
       <ElCol :span="4">
-        <ElButton type="primary" @click="handleCreateCategory">创建分类</ElButton>
+        <ElButton type="primary" @click="handleCreateCategory"><ElIcon name="plus"/> 创建分类</ElButton>
       </ElCol>
       <ElCol :span="4">
-        <ElButton type="primary" @click="handleCreateTag">创建标签</ElButton>
+        <ElButton type="primary" @click="handleCreateTag"><ElIcon name="plus"/> 创建标签</ElButton>
       </ElCol>
       <ElCol :span="4" v-show="enableImportAndExport">
-        <ElButton type="warning" @click="handleImport">导入收藏</ElButton>
+        <ElButton type="warning" @click="handleImport"><ElIcon name="bottom-left"/> 导入收藏</ElButton>
       </ElCol>
       <ElCol :span="4" v-show="enableImportAndExport">
-        <ElButton type="warning" @click="handleExport">导出收藏</ElButton>
+        <ElButton type="warning" @click="handleExport"><ElIcon name="top-right"/> 导出收藏</ElButton>
       </ElCol>
     </ElRow>
     <ElBlankLine :height="12" />
@@ -46,7 +46,7 @@
       </ElCol>
       <ElCol :span="4">
         <ElDropdown type="primary" @command="handleCommand">
-          <ElButton type="text">按类型搜索<ElIcon name="arrow-down" /></ElButton>
+          <ElButton type="text">按类型搜索 <ElIcon name="arrow-down"/></ElButton>
           <template v-slot:dropdown>
             <ElDropdownMenu>
               <ElDropdownItem v-for="type in collectTypes" :key="type.name" :command="type.name">

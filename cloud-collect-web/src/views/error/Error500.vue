@@ -2,9 +2,7 @@
   <ElContentPage color="warn" align="center">
     <template v-slot:title>内部错误</template>
 
-    <ElIcon name="warning"/>
-    这片领域崩坏了……
-    <ElIcon name="warning"/>
+    <ElIcon name="warning"/> 这片领域崩坏了…… <ElIcon name="warning"/>
   </ElContentPage>
 </template>
 

@@ -5,7 +5,7 @@
         {{history.collect.name}}
       </ElCol>
       <ElCol :span="4" :offset="8">
-        <ElButton type="danger" v-if="isCurrentUser" @click="handleDelete">删除</ElButton>
+        <ElButton type="danger" v-if="isCurrentUser" @click="handleDelete"><ElIcon name="delete"/> 删除</ElButton>
       </ElCol>
     </ElRow>
     <ElRow class="app-meta-small align-items-center">

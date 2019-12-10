@@ -6,8 +6,8 @@
       <CategoryDetailCard :category="category" />
 
       <div class="align-center" v-if="isCurrentUser">
-        <ElButton type="success" @click="handleEdit">编辑</ElButton>
-        <ElButton type="danger" @click="handleDelete">删除</ElButton>
+        <ElButton type="success" @click="handleEdit"><ElIcon name="edit"/> 编辑</ElButton>
+        <ElButton type="danger" @click="handleDelete"><ElIcon name="delete"/> 删除</ElButton>
       </div>
 
       <EditCategoryDialog :category="category" :visible.sync="editDialogVisible" @submit="handleSubmit" />

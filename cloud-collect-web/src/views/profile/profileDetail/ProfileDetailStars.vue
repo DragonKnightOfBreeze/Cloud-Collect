@@ -28,7 +28,7 @@
       </ElCol>
       <ElCol :span="4">
         <ElDropdown type="primary" @command="handleCommand">
-          <ElButton type="text">按类型搜索<ElIcon name="arrow-down" /></ElButton>
+          <ElButton type="text">按类型搜索 <ElIcon name="arrow-down"/></ElButton>
           <template v-slot:dropdown>
             <ElDropdownMenu>
               <ElDropdownItem v-for="type in collectTypes" :key="type.name" :command="type.name">

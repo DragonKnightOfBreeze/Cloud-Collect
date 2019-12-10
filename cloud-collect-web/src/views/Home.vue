@@ -7,55 +7,41 @@
       </ElCol>
       <ElCol :span="16">
         <ElRow class="app-home-line">
-          <ElCol>
+          <ElCol class="justify-content-center align-items-center">
             <h1>云收藏</h1>
           </ElCol>
         </ElRow>
         <ElRow class="app-home-line">
-          <ElCol :span="8">
+          <ElCol :span="8" class="justify-content-center align-items-center">
             <ElButton type="primary" @click="handleLogin">登录</ElButton>
           </ElCol>
-          <ElCol :span="8">
+          <ElCol :span="8" class="justify-content-center align-items-center">
             <ElButton type="info" @click="handleRegister">注册</ElButton>
           </ElCol>
-          <ElCol :span="8">
+          <ElCol :span="8" class="justify-content-center align-items-center">
             <ElButton type="success" @click="handleLookAround">随便看看</ElButton>
           </ElCol>
         </ElRow>
       </ElCol>
     </ElRow>
-
-    <ElCardGroup>
-      <TheSorter type="collect" :pageable-param.sync="pageableParam" />
-      <ElCard>123</ElCard>
-      <ThePagination :page="{totalPages:10,totalElements:100}" :pageable-param.sync="pageableParam" />
-    </ElCardGroup>
   </div>
 </template>
 
 <script lang="ts">
-  import ElCardGroup from "@/components/public/ElCardGroup.vue"
-  import ThePagination from "@/components/root/ThePagination.vue"
-  import TheSorter from "@/components/root/TheSorter.vue"
   import * as indexService from "@/services/indexService"
-  import {PageableParam} from "@/types"
   import {Component, Vue} from "vue-property-decorator"
 
-  @Component({
-    components: {ThePagination, TheSorter, ElCardGroup}
-  })
+  @Component
   export default class Home extends Vue {
-    private pageableParam: PageableParam = {page: 0, size: 20}
-
-    handleLogin() {
+    private handleLogin() {
       this.$router.push("/login")
     }
 
-    handleRegister() {
+    private handleRegister() {
       this.$router.push("/register")
     }
 
-    async handleLookAround() {
+    private async handleLookAround() {
       const collect = await indexService.lookAroundCollect()
       const collectId = collect.id!
       await this.$router.push(`/collects/${collectId}`)
@@ -68,16 +54,12 @@
     width: 600px;
     height: 200px;
     margin: 30px auto;
-    text-align: center;
-    vertical-align: middle;
   }
   .app-home-line {
     height: 100px;
-    vertical-align: middle;
   }
   .app-home-line .el-col {
     height: 100%;
-    vertical-align: middle;
   }
   .app-home-line h1 {
     font-size: 36px;

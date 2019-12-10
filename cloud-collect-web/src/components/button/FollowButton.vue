@@ -1,7 +1,11 @@
 <template>
   <div>
-    <ElButton type="info" size="small" plain v-if="user.followed===true" @click="handleUnfollow">已关注</ElButton>
-    <ElButton type="primary" size="small" plain v-else-if="user.followed===false" @click="handleFollow">关注</ElButton>
+    <ElButton type="info" size="small" plain v-if="user.followed===true" @click="handleUnfollow">
+      <ElIcon name="star-on"/> 已关注
+    </ElButton>
+    <ElButton type="primary" size="small" plain v-else-if="user.followed===false" @click="handleFollow">
+      <ElIcon name="star-off"/> 关注
+    </ElButton>
   </div>
 </template>
 

@@ -2,9 +2,7 @@
   <ElContentPage color="warn" align="center">
     <template v-slot:title>功能未实现</template>
 
-    <ElIcon name="warning"/>
-    这片领域有待发掘……
-    <ElIcon name="warning"/>
+    <ElIcon name="warning"/> 这片领域有待发掘…… <ElIcon name="warning"/>
   </ElContentPage>
 </template>
 

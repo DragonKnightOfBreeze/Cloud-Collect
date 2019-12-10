@@ -6,12 +6,12 @@
       <CollectDetailCard :collect="collect" />
 
       <div class="align-center" v-if="isCurrentUser">
-        <ElButton type="success" @click="handleEdit">编辑</ElButton>
-        <ElButton type="danger" @click="handleDelete">删除</ElButton>
+        <ElButton type="success" @click="handleEdit"><ElIcon name="edit"/> 编辑</ElButton>
+        <ElButton type="danger" @click="handleDelete"><ElIcon name="delete"/> 删除</ElButton>
       </div>
 
       <div class="align-center" v-if="currentUser && !isCurrentUser">
-        <ElButton type="primary" @click="handleFork">拷贝收藏</ElButton>
+        <ElButton type="primary" @click="handleFork"><ElIcon name="document-copy"/> 拷贝收藏</ElButton>
       </div>
 
       <EditCollectDialog :collect="collect" :visible.sync="editDialogVisible" @submit="handleSubmit" />
@@ -23,7 +23,7 @@
               评论列表
             </ElCol>
             <ElCol :span="4">
-              <ElButton type="success" @click="handleNewComment">新评论</ElButton>
+              <ElButton type="success" @click="handleNewComment"><ElIcon name="chat-dot-square"/> 新评论</ElButton>
             </ElCol>
           </ElRow>
 

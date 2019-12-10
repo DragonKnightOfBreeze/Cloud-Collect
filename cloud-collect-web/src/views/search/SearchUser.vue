@@ -27,7 +27,7 @@
       <UserOverviewCard v-for="user in searchPage.content" :key="user.id" :user="user"/>
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
-    <NoContentCard v-else>
+    <NoContentCard v-else-if="searchPage && searchPage.empty">
       没有符合条件的用户。
     </NoContentCard>
   </div>

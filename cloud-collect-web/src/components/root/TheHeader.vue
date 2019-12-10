@@ -1,7 +1,7 @@
 <template>
   <div id="app-header">
     <!--导航栏-->
-    <ElRow id="app-navbar" align="center">
+    <ElRow id="app-navbar" class="justify-content-center align-items-center">
       <!--导航头部-->
       <ElCol :span="4">
         <router-link to="/">
@@ -10,7 +10,7 @@
         </router-link>
       </ElCol>
       <!--导航内容，到各个分页-->
-      <ElCol :span="10">
+      <ElCol :span="12">
         <ElMenu mode="horizontal" router :default-active="activeIndex" @select="handleSelect">
           <ElMenuItem v-for="item in menuItemList" :key="item.index" :route="item.path" :index="item.index">
             {{item.name}}
@@ -18,7 +18,7 @@
         </ElMenu>
       </ElCol>
       <!--导航侧边栏，显示用户信息，或者登录注册按钮-->
-      <ElCol :span="8" :offset="2">
+      <ElCol :span="6" class="justify-content-end">
         <!--用户信息，点击跳转到档案页，点击下拉项跳转到对应页-->
         <template v-if="currentUser">
           <ElAvatar id="app-user-avatar" fit="fill" :src="currentUser.avatarUrl" />
@@ -35,11 +35,14 @@
         </template>
         <!--登录注册按钮-->
         <template v-else>
-          <ElButtonGroup>
+          <ElButtonGroup class="align-items-end justify-content-end">
             <ElButton size="small" type="primary" @click="handleOpenDialog('login')">登录</ElButton>
             <ElButton size="small" type="info" @click="handleOpenDialog('register')">注册</ElButton>
           </ElButtonGroup>
         </template>
+      </ElCol>
+      <ElCol :span="2">
+        &nbsp;
       </ElCol>
     </ElRow>
 
@@ -79,7 +82,6 @@
       {command: "logout", name: "注销"}
     ]
     private dialogType: DialogType = "none"
-
 
     get currentUser(): User | null {
       return this.$store.getters.currentUser || this.initUser()
@@ -128,7 +130,7 @@
       }
     }
 
-    //DONE 监听当前路由，得到查询参数operation，尝试进行相应的操作
+    //监听当前路由，得到查询参数operation，尝试进行相应的操作
     private changeOperation(value: Route, oldValue: Route) {
       const operation = value.query["operation"]
       if (!operation) return

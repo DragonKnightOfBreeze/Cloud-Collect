@@ -7,7 +7,7 @@
 
       <!--对齐不能直接作用在ElButtonGroup上，原因不明-->
       <div class="align-center" v-if="isCurrentUser">
-        <ElButton class="align-center" type="success" @click="handleEdit">编辑个人资料</ElButton>
+        <ElButton class="align-center" type="success" @click="handleEdit"><ElIcon name="edit"/> 编辑个人资料</ElButton>
       </div>
 
       <EditProfileDialog :visible.sync="editDialogVisible" :user="user" @submit="handleSubmit" />

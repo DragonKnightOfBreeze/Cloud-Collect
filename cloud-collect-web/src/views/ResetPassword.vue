@@ -38,7 +38,7 @@
       this.getParams()
     }
 
-    //DONE 得到对应的查询参数，如果不存在，则认为是非法的访问
+    //得到对应的查询参数，如果不存在，则认为是非法的访问
     private getParams() {
       if (!this.$route.query["username"] || !this.$route.query["resetPasswordCode"]) {
         console.warn("权限错误")
@@ -48,7 +48,7 @@
       this.resetPasswordCode = this.$route.query["resetPasswordCode"].toString()
     }
 
-    async handleResetPassword() {
+    private async handleResetPassword() {
       try {
         await indexService.resetPassword(this.form, this.resetPasswordCode)
 

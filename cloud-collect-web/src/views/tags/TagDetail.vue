@@ -6,8 +6,8 @@
       <TagDetailCard :tag="tag" />
 
       <div class="align-center" v-if="isCurrentUser">
-        <ElButton type="success" @click="handleEdit">编辑</ElButton>
-        <ElButton type="danger" @click="handleDelete">删除</ElButton>
+        <ElButton type="success" @click="handleEdit"><ElIcon name="edit"/> 编辑</ElButton>
+        <ElButton type="danger" @click="handleDelete"><ElIcon name="delete"/> 删除</ElButton>
       </div>
 
       <EditTagDialog :tag="tag" :visible.sync="editDialogVisible" @submit="handleSubmit" />
@@ -94,21 +94,21 @@
       this.getCollectPage()
     }
 
-    handleGoBack() {
+    private handleGoBack() {
       this.$router.push("/tags")
     }
 
-    handleChange() {
+    private handleChange() {
       if (!this.getCollectPage()) {
         this.getCollectPage()
       }
     }
 
-    handleEdit() {
+    private handleEdit() {
       this.editDialogVisible = true
     }
 
-    async handleDelete() {
+    private async handleDelete() {
       try {
         await this.$confirm("此操作将永久删除该标签, 是否继续?", {type: "warning"})
         await this.deleteTag()
@@ -123,7 +123,7 @@
     }
 
     //当用户编辑标签并提交更改成功后，需要从后台重新得到标签数据
-    handleSubmit() {
+    private handleSubmit() {
       this.getTag()
     }
 

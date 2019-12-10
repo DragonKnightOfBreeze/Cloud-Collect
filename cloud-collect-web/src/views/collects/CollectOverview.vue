@@ -44,7 +44,7 @@
       <CollectOverviewCard v-for="collect in searchPage.content" :key="collect.id" :collect="collect"/>
       <ThePagination :page="searchPage" :pageable-param.sync="pageableParam" />
     </ElCardGroup>
-    <NoContentCard v-else>
+    <NoContentCard v-else-if="searchPage && searchPage.empty">
       没有符合条件的收藏。
     </NoContentCard>
   </div>
