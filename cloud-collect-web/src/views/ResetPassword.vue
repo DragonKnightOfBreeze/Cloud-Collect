@@ -21,8 +21,8 @@
 </template>
 
 <script lang="ts">
+  import {ResetPasswordForm} from "@/domain"
   import * as indexService from "@/services/indexService"
-  import {ResetPasswordForm} from "@/types"
   import {Component, Vue} from "vue-property-decorator"
 
   @Component

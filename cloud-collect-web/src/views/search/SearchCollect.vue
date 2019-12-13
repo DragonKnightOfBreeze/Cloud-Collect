@@ -41,8 +41,8 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import TheSorter from "@/components/root/TheSorter.vue"
+  import {Collect, CollectSearchType, Option, Page, PageableParam} from "@/domain"
   import * as collectService from "@/services/collectService"
-  import {Collect, CollectSearchType, Option, Page, PageableParam} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({

@@ -1,5 +1,5 @@
+import {Category, Page, PageableParam} from "@/domain"
 import http from "@/http"
-import {Category, Page, PageableParam} from "@/types"
 
 const categoryUrl = "/category"
 

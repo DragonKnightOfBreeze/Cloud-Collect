@@ -1,5 +1,5 @@
+import {Collect, CollectType, Page, PageableParam} from "@/domain"
 import http from "@/http"
-import {Collect, CollectType, Page, PageableParam} from "@/types"
 
 const collectUrl = "/collect"
 

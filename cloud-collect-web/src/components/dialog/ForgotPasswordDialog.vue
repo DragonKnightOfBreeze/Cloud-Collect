@@ -8,10 +8,11 @@
       <ElFormItem>
         <ElButton type="success" @click="handleForgotPassword">发送邮件</ElButton>
       </ElFormItem>
+
+      <ElText color="info" align="center">
+        我们将向你的邮箱发送一条邮件，以重置你的密码。
+      </ElText>
     </ElForm>
-    <ElText color="info" align="center">
-      我们将向你的邮箱发送一条邮件，以重置你的密码。
-    </ElText>
   </ElDialog>
 </template>
 

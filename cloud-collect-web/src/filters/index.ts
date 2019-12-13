@@ -1,4 +1,4 @@
-import {Enum} from "@/types"
+import {Enum} from "@/domain"
 import Vue from "vue"
 
 //将枚举值转化成对应的枚举文本的过滤器

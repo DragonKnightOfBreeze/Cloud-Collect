@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-  import {Option, PageableParam, SortType} from "@/types"
+  import {Option, PageableParam, SortType} from "@/domain"
   import {Component, Prop, PropSync, Vue} from "vue-property-decorator"
 
   @Component
@@ -68,7 +68,7 @@
 
 <style scoped>
   #app-sorter {
-    margin: 5px 5px;
+    margin: 10px 10px;
   }
   .el-form-item {
     margin: 0 0;

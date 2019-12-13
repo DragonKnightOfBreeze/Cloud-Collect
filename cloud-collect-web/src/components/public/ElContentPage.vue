@@ -7,20 +7,23 @@
     <p>
       <slot name="default"></slot>
     </p>
-    <ElLink href="/" v-if="showHomeLink">回到首页</ElLink>
+    <ElRouterLink href="/" v-if="showHomeLink">回到首页</ElRouterLink>
   </div>
 </template>
 
 <script lang="ts">
+  import ElRouterLink from "@/components/public/ElRouterLink.vue"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    components: {ElRouterLink}
+  })
   export default class ElContentPage extends Vue {
     @Prop() color!: string
     @Prop() bgColor!: string
     @Prop() align!: string
 
-    @Prop({default: true}) showHomeLink!: boolean
+    @Prop({default: true, type: Boolean}) showHomeLink!: boolean
 
     get cssClass() {
       return [

@@ -12,8 +12,6 @@
     "importHelpers": true,
     // 如何处理模块
     "moduleResolution": "node",
-    // 启用装饰器
-    "experimentalDecorators": true,
     // 允许从没有设置默认导出的模块中默认导入
     "allowSyntheticDefaultImports": true,
     // 定义一个变量就必须给它一个初始值
@@ -35,6 +33,9 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@/domain": [
+        "src/domain"
       ]
     },
     // 编译过程中需要引入的库文件的列表
@@ -43,7 +44,9 @@
       "dom",
       "dom.iterable",
       "scripthost"
-    ]
+    ],
+    // 启用装饰器
+    "experimentalDecorators": true
   },
   // ts 管理的文件
   "include": [

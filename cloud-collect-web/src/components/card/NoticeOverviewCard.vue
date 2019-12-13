@@ -4,15 +4,15 @@
       <ElCol :span="12">
         {{notice.title}}
       </ElCol>
-      <ElCol :span="4" :offset="8">
+      <ElCol :span="4" :offset="8" class="justify-content-end">
         <ElButton type="danger" v-if="isCurrentUser" @click="handleDelete">删除</ElButton>
       </ElCol>
     </ElRow>
-    <ElRow class="app-meta-small align-items-center">
+    <ElRow class="app-meta align-items-center">
       <ElCol :span="6">
         类型：{{notice.type | enumText(noticeTypes)}}
       </ElCol>
-      <ElCol :span="6">
+      <ElCol :span="7">
         创建时间：{{notice.createdTime}}
       </ElCol>
     </ElRow>
@@ -23,8 +23,8 @@
 </template>
 
 <script lang="ts">
+  import {Notice} from "@/domain"
   import {noticeTypes} from "@/enums"
-  import {Notice} from "@/types"
   import {Component, Emit, Prop, Vue} from "vue-property-decorator"
 
   @Component

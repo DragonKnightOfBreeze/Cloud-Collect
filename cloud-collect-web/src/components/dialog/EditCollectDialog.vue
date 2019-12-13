@@ -47,11 +47,11 @@
 </template>
 
 <script lang="ts">
+  import {Category, Collect, PageableParam, Tag, User} from "@/domain"
   import {collectTypes} from "@/enums"
   import * as categoryService from "@/services/categoryService"
   import * as collectService from "@/services/collectService"
   import * as tagService from "@/services/tagService"
-  import {Category, Collect, PageableParam, Tag, User} from "@/types"
   import {Component, Emit, Prop, PropSync, Vue} from "vue-property-decorator"
 
   @Component

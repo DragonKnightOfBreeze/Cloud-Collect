@@ -81,17 +81,17 @@ data class User constructor(
 	@JsonFormat(pattern = dateFormat)
 	var updateTime: LocalDateTime? = null
 	
-	@ApiModelProperty("用户的关注用户列表。懒加载。")
+	@ApiModelProperty("用户的关注用户列表。")
 	@JsonIgnore
 	@ManyToMany(mappedBy = "followByUsers")
 	val followToUsers: MutableList<User> = mutableListOf()
 	
-	@ApiModelProperty("该用户的粉丝用户列表。懒加载。")
+	@ApiModelProperty("该用户的粉丝用户列表。")
 	@JsonIgnore
 	@ManyToMany
 	val followByUsers: MutableList<User> = mutableListOf()
 	
-	@ApiModelProperty("该用户点赞的收藏列表。懒加载。")
+	@ApiModelProperty("该用户点赞的收藏列表。")
 	@JsonIgnore
 	@ManyToMany(mappedBy = "praiseByUsers")
 	val praiseToCollects: MutableList<Collect> = mutableListOf()

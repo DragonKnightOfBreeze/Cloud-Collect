@@ -1,28 +1,28 @@
 <template>
   <div>
     <h3>Ta喜爱的收藏</h3>
-    <ElDivider />
+    <ElDivider/>
 
     <!--允许过滤-->
-    <ElRow :gutter="5" class="align-items-center">
+    <ElRow :gutter="5">
       <ElCol :span="6">
         <ElInput v-model="searchTerm1" placeholder="按名字搜索">
           <template v-slot:append>
-            <ElButton @click="handleSearch('name')"><ElIcon name="search" /></ElButton>
+            <ElButton @click="handleSearch('name')"><ElIcon name="search"/></ElButton>
           </template>
         </ElInput>
       </ElCol>
       <ElCol :span="6">
         <ElInput v-model="searchTerm2" placeholder="按分类名搜索">
           <template v-slot:append>
-            <ElButton @click="handleSearch('categoryName')"><ElIcon name="search" /></ElButton>
+            <ElButton @click="handleSearch('categoryName')"><ElIcon name="search"/></ElButton>
           </template>
         </ElInput>
       </ElCol>
       <ElCol :span="6">
         <ElInput v-model="searchTerm3" placeholder="按标签名搜索">
           <template v-slot:append>
-            <ElButton @click="handleSearch('tagName')"><ElIcon name="search" /></ElButton>
+            <ElButton @click="handleSearch('tagName')"><ElIcon name="search"/></ElButton>
           </template>
         </ElInput>
       </ElCol>
@@ -44,9 +44,9 @@
     </ElRow>
 
     <ElCardGroup v-if="praiseToCollectPage">
-      <TheSorter type="collect" :pageable-param.sync="pageableParam" />
-      <CollectOverviewCard v-for="collect in praiseToCollectPage.content" :key="collect.id" :collect="collect" />
-      <ThePagination :page="praiseToCollectPage" :pageable-param.sync="pageableParam" />
+      <TheSorter type="collect" :pageable-param.sync="pageableParam"/>
+      <CollectOverviewCard v-for="collect in praiseToCollectPage.content" :key="collect.id" :collect="collect"/>
+      <ThePagination :page="praiseToCollectPage" :pageable-param.sync="pageableParam"/>
     </ElCardGroup>
   </div>
 </template>
@@ -56,9 +56,9 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import TheSorter from "@/components/root/TheSorter.vue"
+  import {Collect, CollectSearchType, CollectType, Page, PageableParam} from "@/domain"
   import {collectTypes} from "@/enums"
   import * as collectService from "@/services/collectService"
-  import {Collect, CollectSearchType, CollectType, Page, PageableParam} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -86,6 +86,7 @@
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
       console.log("路由发生了变化：", value)
+      if (value.params.id === oldValue.params.id) return
       this.getPraiseToCollectPage()
     }
 

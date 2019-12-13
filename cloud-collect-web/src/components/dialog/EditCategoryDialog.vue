@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts">
+  import {Category} from "@/domain"
   import * as categoryService from "@/services/categoryService"
-  import {Category} from "@/types"
   import {Component, Emit, Prop, PropSync, Vue} from "vue-property-decorator"
 
   @Component

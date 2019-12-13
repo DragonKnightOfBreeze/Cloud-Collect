@@ -3,7 +3,7 @@
     <template v-slot:header>
       <ElRow class="align-items-center">
         <ElCol :span="1">
-          <ElAvatar size="small" :src="collect.logoUrl"/>
+          <ElAvatar shape="square" size="small" :src="collect.logoUrl"/>
         </ElCol>
         <ElCol :span="11">
           {{collect.name}}
@@ -12,7 +12,7 @@
           <UrlCopyDropdown :collect="collect"></UrlCopyDropdown>
         </ElCol>
         <ElCol :span="4">
-          <ElButton type="text" size="small" :href="collect.url"><ElIcon name="link"/> 转到链接</ElButton>
+          <ElLink type="primary" :href="collect.url"><ElIcon name="link"/> 转到链接</ElLink>
         </ElCol>
         <ElCol :span="4">
           <PraiseButton :collect="collect"></PraiseButton>
@@ -23,15 +23,15 @@
     <ElRow class="app-item-list">
       <ElCol :span="4">分类</ElCol>
       <ElCol :span="20">
-        <ElLink type="info" v-if="collect.category" :href="'/categories/'+collect.id">{{collect.category.name}}</ElLink>
-        <ElLink type="info" v-else>未分类</ElLink>
+        <ElRouterLink type="info" v-if="collect.category" :href="'/categories/'+collect.id">{{collect.category.name}}</ElRouterLink>
+        <ElRouterLink type="info" v-else>未分类</ElRouterLink>
       </ElCol>
     </ElRow>
     <ElRow class="app-item-list">
       <ElCol :span="4">标签</ElCol>
       <ElCol :span="20">
         <ElTag size="small" v-for="tag in collect.tags" :key="tag.id">
-          <ElLink type="info" :href="'/tags/'+tag.id">{{tag.name}}</ElLink>
+          <ElRouterLink type="info" :href="'/tags/'+tag.id">{{tag.name}}</ElRouterLink>
         </ElTag>
       </ElCol>
     </ElRow>
@@ -51,8 +51,8 @@
     <ElRow class="app-item-list">
       <ElCol :span="4">创建者</ElCol>
       <ElCol :span="20">
-        <ElLink v-if="collect.user" :href="'/profile/'+collect.user.id">{{collect.user.nickname}}</ElLink>
-        <ElLink v-else>未知</ElLink>
+        <ElRouterLink v-if="collect.user" :href="'/profile/'+collect.user.id">{{collect.user.nickname}}</ElRouterLink>
+        <ElRouterLink v-else>未知</ElRouterLink>
       </ElCol>
     </ElRow>
     <ElRow class="app-item-list">
@@ -71,10 +71,12 @@
     <ElRow class="app-item-list">
       <ElCol :span="4">收藏家数量</ElCol>
       <ElCol :span="16">{{collect.praiseByUserCount}}</ElCol>
-      <ElCol :span="4"><ElLink type="info" :href="'/collects/'+collect.id+'/stargazers'">查看收藏家</ElLink></ElCol>
+      <ElCol :span="4">
+        <ElRouterLink type="info" :href="'/collects/'+collect.id+'/stargazers'">查看收藏家</ElRouterLink>
+      </ElCol>
     </ElRow>
-    <ElDivider/>
-    <ElRow class="app-item-list">
+    <ElBlankLine :height="12"/>
+    <ElRow class="app-summary">
       <ElCol>{{collect.summary}}</ElCol>
     </ElRow>
   </ElCard>
@@ -83,12 +85,13 @@
 <script lang="ts">
   import PraiseButton from "@/components/button/PraiseButton.vue"
   import UrlCopyDropdown from "@/components/menu/UrlCopyDropdown.vue"
+  import ElRouterLink from "@/components/public/ElRouterLink.vue"
+  import {Collect, User} from "@/domain"
   import {collectTypes} from "@/enums"
-  import {Collect, User} from "@/types"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component({
-    components: {PraiseButton, UrlCopyDropdown}
+    components: {ElRouterLink, PraiseButton, UrlCopyDropdown}
   })
   export default class CollectDetailCard extends Vue {
     @Prop({required: true}) collect!: Collect

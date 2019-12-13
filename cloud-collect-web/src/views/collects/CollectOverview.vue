@@ -6,7 +6,7 @@
       <div>收藏和管理你所钟情的网页和文章！</div>
     </div>
     <ElBlankLine/>
-    <ElRow type="flex" justify="center" align="middle">
+    <ElRow class="align-items-center justify-content-center">
       <ElCol :span="8">
         <ElForm inline class="align-center">
           <ElFormItem>
@@ -57,8 +57,8 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import TheSorter from "@/components/root/TheSorter.vue"
+  import {CollectSearchType, Page, PageableParam, Tag} from "@/domain"
   import * as collectService from "@/services/collectService"
-  import {CollectSearchType, Page, PageableParam, Tag} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({

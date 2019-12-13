@@ -92,45 +92,36 @@
     padding: 10px 0;
   }
   .app-title {
-    font-size: 24px;
+    font-size: 20px;
     line-height: 30px;
     padding: 10px 0;
   }
   .app-meta {
-    font-size: 14px;
-    line-height: 24px;
+    font-size: 12px;
+    height: 18px;
+    line-height: 18px;
     color: #909399;
-    padding: 5px 0;
+    padding: 10px 0;
   }
   .app-meta span {
     font-size: 12px;
     height: 18px;
     line-height: 18px;
   }
-  .app-meta-small {
-    font-size: 12px;
-    height: 18px;
-    line-height: 18px;
-    color: #909399;
-    padding: 5px 0;
-  }
-  .app-meta-small span {
-    font-size: 12px;
-    height: 18px;
-    line-height: 18px;
-  }
   /*对应的html元素不应该是p，因为可能是markdown文本*/
   .app-summary {
-    padding: 10px 0;
+    padding: 15px 0;
   }
   .app-content {
-    padding: 10px 0;
+    padding: 15px 0;
   }
   .app-introduce {
-    padding: 10px 0;
+    padding: 15px 0;
   }
-
   .app-input-select {
     width: 180px;
+  }
+  .app-button-group {
+    padding: 10px 10px;
   }
 </style>

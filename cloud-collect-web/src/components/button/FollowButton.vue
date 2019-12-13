@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts">
+  import {User} from "@/domain"
   import * as userService from "@/services/userService"
-  import {User} from "@/types"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component

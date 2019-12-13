@@ -1,5 +1,5 @@
+import {Comment, Page, PageableParam} from "@/domain"
 import http from "@/http"
-import {Comment, Page, PageableParam} from "@/types"
 
 const commentUrl = "/comment"
 

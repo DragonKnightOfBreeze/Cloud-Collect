@@ -5,8 +5,8 @@
     <ElRow class="app-item-list">
       <ElCol :span="4">创建者</ElCol>
       <ElCol :span="20">
-        <ElLink v-if="category.user" :href="'/profile/'+category.user.id">{{category.user.nickname}}</ElLink>
-        <ElLink disabled v-else>未知</ElLink>
+        <ElRouterLink v-if="category.user" :href="'/profile/'+category.user.id">{{category.user.nickname}}</ElRouterLink>
+        <ElRouterLink disabled v-else>未知</ElRouterLink>
       </ElCol>
     </ElRow>
     <ElRow class="app-item-list">
@@ -17,18 +17,22 @@
       <ElCol :span="4">修改时间</ElCol>
       <ElCol :span="20">{{category.lastModifiedTime}}</ElCol>
     </ElRow>
-    <ElDivider/>
-    <ElRow class="app-item-list">
+    <ElBlankLine :height="12"/>
+    <ElRow class="app-summary">
       <ElCol>{{category.summary}}</ElCol>
     </ElRow>
   </ElCard>
 </template>
 
 <script lang="ts">
-  import {Category} from "@/types"
+  import ElBlankLine from "@/components/public/ElBlankLine.vue"
+  import ElRouterLink from "@/components/public/ElRouterLink.vue"
+  import {Category} from "@/domain"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    components: {ElBlankLine, ElRouterLink}
+  })
   export default class CategoryDetailCard extends Vue {
     @Prop({required: true}) category!: Category
   }

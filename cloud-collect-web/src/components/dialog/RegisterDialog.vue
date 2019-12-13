@@ -36,8 +36,8 @@
 
 <script lang="ts">
   import ForgotPasswordDialog from "@/components/dialog/ForgotPasswordDialog.vue"
+  import {DialogType, User} from "@/domain"
   import * as indexService from "@/services/indexService"
-  import {DialogType, User} from "@/types"
   import {Component, PropSync, Vue} from "vue-property-decorator"
 
   @Component({
@@ -57,11 +57,11 @@
     private rules = {
       username: [
         {required: true, message: "用户名不能为空！"},
-        {pattern: /\w{6,16}/, message: "用户名格式不合法！应为6~16位的字母、数字和下划线，以字母开头。"}
+        {pattern: /[a-zA-Z]\w{5,15}/, message: "用户名格式不合法！应为6~16位的字母、数字和下划线，以字母开头。"}
       ],
       password: [
         {required: true, message: "密码不能为空！"},
-        {pattern: /[a-zA-Z]\w{5,15}/, message: "密码格式不合法！应为6~16位的字母、数字和下划线。"}
+        {pattern: /\w{6,16}/, message: "密码格式不合法！应为6~16位的字母、数字和下划线。"}
       ],
       email: [
         {required: true, message: "邮箱地址不能为空！"},

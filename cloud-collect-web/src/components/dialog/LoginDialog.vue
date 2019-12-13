@@ -11,7 +11,7 @@
         <ElInput type="password" v-model="form.password" placeholder="请输入密码。"/>
       </ElFormItem>
       <ElFormItem>
-        <el-button type="text" @click="handleForgotPassword">忘记密码？</el-button>
+        <ElButton type="text" @click="handleForgotPassword">忘记密码？</ElButton>
       </ElFormItem>
     </ElForm>
 
@@ -27,8 +27,8 @@
 
 <script lang="ts">
   import ForgotPasswordDialog from "@/components/dialog/ForgotPasswordDialog.vue"
+  import {DialogType, LoginForm} from "@/domain"
   import * as indexService from "@/services/indexService"
-  import {DialogType, LoginForm} from "@/types"
   import {Component, PropSync, Vue} from "vue-property-decorator"
 
   @Component({

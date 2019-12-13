@@ -1,14 +1,14 @@
 <template>
   <ElCard class="app-tag-overview-card">
     <template v-slot:header>
-      <ElLink :href="'/tags/'+tag.id">{{tag.name}}</ElLink>
+      <ElRouterLink :href="'/tags/'+tag.id">{{tag.name}}</ElRouterLink>
     </template>
 
-    <ElRow class="app-meta-small align-items-center">
+    <ElRow class="app-meta align-items-center">
       <ElCol :span="6" class="align-items-center">
         创建者：
-        <ElLink type="info" v-if="tag.user" :href="'/profile/'+tag.user.id">{{tag.user.nickname}}</ElLink>
-        <ElLink type="info" disabled v-else>未知</ElLink>
+        <ElRouterLink type="info" v-if="tag.user" :href="'/profile/'+tag.user.id">{{tag.user.nickname}}</ElRouterLink>
+        <ElRouterLink type="info" disabled v-else>未知</ElRouterLink>
       </ElCol>
       <ElCol :span="6" class="align-items-center">
         创建时间：{{tag.createdTime}}
@@ -18,7 +18,7 @@
       </ElCol>
       <ElCol :span="3" class="align-items-center">
         <ElBadge type="primary" :value="tag.collectCount">
-          <ElLink type="info" :href="'/tags/'+tag.id">相关收藏</ElLink>
+          <ElRouterLink type="info" :href="'/tags/'+tag.id">相关收藏</ElRouterLink>
         </ElBadge>
       </ElCol>
     </ElRow>
@@ -29,10 +29,13 @@
 </template>
 
 <script lang="ts">
-  import {Tag} from "@/types"
+  import ElRouterLink from "@/components/public/ElRouterLink.vue"
+  import {Tag} from "@/domain"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    components: {ElRouterLink}
+  })
   export default class TagOverviewCard extends Vue {
     @Prop({required: true}) tag!: Tag
   }

@@ -3,14 +3,14 @@
     <ElPageHeader title="返回总览页面" content="标签详情" @back="handleGoBack"></ElPageHeader>
     <ElDivider/>
     <template v-if="tag">
-      <TagDetailCard :tag="tag" />
+      <TagDetailCard :tag="tag"/>
 
-      <div class="align-center" v-if="isCurrentUser">
+      <div class="app-button-group align-center" v-if="isCurrentUser">
         <ElButton type="success" @click="handleEdit"><ElIcon name="edit"/> 编辑</ElButton>
         <ElButton type="danger" @click="handleDelete"><ElIcon name="delete"/> 删除</ElButton>
       </div>
 
-      <EditTagDialog :tag="tag" :visible.sync="editDialogVisible" @submit="handleSubmit" />
+      <EditTagDialog :tag="tag" :visible.sync="editDialogVisible" @submit="handleSubmit"/>
 
       <ElCollapse v-model="activeNames" @change="handleChange">
         <ElCollapseItem name="1" title="查看相关收藏">
@@ -21,9 +21,9 @@
           </ElRow>
 
           <ElCardGroup v-if="collectPage && !collectPage.empty">
-            <TheSorter type="collect" :pageable-param.sync="pageableParam" />
-            <CollectOverviewCard v-for="collect in collectPage.content" :key=collect.id :collect="collect" />
-            <ThePagination :page="collectPage" :pageable-param.sync="pageableParam" />
+            <TheSorter type="collect" :pageable-param.sync="pageableParam"/>
+            <CollectOverviewCard v-for="collect in collectPage.content" :key=collect.id :collect="collect"/>
+            <ThePagination :page="collectPage" :pageable-param.sync="pageableParam"/>
           </ElCardGroup>
           <NoContentCard v-else>
             没有相关收藏。
@@ -42,9 +42,9 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import TheSorter from "@/components/root/TheSorter.vue"
+  import {Collect, Page, PageableParam, Tag, User} from "@/domain"
   import * as collectService from "@/services/collectService"
   import * as tagService from "@/services/tagService"
-  import {Collect, Page, PageableParam, Tag, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -85,6 +85,7 @@
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
       console.log("路由发生了变化：", value)
+      if (value.params.id === oldValue.params.id) return
       this.getTag()
     }
 
@@ -118,8 +119,9 @@
           await this.$router.push(`/profile/${this.currentUser!.id}`)
         }
       } catch (e) {
-        this.$message.info("已取消删除。")
+        //忽略
       }
+
     }
 
     //当用户编辑标签并提交更改成功后，需要从后台重新得到标签数据

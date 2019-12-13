@@ -3,10 +3,11 @@
     <template v-slot:header>
       <ElRow class="align-items-center">
         <ElCol :span="1">
-          <ElAvatar size="small" :src="user.avatarUrl"/>
+          <ElAvatar size="small" v-if="user.avatarUrl" :src="user.avatarUrl"/>
+          <ElAvatar size="small" v-else icon="el-icon-user-solid"/>
         </ElCol>
         <ElCol :span="11">
-          <ElLink type="primary" :href="'/profile/'+user.id">{{user.nickname}}</ElLink>
+          <ElRouterLink type="primary" :href="'/profile/'+user.id">{{user.nickname}}</ElRouterLink>
         </ElCol>
         <ElCol :span="4" :offset="8">
           <FollowButton v-if="!isCurrentUser" :user="user"></FollowButton>
@@ -14,33 +15,33 @@
       </ElRow>
     </template>
 
-    <ElRow class="app-meta-small align-items-center">
+    <ElRow class="app-meta align-items-center">
       <ElCol :span="6">
-        用户名 {{user.username}}
+        用户名：{{user.username}}
       </ElCol>
       <ElCol :span="3">
         <ElBadge type="primary" :value="user.collectCount">
-          <ElLink type="info" :href="'/profile'+user.id+'/collects'">收藏</ElLink>
+          <ElRouterLink type="info" :href="'/profile/'+user.id+'/collects'">收藏</ElRouterLink>
         </ElBadge>
       </ElCol>
       <ElCol :span="3">
         <ElBadge type="primary" :value="user.categoryCount">
-          <ElLink type="info" :href="'/profile'+user.id+'/categories'">分类</ElLink>
+          <ElRouterLink type="info" :href="'/profile/'+user.id+'/categories'">分类</ElRouterLink>
         </ElBadge>
       </ElCol>
       <ElCol :span="3">
         <ElBadge type="primary" :value="user.praiseToCollectCount">
-          <ElLink type="info" :href="'/profile'+user.id+'/stars'">喜爱</ElLink>
+          <ElRouterLink type="info" :href="'/profile/'+user.id+'/stars'">喜爱</ElRouterLink>
         </ElBadge>
       </ElCol>
       <ElCol :span="3">
         <ElBadge :value="user.followToUserCount">
-          <ElLink type="info" :href="'/profile/'+user.id+'/followers'">关注</ElLink>
+          <ElRouterLink type="info" :href="'/profile/'+user.id+'/following'">关注</ElRouterLink>
         </ElBadge>
       </ElCol>
       <ElCol :span="3">
         <ElBadge :value="user.followByUserCount">
-          <ElLink type="info" :href="'/profile/'+user.id+'/following'">粉丝</ElLink>
+          <ElRouterLink type="info" :href="'/profile/'+user.id+'/followers'">粉丝</ElRouterLink>
         </ElBadge>
       </ElCol>
     </ElRow>
@@ -52,11 +53,12 @@
 
 <script lang="ts">
   import FollowButton from "@/components/button/FollowButton.vue"
-  import {User} from "@/types"
+  import ElRouterLink from "@/components/public/ElRouterLink.vue"
+  import {User} from "@/domain"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component({
-    components: {FollowButton}
+    components: {ElRouterLink, FollowButton}
   })
   export default class UserOverviewCard extends Vue {
     @Prop({required: true}) user!: User

@@ -1,5 +1,5 @@
+import {Collect, LoginForm, ResetPasswordForm, User, UserDetailsVo} from "@/domain"
 import http from "@/http"
-import {Collect, LoginForm, ResetPasswordForm, User, UserDetailsVo} from "@/types"
 
 //NOTE 当发生错误时弹出element-ui信息框提示
 

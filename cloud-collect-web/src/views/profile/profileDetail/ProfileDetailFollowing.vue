@@ -3,7 +3,7 @@
     <h3>Ta的关注</h3>
     <ElDivider/>
     <!--允许过滤-->
-    <ElRow :gutter="5" class="align-items-center">
+    <ElRow :gutter="5">
       <ElCol :span="6">
         <ElInput v-model="searchTerm" placeholder="按昵称搜索">
           <template v-slot:append>
@@ -29,8 +29,8 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import TheSorter from "@/components/root/TheSorter.vue"
+  import {Page, PageableParam, User, UserSearchType} from "@/domain"
   import * as userService from "@/services/userService"
-  import {Page, PageableParam, User, UserSearchType} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -54,6 +54,7 @@
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
       console.log("路由发生了变化：", value)
+      if (value.params.id === oldValue.params.id) return
       this.getFollowToUserPage()
     }
 

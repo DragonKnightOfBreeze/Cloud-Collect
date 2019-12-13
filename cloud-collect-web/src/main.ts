@@ -20,7 +20,6 @@ Component.registerHooks([
   "beforeRouteUpdate"
 ])
 
-
 Vue.use(VueClipboard)
 
 new Vue({

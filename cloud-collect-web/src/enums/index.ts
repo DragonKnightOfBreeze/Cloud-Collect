@@ -1,4 +1,4 @@
-import {CollectType, Enum, NoticeType} from "@/types"
+import {CollectType, Enum, NoticeType} from "@/domain"
 
 export const collectTypes: Enum<CollectType>[] = [
   {name: "NONE", text: "无"},

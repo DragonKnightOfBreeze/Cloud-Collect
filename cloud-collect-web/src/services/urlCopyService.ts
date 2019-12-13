@@ -1,5 +1,5 @@
+import {Collect} from "@/domain"
 import http from "@/http"
-import {Collect} from "@/types"
 
 const urlCopyUrl = "/urlCopy"
 

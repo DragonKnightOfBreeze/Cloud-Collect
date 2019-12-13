@@ -74,10 +74,15 @@ data class Collect(
 	@JsonFormat(pattern = GlobalConfig.dateFormat)
 	var lastModifiedTime: LocalDateTime? = null
 	
-	@ApiModelProperty("点赞该收藏的用户列表。懒加载。")
+	@ApiModelProperty("点赞该收藏的用户列表。")
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(cascade = [CascadeType.MERGE])
 	val praiseByUsers: MutableList<User> = mutableListOf()
+	
+	@ApiModelProperty("该收藏的评论列表。")
+	@JsonIgnore
+	@OneToMany(mappedBy = "collect", cascade = [CascadeType.MERGE])
+	val comments: MutableList<Comment> = mutableListOf()
 	
 	@ApiModelProperty("是否已点赞。")
 	@Transient

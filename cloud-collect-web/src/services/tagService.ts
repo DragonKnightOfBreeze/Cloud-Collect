@@ -1,5 +1,5 @@
+import {Page, PageableParam, Tag} from "@/domain"
 import http from "@/http"
-import {Page, PageableParam, Tag} from "@/types"
 
 const tagUrl = "/tag"
 

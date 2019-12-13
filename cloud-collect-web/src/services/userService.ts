@@ -1,5 +1,5 @@
+import {Page, PageableParam, Role, User} from "@/domain"
 import http from "@/http"
-import {Page, PageableParam, Role, User} from "@/types"
 
 const userUrl = "/user"
 

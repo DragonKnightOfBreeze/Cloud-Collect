@@ -3,9 +3,9 @@
     <h3>全部通知</h3>
     <ElDivider/>
     <!--仅当用户为当前用户时，才会显示以下内容-->
-    <ElRow :gutter="5" class="align-items-center" v-if="isCurrentUser">
-      <ElCol :span="4" :offset="20">
-        <ElButton type="danger" @click="handleDeleteAll">清空通知</ElButton>
+    <ElRow :gutter="5" v-if="isCurrentUser">
+      <ElCol :span="4" :offset="20" class="justify-content-end">
+        <ElButton type="danger" @click="handleDeleteAll"><ElIcon name="close"/> 清空通知</ElButton>
       </ElCol>
     </ElRow>
 
@@ -21,8 +21,8 @@
   import NoticeOverviewCard from "@/components/card/NoticeOverviewCard.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
+  import {Notice, Page, PageableParam} from "@/domain"
   import * as noticeService from "@/services/noticeService"
-  import {Notice, Page, PageableParam} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -48,6 +48,7 @@
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
       console.log("路由发生了变化：", value)
+      if (value.params.id === oldValue.params.id) return
       this.getNoticePage()
     }
 
@@ -63,9 +64,13 @@
     }
 
     private async handleDeleteAll() {
-      await this.$confirm("确定清空通知？", {type: "warning"})
-      await this.deleteAllNotice()
-      await this.getNoticePage()
+      try {
+        await this.$confirm("确定清空通知？", {type: "warning"})
+        await this.deleteAllNotice()
+        await this.getNoticePage()
+      } catch (e) {
+        //忽略
+      }
     }
 
     private async deleteNoticeById(id: number) {

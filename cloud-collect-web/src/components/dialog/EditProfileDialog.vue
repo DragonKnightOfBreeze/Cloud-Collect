@@ -25,8 +25,8 @@
 </template>
 
 <script lang="ts">
+  import {User} from "@/domain"
   import * as userService from "@/services/userService"
-  import {User} from "@/types"
   import {Component, Emit, Prop, PropSync, Vue} from "vue-property-decorator"
 
   @Component

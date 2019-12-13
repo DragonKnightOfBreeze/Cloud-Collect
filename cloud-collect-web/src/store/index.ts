@@ -1,4 +1,4 @@
-import {User} from "@/types"
+import {User} from "@/domain"
 import Vue from "vue"
 import Vuex from "vuex"
 

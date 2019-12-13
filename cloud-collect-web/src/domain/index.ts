@@ -1,7 +1,7 @@
 //REGION Frontend
 
 export interface MenuItem {
-  index: string
+  index?: string
   path: string
   name: string
 }
@@ -174,7 +174,7 @@ export interface Page<T> {
   pageable: Pageable;
 }
 
-//for param `@PageableDefault pageable: Pageable`
+//for param `pageable: Pageable`
 export interface PageableParam {
   page: number //default: 0
   size: number //default: 20

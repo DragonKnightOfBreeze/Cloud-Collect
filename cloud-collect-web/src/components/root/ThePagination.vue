@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-  import {Page, PageableParam} from "@/types"
+  import {Page, PageableParam} from "@/domain"
   import {Component, Prop, PropSync, Vue} from "vue-property-decorator"
 
   //接收分页参数和总页数，同步并在父组件中监听分页参数，当改变时再次发送查询请求，即可完成分页跳转功能
@@ -54,6 +54,6 @@
 
 <style scoped>
   #app-pagination {
-    margin: 5px 5px;
+    margin: 10px 10px;
   }
 </style>

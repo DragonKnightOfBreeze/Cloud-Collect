@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts">
+  import {Collect} from "@/domain"
   import * as collectService from "@/services/collectService"
-  import {Collect} from "@/types"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component

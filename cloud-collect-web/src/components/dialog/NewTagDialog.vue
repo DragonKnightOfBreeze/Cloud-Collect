@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts">
+  import {Tag, User} from "@/domain"
   import * as tagService from "@/services/tagService"
-  import {Tag, User} from "@/types"
   import {Component, Emit, PropSync, Vue} from "vue-property-decorator"
 
   @Component

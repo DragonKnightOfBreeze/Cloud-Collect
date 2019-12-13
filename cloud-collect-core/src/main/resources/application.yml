@@ -86,8 +86,8 @@ cloud-collect:
     # jwt过期时间
     expiration: 86400
   validation:
-    username: "\\w{6,16}"
-    password: "[a-zA-Z]\\w{5,15}"
+    username: "[a-zA-Z]\\w{5,15}"
+    password: "\\w{6,16}"
   redis:
     activateCodePrefix: "activateCode:"
     resetPasswordCodePrefix: "resetPasswordCode:"

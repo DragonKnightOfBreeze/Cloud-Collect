@@ -1,16 +1,17 @@
 <template>
   <ElCard class="app-comment-overview-card">
-    <ElRow class="app-title align-items-center">
-      <ElCol :span="1">
-        <ElAvatar size="small" :src="comment.sponsorByUser.avatarUrl"/>
+    <ElRow class="align-items-center">
+      <ElCol :span="1" class="align-items-center">
+        <ElAvatar size="small" v-if="comment.sponsorByUser.avatarUrl" :src="comment.sponsorByUser.avatarUrl"/>
+        <ElAvatar size="small" v-else icon="el-icon-user-solid"/>
       </ElCol>
-      <ElCol :span="11">
-        <ElLink :href="'/profile/'+comment.sponsorByUser.id">{{comment.sponsorByUser.nickname}}</ElLink>
+      <ElCol :span="11" class="app-comment-title align-items-center">
+        <ElRouterLink :href="'/profile/'+comment.sponsorByUser.id">{{comment.sponsorByUser.nickname}}</ElRouterLink>
       </ElCol>
-      <ElCol :span="8" class="app-meta-small ">
+      <ElCol :span="8" class="app-meta align-items-center">
         {{comment.createdTime}}
       </ElCol>
-      <ElCol :span="4">
+      <ElCol :span="4" class="align-items-center">
         <ElButton type="text" size="small" @click="handleReply"><ElIcon name="chat-dot-square"/> 回复</ElButton>
       </ElCol>
     </ElRow>
@@ -19,14 +20,15 @@
     </ElRow>
 
     <ElCard class="app-reply-overview-card" v-if="hasReply" :body-style="replyOverviewCardStyle">
-      <ElRow class="app-title align-items-center">
-        <ElCol :span="1">
-          <ElAvatar size="small" :src="reply.sponsorByUser.avatarUrl"/>
+      <ElRow class="align-items-center">
+        <ElCol :span="1" class="align-items-center">
+          <ElAvatar size="small" v-if="reply.sponsorByUser.avatarUrl" :src="reply.sponsorByUser.avatarUrl"/>
+          <ElAvatar size="small" v-else icon="el-icon-user-solid"/>
         </ElCol>
-        <ElCol :span="11">
-          <ElLink :href="'/profile/'+reply.sponsorByUser.id">{{reply.sponsorByUser.nickname}}</ElLink>
+        <ElCol :span="11" class="app-comment-title align-items-center">
+          <ElRouterLink :href="'/profile/'+reply.sponsorByUser.id">{{reply.sponsorByUser.nickname}}</ElRouterLink>
         </ElCol>
-        <ElCol :span="8" class="app-meta-small ">
+        <ElCol :span="8" class="app-meta align-items-center">
           {{comment.createdTime}}
         </ElCol>
       </ElRow>
@@ -38,16 +40,19 @@
 </template>
 
 <script lang="ts">
-  import {Comment} from "@/types"
+  import ElRouterLink from "@/components/public/ElRouterLink.vue"
+  import {Comment} from "@/domain"
   import {Component, Emit, Prop, Vue} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    components: {ElRouterLink}
+  })
   export default class CommentOverviewCard extends Vue {
     @Prop({required: true}) comment!: Comment
 
     private reply = this.comment.replyToComment
     private replyOverviewCardStyle = {
-      padding: "15px"
+      padding: "10px"
     }
 
     private get hasReply() {
@@ -62,6 +67,9 @@
 </script>
 
 <style scoped>
+  .app-comment-title {
+    font-size: 14px;
+  }
   .app-comment-overview-card {
     border: 1px solid grey;
     border-radius: 4px;

@@ -2,8 +2,8 @@
   <ElDialog center :visible="syncVisible" @close="handleClose">
     <ElForm :model="comment" :rules="rules" ref="form">
       <ElFormItem prop="content">
-        <ElInput type="textarea" v-model="comment.content" placeholder="请输入回复内容"
-                 maxlength="255" show-word-limit :autosize="{minRows: 3, maxRows: 6}"></ElInput>
+        <ElInput type="textarea" v-model="comment.content" placeholder="请输入评论内容"
+                 maxlength="255" show-word-limit :autosize="{minRows: 6, maxRows: 12}"></ElInput>
       </ElFormItem>
     </ElForm>
 
@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts">
+  import {Collect, Comment, User} from "@/domain"
   import * as commentService from "@/services/commentService"
-  import {Collect, Comment, User} from "@/types"
   import {Component, Emit, Prop, PropSync, Vue} from "vue-property-decorator"
 
   @Component

@@ -1,6 +1,6 @@
 <template>
   <ElDropdown size="small" @command="handleCommand">
-    <ElButton type="text" size="small">复制链接
+    <ElButton type="text">复制链接
       <ElIcon name="arrow-down"/>
     </ElButton>
 
@@ -15,8 +15,8 @@
 </template>
 
 <script lang="ts">
+  import {Collect, DropDownItem} from "@/domain"
   import * as urlCopyService from "@/services/urlCopyService"
-  import {Collect, DropDownItem} from "@/types"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component
@@ -24,12 +24,12 @@
     @Prop({required: true}) collect!: Collect
 
     private dropdownItemList: DropDownItem[] = [
-      {command: "copyUrl", name: "复制链接"},
-      {command: "copyAsHtmlUrl", name: "复制为html链接"},
-      {command: "copyAsMdUrl", name: "复制为markdown链接"},
-      {command: "copyAsMdImgUrl", name: "复制为markdown图片链接"},
-      {command: "copyAsMdRefUrl", name: "复制为markdown引用链接"},
-      {command: "copyAsMdRefImgUrl", name: "复制为markdown图片引用链接"}
+      {command: "copyUrl", name: "复制为普通链接"},
+      {command: "copyAsHtmlUrl", name: "复制为Html链接"},
+      {command: "copyAsMdUrl", name: "复制为Markdown链接"},
+      {command: "copyAsMdImgUrl", name: "复制为Markdown图片链接"},
+      {command: "copyAsMdRefUrl", name: "复制为Markdown引用链接"},
+      {command: "copyAsMdRefImgUrl", name: "复制为Markdown图片引用链接"}
     ]
 
     async handleCommand(value: string) {

@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-  import {User} from "@/types"
+  import {User} from "@/domain"
   import {Component, Vue} from "vue-property-decorator"
 
   @Component
@@ -18,9 +18,9 @@
     created() {
       //如果当前用户已登录，则重定向到档案详情页，否则要求用户登录
       if (this.currentUser) {
-        this.$router.push(`/profile/${this.currentUser.id}`)
+        this.$router.replace(`/profile/${this.currentUser.id}`)
       } else {
-        this.$router.push({path: "", query: {operation: "login"}})
+        this.$router.replace({path: "", query: {operation: "login"}})
       }
     }
   }

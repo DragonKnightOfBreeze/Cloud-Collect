@@ -152,6 +152,9 @@ const routes: RouteConfig[] = [
       {path: "500", component: Error500},
       {path: "501", component: Error501}
     ]
+  }, {
+    path: "*",
+    redirect: "/error/404"
   }
 ]
 

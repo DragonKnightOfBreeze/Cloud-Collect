@@ -18,8 +18,8 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import TheSorter from "@/components/root/TheSorter.vue"
+  import {Page, PageableParam, User} from "@/domain"
   import * as userService from "@/services/userService"
-  import {Page, PageableParam, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -41,6 +41,7 @@
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
       console.log("路由发生了变化：", value)
+      if (value.params.id === oldValue.params.id) return
       this.getPraiseByUserPage()
     }
 

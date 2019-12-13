@@ -5,8 +5,8 @@
     <ElRow class="app-item-list">
       <ElCol :span="4">创建者</ElCol>
       <ElCol :span="20">
-        <ElLink v-if="tag.user" :href="'/profile/'+tag.user.id">{{tag.user.nickname}}</ElLink>
-        <ElLink disabled v-else>未知</ElLink>
+        <ElRouterLink v-if="tag.user" :href="'/profile/'+tag.user.id">{{tag.user.nickname}}</ElRouterLink>
+        <ElRouterLink disabled v-else>未知</ElRouterLink>
       </ElCol>
     </ElRow>
     <ElRow class="app-item-list">
@@ -17,18 +17,22 @@
       <ElCol :span="4">修改时间</ElCol>
       <ElCol :span="20">{{tag.lastModifiedTime}}</ElCol>
     </ElRow>
-    <ElDivider/>
-    <ElRow class="app-item-list">
+    <ElBlankLine :height="12"/>
+    <ElRow class="app-summary">
       <ElCol>{{tag.summary}}</ElCol>
     </ElRow>
   </ElCard>
 </template>
 
 <script lang="ts">
-  import {Tag} from "@/types"
+  import ElBlankLine from "@/components/public/ElBlankLine.vue"
+  import ElRouterLink from "@/components/public/ElRouterLink.vue"
+  import {Tag} from "@/domain"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    components: {ElBlankLine, ElRouterLink}
+  })
   export default class TagDetailCard extends Vue {
     @Prop({required: true}) tag!: Tag
   }

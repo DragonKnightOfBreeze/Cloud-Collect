@@ -6,8 +6,8 @@
       <UserDetailCard :user="user" />
 
       <!--对齐不能直接作用在ElButtonGroup上，原因不明-->
-      <div class="align-center" v-if="isCurrentUser">
-        <ElButton class="align-center" type="success" @click="handleEdit"><ElIcon name="edit"/> 编辑个人资料</ElButton>
+      <div class="app-button-group align-center" v-if="isCurrentUser">
+        <ElButton type="success" @click="handleEdit"><ElIcon name="edit"/> 编辑个人资料</ElButton>
       </div>
 
       <EditProfileDialog :visible.sync="editDialogVisible" :user="user" @submit="handleSubmit" />
@@ -18,9 +18,9 @@
 <script lang="ts">
   import UserDetailCard from "@/components/card/UserDetailCard.vue"
   import EditProfileDialog from "@/components/dialog/EditProfileDialog.vue"
+  import {User} from "@/domain"
 
   import * as userService from "@/services/userService"
-  import {User} from "@/types"
   import {Component, Vue} from "vue-property-decorator"
 
   @Component({

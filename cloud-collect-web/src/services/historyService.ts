@@ -1,5 +1,5 @@
+import {History, Page, PageableParam} from "@/domain"
 import http from "@/http"
-import {History, Page, PageableParam} from "@/types"
 
 const historyUrl = "/history"
 

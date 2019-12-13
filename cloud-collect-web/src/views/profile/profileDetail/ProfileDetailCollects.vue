@@ -3,7 +3,7 @@
     <h3>Ta的收藏</h3>
     <ElDivider />
     <!--仅当用户为当前用户时，才会显示以下内容-->
-    <ElRow :gutter="5" class="align-items-center" v-if="isCurrentUser">
+    <ElRow :gutter="5" v-if="isCurrentUser">
       <ElCol :span="4">
         <ElButton type="primary" @click="handleCreateCollect"><ElIcon name="plus"/> 创建收藏</ElButton>
       </ElCol>
@@ -20,9 +20,9 @@
         <ElButton type="warning" @click="handleExport"><ElIcon name="top-right"/> 导出收藏</ElButton>
       </ElCol>
     </ElRow>
-    <ElBlankLine :height="12" />
+    <ElBlankLine :height="12" v-if="isCurrentUser"/>
     <!--允许过滤-->
-    <ElRow :gutter="5" class="align-items-center">
+    <ElRow :gutter="5">
       <ElCol :span="6">
         <ElInput v-model="searchTerm1" placeholder="按名字搜索">
           <template v-slot:append>
@@ -82,9 +82,9 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import TheSorter from "@/components/root/TheSorter.vue"
+  import {Collect, CollectSearchType, CollectType, Page, PageableParam} from "@/domain"
   import {collectTypes} from "@/enums"
   import * as collectService from "@/services/collectService"
-  import {Collect, CollectSearchType, CollectType, Page, PageableParam} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -130,6 +130,7 @@
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
       console.log("路由发生了变化：", value)
+      if (value.params.id === oldValue.params.id) return
       this.getCollectPage()
     }
 

@@ -12,16 +12,17 @@
       <!--导航内容，到各个分页-->
       <ElCol :span="12">
         <ElMenu mode="horizontal" router :default-active="activeIndex" @select="handleSelect">
-          <ElMenuItem v-for="item in menuItemList" :key="item.index" :route="item.path" :index="item.index">
+          <ElMenuItem v-for="item in menuItemList" :key="item.index" :index="item.path">
             {{item.name}}
           </ElMenuItem>
         </ElMenu>
       </ElCol>
       <!--导航侧边栏，显示用户信息，或者登录注册按钮-->
-      <ElCol :span="8" class="justify-content-end">
+      <ElCol :span="8" class="align-items-center justify-content-end">
         <!--用户信息，点击跳转到档案页，点击下拉项跳转到对应页-->
         <template v-if="currentUser">
-          <ElAvatar id="app-user-avatar" fit="fill" :src="currentUser.avatarUrl" />
+          <ElAvatar class="app-user-avatar" v-if="currentUser.avatarUrl" :src="currentUser.avatarUrl"/>
+          <ElAvatar class="app-user-avatar" v-else icon="el-icon-user-solid"/>
           <ElDropdown split-button @click="handleGoProfile" @command="handleCommand">
             {{currentUser.nickname}}
             <template v-slot:dropdown>
@@ -54,8 +55,8 @@
 <script lang="ts">
   import LoginDialog from "@/components/dialog/LoginDialog.vue"
   import RegisterDialog from "@/components/dialog/RegisterDialog.vue"
+  import {DialogType, DropDownItem, MenuItem, User} from "@/domain"
   import * as indexService from "@/services/indexService"
-  import {DialogType, DropDownItem, MenuItem, User} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
@@ -63,13 +64,13 @@
     components: {RegisterDialog, LoginDialog}
   })
   export default class TheHeader extends Vue {
-    private activeIndex = "0"
+    private activeIndex = ""
     private menuItemList: MenuItem[] = [
-      {index: "0", path: "/", name: "首页"},
-      {index: "1", path: "/collects", name: "收藏"},
-      {index: "2", path: "/profile", name: "档案"},
-      {index: "3", path: "/search", name: "搜索"},
-      {index: "4", path: "/about", name: "关于"}
+      {path: "/", name: "首页"},
+      {path: "/collects", name: "收藏"},
+      {path: "/profile", name: "档案"},
+      {path: "/search", name: "搜索"},
+      {path: "/about", name: "关于"}
     ]
     private dropdownItemList: DropDownItem[] = [
       {command: "collects", name: "我的收藏"},
@@ -89,12 +90,34 @@
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
       console.log("路由发生了变化：", value)
-      this.changeActiveIndex(value, oldValue)
-      this.changeOperation(value, oldValue)
+      this.changeActiveIndex()
+      this.changeOperation()
+    }
+
+    private changeActiveIndex() {
+      if (this.activeIndex != this.$route.matched[0].path) {
+        this.activeIndex = this.$route.matched[0].path
+      }
+      if (this.activeIndex == "") {
+        this.activeIndex = "/"
+      }
+    }
+
+    //监听当前路由，得到查询参数operation，尝试进行相应的操作
+    private changeOperation() {
+      const operation = this.$route.query["operation"]
+      if (!operation) return
+
+      console.log(`更改当前操作：${operation}`)
+      if (operation == "login" || operation == "register") {
+        this.handleOpenDialog(operation)
+      } else if (operation == "logout") {
+        this.handleLogout()
+      }
     }
 
     private initUser() {
-      console.log("Init user start.")
+      console.log("开始初始化用户。")
       let currentUser = null
       //尝试从storage中得到当前用户信息，并提交到store，并后台自动登录
       //如果得到了，还要从后台得到jwt令牌，并存储到store中
@@ -104,7 +127,7 @@
         if (currentUser && currentUser.username && currentUser.password) {
           this.$store.commit("setCurrentUser", currentUser)
           this.generateToken(currentUser.username)
-          console.log(`Init user: ${currentUser.username}`)
+          console.log(`初始化用户：${currentUser.username}`)
         }
       }
       return currentUser
@@ -113,31 +136,6 @@
     private async generateToken(username: string) {
       const jwtToken = await indexService.generateToken(username)
       this.$store.commit("setJwtToken", jwtToken)
-    }
-
-    //监听当前路由，更改activeIndex，默认为0
-    private changeActiveIndex(value: Route, oldValue: Route) {
-      this.activeIndex = "0"
-      for (let navItem of this.menuItemList) {
-        //这里应当是包含，而非相等
-        if (value.matched[0].path == navItem.path) {
-          this.activeIndex = navItem.index
-          break
-        }
-      }
-    }
-
-    //监听当前路由，得到查询参数operation，尝试进行相应的操作
-    private changeOperation(value: Route, oldValue: Route) {
-      const operation = value.query["operation"]
-      if (!operation) return
-
-      console.log(`更改当前操作：${operation}`)
-      if (operation == "login" || operation == "register") {
-        this.handleOpenDialog(operation)
-      } else if (operation == "logout") {
-        this.handleLogout()
-      }
     }
 
     //切换当前导航
@@ -183,16 +181,21 @@
     line-height: 60px;
   }
   #app-navbar {
+    /*固定导航栏*/
     position: fixed;
+    /*如果不明确设置宽度，排版会出现错误*/
     width: 960px;
+    /*以上两个属性用于防止页面主体内容溢出*/
     z-index: 1000;
+    background-color: #fff;
   }
   #app-logo {
     height: 51px;
     vertical-align: middle;
   }
-  #app-user-avatar {
+  .app-user-avatar {
     height: 40px;
+
     vertical-align: middle;
     margin-right: 5px;
   }

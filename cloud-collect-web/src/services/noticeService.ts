@@ -1,5 +1,5 @@
+import {Notice, Page, PageableParam} from "@/domain"
 import http from "@/http"
-import {Notice, Page, PageableParam} from "@/types"
 
 const noticeUrl = "/notice"
 

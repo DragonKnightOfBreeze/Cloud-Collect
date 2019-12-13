@@ -20,18 +20,21 @@
       <ElCol :span="4">资料更新时间</ElCol>
       <ElCol :span="20">{{user.updateTime}}</ElCol>
     </ElRow>
-    <ElDivider/>
-    <ElRow class="app-item-list">
+    <ElBlankLine :height="12"/>
+    <ElRow class="app-introduce">
       <ElCol>{{user.introduce}}</ElCol>
     </ElRow>
   </ElCard>
 </template>
 
 <script lang="ts">
-  import {User} from "@/types"
+  import ElBlankLine from "@/components/public/ElBlankLine.vue"
+  import {User} from "@/domain"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    components: {ElBlankLine}
+  })
   export default class UserDetailCard extends Vue {
     @Prop({required: true}) user!: User
   }

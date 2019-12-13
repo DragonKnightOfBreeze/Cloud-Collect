@@ -7,7 +7,7 @@
       <div>一个收藏只能属于一个分类。</div>
     </div>
     <ElBlankLine/>
-    <ElRow type="flex" justify="center" align="middle">
+    <ElRow class="align-items-center justify-content-center">
       <ElCol :span="8">
         <ElForm inline class="align-center">
           <ElFormItem>
@@ -38,8 +38,8 @@
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import TheSorter from "@/components/root/TheSorter.vue"
+  import {Category, Page, PageableParam} from "@/domain"
   import * as categoryService from "@/services/categoryService"
-  import {Category, Page, PageableParam} from "@/types"
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({

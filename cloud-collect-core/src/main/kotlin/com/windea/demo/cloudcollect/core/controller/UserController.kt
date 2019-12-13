@@ -117,5 +117,11 @@ class UserController(
 	fun findAllByNicknameContainsAndFollowByUserId(@RequestParam nickname: String, @RequestParam followByUserId: Long, pageable: Pageable): Page<User> {
 		return userService.findAllByNicknameContainsAndFollowByUserId(nickname, followByUserId, pageable)
 	}
+	
+	@ApiOperation("根据点赞收藏id查询用户。")
+	@GetMapping("/findAllByPraiseToCollectId")
+	fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User> {
+		return userService.findAllByPraiseToCollectId(praiseToCollectId, pageable)
+	}
 }
 
