@@ -23,7 +23,7 @@ data class Collect(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	val id: Long = 0, //NOTE 其类型可为Long，默认值推荐为0
+	val id: Long = 0, //其类型可为Long，默认值推荐为0
 	
 	@ApiModelProperty("名字。")
 	@get:NotEmpty(message = "{validation.Collect.name.NotEmpty}", groups = [Create::class, Modify::class])
@@ -45,12 +45,12 @@ data class Collect(
 	var logoUrl: String = "",
 	
 	@ApiModelProperty("收藏的分类。")
-	@ManyToOne
+	@ManyToOne(cascade = [CascadeType.MERGE])
 	var category: Category? = null,
 	
 	@ApiModelProperty("收藏的标签。")
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JvmSuppressWildcards //NOTE 防止Jpa报错
+	@ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.MERGE])
+	@JvmSuppressWildcards //防止Jpa报错
 	var tags: Set<Tag> = setOf(),
 	
 	@ApiModelProperty("收藏的类型。")
@@ -76,13 +76,18 @@ data class Collect(
 	
 	@ApiModelProperty("点赞该收藏的用户列表。")
 	@JsonIgnore
-	@ManyToMany(cascade = [CascadeType.MERGE])
+	@ManyToMany(cascade = [CascadeType.REMOVE])
 	val praiseByUsers: MutableList<User> = mutableListOf()
 	
 	@ApiModelProperty("该收藏的评论列表。")
 	@JsonIgnore
-	@OneToMany(mappedBy = "collect", cascade = [CascadeType.MERGE])
+	@OneToMany(mappedBy = "collect", cascade = [CascadeType.REMOVE])
 	val comments: MutableList<Comment> = mutableListOf()
+	
+	@ApiModelProperty("该收藏的浏览历史列表。")
+	@JsonIgnore
+	@OneToMany(mappedBy = "collect", cascade = [CascadeType.REMOVE])
+	val histories: MutableList<History> = mutableListOf()
 	
 	@ApiModelProperty("是否已点赞。")
 	@Transient

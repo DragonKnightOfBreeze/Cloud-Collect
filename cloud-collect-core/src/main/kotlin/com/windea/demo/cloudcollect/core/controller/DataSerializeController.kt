@@ -5,7 +5,7 @@ import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.http.*
-import org.springframework.security.core.*
+import org.springframework.security.access.prepost.*
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.*
 
@@ -18,8 +18,9 @@ class DataSerializeController(
 ) {
 	@ApiOperation("从指定格式的文件导入收藏。例如：Xml、Json、Yaml。")
 	@PostMapping("/importData")
-	fun importData(@RequestParam dataType: DataType, multipartFile: MultipartFile, authentication: Authentication) {
-		dataSerializeService.importData(dataType, multipartFile, authentication.toUser())
+	@PreAuthorize("isAuthenticated()")
+	fun importData(@RequestParam dataType: DataType, multipartFile: MultipartFile) {
+		dataSerializeService.importData(dataType, multipartFile, currentUser!!)
 	}
 	
 	@ApiOperation("导出收藏到指定格式的文件。例如：Xml、Json、Yaml。")

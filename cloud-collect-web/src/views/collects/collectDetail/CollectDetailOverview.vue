@@ -118,14 +118,10 @@
     }
 
     async handleDelete() {
+      console.log(this.currentUser)
       try {
         await this.$confirm("此操作将永久删除该收藏, 是否继续?", {type: "warning"})
         await this.deleteCollect()
-        if (this.currentUser) {
-          await this.$router.push("/collects")
-        } else {
-          await this.$router.push(`/profile/${this.currentUser!.id}`)
-        }
       } catch (e) {
         //忽略
       }
@@ -165,7 +161,7 @@
 
     private async forkCollect() {
       try {
-        await collectService.createFrom(this.collect!)
+        await collectService.fork(this.collect!)
         this.$message.success("拷贝成功！")
       } catch (e) {
         this.$message.warning("拷贝失败！")
@@ -176,6 +172,11 @@
       try {
         await collectService.deleteById(this.collectId)
         this.$message.success("删除成功！")
+        if (this.currentUser) {
+          await this.$router.push(`/profile/${this.currentUser!.id}/collects`)
+        } else {
+          await this.$router.push("/collects")
+        }
       } catch (e) {
         this.$message.warning("删除失败！")
       }

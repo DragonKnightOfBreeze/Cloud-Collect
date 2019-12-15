@@ -83,17 +83,17 @@ data class User constructor(
 	
 	@ApiModelProperty("用户的关注用户列表。")
 	@JsonIgnore
-	@ManyToMany(mappedBy = "followByUsers")
+	@ManyToMany(mappedBy = "followByUsers", cascade = [CascadeType.REMOVE])
 	val followToUsers: MutableList<User> = mutableListOf()
 	
 	@ApiModelProperty("该用户的粉丝用户列表。")
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(cascade = [CascadeType.REMOVE])
 	val followByUsers: MutableList<User> = mutableListOf()
 	
 	@ApiModelProperty("该用户点赞的收藏列表。")
 	@JsonIgnore
-	@ManyToMany(mappedBy = "praiseByUsers")
+	@ManyToMany(mappedBy = "praiseByUsers", cascade = [CascadeType.REMOVE])
 	val praiseToCollects: MutableList<Collect> = mutableListOf()
 	
 	@ApiModelProperty("是否已关注。")

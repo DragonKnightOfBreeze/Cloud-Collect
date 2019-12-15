@@ -4,5 +4,5 @@ package com.windea.demo.cloudcollect.core.enums
 enum class DataType(
 	val extension: String
 ) {
-	JSON("json"), YAML("yml"), XML("xml"), PROPERTIES("properties")
+	JSON("json"), YAML("yml"), XML("xml")
 }

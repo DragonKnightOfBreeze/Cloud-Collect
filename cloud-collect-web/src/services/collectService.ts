@@ -7,8 +7,8 @@ export async function create(collect: Collect) {
   await http.post(`${collectUrl}/create`, collect)
 }
 
-export async function createFrom(collect: Collect) {
-  await http.post(`${collectUrl}/createFrom`, collect)
+export async function fork(collect: Collect) {
+  await http.post(`${collectUrl}/fork`, collect)
 }
 
 export async function modify(id: number, collect: Collect) {

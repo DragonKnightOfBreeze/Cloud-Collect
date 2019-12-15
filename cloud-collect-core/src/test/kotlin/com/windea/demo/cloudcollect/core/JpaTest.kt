@@ -143,18 +143,16 @@ class JpaTest(
 		println(barList.isNotEmpty())
 	}
 	
-	//@Test //TESTED
-	//@Transactional
-	//fun findFooByLazyTx() {
-	//	val bar = barRepository.findByLazyFooListId(1)
-	//	println(bar)
-	//}
-	//
-	//@Test
-	//@Transactional
-	//fun getLazyFooListTx() {
-	//	val bar = barRepository.findByIdOrNull(1)!!
-	//	val lazyFooList = bar.lazyFooList.subList(0, 2)
-	//	println(lazyFooList)
-	//}
+	@Test //TESTED
+	fun findFooByLazyTx() {
+		val bar = barRepository.findByLazyFooListId(1)
+		println(bar)
+	}
+	
+	@Test
+	fun getLazyFooListTx() {
+		val bar = barRepository.findByIdOrNull(1)!!
+		val lazyFooList = bar.lazyFooList.subList(0, 2)
+		println(lazyFooList)
+	}
 }

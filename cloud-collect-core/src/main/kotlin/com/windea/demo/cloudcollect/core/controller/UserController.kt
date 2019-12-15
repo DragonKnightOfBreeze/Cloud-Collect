@@ -4,13 +4,11 @@ package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.enums.*
-import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
-import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
@@ -34,15 +32,15 @@ class UserController(
 	@ApiOperation("关注某一用户。")
 	@PutMapping("/{id}/follow")
 	@PreAuthorize("isAuthenticated()")
-	fun follow(@PathVariable id: Long, authentication: Authentication) {
-		userService.follow(id, authentication.toUser())
+	fun follow(@PathVariable id: Long) {
+		userService.follow(id)
 	}
 	
 	@ApiOperation("取消关注某一用户。")
 	@PutMapping("/{id}/unfollow")
 	@PreAuthorize("isAuthenticated()")
-	fun unfollow(@PathVariable id: Long, authentication: Authentication) {
-		userService.unfollow(id, authentication.toUser())
+	fun unfollow(@PathVariable id: Long) {
+		userService.unfollow(id)
 	}
 	
 	@ApiOperation("根据id得到用户。")

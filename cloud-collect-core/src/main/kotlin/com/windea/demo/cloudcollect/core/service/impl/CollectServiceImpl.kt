@@ -1,3 +1,5 @@
+@file:Suppress("DuplicatedCode")
+
 package com.windea.demo.cloudcollect.core.service.impl
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
@@ -6,6 +8,7 @@ import com.windea.demo.cloudcollect.core.exceptions.*
 import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
+import kotlinx.coroutines.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
 import org.springframework.data.repository.*
@@ -19,30 +22,31 @@ class CollectServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val commentRepository: CommentRepository,
 	private val userRepository: UserRepository,
-	private val historyService: HistoryService
+	private val historyService: HistoryService,
+	private val noticeService: NoticeService
 ) : CollectService {
 	@Transactional
 	@CacheEvict(allEntries = true)
 	override fun create(collect: Collect) {
+		val currentUser = currentUser!!
 		//链接需要经过处理
 		collect.url = collect.url.toNoQueryUrl()
 		collect.logoUrl = collect.logoUrl.ifEmpty { collect.url.toLogoUrl() }
 		
-		collectRepository.save(collect)
+		collectRepository.save(collect).addCreateNotice(currentUser)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun createFrom(collect: Collect, user: User) {
+	override fun fork(collect: Collect) {
+		val currentUser = currentUser!!
 		//首先要点赞别人的收藏
-		praise(collect.id, user)
+		val rawCollect = collectRepository.findByIdOrNull(collect.id) ?: throw NotFoundException()
+		rawCollect.praiseByUsers += currentUser
 		
 		//从别人的收藏创建新的收藏，需要重置id
-		val newCollect = collect.copy(
-			id = 0,
-			user = user
-		)
-		collectRepository.save(newCollect)
+		val newCollect = collect.copy(id = 0, user = currentUser)
+		collectRepository.save(newCollect).addForkNotice(rawCollect, currentUser)
 	}
 	
 	@Transactional
@@ -62,16 +66,19 @@ class CollectServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun praise(id: Long, user: User) {
+	override fun praise(id: Long) {
+		val currentUser = currentUser!!
 		val rawCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		rawCollect.praiseByUsers += user
+		rawCollect.praiseByUsers += currentUser
+		rawCollect.addPraiseNotice(currentUser)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun unpraise(id: Long, user: User) {
+	override fun unpraise(id: Long) {
+		val currentUser = currentUser!!
 		val rawCollect = collectRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		rawCollect.praiseByUsers -= user
+		rawCollect.praiseByUsers -= currentUser
 	}
 	
 	@Transactional
@@ -82,7 +89,9 @@ class CollectServiceImpl(
 	
 	@Cacheable(key = "methodName + args")
 	override fun findById(id: Long): Collect {
-		return collectRepository.findByIdOrNull(id)?.addHistory()?.lateInit() ?: throw NotFoundException()
+		return collectRepository.findByIdOrNull(id)?.lateInit()?.also {
+			currentUser?.let { currentUser -> it.addHistory(currentUser) }
+		} ?: throw NotFoundException()
 	}
 	
 	override fun findByRandom(): Collect {
@@ -192,8 +201,85 @@ class CollectServiceImpl(
 		commentCount = commentRepository.countByCollectId(id)
 	}
 	
-	private fun Collect.addHistory() = this.also {
-		//尝试为当前用户添加一条浏览记录
-		currentUser?.let { currentUser -> historyService.create(History(collect = it, user = currentUser)) }
+	//DONE 使用协程实现以下代码，注意这时当前用户已被清空
+	
+	//尝试为当前用户添加一条浏览记录
+	private fun Collect.addHistory(currentUser: User) = GlobalScope.launch {
+		val collect = this@addHistory
+		val history = History(
+			collect = collect,
+			user = currentUser
+		)
+		historyService.create(history)
+	}
+	
+	//尝试为当前用户（以及他的所有粉丝用户）添加一条创建收藏通知
+	private fun Collect.addCreateNotice(currentUser: User) = GlobalScope.launch {
+		val collect = this@addCreateNotice
+		val notice = Notice(
+			title = "${currentUser.nickname}刚刚创建了一条收藏",
+			//language=HTML
+			content = """
+				<div>
+				  <a href="/profile/${currentUser.id}">${currentUser.nickname}</a>
+				  刚刚创建了一条收藏：
+				  <a href="/collects/${collect.id}">${collect.name}</a>
+				</div>
+			""".trimIndent(),
+			type = NoticeType.ACCOUNT,
+			user = currentUser
+		)
+		noticeService.create(notice)
+		for(followByUser in currentUser.followByUsers) {
+			noticeService.create(notice.copy(user = followByUser))
+		}
+	}
+	
+	//尝试为当前用户（以及他的所有粉丝用户）添加一条拷贝收藏通知
+	private fun Collect.addForkNotice(rawCollect: Collect, currentUser: User) = GlobalScope.launch {
+		val collect = this@addForkNotice
+		val notice = Notice(
+			title = "${currentUser.nickname}刚刚拷贝了一条收藏",
+			//language=HTML
+			content = """
+				<div>
+				  <a href="/profile/${currentUser.id}">${currentUser.nickname}</a>
+				  刚刚从收藏：
+				  <a href="/collects/${rawCollect.id}">${rawCollect.name}</a>
+				</div>
+				<div>
+				  拷贝了一条收藏：
+				  <a href="/collects/${collect.id}">${collect.name}</a>
+				</div>
+			""".trimIndent(),
+			type = NoticeType.ACCOUNT,
+			user = currentUser
+		)
+		noticeService.create(notice)
+		for(followByUser in currentUser.followByUsers) {
+			noticeService.create(notice.copy(user = followByUser))
+		}
+	}
+	
+	//尝试为当前用户（以及他的所有粉丝用户）添加一条点赞收藏通知
+	private fun Collect.addPraiseNotice(currentUser: User) = GlobalScope.launch {
+		val collect = this@addPraiseNotice
+		val notice = Notice(
+			title = "${currentUser.nickname}刚刚点赞了一条收藏",
+			//language=HTML
+			content = """
+				<div>
+				  <a href="/profile/${currentUser.id}">${currentUser.nickname}</a>
+				  刚刚点赞了一条收藏：
+				  <a href="/collects/${collect.id}">${collect.name}</a>
+				</div>
+			""".trimIndent(),
+			type = NoticeType.ACCOUNT,
+			user = currentUser
+		)
+		noticeService.create(notice)
+		for(followByUser in currentUser.followByUsers) {
+			noticeService.create(notice.copy(user = followByUser))
+		}
 	}
 }

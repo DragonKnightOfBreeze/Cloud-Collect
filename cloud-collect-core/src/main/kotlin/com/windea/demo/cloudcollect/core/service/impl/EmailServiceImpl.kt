@@ -17,6 +17,7 @@ class EmailServiceImpl(
 		setFrom(mailProperties.username)
 		setTo(user.email)
 		setSubject("云收藏：激活你的用户")
+		//language=HTML
 		setText("""
 			<html lang="zh">
 			  <h1>云收藏：激活你的用户</h1>
@@ -31,13 +32,14 @@ class EmailServiceImpl(
 		setFrom(mailProperties.username)
 		setTo(user.email)
 		setSubject("云收藏：欢迎使用")
+		//language=HTML
 		setText("""
-		<html lang="zh">
-		  <h1>云收藏：欢迎使用</h1>
-		  <p>
-		    欢迎使用微风的龙骑士的云收藏项目！
-		  </p>
-		</html>
+			<html lang="zh">
+			  <h1>云收藏：欢迎使用</h1>
+			  <p>
+			    欢迎使用微风的龙骑士的云收藏项目！
+			  </p>
+			</html>
 		""".trimIndent())
 	}
 	
@@ -47,13 +49,14 @@ class EmailServiceImpl(
 		setFrom(mailProperties.username)
 		setTo(user.email)
 		setSubject("云收藏：重置你的密码")
+		//language=HTML
 		setText("""
-		<html lang="zh">
-		  <h1>云收藏：重置你的密码</h1>
-		  <p>
-		    请点击<a href="$url">此地址</a>重置你的密码。
-		  </p>
-		</html>
+			<html lang="zh">
+			  <h1>云收藏：重置你的密码</h1>
+			  <p>
+			    请点击<a href="$url">此地址</a>重置你的密码。
+			  </p>
+			</html>
 		""".trimIndent())
 	}
 	
@@ -61,13 +64,14 @@ class EmailServiceImpl(
 		setFrom(mailProperties.username)
 		setTo(user.email)
 		setSubject("云收藏：重置密码成功")
+		//language=HTML
 		setText("""
-		<html lang="zh">
-		  <h1>云收藏：欢迎使用</h1>
-		  <p>
-		    已成功重置你的密码。
-		  </p>
-		</html>
+			<html lang="zh">
+			  <h1>云收藏：欢迎使用</h1>
+			  <p>
+			    已成功重置你的密码。
+			  </p>
+			</html>
 		""".trimIndent())
 	}
 	

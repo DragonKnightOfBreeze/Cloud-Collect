@@ -24,7 +24,7 @@
       <ElCol :span="4">分类</ElCol>
       <ElCol :span="20">
         <ElRouterLink type="info" v-if="collect.category" :href="'/categories/'+collect.id">{{collect.category.name}}</ElRouterLink>
-        <ElRouterLink type="info" v-else>未分类</ElRouterLink>
+        <ElRouterLink type="info" v-else disabled>未分类</ElRouterLink>
       </ElCol>
     </ElRow>
     <ElRow class="app-item-list">
@@ -85,13 +85,14 @@
 <script lang="ts">
   import PraiseButton from "@/components/button/PraiseButton.vue"
   import UrlCopyDropdown from "@/components/menu/UrlCopyDropdown.vue"
+  import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElRouterLink from "@/components/public/ElRouterLink.vue"
   import {Collect, User} from "@/domain"
   import {collectTypes} from "@/enums"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component({
-    components: {ElRouterLink, PraiseButton, UrlCopyDropdown}
+    components: {ElBlankLine, ElRouterLink, PraiseButton, UrlCopyDropdown}
   })
   export default class CollectDetailCard extends Vue {
     @Prop({required: true}) collect!: Collect

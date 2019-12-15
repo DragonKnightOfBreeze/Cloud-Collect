@@ -9,16 +9,16 @@ interface CollectService {
 	fun create(collect: Collect)
 	
 	/**从别人的收藏创建自己的收藏。默认点赞原始收藏。*/
-	fun createFrom(collect: Collect, user: User)
+	fun fork(collect: Collect)
 	
 	/**修改自己的收藏。包括名字，概述，分类，标签，类型。*/
 	fun modify(id: Long, collect: Collect)
 	
 	/**点赞某一收藏。*/
-	fun praise(id: Long, user: User)
+	fun praise(id: Long)
 	
 	/**取消点赞某一收藏。*/
-	fun unpraise(id: Long, user: User)
+	fun unpraise(id: Long)
 	
 	/**删除自己的收藏。*/
 	fun deleteById(id: Long)

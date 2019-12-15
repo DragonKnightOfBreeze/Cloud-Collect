@@ -3,14 +3,14 @@
     <!--导航栏-->
     <ElRow id="app-navbar" class="justify-content-center align-items-center">
       <!--导航头部-->
-      <ElCol :span="4">
+      <ElCol :span="2">
         <router-link to="/">
           <!--NOTE 使用ElImage会找不到图片-->
-          <img id="app-logo" src="../../assets/logo.png" alt="云收藏" />
+          <img id="app-logo" src="../../assets/logo.png" alt="云收藏"/>
         </router-link>
       </ElCol>
       <!--导航内容，到各个分页-->
-      <ElCol :span="12">
+      <ElCol :span="10">
         <ElMenu mode="horizontal" router :default-active="activeIndex" @select="handleSelect">
           <ElMenuItem v-for="item in menuItemList" :key="item.index" :index="item.path">
             {{item.name}}
@@ -18,7 +18,7 @@
         </ElMenu>
       </ElCol>
       <!--导航侧边栏，显示用户信息，或者登录注册按钮-->
-      <ElCol :span="8" class="align-items-center justify-content-end">
+      <ElCol :span="10" class="align-items-center justify-content-end">
         <!--用户信息，点击跳转到档案页，点击下拉项跳转到对应页-->
         <template v-if="currentUser">
           <ElAvatar class="app-user-avatar" v-if="currentUser.avatarUrl" :src="currentUser.avatarUrl"/>
@@ -68,6 +68,8 @@
     private menuItemList: MenuItem[] = [
       {path: "/", name: "首页"},
       {path: "/collects", name: "收藏"},
+      //{path:"/categories", name: "分类"},
+      //{path: "/tags", name: "标签"},
       {path: "/profile", name: "档案"},
       {path: "/search", name: "搜索"},
       {path: "/about", name: "关于"}
@@ -75,8 +77,11 @@
     private dropdownItemList: DropDownItem[] = [
       {command: "collects", name: "我的收藏"},
       {command: "categories", name: "我的分类"},
+      {command: "stars", name: "我的喜爱"},
+      {command: "following", name: "我的关注"},
+      {command: "followers", name: "我的粉丝"},
       {command: "history", name: "浏览记录"},
-      {command: "notices", name: "系统通知"},
+      {command: "notices", name: "我的通知"},
       {command: "logout", name: "注销"}
     ]
     private dialogType: DialogType = "none"

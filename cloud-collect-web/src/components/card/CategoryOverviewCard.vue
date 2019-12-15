@@ -10,13 +10,13 @@
         <ElRouterLink type="info" v-if="category.user" :href="'/profile/'+category.user.id">{{category.user.nickname}}</ElRouterLink>
         <ElRouterLink type="info" disabled v-else>未知</ElRouterLink>
       </ElCol>
-      <ElCol :span="6" class="align-items-center">
+      <ElCol :span="7" class="align-items-center">
         创建时间：{{category.createdTime}}
       </ElCol>
-      <ElCol :span="6" class="align-items-center">
+      <ElCol :span="7" class="align-items-center">
         修改时间：{{category.lastModifiedTime}}
       </ElCol>
-      <ElCol :span="3" class="align-items-center">
+      <ElCol :span="4" class="align-items-center">
         <ElBadge type="primary" :value="category.collectCount">
           <ElRouterLink type="info" :href="'/categories/'+category.id">相关收藏</ElRouterLink>
         </ElBadge>

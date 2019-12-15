@@ -49,7 +49,7 @@
         <ElRouterLink type="info" v-if="collect.category" :href="'/categories/'+ collect.category.id">
           {{collect.category.name}}
         </ElRouterLink>
-        <ElRouterLink type="info" disabled v-else>未分类</ElRouterLink>
+        <ElRouterLink type="info" v-else disabled>未分类</ElRouterLink>
       </ElCol>
       <ElCol :span="18" class="align-items-center">
         标签：

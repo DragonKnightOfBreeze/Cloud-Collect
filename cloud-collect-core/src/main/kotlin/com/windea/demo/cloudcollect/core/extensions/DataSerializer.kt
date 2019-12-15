@@ -30,7 +30,6 @@ object DataSerializer {
 		DataType.JSON -> json
 		DataType.YAML -> yaml
 		DataType.XML -> xml
-		DataType.PROPERTIES -> properties
 	}
 	
 	@PublishedApi

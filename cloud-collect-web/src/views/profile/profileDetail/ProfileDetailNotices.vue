@@ -92,6 +92,7 @@
     private async deleteAllNotice() {
       try {
         await noticeService.deleteAllByUserId(this.userId)
+        this.$message.success("清空成功！")
       } catch (e) {
         this.$message.warning("清空失败！")
       }

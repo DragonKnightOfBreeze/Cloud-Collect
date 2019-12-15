@@ -29,8 +29,7 @@ class CategoryController(
 	@ApiOperation("修改自己的分类。")
 	@PutMapping("/{id}")
 	@PreAuthorize("isAuthenticated()")
-	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) category: Category,
-		bindingResult: BindingResult) {
+	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) category: Category, bindingResult: BindingResult) {
 		categoryService.modify(id, category)
 	}
 	

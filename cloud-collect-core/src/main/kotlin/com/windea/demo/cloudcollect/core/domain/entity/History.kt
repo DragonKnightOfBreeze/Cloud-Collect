@@ -19,7 +19,6 @@ data class History(
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long = 0,
 	
-	//不做任何级联，迫切加载
 	@ApiModelProperty("收藏。")
 	@ManyToOne
 	val collect: Collect,

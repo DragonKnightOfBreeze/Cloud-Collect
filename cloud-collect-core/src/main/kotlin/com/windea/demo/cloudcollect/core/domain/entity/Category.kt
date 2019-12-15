@@ -51,10 +51,14 @@ data class Category(
 	@JsonFormat(pattern = GlobalConfig.dateFormat)
 	var lastModifiedTime: LocalDateTime? = null
 	
+	@ApiModelProperty("相关的收藏列表。")
+	@JsonIgnore
+	@OneToMany(mappedBy = "category", cascade = [CascadeType.DETACH])
+	val collects: MutableList<Collect> = mutableListOf()
+	
 	@ApiModelProperty("收藏数量。")
 	@Transient
 	var collectCount: Long = 0
-	
 	
 	override fun equals(other: Any?) = other === this || (other is Category && other.id == id)
 	

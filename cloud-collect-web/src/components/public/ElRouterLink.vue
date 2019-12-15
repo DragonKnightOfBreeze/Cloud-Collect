@@ -23,7 +23,7 @@
     @Prop({default: false, type: Boolean}) underline!: boolean
     @Prop({default: false, type: Boolean}) disabled!: boolean
 
-    @Prop({default: "/"}) href!: string | Location
+    @Prop({default: ""}) href!: string | Location
     @Prop({default: false, type: Boolean}) replace!: boolean
     @Prop({default: false, type: Boolean}) append!: boolean
     @Prop({default: "router-link-active"}) activeClass!: string

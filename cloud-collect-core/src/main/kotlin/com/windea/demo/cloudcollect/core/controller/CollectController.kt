@@ -4,13 +4,11 @@ package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.enums.*
-import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.service.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
-import org.springframework.security.core.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
@@ -30,10 +28,10 @@ class CollectController(
 	}
 	
 	@ApiOperation("从别人的收藏创建自己的收藏。")
-	@PostMapping("/createFrom")
+	@PostMapping("/fork")
 	@PreAuthorize("isAuthenticated()")
-	fun createFrom(@RequestBody collect: Collect, authentication: Authentication) {
-		collectService.createFrom(collect, authentication.toUser())
+	fun fork(@RequestBody collect: Collect) {
+		collectService.fork(collect)
 	}
 	
 	@ApiOperation("修改自己的收藏。")
@@ -46,15 +44,15 @@ class CollectController(
 	@ApiOperation("点赞某一收藏。")
 	@PutMapping("/{id}/praise")
 	@PreAuthorize("isAuthenticated()")
-	fun praise(@PathVariable id: Long, authentication: Authentication) {
-		collectService.praise(id, authentication.toUser())
+	fun praise(@PathVariable id: Long) {
+		collectService.praise(id)
 	}
 	
 	@ApiOperation("取消点赞某一收藏。")
 	@PutMapping("/{id}/unpraise")
 	@PreAuthorize("isAuthenticated()")
-	fun unpraise(@PathVariable id: Long, authentication: Authentication) {
-		collectService.unpraise(id, authentication.toUser())
+	fun unpraise(@PathVariable id: Long) {
+		collectService.unpraise(id)
 	}
 	
 	@ApiOperation("删除自己的收藏。")
@@ -83,7 +81,7 @@ class CollectController(
 	}
 	
 	@ApiOperation("根据分类id查询所有收藏。")
-	@GetMapping("/findByUserAndCategory")
+	@GetMapping("/findAllByCategoryId")
 	fun findAllByCategoryId(@RequestParam categoryId: Long, pageable: Pageable): Page<Collect> {
 		return collectService.findAllByCategoryId(categoryId, pageable)
 	}

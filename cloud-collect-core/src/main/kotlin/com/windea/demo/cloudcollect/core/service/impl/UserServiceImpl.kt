@@ -3,6 +3,7 @@
 package com.windea.demo.cloudcollect.core.service.impl
 
 import com.windea.demo.cloudcollect.core.GlobalConfig.sendEmail
+import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.entity.User
 import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.domain.response.*
@@ -11,6 +12,7 @@ import com.windea.demo.cloudcollect.core.exceptions.*
 import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
+import kotlinx.coroutines.*
 import org.springframework.cache.annotation.*
 import org.springframework.data.domain.*
 import org.springframework.data.repository.*
@@ -28,8 +30,7 @@ class UserServiceImpl(
 	private val userRepository: UserRepository,
 	private val collectRepository: CollectRepository,
 	private val categoryRepository: CategoryRepository,
-	private val historyRepository: HistoryRepository,
-	private val noticeRepository: NoticeRepository,
+	private val noticeService: NoticeService,
 	private val cacheService: CacheService,
 	private val emailService: EmailService,
 	private val passwordEncoder: PasswordEncoder,
@@ -101,7 +102,7 @@ class UserServiceImpl(
 		if(resetPasswordCode != code) throw InvalidAuthCodeException()
 		
 		val rawUser = userRepository.findByUsername(form.username) ?: throw UserNotFoundException()
-		rawUser.password = passwordEncoder.encode(form.password) //NOTE 密码需要加密
+		rawUser.password = passwordEncoder.encode(form.password) //密码需要加密
 		
 		//当配置为要求发送邮件时，发送邮件
 		if(sendEmail) emailService.sendResetPasswordSuccessEmail(rawUser)
@@ -120,19 +121,22 @@ class UserServiceImpl(
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun follow(id: Long, user: User) {
-		//NOTE 用户不能关注自身
-		if(id == user.id) return
+	override fun follow(id: Long) {
+		val currentUser = currentUser!!
+		//用户不能关注自身
+		if(id == currentUser.id) return
 		
 		val rawUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		rawUser.followByUsers += user
+		rawUser.followByUsers += currentUser
+		rawUser.addFollowNotice(currentUser)
 	}
 	
 	@Transactional
 	@CacheEvict(allEntries = true)
-	override fun unfollow(id: Long, user: User) {
+	override fun unfollow(id: Long) {
+		val currentUser = currentUser!!
 		val rawUser = userRepository.findByIdOrNull(id) ?: throw NotFoundException()
-		rawUser.followByUsers -= user
+		rawUser.followByUsers -= currentUser
 	}
 	
 	@Cacheable(key = "methodName + args")
@@ -216,5 +220,29 @@ class UserServiceImpl(
 		praiseToCollectCount = collectRepository.countByPraiseByUsersId(id)
 		followToUserCount = userRepository.countByFollowByUsersId(id)
 		followByUserCount = userRepository.countByFollowToUsersId(id)
+	}
+	
+	//DONE 使用协程实现以下代码，注意这时当前用户已被清空
+	
+	//尝试为当前用户（以及他的所有粉丝用户）添加一条关注用户通知
+	private fun User.addFollowNotice(currentUser: User) = GlobalScope.launch {
+		val user = this@addFollowNotice
+		val notice = Notice(
+			title = "${currentUser.nickname}刚刚关注了一名用户",
+			//language=HTML
+			content = """
+				<div>
+				  <a href="/profile/${currentUser.id}">${currentUser.nickname}</a>
+				  刚刚关注了一名用户：
+				  <a href="/profile/${user.id}">${user.nickname}</a>
+				</div>
+			""".trimIndent(),
+			type = NoticeType.ACCOUNT,
+			user = currentUser
+		)
+		noticeService.create(notice)
+		for(followByUser in currentUser.followByUsers) {
+			noticeService.create(notice.copy(user = followByUser))
+		}
 	}
 }

@@ -135,7 +135,7 @@ export type CollectPrivacy = "PUBLIC" | "PRIVATE"
 
 export type CollectType = "NONE" | "LOVE" | "IMPORTANT" | "TODO" | "DELAY"
 
-export type NoticeType = "SYSTEM" | "ACCOUNT" | "HELLO"
+export type NoticeType = "SYSTEM" | "ACCOUNT"
 
 export type Role = "NORMAL" | "ADMIN"
 

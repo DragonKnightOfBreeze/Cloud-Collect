@@ -37,7 +37,7 @@ data class Comment(
 	val sponsorByUser: User,
 	
 	@ApiModelProperty("该评论回复的评论。")
-	@ManyToOne
+	@ManyToOne(cascade = [CascadeType.DETACH])
 	val replyToComment: Comment? = null
 ) : Serializable {
 	@ApiModelProperty("创建时间。")

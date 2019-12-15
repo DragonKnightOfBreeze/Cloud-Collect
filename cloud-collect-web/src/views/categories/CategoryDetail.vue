@@ -100,7 +100,7 @@
     }
 
     handleChange() {
-      if (!this.getCollectPage()) {
+      if (!this.collectPage) {
         this.getCollectPage()
       }
     }
@@ -113,11 +113,6 @@
       try {
         await this.$confirm("此操作将永久删除该分类, 是否继续?", {type: "warning"})
         await this.deleteCategory()
-        if (this.currentUser) {
-          await this.$router.push("/categories")
-        } else {
-          await this.$router.push(`/profile/${this.currentUser!.id}`)
-        }
       } catch (e) {
         //忽略
       }
@@ -140,6 +135,11 @@
       try {
         await categoryService.deleteById(this.categoryId)
         this.$message.success("删除成功！")
+        if (this.currentUser) {
+          await this.$router.push(`/profile/${this.currentUser!.id}/categories`)
+        } else {
+          await this.$router.push("/categories")
+        }
       } catch (e) {
         this.$message.warning("删除失败！")
       }

@@ -10,13 +10,13 @@
         <ElRouterLink type="info" v-if="tag.user" :href="'/profile/'+tag.user.id">{{tag.user.nickname}}</ElRouterLink>
         <ElRouterLink type="info" disabled v-else>未知</ElRouterLink>
       </ElCol>
-      <ElCol :span="6" class="align-items-center">
+      <ElCol :span="7" class="align-items-center">
         创建时间：{{tag.createdTime}}
       </ElCol>
-      <ElCol :span="6" class="align-items-center">
+      <ElCol :span="7" class="align-items-center">
         修改时间：{{tag.lastModifiedTime}}
       </ElCol>
-      <ElCol :span="3" class="align-items-center">
+      <ElCol :span="4" class="align-items-center">
         <ElBadge type="primary" :value="tag.collectCount">
           <ElRouterLink type="info" :href="'/tags/'+tag.id">相关收藏</ElRouterLink>
         </ElBadge>

@@ -17,17 +17,49 @@
       <ElFormItem label="分类">
         <!--NOTE value-key是相对于option的value属性而言的，将其作为this关键字-->
         <!--NOTE 当option的value属性类型为object时，必须设置select的value-key以及option的对应key属性-->
-        <ElSelect v-model="savedCollect.category" :value="savedCollect.category" value-key="id" placeholder="请选择分类"
-                  filterable remote reserve-keyword
+        <ElSelect class="app-searchable-select" v-model="savedCollect.category" :value="savedCollect.category"
+                  value-key="id" placeholder="请选择分类"
+                  filterable remote reserve-keyword clearable
                   :loading="loadingCategories" :remote-method="searchCategoryByName">
-          <ElOption v-for="category in categories" :key="category.id" :label="category.name" :value="category"></ElOption>
+          <ElOptionGroup label="当前分类">
+            <template v-if="collect.category">
+              <ElOption :label="collect.category.name" :value="collect.category"/>
+            </template>
+            <template v-else>
+              <ElOption label="没有当前分类" value="" disabled/>
+            </template>
+          </ElOptionGroup>
+          <ElOptionGroup label="可选分类">
+            <template v-if="categories.length !== 0">
+              <ElOption v-for="category in categories" :key="category.id" :label="category.name" :value="category"/>
+            </template>
+            <template v-else>
+              <ElOption label="没有可选分类" value="" disabled/>
+            </template>
+          </ElOptionGroup>
         </ElSelect>
       </ElFormItem>
       <ElFormItem label="标签">
-        <ElSelect v-model="savedCollect.tags" :value="savedCollect.tags" value-key="id" placeholder="请选择标签"
-                  filterable remote reserve-keyword multiple clearable collapse-tags
+        <ElSelect class="app-searchable-select" v-model="savedCollect.tags" :value="savedCollect.tags"
+                  value-key="id" placeholder="请选择标签"
+                  filterable remote reserve-keyword multiple collapse-tags
                   :loading="loadingTags" :remote-method="searchTagByName">
-          <ElOption v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag"></ElOption>
+          <ElOptionGroup label="当前标签">
+            <template v-if="collect.category">
+              <ElOption v-for="tag in collect.tags" :key="tag.id" :label="tag.name" :value="tag"/>
+            </template>
+            <template v-else>
+              <ElOption label="没有当前标签" value="" disabled/>
+            </template>
+          </ElOptionGroup>
+          <ElOptionGroup label="可选标签">
+            <template v-if="tags.length !== 0">
+              <ElOption v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag"/>
+            </template>
+            <template v-else>
+              <ElOption label="没有可选标签" value="" disabled/>
+            </template>
+          </ElOptionGroup>
         </ElSelect>
       </ElFormItem>
       <ElFormItem label="类型">
@@ -103,6 +135,8 @@
       if (!isValid) return
 
       try {
+        //没有选中任何分类时，绑定的值是空字符串，而非null
+        if (!this.savedCollect.category) this.savedCollect.category = null
         await collectService.modify(this.savedCollect.id!, this.savedCollect)
         this.$message.success("编辑成功！")
         this.syncVisible = false

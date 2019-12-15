@@ -5,7 +5,7 @@
         <ElRouterLink :href="'/collects/'+history.collect.id">{{history.collect.name}}</ElRouterLink>
       </ElCol>
       <ElCol :span="4" :offset="8" class="justify-content-end">
-        <ElButton type="danger" v-if="isCurrentUser" @click="handleDelete"><ElIcon name="delete"/> 删除</ElButton>
+        <ElButton type="danger" size="small" v-if="isCurrentUser" @click="handleDelete"><ElIcon name="delete"/> 删除</ElButton>
       </ElCol>
     </ElRow>
     <ElRow class="app-meta align-items-center">

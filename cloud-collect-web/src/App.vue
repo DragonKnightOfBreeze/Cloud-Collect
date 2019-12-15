@@ -121,6 +121,9 @@
   .app-input-select {
     width: 180px;
   }
+  .app-searchable-select {
+    width: 100%;
+  }
   .app-button-group {
     padding: 10px 10px;
   }

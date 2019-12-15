@@ -29,10 +29,10 @@ interface UserService {
 	fun modify(id: Long, user: User)
 	
 	/**关注某一用户。*/
-	fun follow(id: Long, user: User)
+	fun follow(id: Long)
 	
 	/**取消关注某一用户。*/
-	fun unfollow(id: Long, user: User)
+	fun unfollow(id: Long)
 	
 	/**根据id得到用户。*/
 	fun findById(id: Long): User
