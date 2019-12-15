@@ -1,6 +1,21 @@
 <template>
   <div>
-    <ElPageHeader title="返回首页" content="收藏总览" @back="handleGoBack"></ElPageHeader>
+    <ElPageHeader title="返回首页" @back="handleGoBack">
+      <template v-slot:content>
+        <ElRow>
+          <ElCol :span="18">
+            收藏总览
+          </ElCol>
+          <ElCol :span="6" class="justify-content-end align-items-center">
+            <ElDivider direction="vertical"/>
+            <ElRouterLink href="/categories"><ElIcon name="arrow-right"/> 查看分类</ElRouterLink>
+            <ElDivider direction="vertical"/>
+            <ElRouterLink href="/tags"><ElIcon name="arrow-right"/> 查看标签</ElRouterLink>
+          </ElCol>
+        </ElRow>
+      </template>
+    </ElPageHeader>
+
     <ElDivider/>
     <div>
       <div>收藏和管理你所钟情的网页和文章！</div>
@@ -55,6 +70,7 @@
   import NoContentCard from "@/components/card/NoContentCard.vue"
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
+  import ElRouterLink from "@/components/public/ElRouterLink.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import TheSorter from "@/components/root/TheSorter.vue"
   import {CollectSearchType, Page, PageableParam, Tag} from "@/domain"
@@ -62,7 +78,7 @@
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {TheSorter, NoContentCard, ElBlankLine, ThePagination, CollectOverviewCard, ElCardGroup}
+    components: {ElRouterLink, TheSorter, NoContentCard, ElBlankLine, ThePagination, CollectOverviewCard, ElCardGroup}
   })
   export default class CollectOverview extends Vue {
     private searchTerm1: string = ""

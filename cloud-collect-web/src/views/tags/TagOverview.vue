@@ -1,6 +1,18 @@
 <template>
   <div>
-    <ElPageHeader title="返回首页" content="标签总览" @back="handleGoBack"></ElPageHeader>
+    <ElPageHeader title="返回首页" @back="handleGoBack">
+      <template v-slot:content>
+        <ElRow>
+          <ElCol :span="18">
+            标签总览
+          </ElCol>
+          <ElCol :span="6" class="justify-content-end align-items-center">
+            <ElDivider direction="vertical"/>
+            <ElRouterLink href="/collects"><ElIcon name="arrow-right"/> 查看收藏</ElRouterLink>
+          </ElCol>
+        </ElRow>
+      </template>
+    </ElPageHeader>
     <ElDivider/>
     <div>
       <div>标签可为收藏添加额外的说明信息。</div>
@@ -36,6 +48,7 @@
   import TagOverviewCard from "@/components/card/TagOverviewCard.vue"
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
+  import ElRouterLink from "@/components/public/ElRouterLink.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
   import TheSorter from "@/components/root/TheSorter.vue"
   import {Page, PageableParam, Tag} from "@/domain"
@@ -43,7 +56,7 @@
   import {Component, Vue, Watch} from "vue-property-decorator"
 
   @Component({
-    components: {TheSorter, NoContentCard, ElBlankLine, TagOverviewCard, ElCardGroup, ThePagination}
+    components: {ElRouterLink, TheSorter, NoContentCard, ElBlankLine, TagOverviewCard, ElCardGroup, ThePagination}
   })
   export default class TagOverview extends Vue {
     private searchTerm: string = ""

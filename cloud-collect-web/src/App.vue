@@ -85,7 +85,14 @@
     margin: 10px 10px;
   }
   .el-tag {
-    margin: 0 5px
+    margin: 0 5px;
+  }
+  .el-page-header__left {
+    width: 100px;
+  }
+  .el-page-header__content {
+    float: right;
+    width: 100%;
   }
 
   .app-item-list {
