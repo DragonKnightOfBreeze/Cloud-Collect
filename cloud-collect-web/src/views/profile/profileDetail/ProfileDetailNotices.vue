@@ -3,21 +3,29 @@
     <h3>全部通知</h3>
     <ElDivider/>
     <!--仅当用户为当前用户时，才会显示以下内容-->
-    <ElRow :gutter="5" v-if="isCurrentUser">
-      <ElCol :span="4" :offset="20" class="justify-content-end">
-        <ElButton type="danger" @click="handleDeleteAll"><ElIcon name="close"/> 清空通知</ElButton>
-      </ElCol>
-    </ElRow>
+    <template v-if="isCurrentUser">
+      <ElRow :gutter="5">
+        <ElCol :span="4" :offset="20" class="justify-content-end">
+          <ElButton type="danger" @click="handleDeleteAll"><ElIcon name="close"/> 清空通知</ElButton>
+        </ElCol>
+      </ElRow>
 
-    <ElCardGroup v-if="isCurrentUser && noticePage">
-      <NoticeOverviewCard v-for="notice in noticePage.content" :key="notice.id" :notice="notice"
-                          @delete="handleDelete(notice.id)"/>
-      <ThePagination :page="noticePage" :pageable-param.sync="pageableParam" />
-    </ElCardGroup>
+      <ElCardGroup v-if="isCurrentUser && noticePage">
+        <NoticeOverviewCard v-for="notice in noticePage.content" :key="notice.id" :notice="notice"
+                            @delete="handleDelete(notice.id)"/>
+        <ThePagination :page="noticePage" :pageable-param.sync="pageableParam"/>
+      </ElCardGroup>
+    </template>
+    <template v-else>
+      <NoContentCard>
+        没有要显示的内容。
+      </NoContentCard>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
+  import NoContentCard from "@/components/card/NoContentCard.vue"
   import NoticeOverviewCard from "@/components/card/NoticeOverviewCard.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
@@ -27,7 +35,7 @@
   import {Route} from "vue-router"
 
   @Component({
-    components: {ThePagination, NoticeOverviewCard, ElCardGroup}
+    components: {NoContentCard, ThePagination, NoticeOverviewCard, ElCardGroup}
   })
   export default class ProfileDetailNotices extends Vue {
     private pageableParam: PageableParam = {page: 0, size: 20}

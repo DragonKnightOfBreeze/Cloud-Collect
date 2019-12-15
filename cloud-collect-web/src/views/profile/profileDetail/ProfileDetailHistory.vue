@@ -2,38 +2,44 @@
   <div>
     <h3>浏览历史</h3>
     <ElDivider/>
-    <!--<template v-if="isCurrentUser">-->
-
-    <!--</template>-->
     <!--仅当用户为当前用户时，才会显示以下内容-->
-    <ElRow :gutter="5" v-if="isCurrentUser">
-      <ElCol :span="4" :offset="20" class="justify-content-end">
-        <ElButton type="danger" @click="handleDeleteAll"><ElIcon name="close"/> 清空历史</ElButton>
-      </ElCol>
-    </ElRow>
+    <template v-if="isCurrentUser">
+      <ElRow :gutter="5">
+        <ElCol :span="4" :offset="20" class="justify-content-end">
+          <ElButton type="danger" @click="handleDeleteAll"><ElIcon name="close"/> 清空历史</ElButton>
+        </ElCol>
+      </ElRow>
 
-    <ElTimeline>
-      <!--避免与dom自带的history属性冲突-->
-      <ElTimelineItem v-for="item in histories" :key="item.id" :timestamp="item.createdTime">
-        <HistoryOverviewCard :history="item" @delete="handleDelete(item.id)"/>
-      </ElTimelineItem>
-    </ElTimeline>
-    <!--不要使用无线滚动，可能会导致栈溢出-->
-    <div class="app-button-group align-center">
-      <ElButton :loading="loadingHistories" :disabled="!hasMoreHistories" @click="handleLoading">加载更多</ElButton>
-    </div>
+      <ElTimeline>
+        <!--避免与dom自带的history属性冲突-->
+        <ElTimelineItem v-for="item in histories" :key="item.id" :timestamp="item.createdTime">
+          <HistoryOverviewCard :history="item" @delete="handleDelete(item.id)"/>
+        </ElTimelineItem>
+      </ElTimeline>
+
+      <!--不要使用无线滚动，可能会导致栈溢出-->
+      <div class="app-button-group align-center">
+        <ElButton :loading="loadingHistories" :disabled="!hasMoreHistories" @click="handleLoading">加载更多</ElButton>
+      </div>
+    </template>
+    <template v-else>
+      <NoContentCard>
+        没有要显示的内容。
+      </NoContentCard>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
   import HistoryOverviewCard from "@/components/card/HistoryOverviewCard.vue"
+  import NoContentCard from "@/components/card/NoContentCard.vue"
   import {History, PageableParam} from "@/domain"
   import * as historyService from "@/services/historyService"
   import {Component, Vue, Watch} from "vue-property-decorator"
   import {Route} from "vue-router"
 
   @Component({
-    components: {HistoryOverviewCard}
+    components: {NoContentCard, HistoryOverviewCard}
   })
   export default class ProfileDetailHistory extends Vue {
     private pageableParam: PageableParam = {page: 0, size: 20}
