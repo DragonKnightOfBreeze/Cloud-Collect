@@ -9,7 +9,7 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
-@CacheConfig(cacheNames = ["history"])
+@CacheConfig(cacheNames = ["history"], keyGenerator = "methodNameArgsKeyGenerator")
 class HistoryServiceImpl(
 	private val historyRepository: HistoryRepository
 ) : HistoryService {
@@ -34,7 +34,7 @@ class HistoryServiceImpl(
 		historyRepository.deleteAllByUserId(userId)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<History> {
 		return historyRepository.findAllByUserIdOrderByIdDesc(userId, pageable)
 	}

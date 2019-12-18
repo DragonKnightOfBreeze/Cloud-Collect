@@ -8,6 +8,12 @@ const http = axios.create({
   timeout: 3600000
 })
 
+//上传文件时需要一个纯净的formData
+export const httpFormData = axios.create({
+  baseURL: "http://localhost:8080/cloudCollect/api",
+  timeout: 3600000
+})
+
 //REGION 配置拦截器
 
 http.interceptors.request.use(value => {
@@ -26,15 +32,16 @@ http.interceptors.response.use(value => {
   console.log("Response success:", value)
   return value
 }, error => {
-  console.log("Response with error:", error)
+  console.error("Error:", error)
   //error: {request} | {response} | {message}
   if (error.response) {
+    console.error("Response with error:", error.response)
     const status = error.response.status
     switch (status) {
       case 400:
         //取得错误消息并存储到store中
-        const errorMessage = error.response.data as string
-        console.warn("Error message:", errorMessage)
+        const errorMessage = error.response.data.message as string
+        console.error("Error message:", errorMessage)
         store.commit("setErrorMessage", errorMessage)
         break
       case 401:

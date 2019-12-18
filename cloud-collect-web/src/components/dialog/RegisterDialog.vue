@@ -3,21 +3,25 @@
   <!--注册对话框-->
   <ElDialog title="注册" center :visible="syncDialogType==='register'" @close="handleClose">
     <!--注册表单-->
-    <ElForm label-width="120px" :model="form" :rules="rules" ref="form">
+    <ElForm label-width="120px" :model="user" :rules="rules" ref="form">
       <ElFormItem label="用户名" prop="username">
-        <ElInput v-model="form.username" placeholder="请输入用户名。" />
+        <ElInput v-model="user.username" placeholder="请输入用户名。"/>
       </ElFormItem>
       <ElFormItem label="密码" prop="password">
-        <ElInput type="password" v-model="form.password" placeholder="请输入密码。" />
+        <ElInput type="password" v-model="user.password" placeholder="请输入密码。"/>
       </ElFormItem>
       <ElFormItem label="确认密码" prop="rePassword">
         <ElInput type="password" v-model="rePassword" placeholder="请再次输入密码。" />
       </ElFormItem>
       <ElFormItem label="邮箱" prop="email">
-        <ElInput type="email" v-model="form.email" placehold="请输入邮箱。" />
+        <ElInput type="email" v-model="user.email" placehold="请输入邮箱。"/>
       </ElFormItem>
       <ElFormItem label="昵称" prop="nickname">
-        <ElInput v-model="form.nickname" placeholder="请输入昵称。" />
+        <ElInput v-model="user.nickname" placeholder="请输入昵称。"/>
+      </ElFormItem>
+      <ElFormItem label="简介" prop="introduce">
+        <ElInput type="textarea" v-model="user.introduce"
+                 maxlength="255" show-word-limit :autosize="{minRows: 3, maxRows: 6}"></ElInput>
       </ElFormItem>
       <ElFormItem>
         <ElButton type="text" @click="handleForgotPassword">忘记密码？</ElButton>
@@ -47,7 +51,7 @@
     @PropSync("dialogType", {required: true}) syncDialogType!: DialogType
 
     private forgotPasswordDialogVisible = false
-    private form: User = {
+    private user: User = {
       username: "",
       password: "",
       email: "",
@@ -69,7 +73,10 @@
       ],
       nickname: [
         {required: true, message: "昵称不能为空！"},
-        {max: 64, message: "昵称过长！"}
+        {max: 32, message: "昵称过长！"}
+      ],
+      introduce: [
+        {max: 255, message: "简介过长！"}
       ]
     }
 
@@ -78,15 +85,15 @@
     }
 
     async handleRegister() {
-      const isValid = await (this.$refs["form"] as any).validate()
+      const isValid = await (this.$refs["user"] as any).validate()
       if (!isValid) return
 
-      if (this.form.password !== this.rePassword) {
+      if (this.user.password !== this.rePassword) {
         this.$message.warning("密码不一致！")
       }
 
       try {
-        await indexService.register(this.form)
+        await indexService.register(this.user)
         //如果注册成功，则弹出成功对话框，并弹出登录对话框。否则弹出错误对话框
         this.$message.success("注册成功，请登录！")
         this.handleLogin()

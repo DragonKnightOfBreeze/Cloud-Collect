@@ -18,7 +18,8 @@
 
     <ElDivider/>
     <div>
-      <div>收藏和管理你所钟情的网页和文章！</div>
+      <div>收藏即你所钟情的网页和文章。</div>
+      <div>查看你的收藏！</div>
     </div>
     <ElBlankLine/>
     <ElRow class="align-items-center justify-content-center">

@@ -2,6 +2,12 @@
 
 毕业设计项目：云收藏的设计与实现。
 
+# 启动项目
+
+* 打开Redis Server
+* 打开后台项目（CloudCollectApplication run）
+* 打开前端项目（npm serve）
+
 # 参考
 
 * Spring Boot
@@ -232,3 +238,7 @@
   * 或者：使用jwt或者oauth，向http header中添加token。需要进行相关配置。
 * 如何获得一个网站的图标地址：
   * 例如，获取B站的图标地址：`https://www.bilibili.com/favicon.ico`
+* 关于编码的问题：
+  * 由于Spring Boot的自动配置，一般情况下，不需要特地配置编码
+  * 当在RestController中直接返回字符串，而非json字符串时，编码将会强制变为ISO-8859-1，而非UTF-8。
+  - [ ] 不知道该如何解决，还是直接返回json吧。

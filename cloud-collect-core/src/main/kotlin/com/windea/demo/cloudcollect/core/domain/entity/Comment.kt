@@ -23,9 +23,9 @@ data class Comment(
 	val id: Long = 0,
 	
 	@ApiModelProperty("内容。")
-	@Column(nullable = false)
 	@get:NotEmpty(message = "{validation.Comment.content.NotEmpty}", groups = [Create::class])
-	@get:Size(min = 1, max = 255, message = "{validation.Comment.content.Size}", groups = [Create::class])
+	@get:Size(max = 255, message = "{validation.Comment.content.Size}", groups = [Create::class])
+	@Column(nullable = false)
 	val content: String,
 	
 	@ApiModelProperty("所属收藏。")

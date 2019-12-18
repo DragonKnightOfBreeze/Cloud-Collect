@@ -31,7 +31,7 @@
     private rules = {
       name: [
         {required: true, message: "名字不能为空！"},
-        {max: 64, message: "名字过长！"}
+        {max: 32, message: "名字过长！"}
       ],
       summary: [
         {max: 255, message: "概述过长！"}

@@ -17,7 +17,7 @@ import javax.transaction.*
 import kotlin.random.*
 
 @Service
-@CacheConfig(cacheNames = ["collect"])
+@CacheConfig(cacheNames = ["collect"], keyGenerator = "methodNameArgsKeyGenerator")
 class CollectServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val commentRepository: CommentRepository,
@@ -87,7 +87,7 @@ class CollectServiceImpl(
 		collectRepository.deleteById(id)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findById(id: Long): Collect {
 		return collectRepository.findByIdOrNull(id)?.lateInit()?.also {
 			currentUser?.let { currentUser -> it.addHistory(currentUser) }
@@ -99,94 +99,94 @@ class CollectServiceImpl(
 		return collectRepository.findByIdOrNull(randomId)?.lateInit() ?: throw NotFoundException()
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAll(pageable: Pageable): Page<Collect> {
 		return collectRepository.findAll(pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByNameContains(name: String, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByNameContains(name, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByCategoryId(categoryId, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByCategoryName(categoryName: String, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByCategoryName(categoryName, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByCategoryNameContains(categoryName: String, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByCategoryNameContains(categoryName, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByTagId(tagId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByTagsId(tagId, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByTagName(tagName: String, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByTagsName(tagName, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByTagNameContains(tagName: String, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByTagsNameContains(tagName, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByCategoryNameContainsAndUserId(categoryName: String, userId: Long,
 		pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByCategoryNameContainsAndUserId(categoryName, userId, pageable)
 			.map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByTagNameContainsAndUserId(tagName: String, userId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByTagsNameContainsAndUserId(tagName, userId, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByTypeAndUserId(type: CollectType, userId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByTypeAndUserId(type, userId, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByPraiseByUserId(praiseByUserId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByPraiseByUsersId(praiseByUserId, pageable)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByNameContainsAndPraiseByUserId(name: String, praiseByUserId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByNameContainsAndPraiseByUsersId(name, praiseByUserId, pageable)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByCategoryNameContainsAndPraiseByUserId(categoryName: String, praiseByUserId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByCategoryNameContainsAndPraiseByUsersId(categoryName, praiseByUserId, pageable)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByTagNameContainsAndPraiseByUserId(tagName: String, praiseByUserId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByTagsNameContainsAndPraiseByUsersId(tagName, praiseByUserId, pageable)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByTypeAndPraiseByUserId(type: CollectType, praiseByUserId: Long, pageable: Pageable): Page<Collect> {
 		return collectRepository.findAllByTypeContainsAndPraiseByUsersId(type, praiseByUserId, pageable)
 	}

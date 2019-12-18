@@ -3,8 +3,8 @@
     <template v-if="user">
       <ElRow type="flex" align="middle">
         <ElCol :span="2">
-          <ElAvatar :size="60" v-if="user.avatarUrl" :src="user.avatarUrl"/>
-          <ElAvatar :size="60" v-else icon="el-icon-user-solid"/>
+          <ElAvatar :size="72" v-if="user.avatarUrl" :src="user.avatarUrl"/>
+          <ElAvatar :size="72" v-else icon="el-icon-user-solid"/>
         </ElCol>
         <ElCol :span="18">
           <div class="app-title">{{user.nickname}}</div>
@@ -22,7 +22,8 @@
       </ElMenuItem>
     </ElMenu>
 
-      <router-view></router-view>
+    <!--可以这样监听子组件的事件-->
+    <router-view @submit="handleSubmit"></router-view>
   </div>
 </template>
 
@@ -109,6 +110,10 @@
     //切换当前导航
     private handleSelect(index: string, indexPath: string) {
       this.activeIndex = index
+    }
+
+    handleSubmit() {
+      this.getUser()
     }
 
     private async getUser() {

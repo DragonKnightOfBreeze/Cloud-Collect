@@ -11,7 +11,7 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
-@CacheConfig(cacheNames = ["comment"])
+@CacheConfig(cacheNames = ["comment"], keyGenerator = "methodNameArgsKeyGenerator")
 class CommentServiceImpl(
 	private val commentRepository: CommentRepository
 ) : CommentService {
@@ -33,27 +33,27 @@ class CommentServiceImpl(
 		commentRepository.deleteById(id)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findById(id: Long): Comment {
 		return commentRepository.findByIdOrNull(id) ?: throw NotFoundException()
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAll(pageable: Pageable): Page<Comment> {
 		return commentRepository.findAll(pageable)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByCollectId(collectId: Long, pageable: Pageable): Page<Comment> {
 		return commentRepository.findAllByCollectIdOrderByIdDesc(collectId, pageable)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllBySponsorByUserId(sponsorByUserId: Long, pageable: Pageable): Page<Comment> {
 		return commentRepository.findAllBySponsorByUserIdOrderByIdDesc(sponsorByUserId, pageable)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByReplyToCommentId(replyToCommentId: Long, pageable: Pageable): Page<Comment> {
 		return commentRepository.findAllByReplyToCommentIdOrderByIdDesc(replyToCommentId, pageable)
 	}

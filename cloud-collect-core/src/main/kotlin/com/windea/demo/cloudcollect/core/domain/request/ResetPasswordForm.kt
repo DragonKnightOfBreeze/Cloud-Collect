@@ -8,7 +8,7 @@ import javax.validation.constraints.*
 
 @ApiModel("重置密码表单。")
 @Domain
-class ResetPasswordForm(
+data class ResetPasswordForm(
 	val username: String,
 	
 	@ApiModelProperty("密码。")

@@ -1,10 +1,20 @@
 import {Page, PageableParam, Role, User} from "@/domain"
-import http from "@/http"
+import http, {httpFormData} from "@/http"
 
 const userUrl = "/user"
 
 export async function modify(id: number, user: User) {
   await http.put(`${userUrl}/${id}`, user)
+}
+
+export async function uploadAvatar(id: number, file: File) {
+  //2. 传入formData作为参数，其中添加名字正确的文件
+  //3. 不要忘记在请求头中配置Content-Type
+  const formData = new FormData()
+  console.log(file)
+  formData.append("multipartFile", file)
+  const response = await httpFormData.post<string>(`${userUrl}/${id}/uploadAvatar`, formData, {headers: {"Content-Type": "multipart/form-data"}})
+  return response.data
 }
 
 export async function follow(id: number) {

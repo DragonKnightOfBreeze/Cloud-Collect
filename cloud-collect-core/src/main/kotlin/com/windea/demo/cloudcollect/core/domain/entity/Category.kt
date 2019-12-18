@@ -26,8 +26,8 @@ data class Category(
 	
 	@ApiModelProperty("名字。")
 	@get:NotEmpty(message = "{validation.Category.name.NotEmpty}", groups = [Create::class, Modify::class])
-	@get:Size(max = 64, message = "{validation.Category.name.Size}", groups = [Create::class, Modify::class])
-	@Column(nullable = false, length = 64)
+	@get:Size(max = 32, message = "{validation.Category.name.Size}", groups = [Create::class, Modify::class])
+	@Column(nullable = false, length = 32)
 	var name: String,
 	
 	@ApiModelProperty("概述。")

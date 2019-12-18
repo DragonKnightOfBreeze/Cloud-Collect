@@ -34,9 +34,6 @@
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11.0.4" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
-  <component name="RenderSettings">
-    <option name="quality" value="0.0" />
-  </component>
   <component name="WebPackConfiguration">
     <option name="path" value="$PROJECT_DIR$/cloud-collect-web/node_modules/@vue/cli-service/webpack.config.js" />
   </component>

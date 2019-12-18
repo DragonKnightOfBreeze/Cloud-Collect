@@ -74,9 +74,6 @@
     vertical-align: middle;
     overflow: hidden;
   }
-  img {
-    vertical-align: middle;
-  }
 
   .el-main {
     overflow: hidden;
@@ -93,6 +90,14 @@
   .el-page-header__content {
     float: right;
     width: 100%;
+  }
+  .el-upload__tip {
+    margin-top: 5px;
+    line-height: 18px;
+  }
+  .el-avatar {
+    width: 100%;
+    object-fit: cover;
   }
 
   .app-item-list {

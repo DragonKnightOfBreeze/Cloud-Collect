@@ -21,7 +21,7 @@
   import {User} from "@/domain"
 
   import * as userService from "@/services/userService"
-  import {Component, Vue} from "vue-property-decorator"
+  import {Component, Emit, Vue} from "vue-property-decorator"
 
   @Component({
     components: {UserDetailCard, EditProfileDialog}
@@ -50,6 +50,7 @@
       this.editDialogVisible = true
     }
 
+    @Emit("submit")
     handleSubmit() {
       this.getUser()
     }

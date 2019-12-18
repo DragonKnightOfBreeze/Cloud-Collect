@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.*
 
 @Api("用户")
 @RestController
@@ -27,6 +28,13 @@ class UserController(
 	@PreAuthorize("isAuthenticated()")
 	fun modify(@PathVariable id: Long, @RequestBody @Validated(Modify::class) user: User, bindingResult: BindingResult) {
 		userService.modify(id, user)
+	}
+	
+	@ApiOperation("上传用户头像。")
+	@PostMapping("/{id}/uploadAvatar")
+	//@PreAuthorize("isAuthenticated()")
+	fun uploadAvatar(@PathVariable id: Long, @RequestParam multipartFile: MultipartFile): String {
+		return userService.uploadAvatar(id, multipartFile)
 	}
 	
 	@ApiOperation("关注某一用户。")

@@ -9,7 +9,7 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
-@CacheConfig(cacheNames = ["notice"])
+@CacheConfig(cacheNames = ["notice"], keyGenerator = "methodNameArgsKeyGenerator")
 class NoticeServiceImpl(
 	private val noticeRepository: NoticeRepository
 ) : NoticeService {
@@ -31,7 +31,7 @@ class NoticeServiceImpl(
 		noticeRepository.deleteAllByUserId(userId)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Notice> {
 		return noticeRepository.findAllByUserIdOrderByIdDesc(userId, pageable)
 	}

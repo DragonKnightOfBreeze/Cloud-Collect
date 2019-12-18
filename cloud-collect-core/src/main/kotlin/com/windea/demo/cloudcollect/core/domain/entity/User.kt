@@ -32,11 +32,11 @@ data class User constructor(
 	@Column(unique = true, nullable = false, length = 16)
 	val username: String,
 	
-	@ApiModelProperty("密码。这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度。")
+	@ApiModelProperty("密码。")
 	@get:NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class])
 	@get:Password(message = "{validation.User.password.Password}", groups = [Create::class])
 	@Column(nullable = false)
-	var password: String,
+	var password: String, //这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度
 	
 	@ApiModelProperty("邮箱。")
 	@get:NotEmpty(message = "{validation.User.email.NotEmpty}", groups = [Create::class, Modify::class])
@@ -46,8 +46,8 @@ data class User constructor(
 	
 	@ApiModelProperty("昵称。")
 	@get:NotEmpty(message = "{validation.User.nickname.NotEmpty}", groups = [Modify::class])
-	@get:Size(max = 64, message = "{validation.User.nickname.Size}", groups = [Modify::class])
-	@Column(nullable = false, length = 64)
+	@get:Size(max = 32, message = "{validation.User.nickname.Size}", groups = [Modify::class])
+	@Column(nullable = false, length = 32)
 	var nickname: String = username,
 	
 	@ApiModelProperty("简介。")

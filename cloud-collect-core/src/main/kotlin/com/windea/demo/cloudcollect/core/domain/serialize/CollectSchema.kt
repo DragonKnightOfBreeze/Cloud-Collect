@@ -6,7 +6,7 @@ import java.io.*
 
 /**收藏的概要。用于导入导出数据。*/
 @Domain
-class CollectSchema(
+data class CollectSchema(
 	val name: String,
 	val summary: String,
 	val url: String,

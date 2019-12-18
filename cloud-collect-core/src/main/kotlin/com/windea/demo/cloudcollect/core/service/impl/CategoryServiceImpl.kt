@@ -11,7 +11,7 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
-@CacheConfig(cacheNames = ["category"])
+@CacheConfig(cacheNames = ["category"], keyGenerator = "methodNameArgsKeyGenerator")
 class CategoryServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val categoryRepository: CategoryRepository
@@ -38,27 +38,27 @@ class CategoryServiceImpl(
 		categoryRepository.deleteById(id)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findById(id: Long): Category {
 		return categoryRepository.findByIdOrNull(id)?.lateInit() ?: throw NotFoundException()
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAll(pageable: Pageable): Page<Category> {
 		return categoryRepository.findAll(pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByNameContains(name: String, pageable: Pageable): Page<Category> {
 		return categoryRepository.findAllByNameContains(name, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Category> {
 		return categoryRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByNameContainsAndUserId(name: String, userId: Long,
 		pageable: Pageable): Page<Category> {
 		return categoryRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }

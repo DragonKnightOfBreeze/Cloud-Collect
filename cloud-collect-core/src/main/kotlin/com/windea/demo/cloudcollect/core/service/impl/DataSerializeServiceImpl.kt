@@ -8,24 +8,22 @@ import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.properties.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
-import org.springframework.cache.annotation.*
 import org.springframework.stereotype.*
 import org.springframework.web.multipart.*
 import java.io.*
 import java.nio.file.*
 
 @Service
-@CacheConfig(cacheNames = ["collect"])
 class DataSerializeServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val categoryRepository: CategoryRepository,
 	private val tagRepository: TagRepository,
-	private val dataSerializeProperties: DataSerializeProperties
+	private val serializeProperties: SerializeProperties
 ) : DataSerializeService {
 	override fun importData(dataType: DataType, multipartFile: MultipartFile, user: User) {
 		//不检查文件格式是否正确，委托给前端
-		val fileName = "${dataSerializeProperties.fileName}.${dataType.extension}"
-		val filePath = Path.of(dataSerializeProperties.path, fileName)
+		val fileName = "data.${dataType.extension}"
+		val filePath = Path.of(serializeProperties.exportPath, fileName)
 		val file = filePath.toFile()
 		multipartFile.transferTo(file)
 		
@@ -46,8 +44,8 @@ class DataSerializeServiceImpl(
 	
 	override fun exportData(dataType: DataType): File {
 		//不在本地缓存文件
-		val fileName = "${dataSerializeProperties.fileName}.${dataType.extension}"
-		val filePath = Path.of(dataSerializeProperties.path, fileName)
+		val fileName = "data.${dataType.extension}"
+		val filePath = Path.of(serializeProperties.exportPath, fileName)
 		val file = filePath.toFile()
 		
 		try {
@@ -72,7 +70,7 @@ class DataSerializeServiceImpl(
 	)
 	
 	private fun CollectSchema.toCollect(user: User) = Collect(
-		id = collectRepository.findByNameAndUserId(name, user.id)?.id ?: 0, //NOTE 可能是添加数据，也可能为更改
+		id = collectRepository.findByNameAndUserId(name, user.id)?.id ?: 0, //可能是添加数据，也可能为更改
 		name = name,
 		summary = summary,
 		url = this.url,

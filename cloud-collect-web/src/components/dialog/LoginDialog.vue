@@ -65,7 +65,7 @@
       try {
         const userDetailsVo = await indexService.login(this.form)
         const user = userDetailsVo.delegateUser
-        window.localStorage.setItem("currentUser", JSON.stringify(user))
+        localStorage.setItem("currentUser", JSON.stringify(user))
         this.$store.commit("setCurrentUser", user)
         const jwtToken = await indexService.generateToken(user.username)
         this.$store.commit("setJwtToken", jwtToken)

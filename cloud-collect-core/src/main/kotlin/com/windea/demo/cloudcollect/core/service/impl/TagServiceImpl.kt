@@ -11,7 +11,7 @@ import org.springframework.stereotype.*
 import javax.transaction.*
 
 @Service
-@CacheConfig(cacheNames = ["tag"])
+@CacheConfig(cacheNames = ["tag"], keyGenerator = "methodNameArgsKeyGenerator")
 class TagServiceImpl(
 	private val collectRepository: CollectRepository,
 	private val tagRepository: TagRepository
@@ -38,27 +38,27 @@ class TagServiceImpl(
 		tagRepository.deleteById(id)
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findById(id: Long): Tag {
 		return tagRepository.findByIdOrNull(id)?.lateInit() ?: throw NotFoundException()
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAll(pageable: Pageable): Page<Tag> {
 		return tagRepository.findAll(pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByNameContains(name: String, pageable: Pageable): Page<Tag> {
 		return tagRepository.findAllByNameContains(name, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByNameContainsAndUserId(name: String, userId: Long, pageable: Pageable): Page<Tag> {
 		return tagRepository.findAllByNameContainsAndUserId(name, userId, pageable).map { it.lateInit() }
 	}
 	
-	@Cacheable(key = "methodName + args")
+	@Cacheable
 	override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Tag> {
 		return tagRepository.findAllByUserId(userId, pageable).map { it.lateInit() }
 	}

@@ -21,8 +21,8 @@
       <ElCol :span="10" class="align-items-center justify-content-end">
         <!--用户信息，点击跳转到档案页，点击下拉项跳转到对应页-->
         <template v-if="currentUser">
-          <ElAvatar class="app-user-avatar" v-if="currentUser.avatarUrl" :src="currentUser.avatarUrl"/>
-          <ElAvatar class="app-user-avatar" v-else icon="el-icon-user-solid"/>
+          <ElAvatar class="app-navbar-avatar" v-if="currentUser.avatarUrl" :src="currentUser.avatarUrl"/>
+          <ElAvatar class="app-navbar-avatar" v-else icon="el-icon-user-solid"/>
           <ElDropdown split-button @click="handleGoProfile" @command="handleCommand">
             {{currentUser.nickname}}
             <template v-slot:dropdown>
@@ -126,7 +126,7 @@
       let currentUser = null
       //尝试从storage中得到当前用户信息，并提交到store，并后台自动登录
       //如果得到了，还要从后台得到jwt令牌，并存储到store中
-      const currentUserItem = window.localStorage.getItem("currentUser")
+      const currentUserItem = localStorage.getItem("currentUser")
       if (currentUserItem) {
         currentUser = JSON.parse(currentUserItem) as User
         if (currentUser && currentUser.username && currentUser.password) {
@@ -172,7 +172,7 @@
     //注销用户
     private async handleLogout() {
       console.log("注销用户。")
-      window.localStorage.removeItem("currentUser")
+      localStorage.removeItem("currentUser")
       this.$store.commit("setCurrentUser", null)
       this.$store.commit("setJwtToken", "")
       await indexService.logout()
@@ -198,9 +198,8 @@
     height: 51px;
     vertical-align: middle;
   }
-  .app-user-avatar {
+  .app-navbar-avatar {
     height: 40px;
-
     vertical-align: middle;
     margin-right: 5px;
   }

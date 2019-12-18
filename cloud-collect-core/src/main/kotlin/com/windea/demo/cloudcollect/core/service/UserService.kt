@@ -5,6 +5,7 @@ import com.windea.demo.cloudcollect.core.domain.request.*
 import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.enums.*
 import org.springframework.data.domain.*
+import org.springframework.web.multipart.*
 
 interface UserService {
 	/**登录用户。*/
@@ -27,6 +28,9 @@ interface UserService {
 	
 	/**更新用户信息。*/
 	fun modify(id: Long, user: User)
+	
+	/**上传用户头像。*/
+	fun uploadAvatar(id: Long, multipartFile: MultipartFile): String
 	
 	/**关注某一用户。*/
 	fun follow(id: Long)

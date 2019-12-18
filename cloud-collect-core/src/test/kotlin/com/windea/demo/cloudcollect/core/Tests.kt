@@ -18,7 +18,7 @@ class Tests {
 		println(msg)
 	}
 	
-	//@Autowired lateinit var dataSerializeProperties: DataSerializeProperties
+	//@Autowired lateinit var dataSerializeProperties: SerializeProperties
 	//
 	//@Test
 	//fun test1() {

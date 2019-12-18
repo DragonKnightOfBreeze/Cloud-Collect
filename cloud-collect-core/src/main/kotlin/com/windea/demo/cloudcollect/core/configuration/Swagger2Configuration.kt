@@ -8,7 +8,7 @@ import springfox.documentation.spring.web.plugins.*
 import springfox.documentation.swagger2.annotations.*
 
 /**Swagger2的配置类。*/
-//TODO 另外实现Swagger2的自动配置。
+
 @Configuration
 @EnableSwagger2
 class Swagger2Configuration {
