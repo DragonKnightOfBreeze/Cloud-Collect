@@ -44,7 +44,7 @@
     @PropSync("visible", {required: true}) syncVisible!: boolean
     @Prop({required: true}) user!: User
 
-    //NOTE 这里的用户和传入的用户不应该是同一个对象
+    //这里的用户和传入的用户不应该是同一个对象
     private savedUser = {...this.user}
     private rules = {
       nickname: [
@@ -62,18 +62,19 @@
       const avatarUrl = await userService.uploadAvatar(this.user.id!, file.file)
       //需要更新要更改的用户对象中的头像地址
       this.savedUser.avatarUrl = avatarUrl
+      const currentUser = {...this.user}
+      currentUser.avatarUrl = avatarUrl
+      localStorage.setItem("currentUser", JSON.stringify(currentUser))
+      this.$store.commit("setCurrentUser", currentUser)
     }
 
     handleBeforeUpload(file: any) {
       const condition1 = file.type === "image/jpeg" || file.type === "image/png"
       const condition2 = file.size / 1024 / 1024 < 3
 
-      if (!condition1) {
-        this.$message.error("上传头像图片只能是JPG/PNG格式!")
-      }
-      if (!condition2) {
-        this.$message.error("上传头像图片大小不能超过3MB!")
-      }
+      if (!condition1) this.$message.warning("上传头像图片只能是JPG/PNG格式!")
+      if (!condition2) this.$message.warning("上传头像图片大小不能超过3MB!")
+
       return condition1 && condition2
     }
 
@@ -83,7 +84,7 @@
     }
 
     handleError() {
-      this.$message.error("上传用户头像失败！")
+      this.$message.warning("上传用户头像失败！")
     }
 
     @Emit("submit")

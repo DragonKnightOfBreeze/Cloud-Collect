@@ -94,7 +94,6 @@
     //NOTE 这个方法不需要在mounted()等钩子函数中主动调用。
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
-      console.log("路由发生了变化：", value)
       this.changeActiveIndex()
       this.changeOperation()
     }

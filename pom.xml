@@ -58,7 +58,7 @@
             <plugin>jpa</plugin>
           </compilerPlugins>
           <pluginOptions>
-            <option>no-arg:annotation=com.windea.demo.cloudcollect.core.annotation.Model</option>
+            <option>no-arg:annotation=com.windea.demo.cloudcollect.core.annotation.Domain</option>
             <option>all-open:annotation=javax.persistence.Entity</option>
             <option>all-open:annotation=javax.persistence.Embeddable</option>
             <option>all-open:annotation=javax.persistence.MappedSuperclass</option>

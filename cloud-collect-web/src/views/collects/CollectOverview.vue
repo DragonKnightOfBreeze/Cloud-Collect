@@ -120,7 +120,7 @@
             this.searchPage = await collectService.findAllByTagNameContains(this.searchTerm3, this.pageableParam)
             break
           default:
-            this.$message.error(`Cannot search collects by ${this.searchType} here.`)
+            this.$message.error(`不能在这里使用这种方式搜索标签。`)
             break
         }
       } catch (e) {

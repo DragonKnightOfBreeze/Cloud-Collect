@@ -4,19 +4,19 @@ package com.windea.demo.cloudcollect.core.extensions
 
 import com.fasterxml.jackson.core.type.*
 import com.fasterxml.jackson.databind.*
-import com.fasterxml.jackson.dataformat.javaprop.*
 import com.fasterxml.jackson.dataformat.xml.*
 import com.fasterxml.jackson.dataformat.yaml.*
+import com.fasterxml.jackson.module.kotlin.*
 import com.windea.demo.cloudcollect.core.enums.*
 import java.io.*
 
 /**数据持久化器。（支持多种数据类型，兼容泛型）*/
 object DataSerializer {
-	val json by lazy { ObjectMapper() }
-	val yaml by lazy { YAMLMapper() }
-	val xml by lazy { XmlMapper() }
-	val properties by lazy { JavaPropsMapper() }
-	
+	//默认美化输出，并且注册kotlin模块
+	private val json by lazy { ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).registerKotlinModule() }
+	private val yaml by lazy { YAMLMapper().enable(SerializationFeature.INDENT_OUTPUT).registerKotlinModule() }
+	private val xml by lazy { XmlMapper().enable(SerializationFeature.INDENT_OUTPUT).registerKotlinModule() }
+
 	inline fun <reified T> load(string: String, dataType: DataType): T = dataType.toMapper().readValue(string, typeRef<T>())
 	
 	inline fun dump(data: Any, dataType: DataType): String = dataType.toMapper().writeValueAsString(data)

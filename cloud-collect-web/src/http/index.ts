@@ -3,9 +3,11 @@ import router from "@/router"
 import store from "@/store"
 import axios from "axios"
 
+export const rootUrl = "http://localhost:8080/cloudCollect/api"
+
 //不要直接使用axios，使用新的实例
 const http = axios.create({
-  baseURL: "http://localhost:8080/cloudCollect/api",
+  baseURL: rootUrl,
   timeout: 3600000,
   headers: {
     "Access-Control-Allow-Origin": "*"

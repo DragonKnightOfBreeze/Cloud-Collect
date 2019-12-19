@@ -11,5 +11,6 @@ data class SerializeProperties(
 	val exportUrl: String,
 	val rootPath: String,
 	val uploadPath: String,
-	val exportPath: String
+	val exportPath: String,
+	val importPath: String
 )

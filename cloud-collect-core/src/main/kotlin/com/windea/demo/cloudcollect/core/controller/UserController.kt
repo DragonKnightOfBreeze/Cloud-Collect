@@ -32,7 +32,7 @@ class UserController(
 	
 	@ApiOperation("上传用户头像。")
 	@PostMapping("/{id}/uploadAvatar")
-	//@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated()")
 	fun uploadAvatar(@PathVariable id: Long, @RequestParam multipartFile: MultipartFile): String {
 		return userService.uploadAvatar(id, multipartFile)
 	}

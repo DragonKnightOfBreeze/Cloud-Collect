@@ -67,13 +67,14 @@
 
 <script lang="ts">
   import PraiseButton from "@/components/button/PraiseButton.vue"
+  import CollectIcon from "@/components/inline/CollectIcon.vue"
   import UrlCopyDropdown from "@/components/menu/UrlCopyDropdown.vue"
   import ElRouterLink from "@/components/public/ElRouterLink.vue"
   import {Collect} from "@/domain"
   import {Component, Prop, Vue} from "vue-property-decorator"
 
   @Component({
-    components: {ElRouterLink, PraiseButton, UrlCopyDropdown}
+    components: {CollectIcon, ElRouterLink, PraiseButton, UrlCopyDropdown}
   })
   export default class CollectOverviewCard extends Vue {
     @Prop({required: true}) collect!: Collect

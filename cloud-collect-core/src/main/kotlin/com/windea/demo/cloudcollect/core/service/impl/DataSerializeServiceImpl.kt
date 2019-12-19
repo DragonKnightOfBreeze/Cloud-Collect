@@ -8,6 +8,7 @@ import com.windea.demo.cloudcollect.core.extensions.*
 import com.windea.demo.cloudcollect.core.properties.*
 import com.windea.demo.cloudcollect.core.repository.*
 import com.windea.demo.cloudcollect.core.service.*
+import org.springframework.data.domain.*
 import org.springframework.stereotype.*
 import org.springframework.web.multipart.*
 import java.io.*
@@ -21,42 +22,45 @@ class DataSerializeServiceImpl(
 	private val serializeProperties: SerializeProperties
 ) : DataSerializeService {
 	override fun importData(dataType: DataType, multipartFile: MultipartFile, user: User) {
-		//不检查文件格式是否正确，委托给前端
+		//存储数据文件到本地
 		val fileName = "data.${dataType.extension}"
-		val filePath = Path.of(serializeProperties.exportPath, fileName)
-		val file = filePath.toFile()
+		val fileDirectory = serializeProperties.importPath
+		Files.createDirectories(Path.of(fileDirectory))  //尝试创建所有父级目录
+		val file = File(fileDirectory, fileName)
 		multipartFile.transferTo(file)
 		
 		try {
 			//根据指定数据类型读取数据，这里可以使用泛型列表，并作为具象化泛型
 			//考虑使用序列而非列表，进行自顶向下的操作，而非自前往后，需要排除重复名字的收藏
-			//NOTE 需要去除重复的数据
-			val collectSchemaList = DataSerializer.load<List<CollectSchema>>(file, dataType)
-				.distinctBy { it.name }
-			collectSchemaList.forEach {
-				//存储到数据库中，分类和标签会一并级联保存
-				collectRepository.save(it.toCollect(user))
-			}
+			//需要去除重复的数据
+			val collectList = DataSerializer.load<List<CollectSchema>>(file, dataType)
+				.distinctBy { it.name }.map { it.toCollect(user) }
+			collectRepository.saveAll(collectList)
 		} catch(e: Exception) {
+			e.printStackTrace()
 			throw ImportDataException()
 		}
 	}
 	
-	override fun exportData(dataType: DataType): File {
-		//不在本地缓存文件
-		val fileName = "data.${dataType.extension}"
-		val filePath = Path.of(serializeProperties.exportPath, fileName)
-		val file = filePath.toFile()
-		
+	override fun exportData(dataType: DataType, user: User): File {
 		try {
+			//存储数据文件到本地
+			val fileName = "data.${dataType.extension}"
+			val fileDirectory = serializeProperties.exportPath
+			Files.createDirectories(Path.of(fileDirectory))  //尝试创建所有父级目录
+			val file = File(fileDirectory, fileName)
+			file.createNewFile()
+			
 			//从数据库中查找相关数据，然后创建数据约束对象
-			val collectSchemaList = collectRepository.findAll().map { it.toCollectSchema() }
 			//根据指定数据类型转化数据
+			val collectSchemaList = collectRepository.findAllByUserId(user.id, Pageable.unpaged())
+				.content.map { it.toCollectSchema() }
 			DataSerializer.dump(file, collectSchemaList, dataType)
+			return file
 		} catch(e: Exception) {
+			e.printStackTrace()
 			throw ExportDataException()
 		}
-		return file
 	}
 	
 	private fun Collect.toCollectSchema() = CollectSchema(
@@ -64,7 +68,7 @@ class DataSerializeServiceImpl(
 		summary = summary,
 		url = url,
 		logoUrl = logoUrl,
-		categoryName = category?.name ?: "默认分类",
+		categoryName = category?.name ?: "未分类",
 		tagNames = tags.map { it.name },
 		type = type
 	)
@@ -76,10 +80,10 @@ class DataSerializeServiceImpl(
 		url = this.url,
 		logoUrl = this.logoUrl,
 		category = this.categoryName.let {
-			categoryRepository.findByNameAndUserId(it, user.id) ?: Category(name = name, user = user)
+			categoryRepository.findByNameAndUserId(it, user.id) ?: categoryRepository.save(Category(name = name, user = user))
 		},
 		tags = tagNames.map {
-			tagRepository.findByName(it) ?: Tag(name = name, user = user)
+			tagRepository.findByName(it) ?: tagRepository.save(Tag(name = name, user = user))
 		}.distinctBy { it.name }.toMutableSet(),
 		type = this.type,
 		user = user

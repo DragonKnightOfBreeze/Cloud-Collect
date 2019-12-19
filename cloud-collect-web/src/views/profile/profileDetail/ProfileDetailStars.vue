@@ -85,9 +85,9 @@
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
-      console.log("路由发生了变化：", value)
-      if (value.params.id === oldValue.params.id) return
-      this.getPraiseToCollectPage()
+      if (value.params.id && value.params.id !== oldValue.params.id) {
+        this.getPraiseToCollectPage()
+      }
     }
 
     @Watch("pageableParam")
@@ -125,7 +125,7 @@
             this.praiseToCollectPage = await collectService.findAllByTypeAndPraiseByUserId(this.searchTerm4, this.userId, this.pageableParam)
             break
           default:
-            this.$message.error(`Cannot search collects by ${this.searchType} here.`)
+            this.$message.error(`不能在这里使用这种方式搜索收藏。`)
             break
         }
       } catch (e) {

@@ -62,7 +62,8 @@
         this.$message.success("重置密码成功！请登录。")
         await this.$router.push("/success/resetPassword")
       } catch (e) {
-        this.$message.warning("重置密码失败！")
+        const errorMessage = this.$store.getters.errorMessage
+        this.$message.warning(`重置密码失败！${errorMessage}`)
       }
     }
 

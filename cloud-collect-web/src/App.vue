@@ -9,9 +9,7 @@
       </ElHeader>
 
       <ElMain>
-        <keep-alive>
           <router-view></router-view>
-        </keep-alive>
       </ElMain>
 
       <ElFooter v-show="showFooter">
@@ -100,6 +98,9 @@
   .el-avatar {
     width: 100%;
     object-fit: cover;
+  }
+  .el-popover {
+    margin-bottom: 0;
   }
 
   .app-item-list {

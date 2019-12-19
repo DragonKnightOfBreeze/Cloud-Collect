@@ -61,7 +61,6 @@
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
-      console.log("路由发生了变化：", value)
       //总是更新数据
       this.getHistories()
     }

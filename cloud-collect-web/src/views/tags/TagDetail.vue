@@ -84,9 +84,9 @@
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
-      console.log("路由发生了变化：", value)
-      if (value.params.id === oldValue.params.id) return
-      this.getTag()
+      if (value.params.id && value.params.id !== oldValue.params.id) {
+        this.getTag()
+      }
     }
 
     @Watch("pageableParam")

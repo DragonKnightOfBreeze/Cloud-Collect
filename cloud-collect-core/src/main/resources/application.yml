@@ -108,6 +108,7 @@ cloud-collect:
     root-path: D:/CloudCollect
     upload-path: D:/CloudCollect/upload
     export-path: D:/CloudCollect/export
+    import-path: D:/CloudCollect/import
 logging:
   level:
     org.springframework: debug

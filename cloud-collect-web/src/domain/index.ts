@@ -147,7 +147,7 @@ export type NoticeType = "SYSTEM" | "ACCOUNT"
 
 export type Role = "NORMAL" | "ADMIN"
 
-export type DataType = "JSON" | "YAML" | "XML" | "PROPERTIES"
+export type DataType = "JSON" | "YAML" | "XML"
 
 //REGION SpringBoot
 

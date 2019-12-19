@@ -13,11 +13,11 @@
       <ElCol :span="4">
         <ElButton type="primary" @click="handleCreateTag"><ElIcon name="plus"/> 创建标签</ElButton>
       </ElCol>
-      <ElCol :span="4" v-show="enableImportAndExport">
-        <ElButton type="warning" @click="handleImport"><ElIcon name="bottom-left"/> 导入收藏</ElButton>
+      <ElCol :span="4">
+        <DataImportPopover @import="handleImport"/>
       </ElCol>
-      <ElCol :span="4" v-show="enableImportAndExport">
-        <ElButton type="warning" @click="handleExport"><ElIcon name="top-right"/> 导出收藏</ElButton>
+      <ElCol :span="4">
+        <DataExportPopover/>
       </ElCol>
     </ElRow>
     <ElBlankLine :height="12" v-if="isCurrentUser"/>
@@ -78,6 +78,8 @@
   import NewCategoryDialog from "@/components/dialog/NewCategoryDialog.vue"
   import NewCollectDialog from "@/components/dialog/NewCollectDialog.vue"
   import NewTagDialog from "@/components/dialog/NewTagDialog.vue"
+  import DataExportPopover from "@/components/popover/DataExportPopover.vue"
+  import DataImportPopover from "@/components/popover/DataImportPopover.vue"
   import ElBlankLine from "@/components/public/ElBlankLine.vue"
   import ElCardGroup from "@/components/public/ElCardGroup.vue"
   import ThePagination from "@/components/root/ThePagination.vue"
@@ -90,6 +92,8 @@
 
   @Component({
     components: {
+      DataImportPopover,
+      DataExportPopover,
       TheSorter,
       ElBlankLine,
       NewTagDialog,
@@ -112,8 +116,8 @@
     private newCollectDialogVisible = false
     private newCategoryDialogVisible = false
     private newTagDialogVisible = false
-
-    private enableImportAndExport = false
+    private importPopoverVisible = false
+    private exportPopoverVisible = false
 
     private get userId() {
       return parseInt(this.$route.params["id"] as string)
@@ -129,9 +133,9 @@
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
-      console.log("路由发生了变化：", value)
-      if (value.params.id === oldValue.params.id) return
-      this.getCollectPage()
+      if (value.params.id && value.params.id !== oldValue.params.id) {
+        this.getCollectPage()
+      }
     }
 
     @Watch("pageableParam")
@@ -140,12 +144,9 @@
       this.getCollectPage()
     }
 
+    //导入收藏后需要重新加载数据
     private handleImport() {
-      //TODO
-    }
-
-    private handleExport() {
-      //TODO
+      this.getCollectPage()
     }
 
     private handleCreateCollect() {
@@ -193,7 +194,7 @@
             this.collectPage = await collectService.findAllByTypeAndUserId(this.searchTerm4, this.userId, this.pageableParam)
             break
           default:
-            this.$message.error(`Cannot search collects by ${this.searchType} here.`)
+            this.$message.error(`不能在这里使用这种方式搜索收藏。`)
             break
         }
       } catch (e) {

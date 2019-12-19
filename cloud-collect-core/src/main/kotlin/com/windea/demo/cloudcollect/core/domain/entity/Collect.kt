@@ -77,7 +77,7 @@ data class Collect(
 	@ApiModelProperty("点赞该收藏的用户列表。")
 	@JsonIgnore
 	@ManyToMany(cascade = [CascadeType.REMOVE])
-	val praiseByUsers: MutableList<User> = mutableListOf()
+	val praiseByUsers: MutableSet<User> = mutableSetOf()
 	
 	@ApiModelProperty("该收藏的评论列表。")
 	@JsonIgnore

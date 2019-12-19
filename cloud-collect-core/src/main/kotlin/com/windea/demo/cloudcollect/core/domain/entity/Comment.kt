@@ -37,7 +37,7 @@ data class Comment(
 	val sponsorByUser: User,
 	
 	@ApiModelProperty("该评论回复的评论。")
-	@ManyToOne(cascade = [CascadeType.DETACH])
+	@ManyToOne
 	val replyToComment: Comment? = null
 ) : Serializable {
 	@ApiModelProperty("创建时间。")
@@ -45,6 +45,11 @@ data class Comment(
 	@CreatedDate
 	@JsonFormat(pattern = GlobalConfig.dateFormat)
 	var createdTime: LocalDateTime? = null
+	
+	@ApiModelProperty("回复该评论的评论列表。")
+	@JsonIgnore
+	@OneToMany(mappedBy = "replyToComment", cascade = [CascadeType.DETACH])
+	val replyByComments: MutableList<Comment> = mutableListOf()
 	
 	@ApiModelProperty("回复此评论的评论数量。")
 	@Transient

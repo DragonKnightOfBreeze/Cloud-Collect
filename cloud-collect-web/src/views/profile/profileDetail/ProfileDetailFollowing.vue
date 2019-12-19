@@ -53,9 +53,9 @@
 
     @Watch("$route")
     private onRouteChange(value: Route, oldValue: Route) {
-      console.log("路由发生了变化：", value)
-      if (value.params.id === oldValue.params.id) return
-      this.getFollowToUserPage()
+      if (value.params.id && value.params.id !== oldValue.params.id) {
+        this.getFollowToUserPage()
+      }
     }
 
     @Watch("pageableParam")
@@ -79,7 +79,7 @@
             this.followToUserPage = await userService.findAllByNicknameContainsAndFollowByUserId(this.searchTerm, this.userId, this.pageableParam)
             break
           default:
-            this.$message.error("Cannot search collects by type here.")
+            this.$message.error("不能在这里使用这种方式搜索用户。")
             break
         }
       } catch (e) {

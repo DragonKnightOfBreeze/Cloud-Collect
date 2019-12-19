@@ -1,4 +1,4 @@
-import {CollectType, Enum, NoticeType} from "@/domain"
+import {CollectType, DataType, Enum, NoticeType} from "@/domain"
 
 export const collectTypes: Enum<CollectType>[] = [
   {name: "NONE", text: "无"},
@@ -11,4 +11,10 @@ export const collectTypes: Enum<CollectType>[] = [
 export const noticeTypes: Enum<NoticeType>[] = [
   {name: "SYSTEM", text: "系统通知"},
   {name: "ACCOUNT", text: "账户通知"}
+]
+
+export const dataTypes: Enum<DataType>[] = [
+  {name: "XML", text: "Xml"},
+  {name: "JSON", text: "Json"},
+  {name: "YAML", text: "Yaml"}
 ]

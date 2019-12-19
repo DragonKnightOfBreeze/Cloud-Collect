@@ -3,7 +3,7 @@
     <ElFormItem size="small" label="排序方式">
       <ElSelect size="small" v-model="syncPageableParam.sort" :value="syncPageableParam.sort" placeholder="请选择"
                 @change="handleChange">
-        <ElOption v-for="option in sortOptions" :key="option.label" :label="option.label" :value="option.value"></ElOption>
+        <ElOption v-for="option in sortOptions" :key="option.label" :label="option.label" :value="option.value"/>
       </ElSelect>
     </ElFormItem>
   </ElForm>
@@ -71,6 +71,6 @@
     margin: 10px 10px;
   }
   .el-form-item {
-    margin: 0 0;
+    margin-bottom: 0;
   }
 </style>
