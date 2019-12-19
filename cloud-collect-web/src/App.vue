@@ -9,7 +9,9 @@
       </ElHeader>
 
       <ElMain>
-        <router-view></router-view>
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
       </ElMain>
 
       <ElFooter v-show="showFooter">
@@ -85,7 +87,7 @@
     margin: 0 5px;
   }
   .el-page-header__left {
-    width: 100px;
+    width: 150px;
   }
   .el-page-header__content {
     float: right;

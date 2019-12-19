@@ -37,7 +37,7 @@ class WebConfiguration(
 	
 	@Bean
 	@Primary
-	fun stringHttpMessageConverter(): HttpMessageConverter<String> = StringHttpMessageConverter(Charsets.UTF_8)
+	fun stringHttpMessageConverter(): StringHttpMessageConverter = StringHttpMessageConverter(Charsets.UTF_8)
 	
 	@Bean
 	@Primary

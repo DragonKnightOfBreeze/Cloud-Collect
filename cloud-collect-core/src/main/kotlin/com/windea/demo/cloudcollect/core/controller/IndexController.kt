@@ -49,8 +49,8 @@ class IndexController(
 	
 	@ApiOperation("忘记用户密码。")
 	@PostMapping("/forgotPassword")
-	fun forgotPassword(@RequestParam username: String) {
-		userService.forgotPassword(username)
+	fun forgotPassword(@RequestParam email: String) {
+		userService.forgotPassword(email)
 	}
 	
 	@ApiOperation("重置用户密码。")

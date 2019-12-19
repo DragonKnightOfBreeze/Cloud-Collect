@@ -1,18 +1,18 @@
 <template>
   <!--TODO 前端表单验证-->
   <ElDialog title="忘记密码？" center append-to-body width="30%" :visible="syncVisible" @close="handleClose">
-    <ElForm inline>
+    <ElForm inline class="justify-content-center">
       <ElFormItem>
         <ElInput type="email" v-model="email" placeholder="你的邮箱"></ElInput>
       </ElFormItem>
       <ElFormItem>
         <ElButton type="success" @click="handleForgotPassword">发送邮件</ElButton>
       </ElFormItem>
-
-      <ElText color="info" align="center">
-        我们将向你的邮箱发送一条邮件，以重置你的密码。
-      </ElText>
     </ElForm>
+
+    <ElText color="info" align="center">
+      我们将向你的邮箱发送一条邮件，以重置你的密码。
+    </ElText>
   </ElDialog>
 </template>
 

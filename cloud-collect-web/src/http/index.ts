@@ -1,3 +1,4 @@
+import {Message} from "@/domain"
 import router from "@/router"
 import store from "@/store"
 import axios from "axios"
@@ -5,7 +6,10 @@ import axios from "axios"
 //不要直接使用axios，使用新的实例
 const http = axios.create({
   baseURL: "http://localhost:8080/cloudCollect/api",
-  timeout: 3600000
+  timeout: 3600000,
+  headers: {
+    "Access-Control-Allow-Origin": "*"
+  }
 })
 
 //上传文件时需要一个纯净的formData
@@ -40,7 +44,7 @@ http.interceptors.response.use(value => {
     switch (status) {
       case 400:
         //取得错误消息并存储到store中
-        const errorMessage = error.response.data.message as string
+        const errorMessage = (error.response.data as Message).message
         console.error("Error message:", errorMessage)
         store.commit("setErrorMessage", errorMessage)
         break

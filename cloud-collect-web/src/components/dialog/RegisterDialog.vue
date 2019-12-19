@@ -85,7 +85,7 @@
     }
 
     async handleRegister() {
-      const isValid = await (this.$refs["user"] as any).validate()
+      const isValid = await (this.$refs["form"] as any).validate()
       if (!isValid) return
 
       if (this.user.password !== this.rePassword) {

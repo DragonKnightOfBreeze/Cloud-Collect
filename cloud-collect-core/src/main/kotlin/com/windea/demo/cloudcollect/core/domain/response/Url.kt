@@ -4,6 +4,6 @@ import com.windea.demo.cloudcollect.core.annotation.*
 import java.io.*
 
 @Domain
-data class Result(
-	val message: String?
+data class Url(
+	val url: String
 ) : Serializable

@@ -15,7 +15,8 @@ class UserDetailsServiceImpl(
 ) : UserDetailsService {
 	@Cacheable(cacheNames = ["user"], key = "'/currentUser?username='+#username")
 	override fun loadUserByUsername(username: String): UserDetails {
-		return userRepository.findByUsername(username)?.toUserDetails()
+		//尝试按用户名查找，如果找不到，再尝试按邮箱查找
+		return (userRepository.findByUsername(username) ?: userRepository.findByEmail(username))?.toUserDetails()
 		       ?: throw UsernameNotFoundException(ResultStatus.USER_NOT_FOUND.message)
 	}
 	

@@ -12,51 +12,51 @@ import org.springframework.web.servlet.mvc.method.annotation.*
 @RestControllerAdvice
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 	@ExceptionHandler(ValidationException::class)
-	fun handleValidationException(e: ValidationException): ResponseEntity<Result> {
+	fun handleValidationException(e: ValidationException): ResponseEntity<Message> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(Result(e.message))
+		return ResponseEntity.badRequest().body(Message(e.message))
 	}
 	
 	@ExceptionHandler(ExportDataException::class)
-	fun handleExportDataException(e: ExportDataException): ResponseEntity<Result> {
+	fun handleExportDataException(e: ExportDataException): ResponseEntity<Message> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(Result(e.message))
+		return ResponseEntity.badRequest().body(Message(e.message))
 	}
 	
 	@ExceptionHandler(ImportDataException::class)
-	fun handleImportDataException(e: ImportDataException): ResponseEntity<Result> {
+	fun handleImportDataException(e: ImportDataException): ResponseEntity<Message> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(Result(e.message))
+		return ResponseEntity.badRequest().body(Message(e.message))
 	}
 	
 	@ExceptionHandler(UploadAvatarException::class)
-	fun handleUploadAvatarException(e: UploadAvatarException): ResponseEntity<Result> {
+	fun handleUploadAvatarException(e: UploadAvatarException): ResponseEntity<Message> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(Result(e.message))
+		return ResponseEntity.badRequest().body(Message(e.message))
 	}
 	
 	@ExceptionHandler(UserNotFoundException::class)
-	fun handleUserNotFoundException(e: UserNotFoundException): ResponseEntity<Result> {
+	fun handleUserNotFoundException(e: UserNotFoundException): ResponseEntity<Message> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(Result(e.message))
+		return ResponseEntity.badRequest().body(Message(e.message))
 	}
 	
 	@ExceptionHandler(InvalidUserException::class)
-	fun handleInvalidUserException(e: InvalidUserException): ResponseEntity<Result> {
+	fun handleInvalidUserException(e: InvalidUserException): ResponseEntity<Message> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(Result(e.message))
+		return ResponseEntity.badRequest().body(Message(e.message))
 	}
 	
 	@ExceptionHandler(InvalidAuthCodeException::class)
-	fun handleInvalidAuthCodeException(e: InvalidAuthCodeException): ResponseEntity<Result> {
+	fun handleInvalidAuthCodeException(e: InvalidAuthCodeException): ResponseEntity<Message> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(Result(e.message))
+		return ResponseEntity.badRequest().body(Message(e.message))
 	}
 	
 	@ExceptionHandler(NotFoundException::class)
-	fun handleNotFoundException(e: NotFoundException): ResponseEntity<Result> {
+	fun handleNotFoundException(e: NotFoundException): ResponseEntity<Message> {
 		e.printStackTrace()
-		return ResponseEntity.badRequest().body(Result(e.message))
+		return ResponseEntity.badRequest().body(Message(e.message))
 	}
 	
 	@ExceptionHandler(NotImplementedException::class)

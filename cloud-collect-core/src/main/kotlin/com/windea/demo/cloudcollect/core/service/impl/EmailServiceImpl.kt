@@ -12,7 +12,7 @@ class EmailServiceImpl(
 	private val mailProperties: MailProperties
 ) : EmailService {
 	override fun sendActivateEmail(user: User, activateCode: String) = mailSender.sendEmail {
-		val url = "http://activate?username=${user.username}&activateCode=$activateCode"
+		val url = "http://localhost:8081/activate?username=${user.username}&activateCode=$activateCode"
 		
 		setFrom(mailProperties.username)
 		setTo(user.email)
@@ -25,7 +25,7 @@ class EmailServiceImpl(
 			    请点击<a href="$url">此地址</a>激活您的账户。
 			  </p>
 			</html>
-		""".trimIndent())
+		""".trimIndent(), true)
 	}
 	
 	override fun sendHelloEmail(user: User) = mailSender.sendEmail {
@@ -40,11 +40,11 @@ class EmailServiceImpl(
 			    欢迎使用微风的龙骑士的云收藏项目！
 			  </p>
 			</html>
-		""".trimIndent())
+		""".trimIndent(), true)
 	}
 	
 	override fun sendResetPasswordEmail(user: User, resetPasswordCode: String) = mailSender.sendEmail {
-		val url = "http://resetPassword?username=${user.username}&resetPasswordCode=$resetPasswordCode"
+		val url = "http://localhost:8081/resetPassword?username=${user.username}&resetPasswordCode=$resetPasswordCode"
 		
 		setFrom(mailProperties.username)
 		setTo(user.email)
@@ -57,7 +57,7 @@ class EmailServiceImpl(
 			    请点击<a href="$url">此地址</a>重置你的密码。
 			  </p>
 			</html>
-		""".trimIndent())
+		""".trimIndent(), true)
 	}
 	
 	override fun sendResetPasswordSuccessEmail(user: User) = mailSender.sendEmail {
@@ -67,12 +67,12 @@ class EmailServiceImpl(
 		//language=HTML
 		setText("""
 			<html lang="zh">
-			  <h1>云收藏：欢迎使用</h1>
+			  <h1>云收藏：重置密码成功</h1>
 			  <p>
 			    已成功重置你的密码。
 			  </p>
 			</html>
-		""".trimIndent())
+		""".trimIndent(), true)
 	}
 	
 	

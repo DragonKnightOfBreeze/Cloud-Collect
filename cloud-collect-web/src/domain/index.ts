@@ -129,6 +129,14 @@ export interface UserDetailsVo extends UserDetails {
   delegateUser: User
 }
 
+export interface Url {
+  url: string
+}
+
+export interface Message {
+  message?: string
+}
+
 //REGION enums
 
 export type CollectPrivacy = "PUBLIC" | "PRIVATE"

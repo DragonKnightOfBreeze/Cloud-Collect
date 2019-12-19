@@ -100,7 +100,7 @@ cloud-collect:
   redis:
     activateCodePrefix: "activateCode:"
     resetPasswordCodePrefix: "resetPasswordCode:"
-    expiration: 90
+    expiration: 1d
   serialize:
     root-url: http://localhost:8080/cloudCollect/api
     upload-url: http://localhost:8080/cloudCollect/api/upload

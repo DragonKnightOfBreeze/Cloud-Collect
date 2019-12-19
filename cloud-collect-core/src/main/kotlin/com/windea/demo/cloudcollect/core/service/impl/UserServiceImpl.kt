@@ -2,6 +2,7 @@
 
 package com.windea.demo.cloudcollect.core.service.impl
 
+import com.windea.demo.cloudcollect.core.GlobalConfig.requireActivation
 import com.windea.demo.cloudcollect.core.GlobalConfig.sendEmail
 import com.windea.demo.cloudcollect.core.domain.entity.*
 import com.windea.demo.cloudcollect.core.domain.entity.User
@@ -68,8 +69,11 @@ class UserServiceImpl(
 		user.password = passwordEncoder.encode(user.password)
 		
 		userRepository.save(user)
+		
 		//当配置为要求发送邮件时，发送邮件
-		if(sendEmail) emailService.sendActivateEmail(user, activateCode)
+		if(sendEmail)
+			if(requireActivation) emailService.sendActivateEmail(user, activateCode)
+			else emailService.sendHelloEmail(user)
 	}
 	
 	//override fun logout() {
