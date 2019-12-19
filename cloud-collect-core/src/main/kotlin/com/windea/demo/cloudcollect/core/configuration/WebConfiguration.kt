@@ -17,6 +17,8 @@ class WebConfiguration(
 ) : WebMvcConfigurer {
 	//添加资源管理器，用于处理静态文件
 	override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/")
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/")
 		registry.addResourceHandler("/upload/**").addResourceLocations("file:D:/CloudCollect/upload/")
 		registry.addResourceHandler("/export/**").addResourceLocations("file:D:/CloudCollect/export/")
 	}

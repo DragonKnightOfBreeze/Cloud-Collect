@@ -242,3 +242,6 @@
   * 由于Spring Boot的自动配置，一般情况下，不需要特地配置编码
   * 当在RestController中直接返回字符串，而非json字符串时，编码将会强制变为ISO-8859-1，而非UTF-8。
   - [ ] 不知道该如何解决，还是直接返回json吧。
+* 重写 了`WebMvcConfigurer`的`addResourceHandlers`方法后，`/swagger-ui.html`打不开的问题
+  * 配置`swagger-ui.html`->`classpath:/META-INF/resources/`的资源映射。
+  * 配置`/webjars/**`->`classpath:/META-INF/resources/webjars/`的资源映射。
