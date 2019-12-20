@@ -40,7 +40,7 @@
 
     private noticeTypes = noticeTypes
 
-    get isCurrentUser() {
+    private get isCurrentUser() {
       return this.$store.getters.currentUser && this.notice.user && this.$store.getters.currentUser.id === this.notice.user.id
     }
 

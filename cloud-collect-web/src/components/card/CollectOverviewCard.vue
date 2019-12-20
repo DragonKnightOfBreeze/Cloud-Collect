@@ -79,7 +79,7 @@
   export default class CollectOverviewCard extends Vue {
     @Prop({required: true}) collect!: Collect
 
-    get currentUser() {
+    private get currentUser() {
       return this.$store.getters.currentUser
     }
   }

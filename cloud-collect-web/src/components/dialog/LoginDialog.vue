@@ -52,11 +52,11 @@
       ]
     }
 
-    handleForgotPassword() {
+    private handleForgotPassword() {
       this.forgotPasswordDialogVisible = true
     }
 
-    async handleLogin() {
+    private async handleLogin() {
       const isValid = await (this.$refs["form"] as any).validate()
       if (!isValid) return
 
@@ -77,12 +77,12 @@
       }
     }
 
-    handleRegister() {
+    private handleRegister() {
       console.log("注册用户。")
       this.syncDialogType = "register"
     }
 
-    handleClose() {
+    private handleClose() {
       this.syncDialogType = "none"
     }
   }

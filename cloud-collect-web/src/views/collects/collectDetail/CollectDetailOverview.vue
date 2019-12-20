@@ -78,15 +78,15 @@
     private newCommentDialogVisible = false
     private replyToComment: Comment | null = null
 
-    get collectId() {
+    private get collectId() {
       return parseInt(this.$route.params["id"] as string)
     }
 
-    get currentUser(): User | null {
+    private get currentUser(): User | null {
       return this.$store.getters.currentUser
     }
 
-    get isCurrentUser() {
+    private get isCurrentUser() {
       return this.currentUser && this.collect && this.collect.user && this.currentUser.id == this.collect.user.id
     }
 
@@ -109,15 +109,15 @@
       this.getCommentPage()
     }
 
-    handleGoBack() {
+    private handleGoBack() {
       this.$router.push("/collects")
     }
 
-    handleEdit() {
+    private handleEdit() {
       this.editDialogVisible = true
     }
 
-    async handleDelete() {
+    private async handleDelete() {
       console.log(this.currentUser)
       try {
         await this.$confirm("此操作将永久删除该收藏, 是否继续?", {type: "warning"})
@@ -127,27 +127,27 @@
       }
     }
 
-    handleFork() {
+    private handleFork() {
       this.forkCollect()
     }
 
     //当用户编辑标签并提交更改成功后，需要从后台重新得到标签数据
-    handleSubmit() {
+    private handleSubmit() {
       this.getCollect()
     }
 
-    handleNewComment() {
+    private handleNewComment() {
       this.replyToComment = null
       this.newCommentDialogVisible = true
     }
 
-    handleReplyComment(comment: Comment) {
+    private handleReplyComment(comment: Comment) {
       this.replyToComment = comment
       this.newCommentDialogVisible = true
     }
 
     //当新建评论后，需要刷新评论列表
-    handleSubmitComment() {
+    private handleSubmitComment() {
       this.getCommentPage()
     }
 

@@ -34,7 +34,7 @@
       return parseInt(this.$route.params["id"] as string)
     }
 
-    get currentUser() {
+    private get currentUser() {
       return this.$store.getters.currentUser
     }
 
@@ -46,12 +46,12 @@
       this.getUser()
     }
 
-    handleEdit() {
+    private handleEdit() {
       this.editDialogVisible = true
     }
 
     @Emit("submit")
-    handleSubmit() {
+    private handleSubmit() {
       this.getUser()
     }
 

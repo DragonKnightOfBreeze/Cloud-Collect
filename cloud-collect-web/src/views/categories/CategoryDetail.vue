@@ -66,15 +66,15 @@
     private collectPage: Page<Collect> | null = null
     private pageableParam: PageableParam = {page: 0, size: 20}
 
-    get categoryId() {
+    private get categoryId() {
       return parseInt(this.$route.params["id"] as string)
     }
 
-    get currentUser(): User | null {
+    private get currentUser(): User | null {
       return this.$store.getters.currentUser
     }
 
-    get isCurrentUser() {
+    private get isCurrentUser() {
       return this.currentUser && this.category && this.category.user && this.currentUser.id == this.category.user.id
     }
 
@@ -95,21 +95,21 @@
       this.getCollectPage()
     }
 
-    handleGoBack() {
+    private handleGoBack() {
       this.$router.push("/categories")
     }
 
-    handleChange() {
+    private handleChange() {
       if (!this.collectPage) {
         this.getCollectPage()
       }
     }
 
-    handleEdit() {
+    private handleEdit() {
       this.editDialogVisible = true
     }
 
-    async handleDelete() {
+    private async handleDelete() {
       try {
         await this.$confirm("此操作将永久删除该分类, 是否继续?", {type: "warning"})
         await this.deleteCategory()
@@ -119,7 +119,7 @@
     }
 
     //当用户编辑标签并提交更改成功后，需要从后台重新得到标签数据
-    handleSubmit() {
+    private handleSubmit() {
       this.getCategory()
     }
 

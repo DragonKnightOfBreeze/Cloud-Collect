@@ -11,7 +11,7 @@
 
   @Component
   export default class ProfileOverview extends Vue {
-    get currentUser(): User | null {
+    private get currentUser(): User | null {
       return this.$store.getters.currentUser
     }
 

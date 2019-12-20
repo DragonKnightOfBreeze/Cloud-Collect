@@ -32,17 +32,17 @@
     private dataTypes = dataTypes
     private file: File | null = null
 
-    get fileExtension() {
+    private get fileExtension() {
       let temp = this.dataType.toLowerCase()
       if (temp === "yaml") temp = "yml"
       return temp
     }
 
-    handleUpload(file: any) {
+    private handleUpload(file: any) {
       this.file = file.file
     }
 
-    handleBeforeUpload(file: any) {
+    private handleBeforeUpload(file: any) {
       const condition1 = file.name.endsWith("xml") || file.name.endsWith("json") || file.name.endsWith("yml")
 
       if (!condition1) this.$message.warning("上传文件格式不合法！")
@@ -50,16 +50,16 @@
       return condition1
     }
 
-    handleSuccess(resource: any, file: any) {
+    private handleSuccess(resource: any, file: any) {
       this.$message.success("上传文件成功！")
     }
 
-    handleError() {
+    private handleError() {
       this.$message.warning("上传文件失败！")
     }
 
     @Emit("import")
-    async handleImport() {
+    private async handleImport() {
       try {
         if (!this.file) this.$message.warning("请上传要导入的文件！")
         if (!this.file!.name.endsWith(this.fileExtension)) this.$message.warning("文件格式不一致！")

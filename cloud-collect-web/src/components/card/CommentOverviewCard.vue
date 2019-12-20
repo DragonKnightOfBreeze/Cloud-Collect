@@ -61,7 +61,7 @@
 
     //传递当前收藏的发起用户到父组件
     @Emit("reply")
-    handleReply() {
+    private handleReply() {
     }
   }
 </script>

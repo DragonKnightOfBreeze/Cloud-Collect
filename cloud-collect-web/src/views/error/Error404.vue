@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <ElContentPage color="warn" align="center">
     <template v-slot:title>页面未找到</template>
 

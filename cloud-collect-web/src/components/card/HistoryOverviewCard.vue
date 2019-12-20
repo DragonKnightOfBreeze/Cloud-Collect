@@ -29,7 +29,7 @@
   export default class HistoryOverviewCard extends Vue {
     @Prop({required: true}) history!: History
 
-    get isCurrentUser() {
+    private get isCurrentUser() {
       return this.$store.getters.currentUser && this.history.user && this.$store.getters.currentUser.id === this.history.user.id
     }
 

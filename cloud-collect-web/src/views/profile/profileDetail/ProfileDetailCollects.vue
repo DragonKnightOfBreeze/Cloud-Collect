@@ -194,7 +194,7 @@
             this.collectPage = await collectService.findAllByTypeAndUserId(this.searchTerm4, this.userId, this.pageableParam)
             break
           default:
-            this.$message.error(`不能在这里使用这种方式搜索收藏。`)
+            this.$message.error(`不能在这里使用这种方式查询收藏。`)
             break
         }
       } catch (e) {

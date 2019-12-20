@@ -66,15 +66,15 @@
     private collectPage: Page<Collect> | null = null
     private pageableParam: PageableParam = {page: 0, size: 20}
 
-    get tagId() {
+    private get tagId() {
       return parseInt(this.$route.params["id"] as string)
     }
 
-    get currentUser(): User | null {
+    private get currentUser(): User | null {
       return this.$store.getters.currentUser
     }
 
-    get isCurrentUser() {
+    private get isCurrentUser() {
       return this.currentUser && this.tag && this.tag.user && this.currentUser.id == this.tag.user.id
     }
 

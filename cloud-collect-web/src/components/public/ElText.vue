@@ -13,7 +13,7 @@
     @Prop() bgColor!: string
     @Prop() align!: string
 
-    get cssClass() {
+    private get cssClass() {
       return [
         this.color ? `color-${this.color}` : "",
         this.bgColor ? `bg-color-${this.color}` : "",

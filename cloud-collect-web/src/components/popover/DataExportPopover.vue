@@ -25,14 +25,14 @@
     private dataType = "JSON"
     private dataTypes = dataTypes
 
-    get fileExtension() {
+    private get fileExtension() {
       let temp = this.dataType.toLowerCase()
       if (temp === "yaml") temp = "yml"
       return temp
     }
 
     @Emit("export")
-    async handleExport() {
+    private async handleExport() {
       try {
         const blob = await dataSerializeService.exportData(this.dataType)
         if (!blob) return

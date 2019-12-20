@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <ElCard class="no-content-card">
     <ElRow>
       <ElCol class="justify-content-center">

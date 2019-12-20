@@ -122,7 +122,7 @@
     }
 
     @Emit("submit")
-    async handleSubmit() {
+    private async handleSubmit() {
       const isValid = await (this.$refs["form"] as any).validate()
       if (!isValid) return
 
@@ -137,7 +137,7 @@
     }
 
     @Emit("close")
-    handleClose() {
+    private handleClose() {
       this.syncVisible = false
     }
   }

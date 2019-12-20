@@ -69,11 +69,11 @@
       this.searchCategoryByName()
     }
 
-    handleGoBack() {
+    private handleGoBack() {
       this.$router.push("/")
     }
 
-    async searchCategoryByName() {
+    private async searchCategoryByName() {
       try {
         this.searchPage = await categoryService.findAllByNameContains(this.searchTerm, this.pageableParam)
       } catch (e) {

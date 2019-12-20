@@ -58,7 +58,7 @@
     private avatarUrl = this.user.avatarUrl || ""
 
     //这里作为参数的的file居然是File类型对象的封装对象，两者是不一样的……
-    async handleUpload(file: any) {
+    private async handleUpload(file: any) {
       const avatarUrl = await userService.uploadAvatar(this.user.id!, file.file)
       //需要更新要更改的用户对象中的头像地址
       this.savedUser.avatarUrl = avatarUrl
@@ -68,7 +68,7 @@
       this.$store.commit("setCurrentUser", currentUser)
     }
 
-    handleBeforeUpload(file: any) {
+    private handleBeforeUpload(file: any) {
       const condition1 = file.type === "image/jpeg" || file.type === "image/png"
       const condition2 = file.size / 1024 / 1024 < 3
 
@@ -78,17 +78,17 @@
       return condition1 && condition2
     }
 
-    handleSuccess(resource: any, file: any) {
+    private handleSuccess(resource: any, file: any) {
       this.avatarUrl = URL.createObjectURL(file.raw) //获取用于显示的图片地址
       this.$message.success("上传用户头像成功！")
     }
 
-    handleError() {
+    private handleError() {
       this.$message.warning("上传用户头像失败！")
     }
 
     @Emit("submit")
-    async handleSubmit() {
+    private async handleSubmit() {
       const isValid = await (this.$refs["form"] as any).validate()
       if (!isValid) return
 
@@ -107,7 +107,7 @@
     }
 
     @Emit("close")
-    handleClose() {
+    private handleClose() {
       this.syncVisible = false
     }
   }

@@ -94,7 +94,7 @@
 
     private collectTypes = collectTypes
 
-    get currentUser(): User | null {
+    private get currentUser(): User | null {
       return this.$store.getters.currentUser
     }
   }

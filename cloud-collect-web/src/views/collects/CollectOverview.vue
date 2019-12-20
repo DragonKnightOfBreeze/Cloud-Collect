@@ -104,7 +104,7 @@
       this.searchCollect()
     }
 
-    async searchCollect() {
+    private async searchCollect() {
       try {
         switch (this.searchType) {
           case "none":
@@ -120,7 +120,7 @@
             this.searchPage = await collectService.findAllByTagNameContains(this.searchTerm3, this.pageableParam)
             break
           default:
-            this.$message.error(`不能在这里使用这种方式搜索标签。`)
+            this.$message.error(`不能在这里使用这种方式查询标签。`)
             break
         }
       } catch (e) {

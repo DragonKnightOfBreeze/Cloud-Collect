@@ -25,7 +25,7 @@
 
     @Prop({default: true, type: Boolean}) showHomeLink!: boolean
 
-    get cssClass() {
+    private get cssClass() {
       return [
         this.color ? `color-${this.color}` : "",
         this.bgColor ? `bg-color-${this.color}` : "",

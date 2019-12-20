@@ -80,11 +80,11 @@
       ]
     }
 
-    handleForgotPassword() {
+    private handleForgotPassword() {
       this.forgotPasswordDialogVisible = true
     }
 
-    async handleRegister() {
+    private async handleRegister() {
       const isValid = await (this.$refs["form"] as any).validate()
       if (!isValid) return
 
@@ -103,13 +103,13 @@
       }
     }
 
-    handleLogin() {
+    private handleLogin() {
       console.log("登录用户。")
       this.syncDialogType = "login"
     }
 
     //这里返回首页
-    handleClose() {
+    private handleClose() {
       this.syncDialogType = "none"
       this.$router.push("/")
     }

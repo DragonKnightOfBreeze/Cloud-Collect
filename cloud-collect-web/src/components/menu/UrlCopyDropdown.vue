@@ -32,7 +32,7 @@
       {command: "copyAsMdRefImgUrl", name: "复制为Markdown图片引用链接"}
     ]
 
-    async handleCommand(value: string) {
+    private async handleCommand(value: string) {
       try {
         const text = await this.getUrl(value)
         await this.$copyText(text)
@@ -42,7 +42,7 @@
       }
     }
 
-    async getUrl(type: string) {
+    private async getUrl(type: string) {
       const collect = this.collect
       if (type == "copyUrl") {
         return collect.url

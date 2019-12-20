@@ -41,7 +41,7 @@
     private user: User | null = null
     private activeIndex = ""
 
-    get menuItemList(): MenuItem[] {
+    private get menuItemList(): MenuItem[] {
       return [
         {path: `/profile/${this.userId}`, name: "主页"},
         {path: `/profile/${this.userId}/collects`, name: `收藏 ${this.collectCount}`},
@@ -54,31 +54,31 @@
       ]
     }
 
-    get userId() {
+    private get userId() {
       return parseInt(this.$route.params["id"] as string)
     }
 
-    get currentUser() {
+    private get currentUser() {
       return this.$store.getters.currentUser
     }
 
-    get collectCount() {
+    private get collectCount() {
       return this.user ? this.user.collectCount : 0
     }
 
-    get categoryCount() {
+    private get categoryCount() {
       return this.user ? this.user.categoryCount : 0
     }
 
-    get praiseToCollectCount() {
+    private get praiseToCollectCount() {
       return this.user ? this.user.praiseToCollectCount : 0
     }
 
-    get followToUserCount() {
+    private get followToUserCount() {
       return this.user ? this.user.followToUserCount : 0
     }
 
-    get followByUserCount() {
+    private get followByUserCount() {
       return this.user ? this.user.followByUserCount : 0
     }
 
@@ -112,7 +112,7 @@
       this.activeIndex = index
     }
 
-    handleSubmit() {
+    private handleSubmit() {
       this.getUser()
     }
 

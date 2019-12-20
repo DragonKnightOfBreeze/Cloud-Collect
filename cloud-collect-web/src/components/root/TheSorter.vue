@@ -14,7 +14,7 @@
   import {Component, Prop, PropSync, Vue} from "vue-property-decorator"
 
   @Component
-  export default class CollectSortSelect extends Vue {
+  export default class TheSorter extends Vue {
     @Prop({required: true}) type!: SortType
     @PropSync("pageableParam", {required: true}) syncPageableParam!: PageableParam
 
@@ -45,7 +45,7 @@
       {label: "按注册时间倒序", value: "registerTime,desc"}
     ]
 
-    get sortOptions() {
+    private get sortOptions() {
       switch (this.type) {
         case "collect":
           return this.collectSortOptions

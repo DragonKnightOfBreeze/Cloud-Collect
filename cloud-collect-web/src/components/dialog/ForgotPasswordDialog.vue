@@ -29,7 +29,7 @@
 
     private email: string = ""
 
-    async handleForgotPassword() {
+    private async handleForgotPassword() {
       try {
         await indexService.forgotPassword(this.email)
 
@@ -40,7 +40,7 @@
       }
     }
 
-    handleClose() {
+    private handleClose() {
       this.syncVisible = false
     }
   }

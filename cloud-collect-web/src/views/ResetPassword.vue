@@ -67,7 +67,7 @@
       }
     }
 
-    handleGoBack() {
+    private handleGoBack() {
       this.$router.back()
     }
   }

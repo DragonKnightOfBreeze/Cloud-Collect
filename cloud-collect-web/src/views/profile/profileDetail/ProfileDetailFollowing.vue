@@ -79,7 +79,7 @@
             this.followToUserPage = await userService.findAllByNicknameContainsAndFollowByUserId(this.searchTerm, this.userId, this.pageableParam)
             break
           default:
-            this.$message.error("不能在这里使用这种方式搜索用户。")
+            this.$message.error("不能在这里使用这种方式查询用户。")
             break
         }
       } catch (e) {

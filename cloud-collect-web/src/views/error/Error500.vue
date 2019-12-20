@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <ElContentPage color="warn" align="center">
     <template v-slot:title>内部错误</template>
 

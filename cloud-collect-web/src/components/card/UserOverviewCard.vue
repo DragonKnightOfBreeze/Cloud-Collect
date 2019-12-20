@@ -63,11 +63,11 @@
   export default class UserOverviewCard extends Vue {
     @Prop({required: true}) user!: User
 
-    get currentUser() {
+    private get currentUser() {
       return !!this.$store.getters.currentUser
     }
 
-    get isCurrentUser() {
+    private get isCurrentUser() {
       return this.$store.getters.currentUser && this.$store.getters.currentUser.id === this.user.id
     }
   }

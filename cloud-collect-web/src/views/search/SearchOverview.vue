@@ -21,15 +21,15 @@
     components: {ElBlankLine}
   })
   export default class SearchOverview extends Vue {
-    handleGoBack() {
+    private handleGoBack() {
       this.$router.push("/")
     }
 
-    handleGoSearchCollect() {
+    private handleGoSearchCollect() {
       this.$router.push("/search/collect")
     }
 
-    handleGoSearchUser() {
+    private handleGoSearchUser() {
       this.$router.push("/search/user")
     }
   }
