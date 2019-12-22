@@ -5,11 +5,14 @@ import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.*
 
 interface CommentRepository : JpaRepository<Comment, Long> {
-	fun findAllByCollectId(collectId: Long, pageable: Pageable): Page<Comment>
+	//需要按id倒序排序显示
+	fun findAllByCollectIdOrderByIdDesc(collectId: Long, pageable: Pageable): Page<Comment>
 	
-	fun findAllBySponsorByUserId(sponsorByUserId: Long, pageable: Pageable): Page<Comment>
+	//需要按id倒序排序显示
+	fun findAllBySponsorByUserIdOrderByIdDesc(sponsorByUserId: Long, pageable: Pageable): Page<Comment>
 	
-	fun findAllByReplyToCommentId(replyToCommentId: Long, pageable: Pageable): Page<Comment>
+	//需要按id倒序排序显示
+	fun findAllByReplyToCommentIdOrderByIdDesc(replyToCommentId: Long, pageable: Pageable): Page<Comment>
 	
 	fun countByCollectId(collectId: Long): Long
 	

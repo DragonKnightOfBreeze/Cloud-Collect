@@ -12,27 +12,33 @@ interface UserRepository : JpaRepository<User, Long> {
 	
 	fun findAllByNicknameContains(nickname: String, pageable: Pageable): Page<User>
 	
+	fun findAllByUsernameContains(username: String, pageable: Pageable): Page<User>
+	
+	fun findAllByEmailContains(email: String, pageable: Pageable): Page<User>
+	
 	fun findAllByRole(role: Role, pageable: Pageable): Page<User>
 	
-	@Query("from User u, in (u.followToUserList) fu where fu.id=?1")
-	fun findAllByFollowToUserId(followToUserId: Long, pageable: Pageable): Page<User>
+	fun findAllByFollowToUsersId(followToUserId: Long, pageable: Pageable): Page<User>
 	
-	@Query("from User u, in (u.followByUserList) fu where fu.id=?1")
-	fun findAllByFollowByUserId(followByUserId: Long, pageable: Pageable): Page<User>
+	fun findAllByNicknameContainsAndFollowToUsersId(nickname: String, followToUserId: Long, pageable: Pageable): Page<User>
 	
-	@Query("from User u, in(u.praiseToCollectList) c where c.id=?1")
-	fun findAllByPraiseToCollectId(praiseToCollectId: Long, pageable: Pageable): Page<User>
+	fun findAllByFollowByUsersId(followByUserId: Long, pageable: Pageable): Page<User>
 	
-	@Query("select count(u) from User u, in (u.followByUserList) fu where fu.id=?1")
-	fun countByFollowByUserId(followByUserId: Long): Long
+	fun findAllByNicknameContainsAndFollowByUsersId(nickname: String, followByUserId: Long, pageable: Pageable): Page<User>
 	
-	@Query("select count(u) from User u, in (u.followToUserList) fu where fu.id=?1")
-	fun countByFollowToUserId(followToUserId: Long): Long
+	fun findAllByPraiseToCollectsId(praiseToCollectId: Long, pageable: Pageable): Page<User>
 	
-	@Query("select count(u) from User u, in(u.praiseToCollectList) c where c.id=?1")
-	fun countByPraiseToCollectId(praiseToCollectId: Long): Long
+	fun countByFollowByUsersId(followByUserId: Long): Long
+	
+	fun countByFollowToUsersId(followToUserId: Long): Long
+	
+	fun countByPraiseToCollectsId(praiseToCollectId: Long): Long
 	
 	fun existsByUsername(username: String): Boolean
 	
+	fun existsByEmail(email: String): Boolean
+	
 	fun existsByUsernameOrEmail(username: String, email: String): Boolean
+	
+	fun existsByIdAndFollowByUsers(id: Long, followByUser: User): Boolean
 }

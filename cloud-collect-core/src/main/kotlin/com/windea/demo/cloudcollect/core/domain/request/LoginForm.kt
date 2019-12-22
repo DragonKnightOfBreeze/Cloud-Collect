@@ -8,7 +8,7 @@ import javax.validation.constraints.*
 
 @ApiModel("登录表单。 ")
 @Domain
-class LoginForm(
+data class LoginForm(
 	@ApiModelProperty("用户名。")
 	@get:NotEmpty(message = "{validation.User.username.NotEmpty}")
 	@get:Username(message = "{validation.User.username.Username}")

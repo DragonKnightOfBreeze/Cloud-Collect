@@ -1,5 +1,7 @@
 package com.windea.demo.cloudcollect.core.domain.entity
 
+import com.fasterxml.jackson.annotation.*
+import com.windea.demo.cloudcollect.core.*
 import com.windea.demo.cloudcollect.core.validation.group.*
 import io.swagger.annotations.*
 import org.springframework.data.annotation.*
@@ -8,6 +10,7 @@ import java.io.*
 import java.time.*
 import javax.persistence.*
 import javax.persistence.Id
+import javax.persistence.Transient
 import javax.validation.constraints.*
 
 @ApiModel("评论。一个收藏可以带有多条评论。")
@@ -20,31 +23,37 @@ data class Comment(
 	val id: Long = 0,
 	
 	@ApiModelProperty("内容。")
-	@Column(nullable = false, length = 512)
-	@get:NotEmpty(message = "{validation.CollectComment.content.NotEmpty}", groups = [Create::class])
-	@get:Size(min = 1, max = 512, message = "{validation.CollectComment.content.Size}", groups = [Create::class])
-	val content: String = "",
+	@get:NotEmpty(message = "{validation.Comment.content.NotEmpty}", groups = [Create::class])
+	@get:Size(max = 255, message = "{validation.Comment.content.Size}", groups = [Create::class])
+	@Column(nullable = false)
+	val content: String,
 	
 	@ApiModelProperty("所属收藏。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	@ManyToOne
 	val collect: Collect,
 	
 	@ApiModelProperty("发起该评论的用户。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	@ManyToOne
 	val sponsorByUser: User,
 	
 	@ApiModelProperty("该评论回复的评论。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER)
+	@ManyToOne
 	val replyToComment: Comment? = null
 ) : Serializable {
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
-	lateinit var createdTime: LocalDateTime
+	@JsonFormat(pattern = GlobalConfig.dateFormat)
+	var createdTime: LocalDateTime? = null
+	
+	@ApiModelProperty("回复该评论的评论列表。")
+	@JsonIgnore
+	@OneToMany(mappedBy = "replyToComment", cascade = [CascadeType.DETACH])
+	val replyByComments: MutableList<Comment> = mutableListOf()
 	
 	@ApiModelProperty("回复此评论的评论数量。")
 	@Transient
-	var replyByCommentCount: Long = 0
+	var replyToCommentCount: Long = 0
 	
 	override fun equals(other: Any?) = other === this || (other is Comment && other.id == id)
 	

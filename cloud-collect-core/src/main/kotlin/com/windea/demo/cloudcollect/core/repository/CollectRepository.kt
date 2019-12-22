@@ -10,10 +10,17 @@ interface CollectRepository : JpaRepository<Collect, Long> {
 	
 	fun findAllByNameContains(name: String, pageable: Pageable): Page<Collect>
 	
+	fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect>
+	
+	fun findAllByCategoryName(categoryName: String, pageable: Pageable): Page<Collect>
+	
 	fun findAllByCategoryNameContains(categoryName: String, pageable: Pageable): Page<Collect>
 	
-	@Query("from Collect c, in(c.tags) t where t.name=?1")
-	fun findAllByTagNameContains(tagName: String, pageable: Pageable): Page<Collect>
+	fun findAllByTagsId(tagId: Long, pageable: Pageable): Page<Collect>
+	
+	fun findAllByTagsName(tagName: String, pageable: Pageable): Page<Collect>
+	
+	fun findAllByTagsNameContains(tagName: String, pageable: Pageable): Page<Collect>
 	
 	fun findAllByUserId(userId: Long, pageable: Pageable): Page<Collect>
 	
@@ -21,30 +28,29 @@ interface CollectRepository : JpaRepository<Collect, Long> {
 	
 	fun findAllByCategoryNameContainsAndUserId(categoryName: String, userId: Long, pageable: Pageable): Page<Collect>
 	
-	@Query("from Collect c, in(c.tags) t where t.name=?1 and t.user.id = ?2")
-	fun findAllByTagNameContainsAndUserId(tagName: String, userId: Long, pageable: Pageable): Page<Collect>
-	
-	fun findAllByCategoryId(categoryId: Long, pageable: Pageable): Page<Collect>
-	
-	@Query("from Collect c, in(c.tags) t where t.id=?1")
-	fun findAllByTagId(tagId: Long, pageable: Pageable): Page<Collect>
+	fun findAllByTagsNameContainsAndUserId(tagName: String, userId: Long, pageable: Pageable): Page<Collect>
 	
 	fun findAllByTypeAndUserId(type: CollectType, userId: Long, pageable: Pageable): Page<Collect>
 	
-	@Query("from Collect c, in(c.praiseByUserList) u where u.id=?1")
-	fun findAllByPraiseByUserId(praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	fun findAllByPraiseByUsersId(praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	
+	fun findAllByNameContainsAndPraiseByUsersId(name: String, praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	
+	fun findAllByCategoryNameContainsAndPraiseByUsersId(categoryName: String, praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	
+	fun findAllByTagsNameContainsAndPraiseByUsersId(tagName: String, praiseByUserId: Long, pageable: Pageable): Page<Collect>
+	
+	fun findAllByTypeContainsAndPraiseByUsersId(type: CollectType, praiseByUserId: Long, pageable: Pageable): Page<Collect>
 	
 	fun countByCategoryId(categoryId: Long): Long
 	
-	@Query("select count(c) from Collect c, in(c.tags) t where t.id=?1")
-	fun countByTagId(tagId: Long): Long
-	
-	fun countByTypeAndUserId(type: CollectType, userId: Long): Long
+	fun countByTagsId(tagId: Long): Long
 	
 	fun countByUserId(userId: Long): Long
 	
-	@Query("select count(c) from Collect c, in(c.praiseByUserList) u where u.id=?1")
-	fun countByPraiseByUserId(praiseByUserId: Long): Long
+	fun countByPraiseByUsersId(praiseByUserId: Long): Long
 	
-	fun existsByNameAndUserId(name: String, userId: Long): Boolean
+	fun existsByNameAndUser(name: String, user: User): Boolean
+	
+	fun existsByIdAndPraiseByUsers(id: Long, praiseByUser: User): Boolean
 }

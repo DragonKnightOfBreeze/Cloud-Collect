@@ -3,12 +3,10 @@
 package com.windea.demo.cloudcollect.core.controller
 
 import com.windea.demo.cloudcollect.core.domain.entity.*
-import com.windea.demo.cloudcollect.core.domain.response.*
 import com.windea.demo.cloudcollect.core.service.*
 import io.swagger.annotations.*
 import org.springframework.data.domain.*
 import org.springframework.security.access.prepost.*
-import org.springframework.security.core.*
 import org.springframework.web.bind.annotation.*
 
 @Api("通知")
@@ -18,50 +16,30 @@ import org.springframework.web.bind.annotation.*
 class NoticeController(
 	private val noticeService: NoticeService
 ) {
-	//NOTE 通知的创建交由前端
-	@ApiOperation("创建某一用户的通知。")
-	@PostMapping("/create")
-	@PreAuthorize("isAuthenticated()")
-	fun create(@RequestBody notice: Notice, authentication: Authentication) {
-		val user = (authentication.principal as UserDetailsVo).delegateUser
-		noticeService.create(notice, user)
-	}
+	//@ApiOperation("创建一条通知。")
+	//@PostMapping("/create")
+	//@PreAuthorize("isAuthenticated()")
+	//fun create(@RequestBody notice: Notice) {
+	//	noticeService.create(notice)
+	//}
 	
-	@ApiOperation("阅读自己的通知。")
-	@PutMapping("/{id}/read")
-	@PreAuthorize("isAuthenticated()")
-	fun read(@PathVariable id: Long, @RequestBody notice: Notice) {
-		noticeService.read(notice)
-	}
-	
-	@ApiOperation("删除自己的通知。")
+	@ApiOperation("删除一条通知。")
 	@DeleteMapping("/{id}")
 	@PreAuthorize("isAuthenticated()")
 	fun deleteById(@PathVariable id: Long) {
 		noticeService.deleteById(id)
 	}
 	
-	@ApiOperation("得到某一通知。")
-	@GetMapping("/{id}")
-	fun findById(@PathVariable id: Long): Notice {
-		return noticeService.findById(id)
+	@ApiOperation("删除某一用户的所有浏览记录。")
+	@DeleteMapping("/deleteAllByUserId")
+	@PreAuthorize("isAuthenticated()")
+	fun deleteAllByUserId(@RequestParam userId: Long) {
+		noticeService.deleteAllByUserId(userId)
 	}
 	
-	@ApiOperation("得到所有通知。")
-	@GetMapping("/findAll")
-	fun findAll(@RequestParam pageable: Pageable): Page<Notice> {
-		return noticeService.findAll(pageable)
-	}
-	
-	@ApiOperation("查询某一用户的所有通知。")
+	@ApiOperation("得到某一用户的所有通知。")
 	@GetMapping("/findAllByUserId")
-	fun findAllByUserId(@RequestParam userId: Long, @RequestParam pageable: Pageable): Page<Notice> {
+	fun findAllByUserId(@RequestParam userId: Long, pageable: Pageable): Page<Notice> {
 		return noticeService.findAllByUserId(userId, pageable)
-	}
-	
-	@ApiOperation("查询某一用户的所有已读/未读通知。")
-	@GetMapping("/findAllByUserIdAndRead")
-	fun findAllByUserIdAndRead(@RequestParam userId: Long, @RequestParam readStatus: Boolean, @RequestParam pageable: Pageable): Page<Notice> {
-		return noticeService.findAllByUserIdAndRead(userId, readStatus, pageable)
 	}
 }

@@ -5,10 +5,10 @@ import org.springframework.data.domain.*
 
 interface CommentService {
 	/**创建自己的评论。*/
-	fun create(comment: Comment, sponsorByUser: User): Comment
+	fun create(comment: Comment)
 	
 	/**创建自己的评论，回复某一评论。*/
-	fun reply(replyToCommentId: Long, comment: Comment, sponsorByUser: User): Comment
+	fun reply(comment: Comment)
 	
 	/**删除自己的评论。*/
 	fun deleteById(id: Long)
@@ -25,7 +25,6 @@ interface CommentService {
 	/**根据发起用户id查询所有评论。*/
 	fun findAllBySponsorByUserId(sponsorByUserId: Long, pageable: Pageable): Page<Comment>
 	
-	
-	/**得到回复此评论的所有评论。*/
-	fun getReplyByCommentPage(id: Long, pageable: Pageable): Page<Comment>
+	/**根据回复评论id查询所有评论。*/
+	fun findAllByReplyToCommentId(replyToCommentId: Long, pageable: Pageable): Page<Comment>
 }

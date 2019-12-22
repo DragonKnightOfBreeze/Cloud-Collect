@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.*
 
 /**Jwt用户详情。用于安全验证。*/
 @Domain
-class UserDetailsVo(
+data class UserDetailsVo(
 	val delegateUser: User
 ) : UserDetails {
 	override fun getUsername(): String {
@@ -20,7 +20,8 @@ class UserDetailsVo(
 	}
 	
 	override fun getAuthorities(): Collection<GrantedAuthority> {
-		return AuthorityUtils.createAuthorityList(delegateUser.role.toString())
+		//NOTE 这里使用name而非toString，因为后者可能为中文
+		return AuthorityUtils.createAuthorityList(delegateUser.role.name)
 	}
 	
 	override fun isAccountNonExpired(): Boolean {

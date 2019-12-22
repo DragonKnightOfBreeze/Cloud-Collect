@@ -10,5 +10,5 @@ interface DataSerializeService {
 	fun importData(dataType: DataType, multipartFile: MultipartFile, user: User)
 	
 	/**导出收藏到指定格式的文件。例如：Xml、Json、Yaml。*/
-	fun exportData(dataType: DataType): File
+	fun exportData(dataType: DataType, user: User): File
 }

@@ -1,7 +1,7 @@
 package com.windea.demo.cloudcollect.core.extensions
 
 import com.windea.demo.cloudcollect.core.enums.*
-import org.junit.*
+import org.junit.jupiter.api.*
 
 class DataSerializerTest {
 	@Test //不考虑泛型的情况下，能够正常工作
@@ -9,11 +9,11 @@ class DataSerializerTest {
 		val string = """
 			{"name": "Windea", "weapon": "BreezesLanding"}
 		""".trimIndent()
-		val jsonData = DataSerializer.load<Map<String, String>>(string, DataType.Json)
+		val jsonData = DataSerializer.load<Map<String, String>>(string, DataType.JSON)
 		println(jsonData::class.java)
 		println(jsonData)
 		
-		val jsonString = DataSerializer.dump(jsonData, DataType.Json)
+		val jsonString = DataSerializer.dump(jsonData, DataType.JSON)
 		println(jsonString)
 	}
 	
@@ -22,11 +22,11 @@ class DataSerializerTest {
 		val string = """
 			{"name": "Windea", "weapon": "BreezesLanding"}
 		""".trimIndent()
-		val jsonData = DataSerializer.load<Person>(string, DataType.Json)
+		val jsonData = DataSerializer.load<Person>(string, DataType.JSON)
 		println(jsonData::class.java)
 		println(jsonData)
 		
-		val jsonString = DataSerializer.dump(jsonData, DataType.Json)
+		val jsonString = DataSerializer.dump(jsonData, DataType.JSON)
 		println(jsonString)
 	}
 	
@@ -38,11 +38,11 @@ class DataSerializerTest {
 				{"name": "Avera", "weapon": "WhiteMistGreatSword"}
 			]
 		""".trimIndent()
-		val jsonData = DataSerializer.load<List<Person>>(string, DataType.Json)
+		val jsonData = DataSerializer.load<List<Person>>(string, DataType.JSON)
 		println(jsonData::class.java)
 		println(jsonData)
 		
-		val jsonString = DataSerializer.dump(jsonData, DataType.Json)
+		val jsonString = DataSerializer.dump(jsonData, DataType.JSON)
 		println(jsonString)
 	}
 }

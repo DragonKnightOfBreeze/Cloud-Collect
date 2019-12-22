@@ -31,6 +31,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+    open-in-view: true
   jackson:
     serialization:
       # 防止json序列化时出错，非常重要！
@@ -62,8 +63,15 @@ spring:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
       mail.smtp.starttls.required: true
-
-
+  # 若想上传更大的文件，需要专门配置
+  servlet:
+    multipart:
+      max-file-size: 3MB
+  http:
+    encoding:
+      force: true
+      force-response: true
+      force-request: true
 
 server:
   tomcat:
@@ -74,20 +82,33 @@ server:
     basedir: target/tomcat
   servlet:
     # 指定服务器的内容根路径
-    context-path: /cloud-collect/api
+    context-path: /cloudCollect/api
 
 cloud-collect:
-  security:
-    secret: Windea
-    resource-id: cloud-collect
-    client-id: cloud-collect
+  jwt:
+    # jwt口令的请求头
+    tokenHeader: Authorization
+    # jwt口令的开头
+    tokenHead: Bearer
+    # jwt密钥
+    secret: windea
+    # jwt过期时间
+    expiration: 86400
   validation:
-    username: "\\w{6,16}"
-    password: "[a-zA-Z]\\w{5,15}"
+    username: "[a-zA-Z]\\w{5,15}"
+    password: "\\w{6,16}"
   redis:
     activateCodePrefix: "activateCode:"
     resetPasswordCodePrefix: "resetPasswordCode:"
-    expiration: 90
-  data-serialize:
-    path: D:/CloudCollect
-    file-name: dataSchema
+    expiration: 1d
+  serialize:
+    root-url: http://localhost:8080/cloudCollect/api
+    upload-url: http://localhost:8080/cloudCollect/api/upload
+    export-url: http://localhost:8080/cloudCollect/api/export
+    root-path: D:/CloudCollect
+    upload-path: D:/CloudCollect/upload
+    export-path: D:/CloudCollect/export
+    import-path: D:/CloudCollect/import
+logging:
+  level:
+    org.springframework: debug

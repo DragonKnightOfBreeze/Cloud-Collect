@@ -1,5 +1,7 @@
 package com.windea.demo.cloudcollect.core.domain.entity
 
+import com.fasterxml.jackson.annotation.*
+import com.windea.demo.cloudcollect.core.GlobalConfig.dateFormat
 import com.windea.demo.cloudcollect.core.enums.*
 import io.swagger.annotations.*
 import org.springframework.data.annotation.*
@@ -23,8 +25,8 @@ data class Notice(
 	val title: String,
 	
 	@ApiModelProperty("内容。")
-	@Column(nullable = false, length = 512)
-	val content: String = "",
+	@Column(nullable = false)
+	val content: String,
 	
 	@ApiModelProperty("通知的类型。")
 	@Column(nullable = false)
@@ -32,17 +34,14 @@ data class Notice(
 	val type: NoticeType = NoticeType.SYSTEM,
 	
 	@ApiModelProperty("所属用户。")
-	@ManyToOne(cascade = [CascadeType.MERGE], fetch = FetchType.EAGER, optional = false)
+	@ManyToOne
 	val user: User
 ) : Serializable {
-	@Column
-	@ApiModelProperty("是否已读。")
-	var readStatus: Boolean = false
-	
 	@ApiModelProperty("创建时间。")
 	@Column
 	@CreatedDate
-	lateinit var createdTime: LocalDateTime
+	@JsonFormat(pattern = dateFormat)
+	var createdTime: LocalDateTime? = null
 	
 	override fun equals(other: Any?) = other === this || (other is Notice && other.id == id)
 	

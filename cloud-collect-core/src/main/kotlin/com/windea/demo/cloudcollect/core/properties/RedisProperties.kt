@@ -1,14 +1,13 @@
 package com.windea.demo.cloudcollect.core.properties
 
 import org.springframework.boot.context.properties.*
-import org.springframework.stereotype.*
 import java.time.*
 
 /**Redis缓存的属性类。*/
-@Component
+@ConstructorBinding
 @ConfigurationProperties("cloud-collect.redis")
-class RedisProperties {
-	lateinit var activateCodePrefix: String
-	lateinit var resetPasswordCodePrefix: String
-	lateinit var expiration: Duration
-}
+data class RedisProperties(
+	val activateCodePrefix: String,
+	val resetPasswordCodePrefix: String,
+	val expiration: Duration
+)

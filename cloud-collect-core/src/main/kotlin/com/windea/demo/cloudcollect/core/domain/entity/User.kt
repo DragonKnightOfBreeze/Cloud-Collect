@@ -1,6 +1,8 @@
 package com.windea.demo.cloudcollect.core.domain.entity
 
 import com.fasterxml.jackson.annotation.*
+import com.windea.demo.cloudcollect.core.GlobalConfig.dateFormat
+import com.windea.demo.cloudcollect.core.GlobalConfig.requireActivation
 import com.windea.demo.cloudcollect.core.enums.*
 import com.windea.demo.cloudcollect.core.validation.annotation.*
 import com.windea.demo.cloudcollect.core.validation.group.*
@@ -11,13 +13,14 @@ import java.io.*
 import java.time.*
 import javax.persistence.*
 import javax.persistence.Id
+import javax.persistence.Transient
 import javax.validation.constraints.*
 
 @ApiModel("用户。")
 @Entity
 @EntityListeners(AuditingEntityListener::class)
-@UniqueUser(groups = [Create::class])
-data class User(
+@UniqueUser(message = "{validation.User.UniqueUser}", groups = [Create::class])
+data class User constructor(
 	@ApiModelProperty("编号。")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +32,11 @@ data class User(
 	@Column(unique = true, nullable = false, length = 16)
 	val username: String,
 	
-	@ApiModelProperty("密码。这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度。")
-	@JsonIgnore
-	@get:NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class, Modify::class])
-	@get:Password(message = "{validation.User.password.Password}", groups = [Create::class, Modify::class])
+	@ApiModelProperty("密码。")
+	@get:NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class])
+	@get:Password(message = "{validation.User.password.Password}", groups = [Create::class])
 	@Column(nullable = false)
-	var password: String,
+	var password: String, //这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度
 	
 	@ApiModelProperty("邮箱。")
 	@get:NotEmpty(message = "{validation.User.email.NotEmpty}", groups = [Create::class, Modify::class])
@@ -44,57 +46,71 @@ data class User(
 	
 	@ApiModelProperty("昵称。")
 	@get:NotEmpty(message = "{validation.User.nickname.NotEmpty}", groups = [Modify::class])
-	@get:Size(min = 1, max = 64, message = "{validation.User.nickname.Size}", groups = [Modify::class])
-	@Column(nullable = false, length = 64)
+	@get:Size(max = 32, message = "{validation.User.nickname.Size}", groups = [Modify::class])
+	@Column(nullable = false, length = 32)
 	var nickname: String = username,
 	
 	@ApiModelProperty("简介。")
+	@get:Size(max = 255, message = "{validation.User.introduce.Size}", groups = [Modify::class])
 	@Column(nullable = false)
-	@get:NotEmpty(message = "{validation.User.introduce.NotEmpty}", groups = [Modify::class])
-	@get:Size(min = 1, max = 255, message = "{validation.User.introduce.Size}", groups = [Modify::class])
 	var introduce: String = "这家伙很懒，什么也没留下。",
 	
 	@ApiModelProperty("头像地址。")
-	@Column(length = 512, nullable = false)
+	@Column(nullable = false, length = 255)
 	var avatarUrl: String = "",
-	
-	@ApiModelProperty("背景地址。")
-	@Column(length = 512, nullable = false)
-	var backgroundUrl: String = "",
 	
 	@ApiModelProperty("身份。")
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	val role: Role = Role.NORMAL
 ) : Serializable {
+	//当配置为不要求你激活时，直接激活对应的用户
 	@ApiModelProperty("是否已激活。")
-	@Column
-	var activateStatus: Boolean = true  //TODO 测试时保持激活
+	@Column(nullable = false)
+	var activateStatus: Boolean = !requireActivation
 	
 	@ApiModelProperty("注册时间。")
 	@Column
 	@CreatedDate
-	lateinit var registerTime: LocalDateTime
+	@JsonFormat(pattern = dateFormat)
+	var registerTime: LocalDateTime? = null
 	
 	@ApiModelProperty("资料更新时间。")
 	@Column
 	@LastModifiedDate
-	lateinit var updateTime: LocalDateTime
+	@JsonFormat(pattern = dateFormat)
+	var updateTime: LocalDateTime? = null
 	
-	@ApiModelProperty("用户的关注用户列表。懒加载。")
+	@ApiModelProperty("用户的关注用户列表。")
 	@JsonIgnore
-	@ManyToMany(cascade = [CascadeType.MERGE])
-	val followToUserList: MutableList<User> = mutableListOf()
+	@ManyToMany(mappedBy = "followByUsers", cascade = [CascadeType.REMOVE])
+	val followToUsers: MutableSet<User> = mutableSetOf()
 	
-	@ApiModelProperty("该用户的粉丝用户列表。懒加载。")
+	@ApiModelProperty("该用户的粉丝用户列表。")
 	@JsonIgnore
-	@ManyToMany(cascade = [CascadeType.MERGE], mappedBy = "followToUserList")
-	val followByUserList: MutableList<User> = mutableListOf()
+	@ManyToMany(cascade = [CascadeType.REMOVE])
+	val followByUsers: MutableSet<User> = mutableSetOf()
 	
-	@ApiModelProperty("该用户点赞的收藏列表。懒加载。")
+	@ApiModelProperty("该用户点赞的收藏列表。")
 	@JsonIgnore
-	@ManyToMany(cascade = [CascadeType.MERGE])
-	val praiseToCollectList: MutableList<Collect> = mutableListOf()
+	@ManyToMany(mappedBy = "praiseByUsers", cascade = [CascadeType.REMOVE])
+	val praiseToCollects: MutableSet<Collect> = mutableSetOf()
+	
+	@ApiModelProperty("是否已关注。")
+	@Transient
+	var isFollowed: Boolean? = null
+	
+	@ApiModelProperty("收藏数量。")
+	@Transient
+	var collectCount: Long = 0
+	
+	@ApiModelProperty("分类数量。")
+	@Transient
+	var categoryCount: Long = 0
+	
+	@ApiModelProperty("点赞收藏数量。")
+	@Transient
+	var praiseToCollectCount: Long = 0
 	
 	@ApiModelProperty("关注用户数量。")
 	@Transient
@@ -103,18 +119,6 @@ data class User(
 	@ApiModelProperty("粉丝用户数量。")
 	@Transient
 	var followByUserCount: Long = 0
-	
-	@ApiModelProperty("收藏数量。")
-	@Transient
-	var collectCount: Long = 0
-	
-	@ApiModelProperty("评论数量。")
-	@Transient
-	var commentCount: Long = 0
-	
-	@ApiModelProperty("通知数量。")
-	@Transient
-	var noticeCount: Long = 0
 	
 	override fun equals(other: Any?) = other === this || (other is User && other.id == id)
 	
