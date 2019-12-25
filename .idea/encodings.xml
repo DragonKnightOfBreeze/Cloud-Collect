@@ -3,5 +3,6 @@
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/cloud-collect-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cloud-collect-core/src/main/kotlin" charset="UTF-8" />
   </component>
 </project>
