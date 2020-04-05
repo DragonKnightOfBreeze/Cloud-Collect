@@ -235,3 +235,5 @@
 * 重写 了`WebMvcConfigurer`的`addResourceHandlers`方法后，`/swagger-ui.html`打不开的问题
   * 配置`swagger-ui.html`->`classpath:/META-INF/resources/`的资源映射。
   * 配置`/webjars/**`->`classpath:/META-INF/resources/webjars/`的资源映射。
+* Redis报错SerializationException，显示"local class incompatible"：
+  * 连接redis-server，打开redis-cli，输入命令`flushdb`，刷新数据库。 

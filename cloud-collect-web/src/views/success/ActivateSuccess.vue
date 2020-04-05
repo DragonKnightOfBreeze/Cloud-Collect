@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <ElContentPage color="success" align="center">
     <template v-slot:title>激活成功</template>
 

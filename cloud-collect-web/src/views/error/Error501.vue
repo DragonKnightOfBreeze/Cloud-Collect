@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <ElContentPage color="warn" align="center">
     <template v-slot:title>功能未实现</template>
 

@@ -21,106 +21,106 @@ import javax.validation.constraints.*
 @EntityListeners(AuditingEntityListener::class)
 @UniqueUser(message = "{validation.User.UniqueUser}", groups = [Create::class])
 data class User constructor(
-	@ApiModelProperty("编号。")
+	@ApiModelProperty("编号")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long = 0,
-	
-	@ApiModelProperty("用户名。")
+
+	@ApiModelProperty("用户名")
 	@get:NotEmpty(message = "{validation.User.username.NotEmpty}", groups = [Create::class, Modify::class])
 	@get:Username(message = "{validation.User.username.Username}", groups = [Create::class, Modify::class])
 	@Column(unique = true, nullable = false, length = 16)
 	val username: String,
-	
-	@ApiModelProperty("密码。")
+
+	@ApiModelProperty("密码")
 	@get:NotEmpty(message = "{validation.User.password.NotEmpty}", groups = [Create::class])
 	@get:Password(message = "{validation.User.password.Password}", groups = [Create::class])
 	@Column(nullable = false)
 	var password: String, //这里存储的是加密后的密码，可以进行参数验证，不要限制数据库中对应字段的长度
-	
-	@ApiModelProperty("邮箱。")
+
+	@ApiModelProperty("邮箱")
 	@get:NotEmpty(message = "{validation.User.email.NotEmpty}", groups = [Create::class, Modify::class])
 	@get:Email(message = "{validation.User.email.Email}", groups = [Create::class, Modify::class])
 	@Column(unique = true, nullable = false, length = 64)
 	val email: String,
-	
-	@ApiModelProperty("昵称。")
+
+	@ApiModelProperty("昵称")
 	@get:NotEmpty(message = "{validation.User.nickname.NotEmpty}", groups = [Modify::class])
 	@get:Size(max = 32, message = "{validation.User.nickname.Size}", groups = [Modify::class])
 	@Column(nullable = false, length = 32)
 	var nickname: String = username,
-	
-	@ApiModelProperty("简介。")
+
+	@ApiModelProperty("简介")
 	@get:Size(max = 255, message = "{validation.User.introduce.Size}", groups = [Modify::class])
 	@Column(nullable = false)
 	var introduce: String = "这家伙很懒，什么也没留下。",
-	
-	@ApiModelProperty("头像地址。")
+
+	@ApiModelProperty("头像地址")
 	@Column(nullable = false, length = 255)
 	var avatarUrl: String = "",
-	
-	@ApiModelProperty("身份。")
+
+	@ApiModelProperty("身份")
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	val role: Role = Role.NORMAL
 ) : Serializable {
 	//当配置为不要求你激活时，直接激活对应的用户
-	@ApiModelProperty("是否已激活。")
+	@ApiModelProperty("是否已激活")
 	@Column(nullable = false)
 	var activateStatus: Boolean = !requireActivation
-	
-	@ApiModelProperty("注册时间。")
+
+	@ApiModelProperty("注册时间")
 	@Column
 	@CreatedDate
 	@JsonFormat(pattern = dateFormat)
 	var registerTime: LocalDateTime? = null
-	
+
 	@ApiModelProperty("资料更新时间。")
 	@Column
 	@LastModifiedDate
 	@JsonFormat(pattern = dateFormat)
 	var updateTime: LocalDateTime? = null
-	
-	@ApiModelProperty("用户的关注用户列表。")
+
+	@ApiModelProperty("用户的关注用户列表")
 	@JsonIgnore
 	@ManyToMany(mappedBy = "followByUsers", cascade = [CascadeType.REMOVE])
 	val followToUsers: MutableSet<User> = mutableSetOf()
-	
-	@ApiModelProperty("该用户的粉丝用户列表。")
+
+	@ApiModelProperty("该用户的粉丝用户列表")
 	@JsonIgnore
 	@ManyToMany(cascade = [CascadeType.REMOVE])
 	val followByUsers: MutableSet<User> = mutableSetOf()
-	
-	@ApiModelProperty("该用户点赞的收藏列表。")
+
+	@ApiModelProperty("该用户点赞的收藏列表")
 	@JsonIgnore
 	@ManyToMany(mappedBy = "praiseByUsers", cascade = [CascadeType.REMOVE])
 	val praiseToCollects: MutableSet<Collect> = mutableSetOf()
-	
-	@ApiModelProperty("是否已关注。")
+
+	@ApiModelProperty("是否已关注")
 	@Transient
 	var isFollowed: Boolean? = null
-	
-	@ApiModelProperty("收藏数量。")
+
+	@ApiModelProperty("收藏数量")
 	@Transient
 	var collectCount: Long = 0
-	
-	@ApiModelProperty("分类数量。")
+
+	@ApiModelProperty("分类数量")
 	@Transient
 	var categoryCount: Long = 0
-	
-	@ApiModelProperty("点赞收藏数量。")
+
+	@ApiModelProperty("点赞收藏数量")
 	@Transient
 	var praiseToCollectCount: Long = 0
-	
-	@ApiModelProperty("关注用户数量。")
+
+	@ApiModelProperty("关注用户数量")
 	@Transient
 	var followToUserCount: Long = 0
-	
-	@ApiModelProperty("粉丝用户数量。")
+
+	@ApiModelProperty("粉丝用户数量")
 	@Transient
 	var followByUserCount: Long = 0
-	
+
 	override fun equals(other: Any?) = other === this || (other is User && other.id == id)
-	
+
 	override fun hashCode() = id.hashCode()
 }

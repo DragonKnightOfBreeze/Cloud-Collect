@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <ElContentPage color="success" align="center">
     <template v-slot:title>重置密码成功</template>
 

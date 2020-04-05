@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <ElContentPage color="warn" align="center">
     <template v-slot:title>权限错误</template>
 

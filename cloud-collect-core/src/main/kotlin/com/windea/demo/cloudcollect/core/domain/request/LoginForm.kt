@@ -9,12 +9,12 @@ import javax.validation.constraints.*
 @ApiModel("登录表单。 ")
 @Domain
 data class LoginForm(
-	@ApiModelProperty("用户名。")
+	@ApiModelProperty("用户名")
 	@get:NotEmpty(message = "{validation.User.username.NotEmpty}")
 	@get:Username(message = "{validation.User.username.Username}")
 	val username: String,
-	
-	@ApiModelProperty("密码。")
+
+	@ApiModelProperty("密码")
 	@get:NotEmpty(message = "{validation.User.password.NotEmpty}")
 	@get:Password(message = "{validation.User.password.Password}")
 	val password: String
